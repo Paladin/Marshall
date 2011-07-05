@@ -16,6 +16,7 @@
 **/
 
 function Board(divId, options) {
+	var file = new Array( 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' );
 	var pgn = null;
 	if (isYahoo(document.getElementById(divId).firstChild.nodeValue))
 		pgn = new Yahoo(document.getElementById(divId).firstChild.nodeValue);
@@ -112,105 +113,59 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		// the main frame
 		var boardFrame = document.getElementById(divId+"_board");
 
-		var mainTable = resetStyles(document.createElement("table"));
-		mainTable.border = 0;
-		var mainTableTb = document.createElement("tbody");
-		mainTable.appendChild(mainTableTb);
-		mainTable.style.border = "1px solid #000000";
-		var tmp = document.createElement("tr");
-		mainTableTb.appendChild(tmp);
-		var topLeftTd = resetStyles(document.createElement("td"));
-		topLeftTd.vAlign = "top";
-		topLeftTd.style.width = this.opts['boardSize'];
-		tmp.appendChild(topLeftTd);
-		var topRightTd = resetStyles(document.createElement("td"));
-		topRightTd.style.verticalAlign = "top";
-		tmp.appendChild(topRightTd);
+		var gameSection = document.createElement("section");
+		gameSection.className = "game_section";
 
 		// toplevel table;
-		var topTable = resetStyles(document.createElement("table"));
-		topTable.style.width = (parseInt(this.opts['boardSize'])+15)+"px";
-		topTable.style.height = (parseInt(this.opts['boardSize'])+15)+"px";
-		topLeftTd.appendChild(topTable);
-		topTable.border = 0;
+		var topTable = document.createElement("table");
+		topTable.className = "mainboard"
+		gameSection.appendChild(topTable);
 		var topTableTb = document.createElement("tbody");
 		topTable.appendChild(topTableTb);
 		
-		var boardTd = resetStyles(document.createElement("td"));
-		boardTd.style.width = this.opts['boardSize'];
-		boardTd.style.height = this.opts['boardSize'];
-		boardTd.vAlign = "top";
-		var btnTdNext = resetStyles(document.createElement("td"));
-		btnTdNext.vAlign = 'top';
-		btnTdNext.align = 'center';
-		btnTdNext.style.height = '10px';
-		var btnTd = resetStyles(document.createElement("td"));
-		btnTd.vAlign = 'top';
-		btnTd.style.height = '10px';
-		var propsTd = resetStyles(document.createElement("td"));
-		propsTd.style.height = '10px';
+		var boardTd = document.createElement("td");
+		var btnTdNext = document.createElement("td");
+		btnTdNext.className = "current_move_cell"
+		var btnTd = document.createElement("td");
+		btnTd.className = "board_controls"
+		var propsTd = document.createElement("td");
+		propsTd.className = "game_info"
 		
 		// movesTable
 		var movesDiv = resetStyles(document.createElement("div"));
 		this.movesDiv = movesDiv;
-		if (this.opts['movesPaneWidth'])
-			movesDiv.style.width = this.opts['movesPaneWidth'];
-//			else
-//				movesDiv.style.overflow = "hidden";
-		movesDiv.style.height = boardTd.style.height;
 		movesDiv.id = divId+"_board_moves";
-		movesDiv.style.overflow = "auto";
-		movesDiv.style.border = "1px solid #cccccc";
-		movesDiv.style.verticalAlign = "top";
-		movesDiv.style.textAlign = "left";
-		topRightTd.appendChild(movesDiv);
+		gameSection.appendChild(movesDiv);
 		
 		var tmp = document.createElement("tr");
-		tmp.style.height = "0%";
 		tmp.appendChild(boardTd);
 		topTableTb.appendChild(tmp);
 
 		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd);
 		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTdNext);
 		topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd);
-		tmp = resetStyles(document.createElement("td"));
-		var tmpStr = document.createTextNode("");
-		tmp.style.height = "auto";
-		tmp.appendChild(tmpStr);
-		topTableTb.appendChild(document.createElement("tr")).appendChild(tmp);
 
 
-		var board = resetStyles(document.createElement("table"));
+		var board = document.createElement("table");
+		board.className = "gameboard"
 		var boardTb = document.createElement("tbody");
 		board.appendChild(boardTb);
 
-		board.style.top = boardFrame.style.top;
-		board.style.left = boardFrame.style.left;
-		board.style.borderCollapse = "collapse";
-
-		boardFrame.appendChild(mainTable);
+		boardFrame.appendChild(gameSection);
 		boardTd.appendChild(board);
 		
-		var whiteC = this.opts['whiteSqColor'];
-		var blackC = this.opts['blackSqColor'];
+		var whiteC = 'light_square';
+		var blackC = 'dark_square';
 
 		// white pieces
 		for(var i = 0; i < 8; i++) {
 			var tr = document.createElement("tr");
-			tr.style.height = (parseInt(this.opts['squareSize'].replace("px",""))+1)+"px";
 			var flip = (i % 2)?1:0;
 			for(var j = 0; j < 8; j++) {
-				var td = resetStyles(document.createElement("td"));
+				var td = document.createElement("td");
 
-				td.style.height = this.opts['squareSize'];
-				td.style.width = this.opts['squareSize'];
-				td.style.border = this.opts['squareBorder'];
-				td.style.padding = "0px";
-				td.vAlign = "middle";
-				td.align = "center";
-				var color = !flip?(j%2)?blackC:whiteC:!(j%2)?blackC:whiteC;
-				
-				td.style.background = color;
+				td.className = !flip?(j%2)?blackC:whiteC:!(j%2)?blackC:whiteC;
+				td.setAttribute( 'data-squarename', file[j]+(i+1) );
 
 				this.pos[i][j] = td;
 				tr.appendChild(td);
@@ -225,9 +180,6 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 
 		// in java i could do Board.this in anon function;
 		var tmp = this;
-		// button td
-		btnTd.align = 'center';
-		btnTd.valign = 'middle';
 
 		// rwnd;
 		var hrefS = document.createElement("a");
@@ -271,11 +223,8 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 
 		// current move
 		// it is initialized in updateMoveInfo
-		var input = resetStyles(document.createElement("input"));
-		input.style.fontSize = "7pt";
-		input.size = "9";
-		input.style.border = this.opts['moveBorder'];
-		input.style.textAlign = 'center';
+		var input = document.createElement("input");
+		input.className = "current_move_box";
 		this.moveInput = input;
 		btnTdNext.appendChild(input);
 		// end of current move
@@ -739,9 +688,6 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				cont.vAlign = "top";
 				var tmp2=this.conv.pgn.moves;
 				var p = document.createElement("p");
-				p.style.fontSize = "9pt";
-				p.style.fontFace = "Tahoma, Arial, sans-serif";
-				p.style.fontWeight = "bold";
 				var tmpA = document.createElement("a");
 
 				tmpA.href = this.opts['downloadURL']+escape(pgn);
@@ -846,69 +792,43 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 			};
 
 			this.populateProps = function(container) {
-				// init the style
-				var tdS = resetStyles(document.createElement('td'));
-				tdS.style.fontFamily = "Tahoma, Arial, sans-serif";
-				tdS.style.fontSize = "8pt";
-				tdS.align = 'center';
-				// end of init the style;
-				
-				var tbl = resetStyles(document.createElement('table'));
-				tbl.cellPadding = "0";
-				tbl.cellSpacing = "0";
-				var tblTb = document.createElement("tbody");
-				tbl.appendChild(tblTb);
-
-				tbl.width = "100%";
-				container.appendChild(tbl);
 
 				// white - black;
-				var tr = document.createElement('tr');
-				tblTb.appendChild(tr);
+				var player_line = document.createElement('p');
+				player_line.className = 'players';
+				container.appendChild(player_line);
 
-				var td = tdS.cloneNode(true);
-				td.style.fontWeight = "bold";
-				tr.appendChild(td);
-
-				var txt = document.createTextNode('&nbsp;');
-				this.visuals['pgn']['players'] = txt;
-				td.appendChild(txt);
-				//
+ 				var txt = document.createTextNode('&nbsp;');
+ 				this.visuals['pgn']['players'] = txt;
+ 				player_line.appendChild(txt);
 				
 				// ELO
-				tr = document.createElement('tr');
-				tblTb.appendChild(tr);
+				var elo_line = document.createElement('p');
+				elo_line.className = 'elo';
+				container.appendChild(elo_line);
 
-				td = tdS.cloneNode(false);
-				tr.appendChild(td);
+ 				txt = document.createTextNode('&nbsp;');
+ 				this.visuals['pgn']['elos'] = txt;
+ 				elo_line.appendChild(txt);
 
-				txt = document.createTextNode('&nbsp;');
-				this.visuals['pgn']['elos'] = txt;
-				td.appendChild(txt);
-				//
-				
 				// Date 
-				tr = document.createElement('tr');
-				tblTb.appendChild(tr);
+				var date_line = document.createElement('p');
+				date_line.className = 'game_date';
+				container.appendChild(date_line);
 
-				td = tdS.cloneNode(false);
-				tr.appendChild(td);
-
-				txt = document.createTextNode('&nbsp;');
-				this.visuals['pgn']['event'] = txt;
-				td.appendChild(txt);
+ 				txt = document.createTextNode('&nbsp;');
+ 				this.visuals['pgn']['event'] = txt;
+ 				date_line.appendChild(txt);
 
 				// Time control
-				tr = document.createElement('tr');
-				tblTb.appendChild(tr);
+				var time_line = document.createElement('p');
+				time_line.className = 'time_control';
+				container.appendChild(time_line);
 
-				td = tdS.cloneNode(false);
-				tr.appendChild(td);
+ 				txt = document.createTextNode('&nbsp;');
+ 				this.visuals['pgn']['timecontrol'] = txt;
+ 				time_line.appendChild(txt);
 
-				txt = document.createTextNode('&nbsp;');
-				this.visuals['pgn']['timecontrol'] = txt;
-				td.appendChild(txt);
-				//;
 				this.updatePGNInfo();
 			};
 
@@ -923,8 +843,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				}
 				
 				var src = prefix + imageNames[color][piece];
-				var img = resetStyles(document.createElement("img"));
-				img.style.border = "0px solid #cccccc";
+				var img = document.createElement("img");
 				
 				if ( /\.png$/.test( img.src.toLowerCase()) &&
 						navigator.userAgent.toLowerCase().indexOf("msie") != -1) {

@@ -173,7 +173,12 @@ a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-co
 
 .light_square { background-color: #CCC; }
 
-
+.board_controls
+{
+	height: 10px;
+	text-align: center;
+	vertical-align: top;
+}
 
 
 
