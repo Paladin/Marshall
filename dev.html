@@ -1,276 +1,255 @@
-<html>
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
   <head>
-    <script
-    	type="text/javascript"
-    	language="javascript"
-			src="jsPgnViewer.js">
-			</script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Sample setups with configuration</title>
+  <link rel="stylesheet" href="devstyle.css">
   </head>
-		
-		<title>Sample setups with configuration</title>
 
   <body>
-<h4>Default configuration</h4>
-<div style="border:2px solid #000000;padding: 5px">
-	<i>
-	 &lt;script&gt;<br>
-	 var brd = new Board('area', {'showMovesPane':true})<br>
-	 brd.init()<br>
-	 &lt;/script&gt;
-	</i>
-</div>
-<br>
-<div id="area_board"></div>
-
-<div id='area' style="visibility: hidden;display:none">
-[Site "New Delhi IND"]
-[Date "2006.12.23"]
-[Round "7"]
-[White "Lahno,Kateri"]
-[Black "Negi,P"]
-[Result "1-0"]
-[WhiteElo "2459"]
-[BlackElo "2538"]
-[EventDate "2006.12.17"]
-[ECO "C54"]
-
-1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. d3 Bc5 5. c3 a6 6. Nbd2 O-O 7. Bb3 Ba7 8.
-O-O d6 9. h3 Nh5 10. Re1 Qf6 11. Nf1 Nf4 12. Ng3 g6 13. Be3 h5 14. d4 Nd8
-15. d5 Bd7 16. Rc1 a5 17. a3 a4 18. Ba2 Bc5 19. Kh2 g5 20. Nd4 h4 21. Nh5
-Qh6 22. Nxf4 gxf4 23. Nf5 Bxf5 24. Bxc5 Bd7 25. Bb4 f6 26. Bc4 Kh8 27. Be2
-Rg8 28. Bg4 Qg7 29. Rg1 Bxg4 30. Qxg4 Qxg4 31. hxg4 Rxg4 32. Kh3 Rg5 33. c4
-b6 34. g3 hxg3 35. fxg3 fxg3 36. Bd2 Rh5+ 37. Kxg3 Nf7 38. Kg4 Rh2 39. Rh1
-Rg8+ 40. Kf5 Rgg2 41. Kxf6 Kg8 42. Ke7 Rxh1 43. Rxh1 Nh8 44. Bb4 Rg7+ 45.
-Kd8 Ng6 46. Rg1 Kh7 47. Rh1+ Kg8 48. Rg1 Kh7 49. Rh1+ Kg8 50. Kc8 Nf4 51.
-c5 dxc5 52. Bc3 Nd3 53. Rh5 Re7 54. Kd8 Rg7 55. Bxe5 Rg4 56. Ke7 Nxe5 57.
-Rxe5 c4 58. Kd7 Rg2 59. Kxc7 Rxb2 60. d6 c3 61. d7 Rd2 62. d8=Q+ Rxd8 63.
-Kxd8 c2 64. Rg5+ Kf7 65. Rg1 1-0
-</div>
-<script>
-	var brd = new Board('area', {'showMovesPane':true})
-	brd.init()
-</script>
-
-<hr size=1>
-<br>
-
-<h4>Slightly bigger board with custom fonts and colors</h4>
-<div style="border:2px solid #000000;padding: 5px">
-	<i>
-	 &lt;script&gt;<br>
-	var brd = new Board('areaBigger', {'imagePrefix':'img/kent/',<br>
-		 																	'showMovesPane':true,<br>
-																			'commentFontSize':'10pt',<br>
-																			'moveFontColor':'#206020',<br>
-																			'blackSqColor':'#ababab',<br>
-																			'moveFontSize':'10pt',<br>
-																			'boardSize':'377px',<br>
-																			'squareSize':'46'})<br>
-	 brd.init()<br>
-	 &lt;/script&gt;
-	</i>
-</div>
-<br>
-<div id="areaBigger_board" width="100%"></div>
-
-<div id='areaBigger' style="visibility: hidden;display:none">
-[Event "Omaha City Championships"]
-[Site "Central High"]
-[Date "2005.11.19"]
-[Round "4"]
-[White "Cletus Roth"]
-[Black "Kent Smotherman"]
-[Result "0-1"]
-[WhiteElo "1569"]
-[BlackElo "1587"]
-[ECO "C02"]
-
-1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 cxd4 6. cxd4 Nge7 7. Na3 Nf5 8. Nc2
-Qb6 9. a3 Bd7 10. Be2 Be7 11. O-O h6 12. g4 Nh4 13. Nxh4 Bxh4 14. f4 Be7 15. b4
-a6 16. Be3 g5 ( Rc8 {0.41 v 1.49} 17. f5 exf5 18. gxf5 Bg5 19. Bxg5 hxg5
-20. f6 Nxe5) 17. f5 exf5 18. gxf5 Qc7 19. Bh5 O-O ( Nd8 {1.55 v 3.09} 20.
-Rc1 Bb5 21. Ne1 Qb6 22. Nd3) 20. f6 Bd8 21. Qd2 (21. Qd3 {2.91 v 2.17} 
-Be6 22. Rf2 Qd7 23. h4 Bg4 24. Bg6 Kh8 25. Bh7)  Kh8 ( Qc8 {2.17 v
-4.21} 22. Qd3 Bb6 23. Rac1 Bg4 24. Bg6 Bh3 25. Rf3 Qg4+) 22. Qg2 (22. Kh1 {4.21
-v 2.92}  Nxe5 23. dxe5 Qxe5 24. Bc5 Re8 25. Rae1)  Be6 23. Bg4 (23.
-h4 {2.93 v 1.74}  Rc8 24. Rac1 Nxd4 25. Bxd4 Rg8 26. Ne3 Qxc1 27. Rxc1)
- Bxg4 24. Qxg4 Nxe5 25. dxe5 Qxc2 26. Rf5 (26. Bc5 {2.17 v -0.12} 
-Rg8 27. e6 Qg6 28. Rae1 Bc7)  Qc3 ( Rg8 {-0.12 v 6.57} 27. Rf2 Qd3
-28. Bd4 Kh7 29. Rd1 Qe4 30. Qxe4+ dxe4) 27. Bd4 (27. Qh3 {6.57 v -1.99}) 
-Bb6 28. Rd1 Bxd4+ 29. Rxd4 Qe1+ 30. Kg2 Rac8 31. Rf2 (31. Qd1 {-1.87 v -2.79}
- Qxd1 32. Rxd1 Rfd8 33. h4 gxh4 34. Rh5 Kh7 35. Rd4)  Rc1 32. Qh5
-(32. Rd3 {-2.76 v -11.69}  Kg8 33. Qf3 Rd8 34. e6 Qxe6 35. Re3 Qb6) 
-Kh7 ( Qh1+ {-11.69 v -3.25} 33. Kg3 Rc3+ 34. Rf3 Qg1+ 35. Kh3 Rxf3+ 36.
-Qxf3 Qxd4) 33. Rg4 Qg1+ 34. Kf3 Rc3+ 35. Ke2 Rc2+ 36. Kd3 Qd1+ 37. Ke3 Rc3# 0-1
-</div>
-<script>
-	var brd = new Board('areaBigger', {'imagePrefix':'img/png/',
-																			'imageSuffix':'png',
-		 																	'showMovesPane':true,
-																			'commentFontSize':'10pt',
-																			'moveFontColor':'#206020',
-																			'blackSqColor':'#ababab',
-																			'moveFontSize':'10pt',
-																			'boardSize':'377px',
-																			'squareSize':'46'})
-	brd.init()
-</script>
-
-<hr size=1>
-
-<br>
-
-<h4>Internationalized and customized board with custom chess set and background images</h4>
-<div style="border:2px solid #000000;padding: 5px">
-	<i>
-	 &lt;script&gt;<br>
-	var brd = new Board('areaZurich', {'imagePrefix':'img/zurich/',<br>
-		 								'showMovesPane':true,<br>
-										'commentFontSize':'10pt',<br>
-										'moveFontColor':'#af0000',<br>
-										'commentFontColor':"#006699",<br>
-										'squareSize':'32px',<br>
-										'markLastMove':false,<br>
-										<br>
-										'blackSqColor':'url("img/zurich/board/darksquare.gif")',<br>
-										'lightSqColor':'url("img/zurich/board/lightquare.gif")',<br>
-										<br>
-										'squareBorder':"0px solid #000000",<br>
-										'altRewind':'Ir al principio',<br>
-										'altBack':'Una jugada atrás',<br>
-										'altFlip':'Girar el tablero',<br>
-										'altShowMoves':'Mostrar el panel de jugadas',<br>
-										'altComments':'Mostrar comentarios',<br>
-										'altPlayMove':'Una jugada adelante',<br>
-										'altFastForward':'Ir al final',<br>
-										'moveBorder':"1px solid #cccccc"<br>
-										});<br>
-	 brd.init()<br>
-	 &lt;/script&gt;
-	</i>
-</div>
-<br>
-<div id="areaZurich_board" width="100%"></div>
-
-<div id='areaZurich' style="visibility: hidden;display:none">
-[Event "WCh"]
-[Site "Mexico City MEX"]
-[Date "2007.09.21"]
-[Round "8"]
-[White "Leko, P."]
-[Black "Grischuk, A."]
-[Result "1-0"]
-[ECO "C88"]
-[WhiteElo "2751"]
-[BlackElo "2726"]
-[PlyCount "119"]
-[EventDate "2007.09.13"]
-
-1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8. a4
-b4 9. d3 d6 10. Nbd2 Be6 11. Bxe6 fxe6 12. Nf1 Qd7 13. Ng3 Na5 14. d4 exd4 15.
-Qxd4 c5 16. Qd3 Nc6 17. c3 bxc3 18. bxc3 Kh8 19. h3 Qc7 20. Ng5 Ne5 21. Qe2 Qc8
-22. f4 Nf7 23. Nf3 Rb8 24. c4 Qb7 25. Bd2 Qb2 26. Qd3 Qb7 27. Bc3 Qc6 28. a5
-Kg8 29. Rad1 Rbd8 30. f5 e5 31. Nf1 Rb8 32. g4 h6 33. N1d2 Qc7 34. Kh1 Qd8 35.
-Rg1 Nh7 36. Nf1 Bg5 37. Ne3 Bxe3 38. Qxe3 Rb3 39. Rd3 Nhg5 40. Nd2 Ra3 41. h4
-Nh7 42. Nf3 Nf6 43. g5 hxg5 44. hxg5 Nh5 45. Bd2 Ra4 46. Qe2 Ra2 47. Qe1 Nf4
-48. Bxf4 exf4 49. Qh4 Qe8 50. g6 Nh6 51. Qxf4 Re2 52. Ng5 Qa4 53. Qxd6 Qxc4 54.
-Qd5+ Qxd5 55. Rxd5 c4 56. Rd7 c3 57. Ne6 Rc8 58. Rgd1 Rd2 59. R1xd2 cxd2 60.
-Rxd2 1-0
-
-</div>
-<script>
-	var brd = new Board('areaZurich', {'imagePrefix':'img/zurich/',
-		 								'showMovesPane':true,
-										'commentFontSize':'10pt',
-										'moveFontColor':'#af0000',
-										'commentFontColor':"#006699",
-										'squareSize':'32px',
-										'markLastMove':false,
-										
-										'blackSqColor':'url("img/zurich/board/darksquare.gif")',
-										'lightSqColor':'url("img/zurich/board/lightquare.gif")',
-										
-										'squareBorder':"0px solid #000000",
-										'altRewind':'Ir al principio',
-										'altBack':'Una jugada atrás',
-										'altFlip':'Girar el tablero',
-										'altShowMoves':'Mostrar el panel de jugadas',
-										'altComments':'Mostrar comentarios',
-										'altPlayMove':'Una jugada adelante',
-										'altFastForward':'Ir al final',
-										'moveBorder':"1px solid #cccccc"
-										});
-	brd.init()
-</script>
-
-<hr size=1>
-
-<br>
-
-<h4>A board with a FEN starting position. The PGN contains the FEN part.</h4>
-<div style="border:2px solid #000000;padding: 5px">
-	<i>
-	 &lt;script&gt;<br>
-	var brd = new Board('fen', {'imagePrefix':'img/zurich/',<br>
-		 								'showMovesPane':true,<br>
-										'commentFontSize':'10pt',<br>
-										'moveFontColor':'#af0000',<br>
-										'commentFontColor':"#006699",<br>
-										'squareSize':'32px',<br>
-										'markLastMove':false,<br>
-										<br>
-										'blackSqColor':'url("img/zurich/board/darksquare.gif")',<br>
-										'lightSqColor':'url("img/zurich/board/lightquare.gif")',<br>
-										<br>
-										'squareBorder':"0px solid #000000",<br>
-										'moveBorder':"1px solid #cccccc"<br>
-										});<br>
-	 brd.init()<br>
-	 &lt;/script&gt;
-	</i>
-</div>
-<br>
-<div id="fen_board" width="100%"></div>
-
-<div id='fen' style="visibility: hidden;display:none">
-[Event "SOK theme63 corr"]
-[Site "corr"]
-[Date "1990.??.??"]
+  <div class="pgn_source" id="blum_pos">
+[Event "Dayton"]
+[Site "?"]
+[Date "1890.02.25"]
 [Round "?"]
-[White "Brinkmann, W"]
-[Black "Hunstock, J"]
-[Result "0-1"]
-[ECO "A00"]
+[White "Blumenschein, E.."]
+[Black "Smith, W.H.."]
+[Result "*"]
+[Annotator "Reeh,Oliver"]
 [SetUp "1"]
-[FEN "r1b2k1B/pppp3p/2n2p2/8/3N2nq/1QP3bN/P2PP1Bp/R4K1R b - - 0 14"]
-[PlyCount "21"]
-[EventDate "1990.??.??"]
-[EventType "tourn (corr)"]
-[EventRounds "2"]
+[FEN "r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1"]
+[PlyCount "9"]
+[SourceDate "2009.06.14"]
 
-14... d6 15. Nf3 Qxh3 16. Qxb7 Bxb7 17. Bxh3 Nce5 18. Kg2 Bf4 19. Bxg4 Nxg4 20. Rhf1 Kf7 21. Kh3 h1=Q+ 22. Rxh1 Nf2+ 23. Kg2 Nxh1 24. Rxh1 Rxh8 0-1
-</div>
-<script>
-	var brd = new Board('fen', {'imagePrefix':'img/zurich/',
-		 								'showMovesPane':true,
-										'commentFontSize':'10pt',
-										'moveFontColor':'#af0000',
-										'commentFontColor':"#006699",
-										'squareSize':'32px',
-										'markLastMove':false,
-										
-										'blackSqColor':'url("img/zurich/board/darksquare.gif")',
-										'lightSqColor':'url("img/zurich/board/lightquare.gif")',
-										
-										'squareBorder':"0px solid #000000",
-										'moveBorder':"1px solid #cccccc"
-										});
-	brd.init()
-</script>
+1. Bxg7+ $1 Kxg7 2. Qh6+ $3 {The point - Black's king is dragged
+into a discovered double-check.} Kxh6 (2... Kh8 3. Bg6+ Kg8 4. Qh7#) 3. Nf5+
+Kg5 4. Ne4+ Kg4 5. Rh4# {or 5.Ne3++. This brilliancy was published far more
+than 100 years ago - in May 1890 on page 155 of International Chess Magazine. 
+(Source: "A Chess Omnibus", Edward Winter, Russel Enterprises, Inc., 2003)} *
 
-<hr size=1>
+  </div>
+  <div class="pgn_source" id="walker_coons">
+[Event "Waukesha Team"]
+[Site "Waukesha"]
+[Date "2001.07.11"]
+[Round "1"]
+[White "Walker"]
+[Black "Coons"]
+[Result "1-0"]
+
+1. e4 c6 2. d4 d5 3. exd5 cxd5 4. Bd3 Nc6 5. c3 Qc7 6. Ne2 { +0.58 6. Nf3 Bg4
+7. O-O e6 8. Re1 Be7 9. h3 Bf5 10. Bxf5 exf5 } Bg4 { -0.30 6... Bd7 7. O-O Nf6
+8. Bf4 e5 9. dxe5 Nxe5 10. b3 } 7. Bf4 { +0.38 7. f3 Bd7 8. Bf4 e5 9. dxe5 Nxe5
+10. Ba6 Bc6 11. Nd4 } Bxe2 { +0.16 7... Qxf4 8. Nxf4 Bxd1 9. Kxd1 e6 10. b4 Bd6
+11. Nh5 g6 12. b5 Nce7 13. Ng7 Kf8 } 8. Bxc7 { -0.09 8. Qd2 Qxf4 9. Qxf4 Bxd3
+10. Na3 e6 11. O-O-O g6 12. Qc7 Be4 } Bxd1 9. Kxd1 Nf6 10. Nd2 e6 11. Nf3 {
+-0.19 11. Be2 a6 12. Rc1 b5 13. Bf4 O-O-O 14. h4 Bd6 15. Bxd6 Rxd6 } Kd7 {
++0.39 11... Be7 12. Re1 Rc8 13. Bg3 O-O 14. Ne5 Nxe5 15. Bxe5 Ng4 } 12. Bg3 {
++0.34 12. Bf4 Ne4 13. Bxe4 dxe4 14. Ng5 f5 15. h4 Rc8 16. Rb1 } a6 { -0.26
+12... Ne4 13. Rc1 Rc8 14. Nd2 Nxg3 15. hxg3 h5 16. f4 } 13. h3 { +0.46 13. Re1
+Be7 14. h3 Nh5 15. Bh2 Rac8 16. g4 Nf6 17. Ne5 Ke8 } Bd6 { -0.29 13... Be7 14.
+Rc1 Ne4 15. Bxe4 dxe4 16. Nd2 f5 17. Nc4 Rae8 18. Re1 } 14. Ne5+ { +0.67 14.
+Bxd6 Kxd6 15. Re1 Rac8 16. Rc1 Ke7 17. Ne5 g5 18. Nf3 } Bxe5 15. dxe5 Ne8 {
+-0.48 15... Nh5 16. Bh2 g5 17. Re1 Rac8 18. g4 Ng7 19. f4 h5 } 16. c4 { +0.56
+16. Re1 Rc8 17. Rb1 f6 18. f4 fxe5 19. fxe5 } Nc7 { -0.23 16... d4 17. f4 f6
+18. Rc1 } 17. Ke2 { +0.18 17. Rc1 d4 18. Re1 Rac8 19. a3 f5 20. f4 } Nb4 {
+-0.05 17... f6 18. exf6 gxf6 19. Rhd1 d4 20. c5 Nd5 21. a4 h5 } 18. cxd5 {
++0.42 18. Rhd1 Nxd3 19. Rxd3 Rac8 20. b4 g5 21. a4 h5 } Nbxd5 { -0.38 18...
+Ncxd5 19. Bc4 h5 20. a3 h4 21. axb4 hxg3 22. Bxd5 exd5 23. fxg3 Rae8 } 19. Be4
+{ +0.59 19. Rac1 h5 20. Rhd1 Kc8 21. Bh2 Rd8 22. b3 f5 } Rac8 { -0.50 19... h5
+20. Rac1 h4 21. Bh2 Rhd8 22. Rhd1 Rac8 23. a4 f5 24. exf6EP gxf6 } 20. Rhd1 Ke7
+{ -0.79 20... h5 21. Rac1 Ke7 22. h4 Rhd8 23. a4 g6 24. Rc5 } 21. Bh4+ { +0.88
+21. Rac1 h6 22. f4 Rhg8 23. f5 g6 24. f6 Kf8 25. h4 } f6 22. Rac1 g5 { -0.87
+22... Rhg8 23. exf6 gxf6 24. g3 h6 25. f3 b5 26. Rc6 } 23. exf6+ Kxf6 24. Bg3
+Nf4+ { -1.30 24... h5 25. a4 b5 26. axb5 Nxb5 27. Rxc8 Rxc8 28. Bxd5 exd5 29.
+Rxd5 Rc2 30. Rd2 } 25. Bxf4 gxf4 26. Bxb7 Ke7 27. Bxc8 { +4.74 27. Kf3 Rhg8 28.
+Bxc8 Rxc8 29. Rc5 h5 30. h4 a5 31. Rxa5 Nd5 32. Ra7 Kd6 } Rxc8 28. Kf3 h6 {
+-4.79 28... a5 29. Rc5 a4 30. Rd4 h6 31. a3 e5 32. Rxe5 Kf6 33. Ke4 } 29. Kxf4
+{ +5.53 29. Rc5 h5 30. h4 e5 31. Ke4 Kf8 32. Rd7 f3 33. Rcxc7 Rxc7 34. Rxc7
+fxg2 } Rf8+ { -3.91 29... Nd5 30. Kg3 Rg8 31. Kh2 Rf8 32. f3 Kd6 33. Rc4 e5 34.
+b4 } 30. Ke4 { +4.01 30. Kg3 Nd5 31. Rc6 a5 32. Rd4 h5 33. Re4 Rg8 34. Kh4 Rxg2
+35. Rexe6 Kf7 } Nd5 31. Rc2 { +3.76 31. Rd2 Rf4 32. Ke5 Rf5 33. Kd4 h5 34. Rc6
+Nb4 35. Rc5 Nxa2 36. Rxf5 exf5 37. Ke5 } Rf4+ 32. Ke5 { +3.69 32. Kd3 Rf5 33.
+Ke2 a5 34. g4 Rf8 35. Rc5 Nf4 36. Ke1 Nxh3 37. Rc7 Kf6 } Rf5+ 33. Kd4 Rf4+ {
+-3.26 33... Nb4 34. Rc7 Kf6 35. Rd2 Nxa2 36. Kc4 Rf4 37. Kc5 Rb4 38. Rcd7 a5 }
+34. Kc5 Rf5 { -3.57 34... h5 35. Rxd5 exd5 36. Kxd5 Rf6 37. b3 Kd7 38. h4 Rd6
+39. Ke5 } 35. Rxd5 { +3.68 35. g4 Rf8 36. Rcd2 Rc8 37. Kd4 Kd6 38. Ke4 Rc4 39.
+Rd4 Rc2 40. R1d2 } exd5 { -2.34 35... Rxd5 36. Kb6 Rd6 37. Kb7 Kf6 38. f4 a5
+39. g4 Rd4 40. Kb6 a4 } 36. b4 { +2.88 36. g4 Rf3 37. Kxd5 h5 38. Re2 Kd7 39.
+Ke4 Rxh3 40. g5 Rh2 41. Kd3 Rh3 42. Re3 Rh2 } Re5 { -2.73 36... h5 37. Re2 Kf7
+38. g3 Kf6 39. a4 Re5 40. Rxe5 Kxe5 41. f4 Ke4 42. b5 axb5 43. axb5 } 37. Rc3
+Kd7 { -3.24 37... Rf5 38. f3 Rg5 39. g4 Re5 40. Rd3 Re2 41. Ra3 Re6 42. Kxd5
+Rd6 43. Kc5 } 38. Re3 { +3.37 38. Ra3 Re6 39. Kxd5 Rd6 40. Kc4 Rc6 41. Kb3 Rg6
+42. g3 Kc7 43. Ra5 Rc6 } Rf5 39. f3 h5 40. a3 { +3.46 40. g4 Rf4 41. Ra3 d4 42.
+gxh5 Kc7 43. h6 Kb7 44. h7 Rh4 45. f4 Rxh7 46. Kxd4 Rd7 47. Kc5 } Rg5 { -2.83
+40... h4 41. Rd3 Ke6 42. Rd4 Rh5 43. a4 Rg5 44. Rg4 Rxg4 45. hxg4 Ke5 } 41. g4
+hxg4 { -3.88 41... Rg6 42. Rd3 Kc7 43. Kxd5 Rg8 44. Re3 Rd8 45. Kc5 Rf8 46. a4
+Rf4 47. Re7 Kd8 } 42. fxg4 { +3.89 42. hxg4 Rg6 43. Rd3 Rf6 44. Rxd5 Ke7 45.
+Rf5 Rxf5 46. gxf5 Kf6 47. Kb6 Kxf5 48. Kxa6 Ke5 49. a4 } Rg6 { -4.11 42... Kc7
+43. Re7 Kb8 44. a4 Rg8 45. Kxd5 Rh8 46. Re3 Kb7 47. g5 Rd8 48. Kc5 Rc8 49. Kd6
+Rd8 50. Ke7 } 43. a4 { +3.94 43. Rd3 Rc6 44. Kxd5 Rc2 45. Rf3 Rh2 46. Rf7 Kd8
+47. Ra7 Rxh3 48. Rxa6 Rg3 49. Kd6 Kc8 } Rd6 { -3.92 43... Rg5 44. Re2 d4 45.
+Kxd4 Rg6 46. Re5 Rh6 47. Rh5 Rxh5 48. gxh5 Ke6 49. h6 } 44. b5 axb5 45. axb5 d4
+{ -4.84 45... Rf6 46. Kxd5 Kc8 47. g5 Rf2 48. Re4 Rg2 49. Rg4 Rd2 50. Kc6 Rc2
+51. Kb6 Kd7 52. g6 } 46. Rd3 Kc7 { -4.94 46... Rh6 47. Rxd4 Kc8 48. Rd3 Rf6 49.
+b6 Rf2 50. Rd5 Rc2 51. Kb5 Rh2 52. Rc5 Kb8 } 47. Rxd4 { +5.05 47. h4 Re6 48.
+Rxd4 Re5 49. Rd5 Re2 50. b6 Kc8 51. Kc6 Rc2 52. Rc5 Rb2 53. Re5 Rc2 54. Kd6 }
+Rh6 48. b6+ { +4.76 48. Rd3 Kc8 49. b6 Kb7 50. Rb3 Rc6 51. Kd5 Rc2 52. h4 Rh2
+53. h5 Rd2 54. Kc5 Rc2 55. Kb5 } Kc8 { -3.85 48... Rxb6 49. Rd7 Kxd7 50. Kxb6
+Ke6 51. h4 Kf6 52. Kc5 Kg7 53. Kd5 Kg6 54. h5 Kh6 55. Ke5 } 49. Rd3 Rh8 { -4.81
+49... Kb7 50. Rd7 Kb8 51. g5 Rxh3 52. g6 Rc3 53. Kd4 Rg3 54. g7 Rg4 55. Ke5 Kc8
+56. Rf7 Rg5 57. Ke6 Rg2 58. b7 Kb8 } 50. g5 Kb7 { -5.61 50... Rg8 51. h4 Rh8
+52. Kc6 Rh7 53. g6 Rc7 54. Kd5 Rd7 55. Kc4 Re7 56. Rg3 Re2 57. g7 } 51. g6 {
++5.80 51. Rd7 Kc8 52. Kc6 Rg8 53. b7 Kb8 54. h4 Rg6 55. Rd6 Rg8 56. g6 Ka7 }
+Rg8 { -6.43 51... Rc8 52. Kb5 Rc1 53. Rd7 Kb8 54. g7 Rg1 55. Kc4 Kc8 56. b7 Kb8
+57. h4 Rg3 } 52. Rd6 { +12.38 52. Rd7 Kc8 53. Rc7 Kb8 54. g7 Re8 55. Re7 Rc8
+56. Kb4 Rg8 57. Rf7 Rc8 58. Rf8 Kb7 59. g8=Q } Kb8 { -6.04 52... Rc8 53. Kd5
+Rc2 54. g7 Rg2 55. Ke6 Rg6 56. Kf7 Rxd6 57. g8=Q Rxb6 58. Qd8 Rb2 59. Qd7 Kb8
+60. h4 } 53. h4 Ka8 { -7.00 53... Kb7 54. h5 Rc8 55. Kd5 Rh8 56. g7 Rxh5 57.
+Ke6 Rg5 58. Kf7 Rf5 59. Kg6 Rf4 60. g8=Q Rg4 61. Kf7 } 54. h5 Kb7 { -8.73 54...
+Kb8 55. Rd7 Rc8 56. Kd6 Rc2 57. g7 Rd2 58. Ke7 Re2 59. Kf8 Kc8 60. g8=Q Kxd7
+61. Qd5 Kc8 62. b7 Kc7 63. h6 } 55. Rd7+ Kc8 56. Kc6 Kb8 57. g7 Re8 { -mate 6
+57... Rc8 58. Kd6 Re8 59. h6 Rc8 60. h7 Rc4 61. h8=Q Rc8 62. Rf7 Rxh8 63.
+gxh8=Q } 58. h6 { +mate 6 58. Rc7 Ka8 59. b7 Ka7 60. g8=Q Rxg8 61. Rc8 Rh8 62.
+Rxh8 Ka6 63. Ra8 } Ka8 { -mate 6 58... Re6 59. Kb5 Re5 60. Ka6 Re8 61. h7 Kc8
+62. Rc7 Kb8 63. h8=Q Rd8 64. Qxd8 } 59. h7 Rc8+ { 0.00 59... Rd8 } 60. Rc7 {
++mate 3 60. Kd6 Rc3 61. h8=Q Rc8 62. Qxc8 } Rxc7+ 61. bxc7 1-0
+
+  </div>
+  <div class="pgn_source" id="pehnecMartz">
+[Event "North Central Open"]
+[Site "Milwaukee"]
+[Date "1965.??.??"]
+[Round "?"]
+[White "T Pehnec"]
+[Black "W Martz"]
+[Result "0-1"]
+
+1. d4 Nf6 2. c4 g6 3. Nc3 d5 4. cxd5 Nxd5 5. e4 Nxc3 6. bxc3 Bg7 7. Bc4 c5 8. 
+Ne2 Nc6 9. Be3 cxd4 10. cxd4 Qa5+ {The opening is completely analogous to Loft-Martz, 
+except that white has not moved f3 and black has not castled. This apparently small
+difference is sufficient to afford a appreciable strengthening of white's play. With
+11 Bd2! Qa3 12 Rb1 he can avoid the queen exchange and develop later threats of d5 and Bd2-b4.
+Practice shows that black fails to achieve equality with this variation.} 
+11. Qd2 O-O 12. Rc1 {This rook maneuver loses a tempo compared with the immediate Rd1 as played 
+in Loft-Martz.} Rd8 13. Rc2 Bd7 14. O-O 
+Qxd2 15. Rxd2 Na5! {The arrival of the black knight at c4 will be much stronger here than in the 
+previous game, since white does not have the resource of Bf2 in reply.}
+16. Bd3 Rac8 17. Rc1 Rxc1+ 18. Nxc1 Rc8 19. Rc2 Rxc2 20. 
+Bxc2 Nc4 21. Bg5 {White finds the best defense; he could not afford the breaking of his pawn structure
+by ...Nxe3. The text seems to offer good chances to draw, but black has an important tactical
+resource.} Bxd4 22. Bxe7 Ne3! {This interesting maneuver leads to a temporary tie-up of the white
+pawns on the king's side. As a result black will be the first to mobilize his pawn majority.} 
+23. Bd3 Ng4 24. Bh4 Ne5 25. Bc2 Be6 26. Bb3
+b5 27. Bxe6 fxe6 {Black allows a slight weakness in his pawn structure, since white lacks the means to 
+exploit it. In addition, black wishes to create an entry for his king among the white king-side pawns.
+The latter will be decisive if white is forced to use his own king on the opposite wing.} 
+28. Kf1 Kf7 29. Ke2 a5 30. f4! {White relies upon his own pawn majority to secure counter-chances.
+He also increases the mobility of his stranded bishop.} Nc6 31. Be1 a4 32. Kd3 Bc5 33. 
+e5 {Although the advance of the king-side pawns is the right defensive plan, the text is a serious
+mistake. Black's reply gives him the necessary entry for his king, after which white will be unable
+to defend both wings.} g5 34. g3 Kg6 35. Ke4 {He cannot allow Kf5 but now black threatens the other 
+side.} Bb4 36. Bf2 gxf4 37. gxf4 Bd2 38. Ne2 Ba5 39. Nd4 {The exchange of knights leaves white with the
+weaker bishop, but there was no valid defense against the advance of black's pawns. White was by now
+very short on time.}
+Nxd4 40. Bxd4 b4 41. h3 b3 42. axb3 axb3 43. Bb2 Bd2! {White is in zugzwang! with 44 Kd3 Bf4 45 Kc4 
+Kf4 46 Kb3 Be5 47 Ba3 he could speculate upon being able to give up his bishop for the e-pawn and
+still reach h1 with his king, thus making a theoretical draw. Black, however, should have no trouble 
+avoiding this pitfall.} 44. h4 h5 {White lost on time.} 0-1
+  </div>
+  <div class="pgn_source" id="walkerlopez">
+[Event "UW Winter Open"]
+[Site "Madison"]
+[Date "2003.02.01"]
+[Round "1"]
+[White "Walker Arlen P"]
+[Black "Lopez Eugene"]
+[Result "1-0"]
+[ECO "B23"]
+[WhiteElo "0"]
+[BlackElo "0"]
+[Annotator "Walker Arlen P"]
+[Source ""]
+[Remark ""]
+
+1.e4 g6 2.Nc3 Bg7 3.Bc4 {0.00} ( 3.d4 d6 4.f4 Nf6 5.Nf3
+O-O 6.Bd3 Nc6 7.O-O e5 8.fxe5 dxe5 9.d5 Nd4 10.Nxe5 Nxe4 11.Bxe4
+Bxe5 12.Bf4 Bxf4 13.Rxf4 Nf5 14.Bxf5 Bxf5 15.Qd4 {+0.24} )
+( 3.h4 h5 {+0.24} ) c5 4.f4 Nc6 5.Nf3 e6 6.f5 Nge7 7.fxe6 fxe6
+8.O-O {-0.27} {-0.38} ( 8.d3 d5 9.Bb3 b5 10.exd5 exd5 11.O-O
+O-O {0.00} ) O-O 9.d3 h6 ( 9...d5 {Black's best counter in this line is always to strike out in the center with ...d5}
+) 10.Be3?? ( 10.Qe1 d5 11.Bb3 {+0.18} Nd4
+( 11...b6 12.Ne2 ) 12.Nxd4 Bxd4+ 13.Kh1 Kh7 14.exd5 Bxc3 15.bxc3
+exd5 16.Bd2 Nf5 17.Qf2 b5 18.Qxc5 Bb7 19.Rae1 Rc8 20.Qxb5 Bc6
+21.Qb4 d4 22.cxd4 Qh4 23.Kg1 a5 24.Qb6 Bxg2 25.Rxf5 Rxf5 26.Qa7+
+Kh8 27.d5 Rff8 28.Re7 Rf1+ 29.Kxg2 Rf2+ {...1-0, Szonyi K.(2115) - Daya M., Cala Galdana 1996 Ch World (juniors) (under 18) (g)}
+) ( 10.Bb3 b6 11.Qe1 g5 12.Ne2 Ba6 13.Ng3 Qe8 14.Rb1 Qg6 15.Bd2
+Rf7 16.Qe2 Raf8 17.Bc3 g4 18.Nd2 Nd4 19.Qe3 Bb5 20.Rxf7 Rxf7
+21.Ne2 Qg5 {0-1, Kosanovic G.(2437) - Jakab A.(2308), Budapest 2001 It (cat.7)}
+) Nd4 {-0.08} ( 10...d5 11.exd5 exd5 {%02'with the idea' ...d4} {-1.86}
+) 11.Qd2 {-1.26} Kh7 {-0.14} ( 11...d5 {-1.56} 12.exd5 exd5 13.Bb3
+( 13.Nxd4 Rxf1+ {-0.90} ) Nxb3 14.axb3 d4 {And White loses.} )
+12.Rae1 {-1.86} ( 12.Bb3 d5 13.exd5 exd5 14.Bxd4 {-0.38} ) a6 {0.00}
+( 12...d5 13.exd5 exd5 14.Bxd4 cxd4 {-1.90} ) 13.Nd1 d5 14.Bb3 {-0.92}
+( 14.Bxd4 cxd4 15.Bb3 ) Nxb3 15.axb3 {-1.10} dxe4 {-0.36}
+( 15...d4 ) 16.dxe4 {-0.32} Qxd2 {+0.40} ( 16...b6 17.b4 cxb4
+18.Qxd8 Rxd8 {-0.60} ) 17.Nxd2 b6 18.Nc4 Bb7 {??} {This loses badly.} {+1.18}
+( 18...Rb8 19.Rxf8 Bxf8 20.Rf1 Kg8 {+0.58} 21.Bf4 Rb7 {White's advantage is minimal}
+) 19.Nxb6 Rxf1+ 20.Rxf1 Rf8 {This just accelerates the loss.}
+21.Rxf8 Bxf8 22.Nd7 Bg7 23.Nxc5 Bc8 24.c3 Be5 25.Nf2 h5 26.Nfd3
+Bc7 27.Kf2 e5 28.Bg5 Nc6 29.b4 Kg7 30.Ne1 Bb6 31.Ke2 Bxc5 32.bxc5
+Kf7 {?!} ( 32...a5 {This at least makes it harder to consolidate the Q-side.}
+) 33.b4 Ke6 34.Nd3 Kd7 {?} {This enable sWhite to tie up Black's entire army (almost)}
+35.Bf6 Ke6 36.Bh8 ( 36.Bg7 {%02'better is'} ) Bd7 37.Bg7 Be8
+38.h4 Bd7 39.Kd2 Be8 40.c4 Bd7 41.Kc3 {The K will support the advance of the pawns.}
+Be8 42.b5 axb5 43.cxb5 1-0
+  </div>
+  <div id="container">
+    <header>
+
+    </header>
+    <div id="main" role="main">
+		<div id="walkerlopez_board"></div>
+		<div id="pehnecMartz_board"></div>
+		<div id="walker_coons_board"></div>
+		<div id="blum_pos_board"></div>
+    </div>
+    <footer>
+
+    </footer>
+  </div> <!--! end of #container -->
+  <!-- JavaScript at the bottom for fast page loading -->
+
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
 
 
+  <!-- scripts concatenated and minified via ant build script-->
+    <script src="Board.js"></script>
+    <script src="BoardImages.js"></script>
+    <script src="Converter.js"></script>
+    <script src="isPGNBroken.js"></script>
+    <script src="isYahoo.js"></script>
+    <script src="Move.js"></script>
+    <script src="MyMove.js"></script>
+    <script src="MySquare.js"></script>
+    <script src="Pgn.js"></script>
+    <script src="resetStyles.js"></script>
+    <script src="stripit.js"></script>
+    <script src="stripitBroken.js"></script>
+    <script src="vSquare.js"></script>
+    <script src="Yahoo.js"></script>
+		
+  <!-- end scripts-->
+	<script>
+  		var board = new Array();
+		board[0] = new Board("blum_pos");
+		board[0].init();
+	</script>
 
   </body>
 </html>
