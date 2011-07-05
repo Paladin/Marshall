@@ -42,20 +42,9 @@ function Board(divId, options) {
 	this.opts['imagePrefix'] = "img/default/";
 	this.opts['buttonPrefix'] = "img/default/buttons/";
 	this.opts['imageSuffix'] = 'gif';
-	this.opts['moveFontSize'] = "8pt";
-	this.opts['moveFontColor'] = "#537c3a";
-	this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
 
-	this.opts['commentFontSize'] = "8pt";
-	this.opts['commentFontColor'] = "#6060df";
-	this.opts['commentFont'] = 'Tahoma, Arial, sans-serif';
-	
-	this.opts['boardSize'] = '257px';
-	this.opts['squareSize'] = '31px';
-		
 	this.opts['blackSqColor'] = "#4b4b4b";
 	this.opts['whiteSqColor'] = "#ffffff";
-	this.opts['squareBorder'] = "1px solid #000000";
 	this.opts['flipped'] = false;
 	this.opts['showMovesPane'] = true;
 	
@@ -69,22 +58,16 @@ function Board(divId, options) {
 	this.opts['altComments'] = "Show comments";
 	this.opts['altPlayMove'] = "Play one move";
 	this.opts['altFastForward'] = "Fast-forward to the end";
-	this.opts['moveBorder'] = "0px solid #000000";
 	this.opts['downloadURL'] = "http://www.chesspastebin.com/asPgn.php?PGN=";
 	this.opts['skipToMove'] = null;
 
-	var optionNames = ['flipped', 'moveFontSize', 'moveFontColor',
-									'moveFont', 'commentFontSize',
-									'commentFontColor', 'commentFont',
-									'boardSize', 'squareSize',
-									'blackSqColor', 'whiteSqColor',
+	var optionNames = ['flipped', 'blackSqColor', 'whiteSqColor',
 									'imagePrefix', 'showMovesPane',
-									'movesPaneWidth','imageSuffix',
-									'comments','squareBorder',
+									'imageSuffix', 'comments',
 									'markLastMove','altRewind',
 									'altBack','altFlip','altShowMoves',
 									'altComments','altPlayMove',
-									'altFastForward','moveBorder',
+									'altFastForward',
 									'skipToMove', 'downloadURL',
 									'buttonPrefix'];
 
@@ -132,7 +115,8 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		propsTd.className = "game_info"
 		
 		// movesTable
-		var movesDiv = resetStyles(document.createElement("div"));
+		var movesDiv = document.createElement("div");
+		movesDiv.className = "move_list";
 		this.movesDiv = movesDiv;
 		movesDiv.id = divId+"_board_moves";
 		gameSection.appendChild(movesDiv);
@@ -685,31 +669,31 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 					 cont.style.visibility="hidden";
 					 cont.style.display="none";
 				}
-				cont.vAlign = "top";
 				var tmp2=this.conv.pgn.moves;
-				var p = document.createElement("p");
+				var movesHeader = document.createElement('header');
+				var h = document.createElement("h1");
 				var tmpA = document.createElement("a");
 
 				tmpA.href = this.opts['downloadURL']+escape(pgn);
 				tmpA.appendChild(document.createTextNode("PGN"));
-				tmpA.style.fontFamily = this.opts['moveFont'];
-				tmpA.style.fontSize = this.opts['moveFontSize'];
-				tmpA.style.color = this.opts['moveFontColor'];
 
 				var txt = document.createTextNode("");
 				if (this.conv.pgn.props['White']) {
 					var txt = document.createTextNode(this.conv.pgn.props['White']
 									+" - "+this.conv.pgn.props['Black']);
-					p.appendChild(txt);
+					h.appendChild(txt);
 				}
 				else {
 					var txt = document.createTextNode("Unknown - Unknown");
-					p.appendChild(txt);
+					h.appendChild(txt);
 				}
-				p.appendChild(document.createTextNode(" ("));
-				p.appendChild(tmpA);
-				p.appendChild(document.createTextNode(")"));
-				cont.appendChild(p);
+				h.appendChild(document.createTextNode(" ("));
+				h.appendChild(tmpA);
+				h.appendChild(document.createTextNode(")"));
+				movesHeader.appendChild(h)
+				cont.appendChild(movesHeader);
+				moveList = document.createElement("p");
+				cont.appendChild(moveList);
 				
 				var link, tmp, tmp3;
 				var lastMoveIdx = 0;
@@ -719,34 +703,27 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 					if (tmp2[i].white != null) {
 						link = document.createElement("a");
 						tmp = document.createTextNode(tmp2[i].white);
-						tmp3 = document.createElement("b");
+						tmp3 = document.createElement("span");
+						tmp3.className = 'move_numbers';
 
-						tmp3.style.fontFamily = "Tahoma, Arial, sans-serif";
-						tmp3.style.fontSize = "8pt";
-						tmp3.style.color = "black";
 						tmp3.appendChild(document.createTextNode(" "+(i+this.conv.startMoveNum)+". "));
-						cont.appendChild(tmp3);
+						moveList.appendChild(tmp3);
 						
+						link.className = "move";
 						link.href = 'javascript:void(window['+this.id+']'
 												+'.skipToMove('+i+','+0+'))';
 						link.appendChild(tmp);
-						link.style.fontFamily = this.opts['moveFont'];
-						link.style.fontSize = this.opts['moveFontSize'];
-						link.style.color = this.opts['moveFontColor'];
-						link.style.textDecoration = "none";
-						cont.appendChild(link);
+						moveList.appendChild(link);
 
 						comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
 						if (comment[0]) {
 							var tmp4 = document.createElement("span");
+							tmp4.className = "commentary";
 							if (!this.opts['showComments']) {
 								tmp4.style.display = "none";
 							}
-							tmp4.style.fontFamily = this.opts['commentFont'];
-							tmp4.style.fontSize = this.opts['commentFontSize'];
-							tmp4.style.color = this.opts['commentFontColor'];
 							tmp4.appendChild(document.createTextNode(comment[0]));
-							cont.appendChild(tmp4);
+							moveList.appendChild(tmp4);
 							lastMoveIdx = comment[1];
 						}
 
@@ -754,28 +731,23 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 					}
 
 					if (tmp2[i].black != null) {
-						cont.appendChild(document.createTextNode(" "));
+						moveList.appendChild(document.createTextNode(" "));
 						tmp = document.createTextNode(tmp2[i].black);
 						link = document.createElement("a");
-						link.style.fontFamily = this.opts['moveFont'];
-						link.style.fontSize = this.opts['moveFontSize'];
-						link.style.color = this.opts['moveFontColor'];
-						link.style.textDecoration = "none";
+						link.className = "move";
 						link.appendChild(tmp);
 						link.href = 'javascript:void(window['+this.id+']'
 											+'.skipToMove('+i+','+1+'))';
-						cont.appendChild(link);
+						moveList.appendChild(link);
 						comment = this.conv.pgn.getComment(tmp2[i].black,lastMoveIdx);
 						if (comment[0]) {
 							var tmp4 = document.createElement("span");
+							tmp4.className = "commentary";
 							if (!this.opts['showComments']) {
 								tmp4.style.display = "none";
 							}
-							tmp4.style.fontFamily = this.opts['commentFont'];
-							tmp4.style.fontSize = this.opts['commentFontSize'];
-							tmp4.style.color = this.opts['commentFontColor'];
 							tmp4.appendChild(document.createTextNode(comment[0]));
-							cont.appendChild(tmp4);
+							moveList.appendChild(tmp4);
 							lastMoveIdx = comment[1];
 						}
 						this.movesOnPane[this.movesOnPane.length] = link;
@@ -783,10 +755,10 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				}
 				if(!(typeof(this.conv.pgn.props['Result']) == 'undefined')) {
 					txt = document.createTextNode("  "+this.conv.pgn.props['Result']);
-					tmp2 = document.createElement("b");
+					tmp2 = document.createElement("span");
+					tmp2.className = "result";
 					tmp2.appendChild(txt);
-					tmp2.style.fontSize = "9pt";
-					cont.appendChild(tmp2);
+					moveList.appendChild(tmp2);
 					this.movesOnPane[this.movesOnPane.length] = tmp2;
 				}
 			};
