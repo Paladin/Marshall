@@ -1,4 +1,5 @@
-TestCase( "MoveTest", {
+TestCase( "MoveTest", 
+{
 	setUp: function() {
 		this.theMove = new Move("e4", "e5");
 	},
@@ -11,4 +12,5 @@ TestCase( "MoveTest", {
 		assertString( theMoveText );
 		assertEquals( "e4 e5", theMoveText );
 	}
-});
+}
+);

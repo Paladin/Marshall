@@ -1,4 +1,5 @@
-TestCase( "resetStylesTest", {
+TestCase( "resetStylesTest", 
+{
 	setUp: function() {
 		this.theElement = resetStyles(document.createElement("div"));
 	},
@@ -48,5 +49,6 @@ TestCase( "resetStylesTest", {
 	
 	"test should make borderCollapse separate": function () {		
 		assertEquals( "separate", this.theElement.style.borderCollapse );
-	},
-});
+	}
+}
+);
