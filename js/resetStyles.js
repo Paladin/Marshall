@@ -17,11 +17,11 @@
 
 function resetStyles(obj) {
   obj.style.background = 'transparent';
-  obj.style.margin = 0;
-  obj.style.padding = 0;
-  obj.style.border = 0;
+  obj.style.margin = "0px";
+  obj.style.padding = "0px";
+  obj.style.border = "0px";
   obj.style.fontSize = "100%";
-  obj.style.outline = 0;
+  obj.style.outline = "0px";
   obj.style.verticalAlign = "middle";
   obj.style.textAlign = "center";
   obj.style.borderCollapse = "separate";
