@@ -413,8 +413,6 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 						// i guess xtra information. Anyways setting the
 						// background to a color containing the "initial"
 						// parts fails. Go figure
-						piece.lastBg = piece.style.backgroundColor.replace(/initial/g, "");
-						piece.style.backgroundColor = "#e89292";
 						this.lastSquare = piece;
 					}
 					catch (e) {}
@@ -435,11 +433,8 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 						var piece = this.pos[move.x][move.y];
 						if (this.flipped)
 							piece = this.pos[7-move.x][7-move.y];
-						if (piece.lastBg)
-							piece.style.background = piece.lastBg;
 					}
 					if (this.lastSquare && this.lastSquare.lastBg) {
-						this.lastSquare.style.backgroundColor = this.lastSquare.lastBg;
 						this.lastSquare = null;
 					}
 				};
@@ -641,7 +636,6 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 						var flip = (i%2)?true:false;
 						for(var j=0;j<8;j++){
 							var color = flip?(j%2)?whites:blacks:!(j%2)?whites:blacks;
-							this.pos[i][j].style.background = color;
 						}
 					}
 				};
