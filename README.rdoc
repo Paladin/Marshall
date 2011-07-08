@@ -1,6 +1,6 @@
 = Marshall
 
-Marshall is a javascript library based on Toomas R&ouml;mer's jsPgnViewer library (http://www.pgnview.com) which he licensed under the apache 2.0
+Marshall is a javascript library based on Toomas R&246;mer's jsPgnViewer library (http://www.pgnview.com) which he licensed under the apache 2.0
 license. For the sake of consistency, this is also licnsed under th apache license.
 
 ==Why another one?
@@ -18,7 +18,7 @@ For now, each class/function is on its own. Deal with it.
 
 ==What's coming?
 
-A number of things. For the initial revisions, probably not much more than removing the pieces of the original code that are no longer needed, such as the style related javascript (this will be replaced by semantic class names if anything at all, to enable CSS styling of the entire thing). This may make some other refatoring opportunities obvious. Then I'll add some variation handling code. That should take us to release 1.0, and from there we'll just have to see.
+A number of things. For the initial revisions, probably not much more than removing the pieces of the original code that are no longer needed, such as the style related javascript (this will be replaced by semantic class names if anything at all, to enable CSS styling of the entire thing). This may make some other refactoring opportunities obvious. Then I'll add some variation handling code. That should take us to release 1.0, and from there we'll just have to see.
 
 -----------------------------------------------------
 
