@@ -52,17 +52,17 @@ function Pgn(pgn) {
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
 	if (this.isBroken(pgn))
-		this.pgnStripped = stripItBroken(pgn);
+		this.pgnStripped = this.stripItBroken(pgn);
 	else
-		this.pgnStripped = stripIt(pgn);
+		this.pgnStripped = this.stripIt(pgn);
 	
 	/* constructor */
 
 	// strip comments
 	if (this.isBroken(pgn))
-		this.pgn = stripItBroken(pgn,true);
+		this.pgn = this.stripItBroken(pgn,true);
 	else
-		this.pgn = stripIt(pgn,true);
+		this.pgn = this.stripIt(pgn,true);
 	
 	// Match all properties
 	var reprop = /\[([^\]]*)\]/gi;
@@ -302,3 +302,130 @@ Pgn.prototype.isBroken = function (val) {
 			}
 		}
 	};
+
+Pgn.prototype.stripItBroken = function (val, strip) {
+	var count = 0;
+	var out = new Array();
+	/*
+		At one point chesspastebin.com started getting cames
+		with invalid PGNs, mostly in the form
+		{ comment comment ( something between starting brackets}.
+		As you can see, the ( is not closed. 
+		isOpen and isCurlyO are just for that to take normal
+		guesses in that kind of situations.
+	*/
+	var isOpen = false;
+	var isCurlyO = false;
+	var curlyOpenedFst = false;
+	for (var i=0;i<val.length;i++) {
+		var c = val.charAt(i);
+		switch (c) {
+			case '(':
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				count++;
+				if (isOpen) {
+					 	count--;
+				}
+				isOpen = true;
+				break;
+			case '{':
+				isCurlyO = true;
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				count++;
+				if (!isOpen)
+					 curlyOpenedFst=true;
+				break;
+			case '}':
+				if (isOpen && isCurlyO && curlyOpenedFst) {
+					// lets close the open (
+					count--;
+					isOpen = false;
+				}
+				isCurlyO = false;
+				curlyOpenedFst = false;
+				count--;
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				break;
+			case ')':
+				if (isOpen) {
+					 count--;
+					 if (!strip) {
+						 out[out.length] = '_';
+					 }
+					 isOpen = false;
+				}
+				break;
+			case '\t':
+				out[out.length] = ' ';
+				break;
+			default:
+				if (count > 0) {
+					if (!strip) {
+						out[out.length] = '_';
+					}
+				}
+				else {
+					out[out.length] = c;
+				}
+		}
+	}
+	return out.join("");
+};
+
+/*
+	Strip game comments from a PGN string. If second
+	parameter set false true then comments will be replaced
+	by an underscore.
+*/
+Pgn.prototype.stripIt = function (val, strip) {
+	var count = 0;
+	var out = new Array();
+	for (var i=0;i<val.length;i++) {
+		var c = val.charAt(i);
+		switch (c) {
+			case '(':
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				count++;
+				break;
+			case '{':
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				count++;
+				break;
+			case '}':
+				count--;
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				break;
+			case ')':
+				count--;
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				break;
+			case '\t':
+				out[out.length] = ' ';
+				break;
+			default:
+				if (count > 0) {
+					if (!strip) {
+						out[out.length] = '_';
+					}
+				}
+				else {
+					out[out.length] = c;
+				}
+		}
+	}
+	return out.join("");
+};
