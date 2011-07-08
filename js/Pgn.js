@@ -51,7 +51,7 @@ function Pgn(pgn) {
 	
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
-	if (isPGNBroken(pgn))
+	if (this.isBroken(pgn))
 		this.pgnStripped = stripItBroken(pgn);
 	else
 		this.pgnStripped = stripIt(pgn);
@@ -59,7 +59,7 @@ function Pgn(pgn) {
 	/* constructor */
 
 	// strip comments
-	if (isPGNBroken(pgn))
+	if (this.isBroken(pgn))
 		this.pgn = stripItBroken(pgn,true);
 	else
 		this.pgn = stripIt(pgn,true);
@@ -200,8 +200,9 @@ function Pgn(pgn) {
 		var move = new Move(tmp[0], tmp[1]);
 		this.moves[this.moves.length] = move;
 	}
+}
 
-	this.nextMove = function() {
+Pgn.prototype.nextMove = function() {
 		var rtrn = null;
 		try{
 			if (this.skip) {
@@ -225,7 +226,7 @@ function Pgn(pgn) {
 		}
 	};
 
-	this.getComment = function(move, idx) {
+Pgn.prototype.getComment = function(move, idx) {
 		var i = this.pgnStripped.indexOf(move,idx);
 		if (i == -1) {
 			//throw("getComment error, could not find move '"
@@ -262,4 +263,42 @@ function Pgn(pgn) {
 		}
 		return [null,idx];
 	};
-};
+	
+Pgn.prototype.isBroken = function (val) {
+		var pCount = 0;
+		var cCount = 0;
+		var lastOne = "";
+		for (var i=0;i<val.length;i++) {
+			var c = val.charAt(i);
+			switch (c) {
+				case '(':
+					pCount++;
+					lastOne = "p";
+					break;
+				case ')':
+					// closing a non-existent curly brace
+					if (pCount == 0)
+						return false;
+					// closing a curly instead of a parenthesis
+					if (lastOne == "c")
+						return false;
+					lastOne = "";
+					pCount--;
+					break;
+				case '{':
+					cCount++;
+					lastOne = "c";
+					break;
+				case '}':
+					// closing a non-existent curly brace
+					if (cCount == 0)
+						return false;
+					// if we're closing a parenthesis instead of a curly
+					if (lastOne == "p")
+						return false;
+					lastOne = "";
+					cCount--;
+					break;
+			}
+		}
+	};
