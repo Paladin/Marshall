@@ -41,6 +41,7 @@ TestCase( "PgnTest", {
 				'PlyCount': "9",
 				'SourceDate': "2009.06.14"
 				},
+				
 	goodMoves:	Array(
 					{ 'white': 'Bxg7+!', 'black': 'Kxg7'},
 					{ 'white': 'Qh6+!!', 'black': 'Kxh6'},
@@ -48,6 +49,8 @@ TestCase( "PgnTest", {
 					{ 'white': 'Ne4+', 'black': 'Kg4'},
 					{ 'white': 'Rh4#', 'black': null}
 				),
+				
+	trickySt:	'[Event \"Dayton\"][Site \"?\"][Date \"1890.02.25\"][Round \"?\"][White \"Blumenschein, E..\"][Black \"Smith, W.H..\"][Result \"*\"][Annotator \"Reeh,Oliver\"][SetUp \"1\"][FEN \"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1\"][PlyCount \"9\"][SourceDate \"2009.06.14\"]________________ 1. Bxg7+ $1 Kxg7 2. Qh6+ $3 _____________________________________________________________________ Kxh6 ______________________________ 3. Nf5+ Kg5 4. Ne4+ Kg4 5. Rh4# _____________________________________________________________________________________________________________________________________________________________________________________________________________ *',
 
 	setUp: function() {},
 	
@@ -83,5 +86,11 @@ TestCase( "PgnTest", {
 		pgn = new Pgn(this.goodPGN);
 		
 		assertTrue( pgn.isBroken( this.trickyPGN ) );
+	},
+	
+	"test for stripping comments in tricky PGN": function() {
+		pgn = new Pgn(this.goodPGN);
+		
+		assertEquals( this.trickySt, pgn.stripIt( this.trickyPGN ) );
 	}
 });

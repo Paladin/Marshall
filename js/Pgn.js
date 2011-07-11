@@ -398,6 +398,7 @@ Pgn.prototype.stripItBroken = function (val, strip) {
 Pgn.prototype.stripIt = function (val, strip) {
 	var count = 0;
 	var out = new Array();
+	var inComment = false;
 	for (var i=0;i<val.length;i++) {
 		var c = val.charAt(i);
 		switch (c) {
@@ -405,9 +406,12 @@ Pgn.prototype.stripIt = function (val, strip) {
 				if (!strip) {
 					out[out.length] = '_';
 				}
-				count++;
+				if(!inComment) {
+					count++;
+				}
 				break;
 			case '{':
+				inComment = true;
 				if (!strip) {
 					out[out.length] = '_';
 				}
@@ -418,9 +422,12 @@ Pgn.prototype.stripIt = function (val, strip) {
 				if (!strip) {
 					out[out.length] = '_';
 				}
+				inComment = false;
 				break;
 			case ')':
-				count--;
+				if(!inComment) {
+					count--;
+				}
 				if (!strip) {
 					out[out.length] = '_';
 				}
