@@ -284,6 +284,9 @@ Pgn.prototype.isBroken = function (val) {
 						lastOne = "";
 						cCount--;
 						break;
+					case '{':
+						// Cannot nest comments
+						return false;
 				}
 			} else {
 				switch (c) {
