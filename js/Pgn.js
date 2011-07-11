@@ -268,39 +268,48 @@ Pgn.prototype.isBroken = function (val) {
 		var pCount = 0;
 		var cCount = 0;
 		var lastOne = "";
+		var inComment = false;
 		for (var i=0;i<val.length;i++) {
 			var c = val.charAt(i);
-			switch (c) {
-				case '(':
-					pCount++;
-					lastOne = "p";
-					break;
-				case ')':
-					// closing a non-existent curly brace
-					if (pCount == 0)
-						return false;
-					// closing a curly instead of a parenthesis
-					if (lastOne == "c")
-						return false;
-					lastOne = "";
-					pCount--;
-					break;
-				case '{':
-					cCount++;
-					lastOne = "c";
-					break;
-				case '}':
-					// closing a non-existent curly brace
-					if (cCount == 0)
-						return false;
-					// if we're closing a parenthesis instead of a curly
-					if (lastOne == "p")
-						return false;
-					lastOne = "";
-					cCount--;
-					break;
+			if(inComment) {
+				switch (c) {
+					case '}':
+						inComment = false;
+						// closing a non-existent curly brace
+						if (cCount == 0)
+							return false;
+						// if we're closing a parenthesis instead of a curly
+						if (lastOne == "p")
+							return false;
+						lastOne = "";
+						cCount--;
+						break;
+				}
+			} else {
+				switch (c) {
+					case '(':
+						pCount++;
+						lastOne = "p";
+						break;
+					case ')':
+						// closing a non-existent curly brace
+						if (pCount == 0)
+							return false;
+						// closing a curly instead of a parenthesis
+						if (lastOne == "c")
+							return false;
+						lastOne = "";
+						pCount--;
+						break;
+					case '{':
+						inComment = true;
+						cCount++;
+						lastOne = "c";
+						break;
+				}
 			}
 		}
+		return true;
 	};
 
 Pgn.prototype.stripItBroken = function (val, strip) {
