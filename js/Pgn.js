@@ -277,16 +277,16 @@ Pgn.prototype.isBroken = function (val) {
 						inComment = false;
 						// closing a non-existent curly brace
 						if (cCount == 0)
-							return false;
+							return true;
 						// if we're closing a parenthesis instead of a curly
 						if (lastOne == "p")
-							return false;
+							return true;
 						lastOne = "";
 						cCount--;
 						break;
 					case '{':
 						// Cannot nest comments
-						return false;
+						return true;
 				}
 			} else {
 				switch (c) {
@@ -297,10 +297,10 @@ Pgn.prototype.isBroken = function (val) {
 					case ')':
 						// closing a non-existent curly brace
 						if (pCount == 0)
-							return false;
+							return true;
 						// closing a curly instead of a parenthesis
 						if (lastOne == "c")
-							return false;
+							return true;
 						lastOne = "";
 						pCount--;
 						break;
@@ -312,7 +312,7 @@ Pgn.prototype.isBroken = function (val) {
 				}
 			}
 		}
-		return true;
+		return false;
 	};
 
 Pgn.prototype.stripItBroken = function (val, strip) {
