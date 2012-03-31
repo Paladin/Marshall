@@ -30,24 +30,26 @@ webpage or maybe even write a plugin for blog software?
 * Extract the archive.
 * Include the jsPgnViewer.js in your webpage.
 * Make the img folder from the archive available somewhere in your project.
-* To initialize the board
+* To initialize the board:
     * Make a hidden div with an id
-        * (&lt;div style="visibility:hidden;display:none" id="id\_of\_the\_pgn\_div">&lt;/div>)
+    
+            <div style="visibility:hidden;display:none" id="id_of_the_pgn_div"></div>
     * Paste a PGN into the div
     * Make another div where ever you want the board to appear.
-    * The div's id has to have the suffix \_board. In the current example it should be id\_of\_the\_pgn\_div\_board.
+    * The div's id has to have the suffix \_board. In the current example it should be "id\_of\_the\_pgn\_div\_board".
     * Somewhere in the &lt;script> tags add
-	    * var board = new Board("id\_of\_the\_pgn\_div")
-        * board.init() 
+    
+	        var board = new Board("id_of_the_pgn_div")
+            board.init()
 * If you want to reference the images from another directory you can use the
 	imagePrefix attribute of the Board object.
-   * board.imagePrefix = "someDirectory/" 
+
+        board.imagePrefix = "someDirectory/" 
 * If you don't want the movesPane to show up
-    * board.showMovesPane=true 
+
+        board.showMovesPane=true 
 * Easier way to set options
 
-        var board = new Board("id\_of\_the\_pgn\_div",
-		                      {'showMovesPane':true, 'imagePrefix':'someDirectory/'}
-		                      ) 
+        var board = new Board("id_of_the_pgn_div",{'showMovesPane':true, 'imagePrefix':'someDirectory/'}) 
 
 Have fun!
