@@ -21,9 +21,9 @@
 function Pgn(pgn) {
 	// properties of the game eg players, ELOs etc
 	this.props = new Object();
-	this.validProps = ['Event','Site','Date','Round',
-								'White','Black','Result','FEN',
-								'WhiteElo','BlackElo','TimeControl'];
+	this.requiredProps = ['Result','Black','White','Date',
+								'Round','Site','Event'];
+	this.requiredLength = this.requiredProps.length;
 	// the moves, one move contains the black and white move
 	this.moves = new Array();
 	// the current move in the game
@@ -84,7 +84,11 @@ function Pgn(pgn) {
 			 this.pgn = this.pgn.replace(matches[i], "");
 		 }
 	}
-
+	length = this.requiredLength;
+	while(length--) {
+		if(!this.props[this.requiredProps[length]])
+			this.props[this.requiredProps[length]] = "?";
+	}
 	// remove the properties
 	this.pgn = this.pgn.replace(/\[[^\]]*\]/g,'');
 	//trim
