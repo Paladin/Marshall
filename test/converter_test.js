@@ -48,6 +48,20 @@ TestCase( "ConverterTest",
 		assertEquals( 1, conv.startMoveNum );
 	},
 	
+	"test converting the first move": function() {
+		moves = "MyMove -- no. actions 2";
+		from_e2 = "MySquare -- x = 6 y=4 color=null piece=null";
+		pawn_to_e4 = "MySquare -- x = 4 y=4 color=white piece=pawn";
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		move = conv.convertMove();
+		
+		assertEquals( from_e2, move.actions[0] );
+		assertEquals( pawn_to_e4, move.actions[1] );
+		assertEquals( moves, move );
+	},
+	
 	"test converting moves": function() {
 		moves = "MyMove -- no. actions 2,MyMove -- no. actions 2,"+
 				"MyMove -- no. actions 2,MyMove -- no. actions 2,"+
