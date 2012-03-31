@@ -20,7 +20,7 @@ TestCase( "ConverterTest",
 				'[White	"NoName]\n' +
 				'[Black	"Amateur"]\n' +
 				'[Result	"1-0"]\n' +
-				'{The Scholar\'s Mate} 1. e4 e5 2. Bc4 Nc3 3. Qh5 Nf3 4. Qf7#',
+				'{The Scholar\'s Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#',
 	
 
 	setup: function() {},
@@ -46,5 +46,22 @@ TestCase( "ConverterTest",
 		assertEquals( "vSquare -- piece = rook color=white type=", conv.initialBoard[7][7].toString() );
 		assertTrue( conv.whiteToMove );
 		assertEquals( 1, conv.startMoveNum );
+	},
+	
+	"test converting moves": function() {
+		moves = "MyMove -- no. actions 2,MyMove -- no. actions 2,"+
+				"MyMove -- no. actions 2,MyMove -- no. actions 2,"+
+				"MyMove -- no. actions 2,MyMove -- no. actions 2,MyMove -- no. actions 2";
+		from_e2 = "MySquare -- x = 6 y=4 color=null piece=null";
+		pawn_to_e4 = "MySquare -- x = 4 y=4 color=white piece=pawn";
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		
+		assertEquals( from_e2, conv.moves[0].actions[0] );
+		assertEquals( pawn_to_e4, conv.moves[0].actions[1] );
+		assertEquals( moves, conv.moves );
+		assertEquals( 7, conv.moves.length );
 	}
 });
