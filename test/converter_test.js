@@ -161,5 +161,21 @@ TestCase( "ConverterTest",
 		assertEquals( expected, move );
 		assertEquals( expectedJSON, JSON.stringify(move) );
 		assertEquals( expectedNumber, moveNumber );
+	},
+	
+	"test resetting to start": function() {
+		expected = "MyMove -- no. actions 2";
+		expectedJSON = '{"actions":[{"x":6,"y":4,"color":null,"piece":null},{"x":4,"y":4,"color":"white","piece":"pawn"}],"oPiece":null,"oColor":null,"pPiece":null,"enP":null,"moveStr":"e4"}';
+		expectedNumber = 0;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		move = conv.getCurMove();
+		moveNumber = conv.getCurMoveNo();
+
+		assertEquals( expected, move );
+		assertEquals( expectedJSON, JSON.stringify(move) );
+		assertEquals( expectedNumber, moveNumber );
 	}
 });
