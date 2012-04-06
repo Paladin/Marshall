@@ -114,5 +114,18 @@ TestCase( "ConverterTest",
 
 		assertEquals( expected, move );
 		assertEquals( expectedJSON, JSON.stringify(move) );
+	},
+	
+	"test getting the previous move": function() {
+		expected = null;
+		expectedJSON = 'null';
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		move = conv.prevMove();
+
+		assertEquals( expected, move );
+		assertEquals( expectedJSON, JSON.stringify(move) );
 	}
 });
