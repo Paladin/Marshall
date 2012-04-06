@@ -775,5 +775,16 @@ TestCase( "ConverterTest",
 
 		assertEquals( "Couldn't find pawn", a7, conv.findFromPawn(conv.vBoard, 'a5', a5, "black"));
 		assertEquals( "Couldn't find pawn", a7, conv.findFromPawn(conv.vBoard, 'a6', a6, "black"));
+	},
+	
+	"test finding the Bishop to move to a square": function() {
+		h7 = [1,7];
+		f5 = [3,5,[-1,-1],-1];
+
+		pgn = new Pgn( this.goodPGN );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertEquals( "Couldn't find bishop", h7, conv.findFromBish(conv, 'Bf5', f5, "white"));
 	}
 });

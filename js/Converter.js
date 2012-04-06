@@ -325,7 +325,7 @@ function Converter(pgn) {
 			fromCoords = findFromKnight(this, to, toCoords, color);
 		}
 		else if (bishre.test(to)) {
-			fromCoords = findFromBish(this, this.vBoard, to, toCoords, color);
+			fromCoords = this.findFromBish(this, to, toCoords, color);
 		}
 		else if (queenre.test(to)) {
 			fromCoords = findFromQueen(this, this.vBoard, to, toCoords, color);
@@ -620,7 +620,7 @@ function Converter(pgn) {
 	/*
 		Find the bishop from location.
 	*/
-	function findFromBish(board, pos, toSAN, toCoords, color) {
+	this.findFromBish = function(board, toSAN, toCoords, color) {
 		if (toCoords[2][0] != -1 && toCoords[2][1] != -1) {
 			return new Array(toCoords[2][1], toCoords[2][0]);
 		}
