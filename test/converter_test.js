@@ -21,7 +21,88 @@ TestCase( "ConverterTest",
 				'[Black	"Amateur"]\n' +
 				'[Result	"1-0"]\n' +
 				'{The Scholar\'s Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#',
-	
+	gameStart:	[
+					[
+						{"piece":"rook","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"king","color":"white","type":""},
+						{"piece":"queen","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"rook","color":"white","type":""}
+					],
+					[
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""}
+					],
+					[
+						{"piece":"rook","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"king","color":"black","type":""},
+						{"piece":"queen","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":"rook","color":"black","type":""}
+					]
+				],	
 
 	setup: function() {},
 	teardown: function() {},
@@ -177,5 +258,18 @@ TestCase( "ConverterTest",
 		assertEquals( expected, move );
 		assertEquals( expectedJSON, JSON.stringify(move) );
 		assertEquals( expectedNumber, moveNumber );
+	},
+	
+	"test getting starting position": function() {
+		expected = null;
+		expectedJSON = JSON.stringify(this.gameStart);
+		expectedNumber = 0;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		position = conv.getStartPos();
+
+		assertEquals( expectedJSON, JSON.stringify(position) );
 	}
 });
