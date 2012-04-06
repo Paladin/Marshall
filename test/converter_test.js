@@ -185,7 +185,91 @@ TestCase( "ConverterTest",
 						{"piece":"knight","color":"white","type":""},
 						{"piece":"rook","color":"white","type":""}
 					]
-				],	
+				],
+	
+	gameEnd:	[
+					[
+						{"piece":"rook","color":"black","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"queen","color":"black","type":""},
+						{"piece":"king","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"rook","color":"black","type":""}
+					],
+					[
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"queen","color":"white","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":null}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""}
+					],
+					[
+						{"piece":"rook","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"king","color":"white","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"rook","color":"white","type":""}
+					]
+				],
+	
 
 	setup: function() {},
 	teardown: function() {},
@@ -367,5 +451,20 @@ TestCase( "ConverterTest",
 		position = conv.getStartPos(true);
 
 		assertEquals( expectedJSON, JSON.stringify(position) );
+	},
+	
+	"test getting ending position": function() {
+		expected = null;
+		expectedJSON = JSON.stringify(this.gameEnd);
+		expectedNumber = 0;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		position = conv.getEndPos(false);
+		endMoveNumber = conv.getCurMoveNo();
+
+		assertEquals( expectedJSON, JSON.stringify(position) );
+		assertEquals( expectedNumber, endMoveNumber );
 	}
 });
