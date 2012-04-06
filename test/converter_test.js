@@ -144,5 +144,22 @@ TestCase( "ConverterTest",
 		assertEquals( expected, move );
 		assertEquals( expectedJSON, JSON.stringify(move) );
 		assertEquals( expectedNumber, moveNumber );
+	},
+	
+	"test getting previous move decrements move index": function() {
+		expected = "MyMove -- no. actions 2";
+		expectedJSON = '{"actions":[{"x":3,"y":7,"color":null,"piece":null},{"x":1,"y":5,"color":"white","piece":"queen"}],"oPiece":"pawn","oColor":"black","pPiece":null,"enP":null,"moveStr":"Qf7#"}';
+		expectedNumber = 6;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		conv.resetToEnd();
+		move = conv.prevMove();
+		moveNumber = conv.getCurMoveNo();
+
+		assertEquals( expected, move );
+		assertEquals( expectedJSON, JSON.stringify(move) );
+		assertEquals( expectedNumber, moveNumber );
 	}
 });
