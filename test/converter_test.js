@@ -762,5 +762,18 @@ TestCase( "ConverterTest",
 
 		assertEquals( "Couldn't find piece", 1, conv.findPieceIdx(conv.wRooks, a1)); 
 		assertEquals( "Couldn't find piece", 0, conv.findPieceIdx(conv.wRooks, h4)); 
+	},
+	
+	"test finding the pawn to move to a square": function() {
+		a7 = [1,0];
+		a6 = [2,0,[-1,-1],-1];
+		a5 = [3,0,[-1,-1],-1];
+
+		pgn = new Pgn( this.goodPGN );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertEquals( "Couldn't find pawn", a7, findFromPawn(conv.vBoard, 'a5', a5, "black"));
+		assertEquals( "Couldn't find pawn", a7, findFromPawn(conv.vBoard, 'a6', a6, "black"));
 	}
 });
