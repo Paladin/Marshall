@@ -97,6 +97,89 @@ TestCase( "ConverterTest",
 					]
 				],
 	
+	fenStartF:	[
+					[
+						{"piece":"rook","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"king","color":"white","type":""},
+						{"piece":"queen","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"rook","color":"white","type":""}
+					],
+					[
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""}
+					],
+					[
+						{"piece":"rook","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"king","color":"black","type":""},
+						{"piece":"queen","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":"rook","color":"black","type":""}
+					]
+				],
+
 	goodGame: 	'[Event	"Dayton"]' +
 				'[Site	"?"]\n' +
 				'[Date	"1890.02.25"]\n' +
@@ -626,6 +709,17 @@ TestCase( "ConverterTest",
 		position = conv.getStartPos(false);
 
 		assertEquals( "FEN start incorrect", expectedJSON, JSON.stringify(position) );
+	},
+	
+	"test getting FEN starting position flipped": function() {
+		expectedJSON = JSON.stringify(this.fenStartF);
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		position = conv.getStartPos(true);
+
+		assertEquals( "Flipped FEN start incorrect", expectedJSON, JSON.stringify(position) );
 	},
 	
 	"test getting ending position": function() {
