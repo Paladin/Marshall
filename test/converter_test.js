@@ -719,7 +719,6 @@ TestCase( "ConverterTest",
 		conv.convert();
 		position = conv.getStartPos(true);
 
-alert(JSON.stringify(position));
 		assertEquals( "Flipped FEN start incorrect", expectedJSON, JSON.stringify(position) );
 	},
 	
