@@ -752,7 +752,7 @@ TestCase( "ConverterTest",
 		assertEquals( "move number", expectedNumber, endMoveNumber );
 	},
 	
-	"test finding the piece to move to a square": function() {
+	"test finding the piece on a square": function() {
 		a1 = [7,0];
 		h4 = [4,7];
 
