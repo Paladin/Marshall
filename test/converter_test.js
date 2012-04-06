@@ -758,7 +758,7 @@ TestCase( "ConverterTest",
 
 		pgn = new Pgn( this.goodPGN );
 		conv = new Converter(pgn);
-		conv.convert(false);
+		conv.convert();
 
 		assertEquals( "Couldn't find piece", 1, conv.findPieceIdx(conv.wRooks, a1)); 
 		assertEquals( "Couldn't find piece", 0, conv.findPieceIdx(conv.wRooks, h4)); 
