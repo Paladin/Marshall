@@ -376,7 +376,7 @@ function Converter(pgn) {
 		}
         else if (genericre.test(to)) {
             // dbl information move, g4-g6
-            fromCoords = findFromAny(this, this.vBoard, to, toCoords, color);
+            fromCoords = this.findFromAny(to, toCoords);
         }
 		else if (pawnre.test(to)) {
 			// let see if it is a promotional move
@@ -645,7 +645,7 @@ function Converter(pgn) {
     /*
        Find from any move
 	*/
-	function findFromAny(board, pos, toSAN, toCoords, color) {
+	this.findFromAny = function ( toSAN, toCoords ) {
 		if (toCoords[2][0] != -1 && toCoords[2][1] != -1) {
 			return new Array(toCoords[2][1], toCoords[2][0]);
 		}

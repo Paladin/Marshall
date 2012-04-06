@@ -786,5 +786,16 @@ TestCase( "ConverterTest",
 		conv.convert();
 
 		assertEquals( "Couldn't find bishop", h7, conv.findFromBish(conv, 'Bf5', f5, "white"));
+	},
+	
+	"test finding any piece to move to a square": function() {
+		h7 = [7,1]; /* Don't like this, smells like an error */
+		f5 = [3,5,[1,7],-1];
+
+		pgn = new Pgn( this.goodPGN );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertEquals( "Couldn't find right piece", h7, conv.findFromAny('h7-f5', f5));
 	}
 });
