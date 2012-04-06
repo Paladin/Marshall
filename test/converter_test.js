@@ -773,7 +773,7 @@ TestCase( "ConverterTest",
 		conv = new Converter(pgn);
 		conv.convert();
 
-		assertEquals( "Couldn't find pawn", a7, findFromPawn(conv.vBoard, 'a5', a5, "black"));
-		assertEquals( "Couldn't find pawn", a7, findFromPawn(conv.vBoard, 'a6', a6, "black"));
+		assertEquals( "Couldn't find pawn", a7, conv.findFromPawn(conv.vBoard, 'a5', a5, "black"));
+		assertEquals( "Couldn't find pawn", a7, conv.findFromPawn(conv.vBoard, 'a6', a6, "black"));
 	}
 });

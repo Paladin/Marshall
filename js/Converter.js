@@ -383,7 +383,7 @@ function Converter(pgn) {
 			if (/^[a-z]+[1-8]=[A-Z]/.test(to))
 				prom = to.charAt(to.indexOf('=')+1);
 
-            fromCoords = findFromPawn(this.vBoard, to, toCoords, color);
+            fromCoords = this.findFromPawn(this.vBoard, to, toCoords, color);
             pawnM = true;
 		}
 		else {
@@ -552,7 +552,7 @@ function Converter(pgn) {
 	/*
 		Find the pawn from location.
 	*/
-	findFromPawn = function(pos, to, tmp, color) {
+	this.findFromPawn = function(pos, to, tmp, color) {
 		var x = tmp[1], y = tmp[0];
     
 		if (tmp[2][0] != -1 && tmp[2][1] != -1) {
