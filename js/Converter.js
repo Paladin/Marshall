@@ -402,36 +402,36 @@ function Converter(pgn) {
 		} else if ('bishop' == from.piece) {
 			var idx;
 			if ('white' == from.color) {
-				idx = findPieceIdx(this.wBishops,fromCoords);
+				idx = this.findPieceIdx(this.wBishops,fromCoords);
 				this.wBishops[idx][0] = toCoords[0];
 				this.wBishops[idx][1] = toCoords[1];
 			}
 			else {
-				idx = findPieceIdx(this.bBishops,fromCoords);
+				idx = this.findPieceIdx(this.bBishops,fromCoords);
 				this.bBishops[idx][0] = toCoords[0];
 				this.bBishops[idx][1] = toCoords[1];
 			}
 		} else if ('queen' == from.piece) {
 			var idx;
 			if ('white' == from.color) {
-				idx = findPieceIdx(this.wQueens,fromCoords);
+				idx = this.findPieceIdx(this.wQueens,fromCoords);
 				this.wQueens[idx][0] = toCoords[0];
 				this.wQueens[idx][1] = toCoords[1];
 			}
 			else {
-				idx = findPieceIdx(this.bQueens,fromCoords);
+				idx = this.findPieceIdx(this.bQueens,fromCoords);
 				this.bQueens[idx][0] = toCoords[0];
 				this.bQueens[idx][1] = toCoords[1];
 			}
 		} else if ('rook' == from.piece) {
 			var idx;
 			if ('white' == from.color) {
-				idx = findPieceIdx(this.wRooks,fromCoords);
+				idx = this.findPieceIdx(this.wRooks,fromCoords);
 				this.wRooks[idx][0] = toCoords[0];
 				this.wRooks[idx][1] = toCoords[1];
 			}
 			else {
-				idx = findPieceIdx(this.bRooks,fromCoords);
+				idx = this.findPieceIdx(this.bRooks,fromCoords);
 				this.bRooks[idx][0] = toCoords[0];
 				this.bRooks[idx][1] = toCoords[1];
 			}
@@ -439,31 +439,31 @@ function Converter(pgn) {
 		
 		if ('queen' == to.piece) {
 			if ('white' == to.color) {
-				idx = findPieceIdx(this.wQueens,toCoords);
+				idx = this.findPieceIdx(this.wQueens,toCoords);
 				this.wQueens.splice(idx,1);
 			}
 			else {
-				idx = findPieceIdx(this.bQueens,toCoords);
+				idx = this.findPieceIdx(this.bQueens,toCoords);
 				this.bQueens.splice(idx,1);
 			}
 		}
 		else if ('bishop' == to.piece) {
 			if ('white' == to.color) {
-				idx = findPieceIdx(this.wBishops,toCoords);
+				idx = this.findPieceIdx(this.wBishops,toCoords);
 				this.wBishops.splice(idx,1);
 			}
 			else {
-				idx = findPieceIdx(this.bBishops,toCoords);
+				idx = this.findPieceIdx(this.bBishops,toCoords);
 				this.bBishops.splice(idx,1);
 			}
 		}
 		else if ('rook' == to.piece) {
 			if ('white' == to.color) {
-				idx = findPieceIdx(this.wRooks,toCoords);
+				idx = this.findPieceIdx(this.wRooks,toCoords);
 				this.wRooks.splice(idx,1);
 			}
 			else {
-				idx = findPieceIdx(this.bRooks,toCoords);
+				idx = this.findPieceIdx(this.bRooks,toCoords);
 				this.bRooks.splice(idx,1);
 			}
 		}
@@ -541,7 +541,7 @@ function Converter(pgn) {
 		logic on finding which piece exactly has to move to the location.
 	*/
 
-	findPieceIdx = function(arr, coords) {
+	this.findPieceIdx = function(arr, coords) {
 		for (var i=0;i<arr.length;i++) {
 			if (arr[i][0] == coords[0] && arr[i][1] == coords[1]) {
 				return i;

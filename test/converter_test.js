@@ -750,5 +750,17 @@ TestCase( "ConverterTest",
 
 		assertEquals("position", expectedJSON, JSON.stringify(position) );
 		assertEquals( "move number", expectedNumber, endMoveNumber );
+	},
+	
+	"test finding the piece to move to a square": function() {
+		a1 = [7,0];
+		h4 = [4,7];
+
+		pgn = new Pgn( this.goodPGN );
+		conv = new Converter(pgn);
+		conv.convert(false);
+
+		assertEquals( "Couldn't find piece", 1, conv.findPieceIdx(conv.wRooks, a1)); 
+		assertEquals( "Couldn't find piece", 0, conv.findPieceIdx(conv.wRooks, h4)); 
 	}
 });
