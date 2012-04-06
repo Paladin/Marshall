@@ -77,5 +77,18 @@ TestCase( "ConverterTest",
 		assertEquals( pawn_to_e4, conv.moves[0].actions[1] );
 		assertEquals( moves, conv.moves );
 		assertEquals( 7, conv.moves.length );
+	},
+	
+	"test getting the current move": function() {
+		expected = "MyMove -- no. actions 2";
+		expectedJSON = '{"actions":[{"x":6,"y":4,"color":null,"piece":null},{"x":4,"y":4,"color":"white","piece":"pawn"}],"oPiece":null,"oColor":null,"pPiece":null,"enP":null,"moveStr":"e4"}';
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		move = conv.getCurMove();
+
+		assertEquals( expected, move );
+		assertEquals( expectedJSON, JSON.stringify(move) );
 	}
 });
