@@ -270,6 +270,88 @@ TestCase( "ConverterTest",
 					]
 				],
 	
+	gameEndF:	[
+					[
+						{"piece":"rook","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"king","color":"white","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"rook","color":"white","type":""}
+					],
+					[
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":null},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"queen","color":"white","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""}
+					],
+					[
+						{"piece":"rook","color":"black","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"king","color":"black","type":""},
+						{"piece":"queen","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":null,"color":null,"type":null},
+						{"piece":"rook","color":"black","type":""}
+					]
+				],
 
 	setup: function() {},
 	teardown: function() {},
@@ -430,7 +512,6 @@ TestCase( "ConverterTest",
 	"test getting starting position": function() {
 		expected = null;
 		expectedJSON = JSON.stringify(this.gameStart);
-		expectedNumber = 0;
 
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
@@ -443,7 +524,6 @@ TestCase( "ConverterTest",
 	"test getting starting position flipped": function() {
 		expected = null;
 		expectedJSON = JSON.stringify(this.gameStartF);
-		expectedNumber = 0;
 
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
@@ -466,5 +546,20 @@ TestCase( "ConverterTest",
 
 		assertEquals( expectedJSON, JSON.stringify(position) );
 		assertEquals( expectedNumber, endMoveNumber );
+	},
+	
+	"test getting ending position flipped": function() {
+		expected = null;
+		expectedJSON = JSON.stringify(this.gameEndF);
+		expectedNumber = 0;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		position = conv.getEndPos(true);
+		endMoveNumber = conv.getCurMoveNo();
+
+		assertEquals("position", expectedJSON, JSON.stringify(position) );
+		assertEquals( "move number", expectedNumber, endMoveNumber );
 	}
 });
