@@ -90,5 +90,16 @@ TestCase( "ConverterTest",
 
 		assertEquals( expected, move );
 		assertEquals( expectedJSON, JSON.stringify(move) );
+	},
+	
+	"test getting the current move number": function() {
+		expected = 0;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		move = conv.getCurMoveNo();
+
+		assertEquals( expected, move );
 	}
 });
