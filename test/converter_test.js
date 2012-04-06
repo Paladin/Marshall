@@ -13,6 +13,90 @@ TestCase( "ConverterTest",
 				'[PlyCount	"9"]\n' +
 				'[SourceDate	"2009.06.14"]\n' +
 				'{In this position White has a beautiful focred mate in five, so answer C is correct:} 1. Bxg7+ $1 Kxg7 2. Qh6+ $3 {The point - Black\'s king is dragged into a	discovered double-check.} Kxh6 (2... Kh8 3. Bg6+ Kg8 4. Qh7#) 3. Nf5+ Kg5 4. Ne4+ Kg4 5. Rh4# {or 5.Ne3++. This brilliancy was published far more than 100 years ago - in May 1890 on page 155 of International Chess Magazine. (Source: "A Chess Omnibus", Edward Winter, Russel Enterprises, Inc., 2003)} *',
+
+	fenStart:	[
+					[
+						{"piece":"rook","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"queen","color":"black","type":""},
+						{"piece":"king","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":"rook","color":"black","type":""}
+					],
+					[
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""}
+					],
+					[
+						{"piece":"rook","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"queen","color":"white","type":""},
+						{"piece":"king","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"rook","color":"white","type":""}
+					]
+				],
+	
 	goodGame: 	'[Event	"Dayton"]' +
 				'[Site	"?"]\n' +
 				'[Date	"1890.02.25"]\n' +
@@ -531,6 +615,17 @@ TestCase( "ConverterTest",
 		position = conv.getStartPos(true);
 
 		assertEquals( expectedJSON, JSON.stringify(position) );
+	},
+	
+	"test getting FEN starting position": function() {
+		expectedJSON = JSON.stringify(this.fenStart);
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		position = conv.getStartPos(false);
+
+		assertEquals( "FEN start incorrect", expectedJSON, JSON.stringify(position) );
 	},
 	
 	"test getting ending position": function() {
