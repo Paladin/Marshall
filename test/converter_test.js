@@ -797,5 +797,17 @@ TestCase( "ConverterTest",
 		conv.convert();
 
 		assertEquals( "Couldn't find right piece", h7, conv.findFromAny('h7-f5', f5));
+	},
+	
+	"test finding the King to move to a square": function() {
+		g4 = [4,6];
+		g1 = [7,6];
+
+		pgn = new Pgn( this.goodPGN );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertEquals( "Couldn't find king", g4, conv.findFromKing(conv, "black"));
+		assertEquals( "Couldn't find king", g1, conv.findFromKing(conv, "white"));
 	}
 });

@@ -334,7 +334,7 @@ function Converter(pgn) {
 			fromCoords = findFromRook(this, this.vBoard, to, toCoords, color);
 		}
 		else if (kingre.test(to)) {
-			fromCoords = findFromKing(this, this.vBoard, color);
+			fromCoords = this.findFromKing(this, color);
 		}
 		else if (sCastlere.test(to)) {
 			var bCoords = new Array('e8','g8','h8','f8');
@@ -656,7 +656,7 @@ function Converter(pgn) {
 	/* 
 		Find the king from location.
 	*/
-	function findFromKing(board, pos, color) {
+	this.findFromKing = function(board, color) {
 		var x = board.wKingX, y = board.wKingY;
 		if ("black" == color)
 			x = board.bKingX, y = board.bKingY;
