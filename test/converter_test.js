@@ -21,7 +21,7 @@ TestCase( "ConverterTest",
 				'[Black	"Amateur"]\n' +
 				'[Result	"1-0"]\n' +
 				'{The Scholar\'s Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#',
-	gameStart:	[
+	gameStartF:	[
 					[
 						{"piece":"rook","color":"white","type":""},
 						{"piece":"knight","color":"white","type":""},
@@ -101,6 +101,89 @@ TestCase( "ConverterTest",
 						{"piece":"bishop","color":"black","type":""},
 						{"piece":"knight","color":"black","type":""},
 						{"piece":"rook","color":"black","type":""}
+					]
+				],	
+
+	gameStart:	[
+					[
+						{"piece":"rook","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"queen","color":"black","type":""},
+						{"piece":"king","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":"rook","color":"black","type":""}
+					],
+					[
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":"pawn","color":"white","type":""}
+					],
+					[
+						{"piece":"rook","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"queen","color":"white","type":""},
+						{"piece":"king","color":"white","type":""},
+						{"piece":"bishop","color":"white","type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":"rook","color":"white","type":""}
 					]
 				],	
 
@@ -268,7 +351,20 @@ TestCase( "ConverterTest",
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
 		conv.convert();
-		position = conv.getStartPos();
+		position = conv.getStartPos(false);
+
+		assertEquals( expectedJSON, JSON.stringify(position) );
+	},
+	
+	"test getting starting position flipped": function() {
+		expected = null;
+		expectedJSON = JSON.stringify(this.gameStartF);
+		expectedNumber = 0;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		position = conv.getStartPos(true);
 
 		assertEquals( expectedJSON, JSON.stringify(position) );
 	}
