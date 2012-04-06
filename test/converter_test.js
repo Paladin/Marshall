@@ -127,5 +127,22 @@ TestCase( "ConverterTest",
 
 		assertEquals( expected, move );
 		assertEquals( expectedJSON, JSON.stringify(move) );
+	},
+	
+	"test resetting to end": function() {
+		expected = null;
+		expectedJSON = 'null';
+		expectedNumber = 7;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		conv.resetToEnd();
+		move = conv.getCurMove();
+		moveNumber = conv.getCurMoveNo();
+
+		assertEquals( expected, move );
+		assertEquals( expectedJSON, JSON.stringify(move) );
+		assertEquals( expectedNumber, moveNumber );
 	}
 });
