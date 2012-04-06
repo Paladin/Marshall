@@ -17,165 +17,165 @@ TestCase( "ConverterTest",
 	fenStart:	[
 					[
 						{"piece":"rook","color":"black","type":""},
-						{"piece":"knight","color":"black","type":""},
-						{"piece":"bishop","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"queen","color":"black","type":""},
-						{"piece":"king","color":"black","type":""},
-						{"piece":"bishop","color":"black","type":""},
+						{"piece":"rook","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"king","color":"black","type":""}
+					],
+					[
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":"pawn","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"knight","color":"black","type":""},
-						{"piece":"rook","color":"black","type":""}
-					],
-					[
+						{"piece":"bishop","color":"black","type":""},
 						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""}
+						{"piece":"bishop","color":"white","type":""}
 					],
 					[
 						{"piece":null,"color":null,"type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"black","type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""}
+						{"piece":"bishop","color":"white","type":""}
 					],
 					[
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"black","type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""}
+						{"piece":"queen","color":"white","type":""}
 					],
 					[
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"white","type":""},
 						{"piece":null,"color":null,"type":""},
+						{"piece":"knight","color":"black","type":""},
 						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""}
+						{"piece":"knight","color":"white","type":""}
 					],
 					[
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"white","type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""}
+						{"piece":"rook","color":"white","type":""}
 					],
 					[
 						{"piece":"pawn","color":"white","type":""},
 						{"piece":"pawn","color":"white","type":""},
-						{"piece":"pawn","color":"white","type":""},
-						{"piece":"pawn","color":"white","type":""},
-						{"piece":"pawn","color":"white","type":""},
-						{"piece":"pawn","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"pawn","color":"white","type":""},
 						{"piece":"pawn","color":"white","type":""}
 					],
 					[
 						{"piece":"rook","color":"white","type":""},
-						{"piece":"knight","color":"white","type":""},
-						{"piece":"bishop","color":"white","type":""},
-						{"piece":"queen","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"king","color":"white","type":""},
-						{"piece":"bishop","color":"white","type":""},
-						{"piece":"knight","color":"white","type":""},
-						{"piece":"rook","color":"white","type":""}
+						{"piece":null,"color":null,"type":""}
 					]
 				],
 	
 	fenStartF:	[
 					[
-						{"piece":"rook","color":"white","type":""},
-						{"piece":"knight","color":"white","type":""},
-						{"piece":"bishop","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"king","color":"white","type":""},
-						{"piece":"queen","color":"white","type":""},
-						{"piece":"bishop","color":"white","type":""},
-						{"piece":"knight","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"rook","color":"white","type":""}
 					],
 					[
 						{"piece":"pawn","color":"white","type":""},
 						{"piece":"pawn","color":"white","type":""},
-						{"piece":"pawn","color":"white","type":""},
-						{"piece":"pawn","color":"white","type":""},
-						{"piece":"pawn","color":"white","type":""},
-						{"piece":"pawn","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"knight","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"pawn","color":"white","type":""},
 						{"piece":"pawn","color":"white","type":""}
 					],
 					[
+						{"piece":"rook","color":"white","type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":"knight","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""}
+					],
+					[
+						{"piece":"queen","color":"white","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"black","type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""}
 					],
 					[
+						{"piece":"bishop","color":"white","type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
 						{"piece":null,"color":null,"type":""},
+						{"piece":"pawn","color":"black","type":""},
 						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
+						{"piece":"bishop","color":"black","type":""},
 						{"piece":null,"color":null,"type":""}
 					],
 					[
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""}
-					],
-					[
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""},
-						{"piece":null,"color":null,"type":""}
-					],
-					[
+						{"piece":"bishop","color":"white","type":""},
 						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
-						{"piece":"pawn","color":"black","type":""},
+						{"piece":"bishop","color":"black","type":""},
+						{"piece":"knight","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"pawn","color":"black","type":""},
 						{"piece":"pawn","color":"black","type":""},
 						{"piece":"pawn","color":"black","type":""}
 					],
 					[
-						{"piece":"rook","color":"black","type":""},
-						{"piece":"knight","color":"black","type":""},
-						{"piece":"bishop","color":"black","type":""},
 						{"piece":"king","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":"rook","color":"black","type":""},
 						{"piece":"queen","color":"black","type":""},
-						{"piece":"bishop","color":"black","type":""},
-						{"piece":"knight","color":"black","type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
+						{"piece":null,"color":null,"type":""},
 						{"piece":"rook","color":"black","type":""}
 					]
 				],
@@ -703,7 +703,7 @@ TestCase( "ConverterTest",
 	"test getting FEN starting position": function() {
 		expectedJSON = JSON.stringify(this.fenStart);
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.goodPGN );
 		conv = new Converter(pgn);
 		conv.convert();
 		position = conv.getStartPos(false);
@@ -714,11 +714,12 @@ TestCase( "ConverterTest",
 	"test getting FEN starting position flipped": function() {
 		expectedJSON = JSON.stringify(this.fenStartF);
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.goodPGN );
 		conv = new Converter(pgn);
 		conv.convert();
 		position = conv.getStartPos(true);
 
+alert(JSON.stringify(position));
 		assertEquals( "Flipped FEN start incorrect", expectedJSON, JSON.stringify(position) );
 	},
 	
