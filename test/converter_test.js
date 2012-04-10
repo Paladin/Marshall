@@ -924,6 +924,20 @@ TestCase( "ConverterTest",
 		assertEquals( "Returned wrong misc", -1, result[3]);
 	},
 	
+	/*	this test is incorrect, it's there to prevent regression.
+	*	But this function needs attention
+	*/
+	"test capturing en passant": function() {
+	    e3 = [6,4];
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		conv.resetToStart();
+
+		assertEquals( "Couldn't do en passant", e3, conv.getEnPassante(conv, 6, 5, 5, 4));
+	},
+	
 	"test finding if black king is in check": function() {
 
 		pgn = new Pgn( this.goodGame );

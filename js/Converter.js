@@ -475,7 +475,7 @@ function Converter(pgn) {
 	 	
 	 	var enPassante = null;
 		if (pawnM)
-			enPassante = getEnPassante(this, fromCoords[0], fromCoords[1],
+			enPassante = this.getEnPassante(this, fromCoords[0], fromCoords[1],
 														 toCoords[0], toCoords[1]);
 		
 		if (enPassante) {
@@ -953,8 +953,10 @@ function Converter(pgn) {
 		
         return rtrn;
 	};
-
-	getEnPassante = function(brd, x1, y1, x2, y2) {
+/*
+ *		TODO: revisit this function for correctness after system is under test
+ */
+	this.getEnPassante = function(brd, x1, y1, x2, y2) {
 		var from = brd.vBoard[x1][y1];
 		var to = brd.vBoard[x2][y2];
 
