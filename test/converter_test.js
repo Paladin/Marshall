@@ -838,5 +838,24 @@ TestCase( "ConverterTest",
 
 		assertEquals( "Couldn't find rook", a8, conv.findFromRook(conv, conv.vBoard, 'Rb8', b8, "black"));
 		assertEquals( "Couldn't find rook", a8, conv.findFromRook(conv, conv.vBoard, 'Ra8b8', b8Full, "black"));
+	},
+	
+	"test finding a knight to move to a square": function() {
+		e7 = [1,4];
+		f4 = [4,5];
+		c8 = [0,2,[-1,-1],-1];
+		h5 = [3,7,[-1,-1],-1];
+		c8Full = [0,2,[4,1],-1];
+		h5Full = [3,7,[5,4],-1];
+
+		pgn = new Pgn( this.goodPGN );
+		conv = new Converter(pgn);
+		conv.convert();
+		conv.resetToStart();
+
+		assertEquals( "Couldn't find knight e7", e7, conv.findFromKnight(conv, 'Nc8', c8, "black"));
+		assertEquals( "Couldn't find knight e7 full", e7, conv.findFromKnight(conv, 'Nc8', c8Full, "black"));
+		assertEquals( "Couldn't find knight f4", f4, conv.findFromKnight(conv, 'Nh5', h5, "black"));
+		assertEquals( "Couldn't find knight f4 full", f4, conv.findFromKnight(conv, 'Nf4h5', h5Full, "black"));
 	}
 });

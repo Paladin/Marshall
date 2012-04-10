@@ -322,7 +322,7 @@ function Converter(pgn) {
 		var toCoords = getSquare(to);
 		var fromCoords, from, to, result, myMove = null, pawnM = false;
 		if (knightre.test(to)) {
-			fromCoords = findFromKnight(this, to, toCoords, color);
+			fromCoords = this.findFromKnight(this, to, toCoords, color);
 		}
 		else if (bishre.test(to)) {
 			fromCoords = this.findFromBish(this, to, toCoords, color);
@@ -821,64 +821,77 @@ function Converter(pgn) {
 	/* 
 		Find the knight's from location.
 	*/
-	findFromKnight = function(brd, toSAN, toCoords, color) {
-		var to = toCoords;
-		var extra = to[2];
+	this.findFromKnight = function(brd, toSAN, to, color) {
+		var originFromMove = to[2];
 		
-		if (toCoords[2][0] != -1 && toCoords[2][1] != -1) {
-			return new Array(toCoords[2][1], toCoords[2][0]);
+		if (this.originGiven(to)) {
+			return new Array(originFromMove[1], originFromMove[0]);
 		}
 
 		var pos = brd.vBoard;
 		var rtrns = new Array();
-		var froms = new Array(
-						new Array(to[0]+2, to[1]+1),
-						new Array(to[0]+2, to[1]-1),
-
-						new Array(to[0]-2, to[1]+1),
-						new Array(to[0]-2, to[1]-1),
-
-						new Array(to[0]+1, to[1]+2),
-						new Array(to[0]-1, to[1]+2),
-
-						new Array(to[0]+1, to[1]-2),
-						new Array(to[0]-1, to[1]-2)
-		);
+		var froms = this.possibleKnightOrigins( to );
 
 		for (var i = 0;i<froms.length;i++) {
 			try{
-				var tmp = pos[froms[i][0]][froms[i][1]];
-				if (tmp.piece == 'knight' && tmp.color == color) {
-					if (extra[0] != -1 && froms[i][1] != extra[0]) {
-						continue;
-					}
-					else if(extra[1] != -1 && froms[i][0] != extra[1]) {
-						continue;
-					}
+				if (this.isMyKnight(pos, froms[i], color) &&
+					this.matchOrigin(froms[i], originFromMove) ){
 					rtrns[rtrns.length] = new Array(froms[i][0], froms[i][1]);
 				}
 			}
 			catch (e) {}
 		}
-		
+		/*
+		 *	TODO: Some tests leave king in check, needs to be examined further.
+		 */
 		if (rtrns.length>1) {
 			for (var i = 0; i< rtrns.length;i++){
-				var from = pos[rtrns[i][0]][rtrns[i][1]];
-				pos[rtrns[i][0]][rtrns[i][1]] = new vSquare();
-
-				var checked = isKingChecked(brd, from.color, pos);
-				pos[rtrns[i][0]][rtrns[i][1]] = from;
-				if (checked)
-					continue;
-				else
+				if (!this.leavesOwnKingInCheck(brd, pos, rtrns[i]))
 					return rtrns[i];
 			}
-			return rtrns[0];
 		}
-		else if (rtrns.length == 1)
+		else if (rtrns.length == 1) 
 			return rtrns[0];
 		throw("No knight move found. '"+toSAN+"'");
 	};
+	
+	this.leavesOwnKingInCheck = function(brd, pos, from) {
+		var holdMe = pos[from[0]][from[1]];
+		pos[from[0]][from[1]] = new vSquare();
+
+		var checked = isKingChecked(brd, from.color, pos);
+		pos[from[0]][from[1]] = holdMe;
+		
+		return checked;
+	}
+
+	this.matchOrigin = function( possible, given ){
+		return ( (given[0] == -1 || possible[1] == given[0]) &&
+					(given[1] == -1 || possible[0] == given[1]));
+	}
+		
+	this.isMyKnight = function(virtualBoard, from, color) {
+		return (virtualBoard[from[0]][from[1]].piece == 'knight' &&
+				 virtualBoard[from[0]][from[1]].color == color);
+	}
+	
+	this.originGiven = function( to ) { return (to[2][0] != -1 && to[2][-1]  != -1); }
+	
+	this.possibleKnightOrigins = function ( destination ) {
+		return new Array(
+						new Array(destination[0]+2, destination[1]+1),
+						new Array(destination[0]+2, destination[1]-1),
+
+						new Array(destination[0]-2, destination[1]+1),
+						new Array(destination[0]-2, destination[1]-1),
+
+						new Array(destination[0]+1, destination[1]+2),
+						new Array(destination[0]-1, destination[1]+2),
+
+						new Array(destination[0]+1, destination[1]-2),
+						new Array(destination[0]-1, destination[1]-2)
+		);
+	}
 
 	/*
 	 * Converts a SAN (Standard Algebraic Notation) into 
