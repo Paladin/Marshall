@@ -328,7 +328,7 @@ function Converter(pgn) {
 			fromCoords = this.findFromBish(this, to, toCoords, color);
 		}
 		else if (queenre.test(to)) {
-			fromCoords = findFromQueen(this, this.vBoard, to, toCoords, color);
+			fromCoords = this.findFromQueen(this, this.vBoard, to, toCoords, color);
 		}
 		else if (rookre.test(to)) {
 			fromCoords = findFromRook(this, this.vBoard, to, toCoords, color);
@@ -666,7 +666,7 @@ function Converter(pgn) {
 	/* 
 		Find the queen's from location.
 	*/
-	function findFromQueen(board, pos, toSAN, to, color) {
+	this.findFromQueen = function(board, pos, toSAN, to, color) {
 		var extra = to[2];
 		var rtrns = new Array();
 		
@@ -674,50 +674,37 @@ function Converter(pgn) {
 			return new Array(to[2][1], to[2][0]);
 		}
 		
-		var arr;
+		var queens;
 		if (color == 'white') {
-			arr = board.wQueens;
+			queens = board.wQueens;
 		}
 		else if (color == 'black') {
-			arr = board.bQueens;
+			queens = board.bQueens;
 		}
-		for (var i=0;i<arr.length;i++) {
-			var rdx = to[0]-arr[i][0];
-			var rdy = to[1]-arr[i][1];
-			var dx = Math.abs(rdx);
-			var dy = Math.abs(rdy);
-			if (rdx > 0) {
-				rdx = 1;
-			}
-			else if (rdx < 0) {
-				rdx = -1;
-			}
-			if (rdy > 0) {
-				rdy = 1;
-			}
-			else if (rdy < 0) {
-				rdy = -1;
-			}
-			if (dx == dy || dx == 0 || dy == 0) {	//bishop-like move or rook-like move
-				var x = arr[i][0];
-				var y = arr[i][1];
+		for (var i=0;i<queens.length;i++) {
+			var dx = Math.abs(to[0]-queens[i][0]);
+			var dy = Math.abs(to[1]-queens[i][1]);
+			
+			rdx = this.setMoveIncrement(to[0]-queens[i][0]);
+			rdy = this.setMoveIncrement(to[1]-queens[i][1]);
+
+			if (this.bishopMove(dx, dy) || this.rookMove(dx, dy)) {
+				var x = queens[i][0];
+				var y = queens[i][1];
 				while (true) {
 					x += rdx;
 					y += rdy;
 					if (x == to[0] && y == to[1]) {
 						if (extra[0] != -1 || extra[1] != -1) {
-							if (extra[0] != arr[i][1] && extra[1] != arr[i][0]) {
+							if (extra[0] != queens[i][1] && extra[1] != queens[i][0]) {
 								break;
 							}
-							return new Array(arr[i][0],arr[i][1]);
+							return new Array(queens[i][0],queens[i][1]);
 						}
-						rtrns[rtrns.length] = new Array(arr[i][0],arr[i][1]);
+						rtrns[rtrns.length] = new Array(queens[i][0],queens[i][1]);
 						break;
 					}
-					var tmp = pos[x][y];
-					if (tmp && tmp.piece) {	//ran into another piece
-						break;
-					}
+					if (this.pathBlocked( pos[x][y] )) { break; }
 				}
 			}
 		}
@@ -744,6 +731,16 @@ function Converter(pgn) {
 
 		throw("No queen move found '"+toSAN+"'");
 	};
+	this.setMoveIncrement = function( delta ) {
+		if( delta == 0) {
+			return delta;
+		} else {
+			return delta / Math.abs(delta);
+		}
+	};
+	this.rookMove = function(dx, dy) { return dx == 0 || dy == 0; };
+	this.bishopMove = function(dx, dy) { return dx == dy; };
+	this.pathBlocked = function(path) { return path && path.piece; };
 
 	/* 
 		Find the rook's from location.
