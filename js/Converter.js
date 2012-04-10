@@ -786,18 +786,7 @@ function Converter(pgn) {
 
 		if (rtrns.length>1) {
 			for (var i = 0; i< rtrns.length;i++) {
-				var from = pos[rtrns[i][0]][rtrns[i][1]];
-				var oldTo = pos[to[0]][to[1]];
-				
-				pos[rtrns[i][0]][rtrns[i][1]] = new vSquare();
-				pos[to[0]][to[1]] = from;
-
-				var checked = isKingChecked(board,from.color, pos);
-				pos[rtrns[i][0]][rtrns[i][1]] = from;
-				pos[to[0]][to[1]] = oldTo;
-				if (checked)
-					continue;
-				else
+				if (!this.leavesOwnKingInCheck(board, pos, rtrns[i]))
 					return rtrns[i];
 			}
 		}
