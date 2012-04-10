@@ -837,7 +837,7 @@ function Converter(pgn) {
 		var holdMe = pos[from[0]][from[1]];
 		pos[from[0]][from[1]] = new vSquare();
 
-		var checked = isKingChecked(brd, from.color, pos);
+		var checked = this.isKingChecked(brd, from.color, pos);
 		pos[from[0]][from[1]] = holdMe;
 		
 		return checked;
@@ -1015,7 +1015,7 @@ function Converter(pgn) {
 		return new Array(from, to, hist, pPiece);
 	};
 		
-	isKingChecked = function(brd, col) {
+	this.isKingChecked = function(brd, col) {
 		var op = getOppColor(col);
 		
 		var x = brd.wKingX, y = brd.wKingY;

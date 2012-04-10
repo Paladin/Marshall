@@ -857,5 +857,15 @@ TestCase( "ConverterTest",
 		assertEquals( "Couldn't find knight e7 full", e7, conv.findFromKnight(conv, 'Nc8', c8Full, "black"));
 		assertEquals( "Couldn't find knight f4", f4, conv.findFromKnight(conv, 'Nh5', h5, "black"));
 		assertEquals( "Couldn't find knight f4 full", f4, conv.findFromKnight(conv, 'Nf4h5', h5Full, "black"));
+	},
+	
+	"test finding if black king is in check": function() {
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		conv.resetToEnd();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "black", conv.vBoard));
 	}
 });
