@@ -319,7 +319,7 @@ function Converter(pgn) {
 		var kingre = /^K[a-z]+[1-8]/i;
 		var prom = "";
 		
-		var toCoords = getSquare(to);
+		var toCoords = this.getSquare(to);
 		var fromCoords, from, to, result, myMove = null, pawnM = false;
 		if (knightre.test(to)) {
 			fromCoords = this.findFromKnight(this, to, toCoords, color);
@@ -346,8 +346,8 @@ function Converter(pgn) {
 			}
 			var coords = color=='white'?wCoords:bCoords;
 			
-			fromCoords = getSquare(coords[0]);
-			toCoords = getSquare(coords[1]);
+			fromCoords = this.getSquare(coords[0]);
+			toCoords = this.getSquare(coords[1]);
 			
 			from = this.vBoard[fromCoords[0]][fromCoords[1]];
 			to = this.vBoard[toCoords[0]][toCoords[1]];
@@ -371,8 +371,8 @@ function Converter(pgn) {
 			myMove.add(new MySquare(toCoords[0], toCoords[1]
 												,result[1].piece, result[1].color));
 
-			fromCoords = getSquare(coords[2]);
-			toCoords = getSquare(coords[3]);
+			fromCoords = this.getSquare(coords[2]);
+			toCoords = this.getSquare(coords[3]);
 		}
         else if (genericre.test(to)) {
             // dbl information move, g4-g6
@@ -878,7 +878,7 @@ function Converter(pgn) {
 	 * "taking move", "en passante", "check", "piece from a
 	 * specific file or rank" it is also extracted.
 	*/
-	function getSquare(coord) {
+	this.getSquare = function(coord) {
 		if (arguments.length != 1) {
 			throw "Wrong number of arguments";
 		}

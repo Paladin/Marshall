@@ -859,6 +859,71 @@ TestCase( "ConverterTest",
 		assertEquals( "Couldn't find knight f4 full", f4, conv.findFromKnight(conv, 'Nf4h5', h5Full, "black"));
 	},
 	
+	"test finding destination coordinates of a SAN move": function() {
+		f7 = [1,5,[-1,-1],null];
+		noOrigin = [-1,-1];
+		e8Origin = [4,0];
+		eOrigin = [4,-1];
+		x8Origin = [-1,0];
+		f6 = [2,5,[-1,-1],null];
+		g8Origin = [6,0];
+		gOrigin = [6,-1];
+		
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		conv.resetToEnd();
+		
+		result = conv.getSquare("Kxf7");
+		assertArray( "Didn't return an array", result);
+		assertEquals( "Returned wrong rank", f7[0], result[0]);
+		assertEquals( "Returned wrong file", f7[1], result[1]);
+		assertEquals( "Returned wrong origin", noOrigin, result[2]);
+		assertNaN( "Returned wrong misc", result[3]);
+		
+		result = conv.getSquare("Ke8xf7");
+		assertArray( "Didn't return an array", result);
+		assertEquals( "Returned wrong rank", f7[0], result[0]);
+		assertEquals( "Returned wrong file", f7[1], result[1]);
+		assertEquals( "Returned wrong origin", e8Origin, result[2]);
+		assertNaN( "Returned wrong misc", result[3]);
+		
+		result = conv.getSquare("Kexf7");
+		assertArray( "Didn't return an array", result);
+		assertEquals( "Returned wrong rank", f7[0], result[0]);
+		assertEquals( "Returned wrong file", f7[1], result[1]);
+		assertEquals( "Returned wrong origin", eOrigin, result[2]);
+		assertEquals( "Returned wrong misc", 4, result[3]);
+		
+		result = conv.getSquare("K8xf7");
+		assertArray( "Didn't return an array", result);
+		assertEquals( "Returned wrong rank", f7[0], result[0]);
+		assertEquals( "Returned wrong file", f7[1], result[1]);
+		assertEquals( "Returned wrong origin", x8Origin, result[2]);
+		assertNaN( "Returned wrong misc", result[3]);
+		
+		result = conv.getSquare("Ngf6");
+		assertArray( "Didn't return an array", result);
+		assertEquals( "Returned wrong rank", f6[0], result[0]);
+		assertEquals( "Returned wrong file", f6[1], result[1]);
+		assertEquals( "Returned wrong origin", gOrigin, result[2]);
+		assertEquals( "Returned wrong misc", -1, result[3]);
+		
+		result = conv.getSquare("Ng8f6");
+		assertArray( "Didn't return an array", result);
+		assertEquals( "Returned wrong rank", f6[0], result[0]);
+		assertEquals( "Returned wrong file", f6[1], result[1]);
+		assertEquals( "Returned wrong origin", g8Origin, result[2]);
+		assertEquals( "Returned wrong misc", -1, result[3]);
+		
+		result = conv.getSquare("N8f6");
+		assertArray( "Didn't return an array", result);
+		assertEquals( "Returned wrong rank", f6[0], result[0]);
+		assertEquals( "Returned wrong file", f6[1], result[1]);
+		assertEquals( "Returned wrong origin", x8Origin, result[2]);
+		assertEquals( "Returned wrong misc", -1, result[3]);
+	},
+	
 	"test finding if black king is in check": function() {
 
 		pgn = new Pgn( this.goodGame );
