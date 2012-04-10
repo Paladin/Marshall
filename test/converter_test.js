@@ -822,5 +822,21 @@ TestCase( "ConverterTest",
 
 		assertEquals( "Couldn't find queen", d8, conv.findFromQueen(conv, conv.vBoard, 'Qd7', d7, "black"));
 		assertEquals( "Couldn't find queen", d8, conv.findFromQueen(conv, conv.vBoard, 'Qd8d7', d7Full, "black"));
+	},
+	
+	"test finding a rook to move to a square": function() {
+		a8 = [0,0];
+		f8 = [0,5];
+		b8 = [0,1,[-1,-1],-1];
+		g8 = [0,6,[-1,-1],-1];
+		b8Full = [0,1,[0,0],-1];
+		g8Full = [0,6,[5,0],-1];
+
+		pgn = new Pgn( this.goodPGN );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertEquals( "Couldn't find rook", a8, conv.findFromRook(conv, conv.vBoard, 'Rb8', b8, "black"));
+		assertEquals( "Couldn't find rook", a8, conv.findFromRook(conv, conv.vBoard, 'Ra8b8', b8Full, "black"));
 	}
 });

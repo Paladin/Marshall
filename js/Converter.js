@@ -331,7 +331,7 @@ function Converter(pgn) {
 			fromCoords = this.findFromQueen(this, this.vBoard, to, toCoords, color);
 		}
 		else if (rookre.test(to)) {
-			fromCoords = findFromRook(this, this.vBoard, to, toCoords, color);
+			fromCoords = this.findFromRook(this, this.vBoard, to, toCoords, color);
 		}
 		else if (kingre.test(to)) {
 			fromCoords = this.findFromKing(this, color);
@@ -745,7 +745,7 @@ function Converter(pgn) {
 	/* 
 		Find the rook's from location.
 	*/
-	function findFromRook(board, pos, toSAN, to, color) {
+	this.findFromRook = function(board, pos, toSAN, to, color) {
 		var extra = to[2];
 		var rtrns = new Array();
 		
@@ -760,27 +760,13 @@ function Converter(pgn) {
         // loop through rooks and lets see
         // which one can move to the position
 		for (var i=0;i<rooks.length;i++) {
-			var rdx = to[0]-rooks[i][0];
-			var rdy = to[1]-rooks[i][1];
-			var dx = Math.abs(rdx);
-			var dy = Math.abs(rdy);
+			var dx = Math.abs(to[0]-rooks[i][0]);
+			var dy = Math.abs(to[1]-rooks[i][1]);
 
-            // determine direction
-			if (rdx > 0) {
-				rdx = 1;
-			}
-			else if (rdx < 0) {
-				rdx = -1;
-			}
+			rdx = this.setMoveIncrement(to[0]-rooks[i][0]);
+			rdy = this.setMoveIncrement(to[1]-rooks[i][1]);
 
-			if (rdy > 0) {
-				rdy = 1;
-			}
-			else if (rdy < 0) {
-				rdy = -1;
-			}
-
-			if (dx == 0 || dy == 0) {
+			if (this.rookMove(dx, dy)) {
 				var x = rooks[i][0];
 				var y = rooks[i][1];
 				while (true) {
@@ -804,10 +790,7 @@ function Converter(pgn) {
 						rtrns[rtrns.length] = new Array(rooks[i][0],rooks[i][1]);
 						break;
 					}
-					tmp = pos[x][y];
-					if (tmp && tmp.piece) {	//ran into another piece
-						break;
-					}
+					if (this.pathBlocked( pos[x][y] )) { break; }
 				}
 			}
 		}
