@@ -1018,9 +1018,10 @@ function Converter(pgn) {
 	};
 		
 	this.isKingChecked = function(brd, col) {
-		var x = brd.wKingX, y = brd.wKingY;
 		if ("black" == col) {
-			x = brd.bKingX, y = brd.bKingY;
+			var x = brd.bKingX, y = brd.bKingY;
+		} else {
+			var x = brd.wKingX, y = brd.wKingY;
 		}
 		// diagonals, looking for bishops, queens
 		if (this.checkFound(brd.vBoard, x, y, -1, -1, col, ["bishop","queen"]))
