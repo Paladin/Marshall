@@ -1027,7 +1027,7 @@ function Converter(pgn) {
 		// diagonals, looking for bishops, queens
 		var tmp;
 		try {
-			for (var i = 1;i < 7; i++) {
+			for (var i = 1;i < 8; i++) {
 				tmp = brd.vBoard[x-i][y-i];
 				if (tmp.color == col)
 					break;
@@ -1042,7 +1042,7 @@ function Converter(pgn) {
 		catch (e) {}
 			
 		try {
-			for (var i = 1;i < 7; i++) {
+			for (var i = 1;i < 8; i++) {
 				tmp = brd.vBoard[x+i][y+i];
 				if (tmp.color == col)
 					break;
@@ -1057,7 +1057,7 @@ function Converter(pgn) {
 		catch (e) {}
 			
 		try {
-			for (var i = 1;i < 7; i++) {
+			for (var i = 1;i < 8; i++) {
 				tmp = brd.vBoard[x+i][y-i];
 				if (tmp.color == col)
 					break;
@@ -1072,7 +1072,7 @@ function Converter(pgn) {
 		catch (e) {}
 		
 		try {
-			for (var i = 1;i < 7; i++) {
+			for (var i = 1;i < 8; i++) {
 				tmp = brd.vBoard[x-i][y+i];
 				if (tmp.color == col)
 					break;
@@ -1088,7 +1088,7 @@ function Converter(pgn) {
 
 		// horizontals, verticals - looking for rooks and queens
 		try {
-			for (var i = 1;i < 7; i++) {
+			for (var i = 1;i < 8; i++) {
 				tmp = brd.vBoard[x][y+i];
 				if (tmp.color == col)
 					break;
@@ -1102,7 +1102,7 @@ function Converter(pgn) {
 		}
 		catch (e) {}
 		try {
-			for (var i = 1;i < 7; i++) {
+			for (var i = 1;i < 8; i++) {
 				tmp = brd.vBoard[x][y-i];
 				if (tmp.color == col)
 					break;
@@ -1116,7 +1116,7 @@ function Converter(pgn) {
 		}
 		catch (e) {}
 		try {
-			for (var i = 1;i < 7; i++) {
+			for (var i = 1;i < 8; i++) {
 				tmp = brd.vBoard[x+i][y];
 				if (tmp.color == col)
 					break;
@@ -1130,7 +1130,7 @@ function Converter(pgn) {
 		}
 		catch (e) {}
 		try {
-			for (var i = 1;i < 7; i++) {
+			for (var i = 1;i < 8; i++) {
 				tmp = brd.vBoard[x-i][y];
 				if (tmp.color == col)
 					break;
