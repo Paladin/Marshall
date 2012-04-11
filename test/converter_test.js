@@ -1034,7 +1034,7 @@ TestCase( "ConverterTest",
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
 		conv.convert();
-		result = movePiece(conv, from, to, "");
+		result = conv.movePiece(conv, from, to, "");
 
 		assertEquals( "Incorrect piece moved", "knight", to.piece);
 		assertEquals( "Incorrect color moved", "white", to.color);
@@ -1054,16 +1054,16 @@ TestCase( "ConverterTest",
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
 		conv.convert();
-		movePiece(conv, pawnFrom, to, "Q");
+		conv.movePiece(conv, pawnFrom, to, "Q");
 
 		assertEquals( "Incorrect piece promoted - Q", "queen", to.piece);
 		assertEquals( "Incorrect color moved", "white", to.color);
 		assertEquals( "Incorrect type moved", -1, to.type);
-		movePiece(conv, pawnFrom, to, "R");
+		conv.movePiece(conv, pawnFrom, to, "R");
 		assertEquals( "Incorrect piece promoted - R", "rook", to.piece);
-		movePiece(conv, pawnFrom, to, "N");
+		conv.movePiece(conv, pawnFrom, to, "N");
 		assertEquals( "Incorrect piece promoted - N", "knight", to.piece);
-		movePiece(conv, pawnFrom, to, "B");
+		conv.movePiece(conv, pawnFrom, to, "B");
 		assertEquals( "Incorrect piece promoted - B", "bishop", to.piece);
 	},
 	
