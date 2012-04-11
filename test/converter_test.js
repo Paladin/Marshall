@@ -520,6 +520,78 @@ TestCase( "ConverterTest",
 					]
 				],
 
+	rookCheck: 	'[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'[FEN	"r6K/8/8/8/8/8/8/7k w - - 0 13"]\n',
+
+	rookCheckR: 	'[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'[FEN	"K6r/8/8/8/8/8/8/7k w - - 0 13"]\n',
+
+	rookCheckU: 	'[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'[FEN	"K6R/8/8/8/8/8/8/7k b - - 0 13"]\n',
+
+	rookCheckD: 	'[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'[FEN	"K6k/8/8/8/8/8/8/7R b - - 0 13"]\n',
+
+	bishopCheckUL: 	'[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'[FEN	"B6K/8/8/8/8/8/8/7k b - - 0 13"]\n',
+
+	bishopCheckUR: 	'[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'[FEN	"k6b/8/8/8/8/8/8/K7 w - - 0 13"]\n',
+
+	queenCheckDL: 	'[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'[FEN	"k6K/8/8/8/8/8/8/q7 w - - 0 13"]\n',
+
+	queenCheckDR: 	'[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'[FEN	"K6k/8/8/8/8/8/8/7q w - - 0 13"]\n',
+
 	setup: function() {},
 	teardown: function() {},
 	
@@ -946,5 +1018,77 @@ TestCase( "ConverterTest",
 		conv.resetToEnd();
 
 		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "black", conv.vBoard));
+	},
+	
+	"test finding if white king is in check from rook": function() {
+
+		pgn = new Pgn( this.rookCheck );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "white", conv.vBoard));
+	},
+	
+	"test finding if white king is in check from rook (right)": function() {
+
+		pgn = new Pgn( this.rookCheckR );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "white", conv.vBoard));
+	},
+	
+	"test finding if black king is in check from rook (up)": function() {
+
+		pgn = new Pgn( this.rookCheckU );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "black", conv.vBoard));
+	},
+	
+	"test finding if black king is in check from rook (down)": function() {
+
+		pgn = new Pgn( this.rookCheckD );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "black", conv.vBoard));
+	},
+	
+	"test finding if black king is in check from bishop (ul)": function() {
+
+		pgn = new Pgn( this.bishopCheckUL );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "black", conv.vBoard));
+	},
+	
+	"test finding if white king is in check from bishop (ur)": function() {
+
+		pgn = new Pgn( this.bishopCheckUR );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "white", conv.vBoard));
+	},
+	
+	"test finding if white king is in check from queen (dl)": function() {
+
+		pgn = new Pgn( this.queenCheckDL );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "white", conv.vBoard));
+	},
+	
+	"test finding if white king is in check from queen (dr)": function() {
+
+		pgn = new Pgn( this.queenCheckDR );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "white", conv.vBoard));
 	}
 });
