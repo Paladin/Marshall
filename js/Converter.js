@@ -67,72 +67,60 @@ function Converter(pgn) {
 				var c = val[i].charAt(j);
 				switch (c) {
 					case 'p':
-						this.vBoard[i][file].piece = 'pawn';
-						this.vBoard[i][file].color = 'black';
+						this.placePiece(this.vBoard[i][file], 'pawn', 'black');
 						file++;
 						break;
 					case 'n':
-						this.vBoard[i][file].piece = 'knight';
-						this.vBoard[i][file].color = 'black';
+						this.placePiece(this.vBoard[i][file], 'knight', 'black');
 						file++;
 						break;
 					case 'k':
-						this.vBoard[i][file].piece = 'king';
-						this.vBoard[i][file].color = 'black';
+						this.placePiece(this.vBoard[i][file], 'king', 'black');
 						this.bKingX = i;
 						this.bKingY = file;
 						file++;
 						break;
 					case 'q':
-						this.vBoard[i][file].piece = 'queen';
-						this.vBoard[i][file].color = 'black';
+						this.placePiece(this.vBoard[i][file], 'queen', 'black');
 						this.bQueens[this.bQueens.length] = [i,file];
 						file++;
 						break;
 					case 'r':
-						this.vBoard[i][file].piece = 'rook';
-						this.vBoard[i][file].color = 'black';
+						this.placePiece(this.vBoard[i][file], 'rook', 'black');
 						this.bRooks[this.bRooks.length] = [i,file];
 						file++;
 						break;
 					case 'b':
-						this.vBoard[i][file].piece = 'bishop';
-						this.vBoard[i][file].color = 'black';
+						this.placePiece(this.vBoard[i][file], 'bishop', 'black');
 						this.bBishops[this.bBishops.length] = [i,file];
 						file++;
 						break;
 					case 'P':
-						this.vBoard[i][file].piece = 'pawn';
-						this.vBoard[i][file].color = 'white';
+						this.placePiece(this.vBoard[i][file], 'pawn', 'white');
 						file++;
 						break;
 					case 'N':
-						this.vBoard[i][file].piece = 'knight';
-						this.vBoard[i][file].color = 'white';
+						this.placePiece(this.vBoard[i][file], 'knight', 'white');
 						file++;
 						break;
 					case 'K':
-						this.vBoard[i][file].piece = 'king';
-						this.vBoard[i][file].color = 'white';
+						this.placePiece(this.vBoard[i][file], 'king', 'white');
 						this.wKingX = i;
 						this.wKingY = file;
 						file++;
 						break;
 					case 'Q':
-						this.vBoard[i][file].piece = 'queen';
-						this.vBoard[i][file].color = 'white';
+						this.placePiece(this.vBoard[i][file], 'queen', 'white');
 						this.wQueens[this.wQueens.length] = [i,file];
 						file++;
 						break;
 					case 'R':
-						this.vBoard[i][file].piece = 'rook';
-						this.vBoard[i][file].color = 'white';
+						this.placePiece(this.vBoard[i][file], 'rook', 'white');
 						this.wRooks[this.wRooks.length] = [i,file];
 						file++;
 						break;
 					case 'B':
-						this.vBoard[i][file].piece = 'bishop';
-						this.vBoard[i][file].color = 'white';
+						this.placePiece(this.vBoard[i][file], 'bishop', 'white');
 						this.wBishops[this.wBishops.length] = [i,file];
 						file++;
 						break;
@@ -159,52 +147,40 @@ function Converter(pgn) {
 		
 		// pawns
 		for (var i = 0;i < 8; i++) {
-			this.vBoard[6][i].piece = 'pawn';
-			this.vBoard[6][i].color = 'white';
+			this.placePiece(this.vBoard[6][i], 'pawn','white');
 	            
-			this.vBoard[1][i].piece = 'pawn';
-			this.vBoard[1][i].color = 'black';
+			this.placePiece(this.vBoard[1][i], 'pawn', 'black');
 		}
 	
 		// rooks, bishops, knights
 		for(var i = 0; i < 2; i++) {
-			this.vBoard[7][i*7].piece = 'rook';
-			this.vBoard[7][i*7].color = 'white';
+			this.placePiece(this.vBoard[7][i*7], 'rook', 'white');
 			this.wRooks[this.wRooks.length] = [7,i*7];
 	          
-			this.vBoard[0][i*7].piece = 'rook';
-			this.vBoard[0][i*7].color = 'black';
+			this.placePiece(this.vBoard[0][i*7], 'rook', 'black');
 			this.bRooks[this.bRooks.length] = [0,i*7];
 	  
-			this.vBoard[7][i*5+1].piece = 'knight';
-			this.vBoard[7][i*5+1].color = 'white';
+			this.placePiece(this.vBoard[7][i*5+1], 'knight', 'white');
 	          
-			this.vBoard[0][i*5+1].piece = 'knight';
-			this.vBoard[0][i*5+1].color = 'black';
+			this.placePiece(this.vBoard[0][i*5+1], 'knight', 'black');
 	  
-			this.vBoard[7][i*3+2].piece = 'bishop';
-			this.vBoard[7][i*3+2].color = 'white';
+			this.placePiece(this.vBoard[7][i*3+2], 'bishop', 'white');
 			this.wBishops[this.wBishops.length] = [7,i*3+2];
 
-			this.vBoard[0][i*3+2].piece = 'bishop';
-			this.vBoard[0][i*3+2].color = 'black';
+			this.placePiece(this.vBoard[0][i*3+2], 'bishop', 'black');
 			this.bBishops[this.bBishops.length] = [0,i*3+2];
 		}
 	         
-		this.vBoard[7][3].piece = 'queen';
-		this.vBoard[7][3].color = 'white';
+		this.placePiece(this.vBoard[7][3], 'queen', 'white');
 		this.wQueens[this.wQueens.length] = [7,3];
 		
-		this.vBoard[7][4].piece = 'king';
-		this.vBoard[7][4].color = 'white';
+		this.placePiece(this.vBoard[7][4], 'king', 'white');
 		this.wKingX = 7, this.wKingY = 4;
 	
-		this.vBoard[0][3].piece = 'queen';
-		this.vBoard[0][3].color = 'black';
+		this.placePiece(this.vBoard[0][3], 'queen', 'black');
 		this.bQueens[this.bQueens.length] = [0,3];
 	
-		this.vBoard[0][4].piece = 'king';
-		this.vBoard[0][4].color = 'black';
+		this.placePiece(this.vBoard[0][4], 'king', 'black');
 		this.bKingX = 0, this.bKingY = 4;
 	
 		/* EO Virtual board initialization */
@@ -219,6 +195,10 @@ function Converter(pgn) {
 	}
 }
 
+Converter.prototype.placePiece = function(theSquare, thePiece, theColor) {
+	theSquare.piece = thePiece;
+	theSquare.color = theColor;
+}
 
 Converter.prototype.convert = function() {
 	var move = null;
