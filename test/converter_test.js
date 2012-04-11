@@ -1010,6 +1010,17 @@ TestCase( "ConverterTest",
 		assertEquals( "Couldn't do en passant", e3, conv.getEnPassante(conv, 6, 5, 5, 4));
 	},
 	
+	"test getting opponent's color": function() {
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+
+		assertEquals( "Should be white", "white", conv.getOppColor("black"));
+		assertEquals( "Should be black", "black", conv.getOppColor("white"));
+		assertEquals( "default is white", "white", conv.getOppColor("turquoise"));
+	},
+
 	"test finding if black king is in check": function() {
 
 		pgn = new Pgn( this.goodGame );
