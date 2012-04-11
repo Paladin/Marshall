@@ -1025,125 +1025,44 @@ function Converter(pgn) {
 			x = brd.bKingX, y = brd.bKingY;
 		}
 		// diagonals, looking for bishops, queens
-		var tmp;
-		try {
-			for (var i = 1;i < 8; i++) {
-				tmp = brd.vBoard[x-i][y-i];
-				if (tmp.color == col)
-					break;
-				if (tmp.color == op) {
-					if("bishop" == tmp.piece || "queen" == tmp.piece) {
-						return true;
-					}
-					break;
-				}
-			}
-		}
-		catch (e) {}
-			
-		try {
-			for (var i = 1;i < 8; i++) {
-				tmp = brd.vBoard[x+i][y+i];
-				if (tmp.color == col)
-					break;
-				if (tmp.color == op) {
-					if("bishop" == tmp.piece || "queen" == tmp.piece) {
-						return true;
-					}
-					break;
-				}
-			}
-		}
-		catch (e) {}
-			
-		try {
-			for (var i = 1;i < 8; i++) {
-				tmp = brd.vBoard[x+i][y-i];
-				if (tmp.color == col)
-					break;
-				if (tmp.color == op) {
-					if("bishop" == tmp.piece || "queen" == tmp.piece) {
-						return true;
-					}
-					break;
-				}
-			}
-		}
-		catch (e) {}
-		
-		try {
-			for (var i = 1;i < 8; i++) {
-				tmp = brd.vBoard[x-i][y+i];
-				if (tmp.color == col)
-					break;
-				if (tmp.color == op) {
-					if("bishop" == tmp.piece || "queen" == tmp.piece) {
-						return true;
-					}
-					break;
-				}
-			}
-		}
-		catch (e) {}
+		if (this.checkFound(brd.vBoard, x, y, -1, -1, col, op, ["bishop","queen"]))
+			return true;
+		if (this.checkFound(brd.vBoard, x, y, 1, 1, col, op, ["bishop","queen"]))
+			return true;
+		if (this.checkFound(brd.vBoard, x, y, 1, -1, col, op, ["bishop","queen"]))
+			return true;
+	   if (this.checkFound(brd.vBoard, x, y, -1, 1, col, op, ["bishop","queen"]))
+			return true;
 
 		// horizontals, verticals - looking for rooks and queens
-		try {
-			for (var i = 1;i < 8; i++) {
-				tmp = brd.vBoard[x][y+i];
-				if (tmp.color == col)
-					break;
-				if (tmp.color == op) {
-					if("rook" == tmp.piece || "queen" == tmp.piece) {
-						return true;
-					}
-					break;
-				}
-			}
-		}
-		catch (e) {}
-		try {
-			for (var i = 1;i < 8; i++) {
-				tmp = brd.vBoard[x][y-i];
-				if (tmp.color == col)
-					break;
-				if (tmp.color == op) {
-					if("rook" == tmp.piece || "queen" == tmp.piece) {
-						return true;
-					}
-					break;
-				}
-			}
-		}
-		catch (e) {}
-		try {
-			for (var i = 1;i < 8; i++) {
-				tmp = brd.vBoard[x+i][y];
-				if (tmp.color == col)
-					break;
-				if (tmp.color == op) {
-					if("rook" == tmp.piece || "queen" == tmp.piece) {
-						return true;
-					}
-					break;
-				}
-			}
-		}
-		catch (e) {}
-		try {
-			for (var i = 1;i < 8; i++) {
-				tmp = brd.vBoard[x-i][y];
-				if (tmp.color == col)
-					break;
-				if (tmp.color == op) {
-					if("rook" == tmp.piece || "queen" == tmp.piece) {
-						return true;
-					}
-					break;
-				}
-			}
-		}
-		catch (e) {}
+		if (this.checkFound(brd.vBoard, x, y, 0, 1, col, op, ["rook","queen"]))
+			return true;
+		if (this.checkFound(brd.vBoard, x, y, 0, -1, col, op, ["rook","queen"]))
+			return true;
+		if (this.checkFound(brd.vBoard, x, y, 1, 0, col, op, ["rook","queen"]))
+			return true;
+	   if (this.checkFound(brd.vBoard, x, y, -1, 0, col, op, ["rook","queen"]))
+			return true;
 
+		return false;
+	};
+	
+	this.checkFound = function( board, rank, file, deltaRank,
+								deltaFile, color, opponent, pieces ) {
+		try {
+			for (var i = 1;i < 8; i++) {
+				theSquare = board[rank+(i*deltaRank)][file+(i*deltaFile)];
+				if (theSquare.color == color)
+					break;
+				if (theSquare.color == opponent) {
+					if(pieces.indexOf(theSquare.piece) > -1) {
+						return true;
+					}
+					break;
+				}
+			}
+		}
+		catch(e) {}
 		return false;
 	};
 };
