@@ -976,7 +976,7 @@ function Converter(pgn) {
 		return new Array(x1, y2);
 	};
 
-	getOppColor = function(color) {
+	this.getOppColor = function(color) {
 		return "white"==color?"black":"white";
 	};
         
@@ -1018,37 +1018,36 @@ function Converter(pgn) {
 	};
 		
 	this.isKingChecked = function(brd, col) {
-		var op = getOppColor(col);
-		
 		var x = brd.wKingX, y = brd.wKingY;
 		if ("black" == col) {
 			x = brd.bKingX, y = brd.bKingY;
 		}
 		// diagonals, looking for bishops, queens
-		if (this.checkFound(brd.vBoard, x, y, -1, -1, col, op, ["bishop","queen"]))
+		if (this.checkFound(brd.vBoard, x, y, -1, -1, col, ["bishop","queen"]))
 			return true;
-		if (this.checkFound(brd.vBoard, x, y, 1, 1, col, op, ["bishop","queen"]))
+		if (this.checkFound(brd.vBoard, x, y, 1, 1, col, ["bishop","queen"]))
 			return true;
-		if (this.checkFound(brd.vBoard, x, y, 1, -1, col, op, ["bishop","queen"]))
+		if (this.checkFound(brd.vBoard, x, y, 1, -1, col, ["bishop","queen"]))
 			return true;
-	   if (this.checkFound(brd.vBoard, x, y, -1, 1, col, op, ["bishop","queen"]))
+	   if (this.checkFound(brd.vBoard, x, y, -1, 1, col, ["bishop","queen"]))
 			return true;
 
 		// horizontals, verticals - looking for rooks and queens
-		if (this.checkFound(brd.vBoard, x, y, 0, 1, col, op, ["rook","queen"]))
+		if (this.checkFound(brd.vBoard, x, y, 0, 1, col, ["rook","queen"]))
 			return true;
-		if (this.checkFound(brd.vBoard, x, y, 0, -1, col, op, ["rook","queen"]))
+		if (this.checkFound(brd.vBoard, x, y, 0, -1, col, ["rook","queen"]))
 			return true;
-		if (this.checkFound(brd.vBoard, x, y, 1, 0, col, op, ["rook","queen"]))
+		if (this.checkFound(brd.vBoard, x, y, 1, 0, col, ["rook","queen"]))
 			return true;
-	   if (this.checkFound(brd.vBoard, x, y, -1, 0, col, op, ["rook","queen"]))
+	   if (this.checkFound(brd.vBoard, x, y, -1, 0, col, ["rook","queen"]))
 			return true;
 
 		return false;
 	};
 	
 	this.checkFound = function( board, rank, file, deltaRank,
-								deltaFile, color, opponent, pieces ) {
+								deltaFile, color, pieces ) {
+		var opponent = this.getOppColor(color);
 		try {
 			for (var i = 1;i < 8; i++) {
 				theSquare = board[rank+(i*deltaRank)][file+(i*deltaFile)];
