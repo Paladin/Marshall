@@ -1021,6 +1021,52 @@ TestCase( "ConverterTest",
 		assertEquals( "default is white", "white", conv.getOppColor("turquoise"));
 	},
 
+	"test moving piece": function() {
+		var from = new vSquare();
+		from.piece = "knight";
+		from.color = "white";
+		from.type = -1;
+		var to = new vSquare();
+		to.piece = "bishop";
+		to.color = "black";
+		to.type = null;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		result = movePiece(conv, from, to, "");
+
+		assertEquals( "Incorrect piece moved", "knight", to.piece);
+		assertEquals( "Incorrect color moved", "white", to.color);
+		assertEquals( "Incorrect type moved", -1, to.type);
+	},
+
+	"test promoting pawn": function() {
+		var pawnFrom = new vSquare();
+		pawnFrom.piece = "pawn";
+		pawnFrom.color = "white";
+		pawnFrom.type = -1;
+		var to = new vSquare();
+		to.piece = "bishop";
+		to.color = "black";
+		to.type = null;
+
+		pgn = new Pgn( this.goodGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		movePiece(conv, pawnFrom, to, "Q");
+
+		assertEquals( "Incorrect piece promoted - Q", "queen", to.piece);
+		assertEquals( "Incorrect color moved", "white", to.color);
+		assertEquals( "Incorrect type moved", -1, to.type);
+		movePiece(conv, pawnFrom, to, "R");
+		assertEquals( "Incorrect piece promoted - R", "rook", to.piece);
+		movePiece(conv, pawnFrom, to, "N");
+		assertEquals( "Incorrect piece promoted - N", "knight", to.piece);
+		movePiece(conv, pawnFrom, to, "B");
+		assertEquals( "Incorrect piece promoted - B", "bishop", to.piece);
+	},
+	
 	"test finding if black king is in check": function() {
 
 		pgn = new Pgn( this.goodGame );
