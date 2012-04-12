@@ -115,5 +115,26 @@ TestCase( "BoardTest",
 		
 		assertEquals("Should get the right square", "a1",
 			document.getElementsByClassName("light_square")[0].getAttribute('data-squarename'));
+	},
+	
+	"test flipping the board": function() {
+	/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.aGame;
+
+		var board = new Board("game1");
+		board.init();
+		lightSquares = document.getElementsByClassName("light_square");
+
+		assertEquals("Should get the right square name", "a1",
+						lightSquares[0].getAttribute('data-squarename'));
+		lastSquare = lightSquares[31].firstChild;
+
+		flipBoard(board);
+		assertEquals("Should get the right square name", "h8",
+			lightSquares[0].getAttribute('data-squarename'));
+		assertEquals("First square should have last square's content", lastSquare,
+						lightSquares[0].firstChild);
 	}
 });
