@@ -282,7 +282,9 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 			}catch(e){}
 		}
  	};
-
+/**
+ *	Flips the board to display it from the other side's POV.
+ */
 	this.flipBoard = function() {
 		this.deMarkLastMove(true);
 		var upper, lower, holdSquareContent;
