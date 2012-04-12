@@ -149,7 +149,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				var td = document.createElement("td");
 
 				td.className = !flip?(j%2)?blackC:whiteC:!(j%2)?blackC:whiteC;
-				td.setAttribute( 'data-squarename', file[j]+(i+1) );
+				td.setAttribute( 'data-squarename', file[j]+(8-i) );
 
 				this.pos[i][j] = td;
 				tr.appendChild(td);
@@ -293,20 +293,20 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				lower = this.pos[7-i][7-j];
 
 				try {
-					 holdSquareContent = upper.removeChild(upper.firstChild);
 					 holdSquareName = upper.getAttribute('data-squarename');
+					 holdSquareContent = upper.removeChild(upper.firstChild);
 				}
 				catch (e) {holdSquareContent=null;}
 
 				try{
-					 upper.appendChild(lower.removeChild(lower.firstChild));
 					 upper.setAttribute('data-squarename', lower.getAttribute('data-squarename'));
+					 upper.appendChild(lower.removeChild(lower.firstChild));
 				}
 				catch (e) {}
 				
+				lower.setAttribute('data-squarename', holdSquareName);
 				if (holdSquareContent)
 					lower.appendChild(holdSquareContent);
-					lower.setAttribute('data-squarename', holdSquareName);
 			}
 		}
 	};

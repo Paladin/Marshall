@@ -47,7 +47,7 @@ TestCase( "BoardTest",
 		darkSquares = document.getElementsByClassName("dark_square");
 		assertEquals("Should find one game section", 32, darkSquares.length );
 		
-		assertEquals("Should get the right square", "a1",
+		assertEquals("Should get the right square", "a8",
 			document.getElementsByClassName("light_square")[0].getAttribute('data-squarename'));
 	},
 	
@@ -69,7 +69,7 @@ TestCase( "BoardTest",
 		darkSquares = document.getElementsByClassName("dark_square");
 		assertEquals("Should find one game section", 32, darkSquares.length );
 		
-		assertEquals("Should get the right square", "a1",
+		assertEquals("Should get the right square", "a8",
 			document.getElementsByClassName("light_square")[0].getAttribute('data-squarename'));
 	},
 	
@@ -91,17 +91,17 @@ TestCase( "BoardTest",
 		darkSquares = document.getElementsByClassName("dark_square");
 		assertEquals("Should find one game section", 32, darkSquares.length );
 		
-		assertEquals("Should get the right square", "a1",
+		assertEquals("Should get the right square", "a8",
 			document.getElementsByClassName("light_square")[0].getAttribute('data-squarename'));
 	},
 	
-	"test creation of a Board, skipping to move 3": function() {
+	"test creation of a Board, skipping to move 3, flipped": function() {
 	/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
 
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-		var board = new Board("game1", {"skipToMove": 3});
+		var board = new Board("game1", {"skipToMove": 3, "flipped" : true});
 		board.init();
 
 		results = document.getElementsByClassName("game_section");
@@ -113,7 +113,7 @@ TestCase( "BoardTest",
 		darkSquares = document.getElementsByClassName("dark_square");
 		assertEquals("Should find one game section", 32, darkSquares.length );
 		
-		assertEquals("Should get the right square", "a1",
+		assertEquals("Should get the right square", "h1",
 			document.getElementsByClassName("light_square")[0].getAttribute('data-squarename'));
 	},
 	
@@ -127,15 +127,21 @@ TestCase( "BoardTest",
 		board.init();
 		lightSquares = document.getElementsByClassName("light_square");
 
-		lastName = lightSquares[31].getAttribute('data-squarename');
-		lastSquare = lightSquares[31].firstChild;
+		var newNames = Array();
+		var newSquares = Array();
+		for(i=0; i<32; i++){
+			newNames[31-i] = lightSquares[i].getAttribute('data-squarename');
+			newSquares[31-i] = lightSquares[i].firstChild;
+		}
 
 		board.flipBoard(board);
-		
-		assertEquals("Should get the right square name", lastName,
-			lightSquares[0].getAttribute('data-squarename'));
-		assertEquals("First square should have last square's content", lastSquare,
-			lightSquares[0].firstChild);
+
+		for(i=0; i<32; i++){
+			assertEquals("Square "+i+" name is incorrect -- ", newNames[i],
+				lightSquares[i].getAttribute('data-squarename'));
+			assertEquals("Square "+i+" content is incorrect -- ", newSquares[i],
+				lightSquares[i].firstChild);
+		}
 	},
 	
 	"test skipping backwards 2 moves": function() {
