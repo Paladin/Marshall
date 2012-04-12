@@ -158,7 +158,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		}
 		this.populatePieces();
 		if (this.opts['flipped'])
-			flipBoard(this);
+			this.flipBoard();
 		this.populateProps(propsTd);
 		this.populateMoves(movesDiv, pgn.pgnOrig);
 
@@ -200,7 +200,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		href.appendChild(input);
 		
 		input.onclick = function() {
-			flipBoard(tmp);
+			tmp.flipBoard();
 		};
 
 		btnTd.appendChild(href);
@@ -283,14 +283,14 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		}
  	};
 
-	flipBoard = function(board) {
-		board.deMarkLastMove(true);
+	this.flipBoard = function() {
+		this.deMarkLastMove(true);
 		var upper, lower, holdSquareContent;
-		board.flipped = !board.flipped;
+		this.flipped = !this.flipped;
 		for (var i = 0;i<8;i++) {
 			for (var j = 0;j<4;j++){
-				upper = board.pos[i][j];
-				lower = board.pos[7-i][7-j];
+				upper = this.pos[i][j];
+				lower = this.pos[7-i][7-j];
 
 				try {
 					 holdSquareContent = upper.removeChild(upper.firstChild);

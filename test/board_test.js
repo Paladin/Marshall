@@ -130,7 +130,7 @@ TestCase( "BoardTest",
 		lastName = lightSquares[31].getAttribute('data-squarename');
 		lastSquare = lightSquares[31].firstChild;
 
-		flipBoard(board);
+		board.flipBoard(board);
 		
 		assertEquals("Should get the right square name", lastName,
 			lightSquares[0].getAttribute('data-squarename'));
