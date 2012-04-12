@@ -161,5 +161,23 @@ TestCase( "BoardTest",
 		
 		current = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.tagName;
 		assertEquals("Previous move should now be marked", marked, current );
+	},
+	
+	"test moving to final position": function() {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.aGame;
+
+		var board = new Board("game1");
+		board.init();
+
+		assertEquals("There should be a black pawn on f7 at the start", "black_pawn", 
+			document.getElementsByClassName("light_square")[6].firstChild.alt);
+
+		board.endPosition(board);
+		
+		assertEquals("There should be a white_queen on f7 at the start", "white_queen",
+			document.getElementsByClassName("light_square")[6].firstChild.alt);
 	}
 });

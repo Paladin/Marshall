@@ -260,7 +260,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		href.appendChild(input);
 
 		input.onclick = function() {
-				endPosition(tmp);
+				tmp.endPosition(tmp);
 		};
 		btnTd.appendChild(href);
 		updateMoveInfo(this);
@@ -343,17 +343,19 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 			this.deMarkLastMove();
 			this.markLastMove();
 		}
+	}
+/**
+ *	Jumps the board all the way to the final position of the game
+ */
+	this.endPosition = function() {
+		this.deMarkLastMove();
+		var vBoard = this.conv.getEndPos(this.flipped);
+		this.syncBoard(vBoard);;
+		this.conv.resetToEnd();
+		updateMoveInfo(this);
+		updateMovePane(this, true);
+		this.markLastMove();
 	};
-
-				endPosition = function(board) {
-					board.deMarkLastMove();
-					var vBoard = board.conv.getEndPos(board.flipped);
-					board.syncBoard(vBoard);;
-					board.conv.resetToEnd();
-					updateMoveInfo(board);
-					updateMovePane(board, true);
-					board.markLastMove();
-				};
 
 				this.startPosition = function() {
 					startPosition(this);
@@ -832,6 +834,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 					img.src = src;
 				}
 
+				img.alt = color + "_" + piece;
 				return img;
 			};
 
