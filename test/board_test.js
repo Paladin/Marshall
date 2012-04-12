@@ -127,14 +127,14 @@ TestCase( "BoardTest",
 		board.init();
 		lightSquares = document.getElementsByClassName("light_square");
 
-		assertEquals("Should get the right square name", "a1",
-						lightSquares[0].getAttribute('data-squarename'));
+		lastName = lightSquares[31].getAttribute('data-squarename');
 		lastSquare = lightSquares[31].firstChild;
 
 		flipBoard(board);
-		assertEquals("Should get the right square name", "h8",
+		
+		assertEquals("Should get the right square name", lastName,
 			lightSquares[0].getAttribute('data-squarename'));
 		assertEquals("First square should have last square's content", lastSquare,
-						lightSquares[0].firstChild);
+			lightSquares[0].firstChild);
 	}
 });
