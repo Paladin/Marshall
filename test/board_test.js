@@ -163,7 +163,7 @@ TestCase( "BoardTest",
 		assertEquals("Previous move should now be marked", marked, current );
 	},
 	
-	"test moving to final position": function() {
+	"test moving to final position and back": function() {
 		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
 
 		var movediv = document.getElementById("game1");
@@ -172,12 +172,18 @@ TestCase( "BoardTest",
 		var board = new Board("game1");
 		board.init();
 
-		assertEquals("There should be a black pawn on f7 at the start", "black_pawn", 
+		assertEquals("There should be a black pawn on f7 after init", "black_pawn", 
 			document.getElementsByClassName("light_square")[6].firstChild.alt);
 
 		board.endPosition(board);
 		
 		assertEquals("There should be a white_queen on f7 at the start", "white_queen",
 			document.getElementsByClassName("light_square")[6].firstChild.alt);
+			
+		board.startPosition(board);
+		
+		assertEquals("There should be a black pawn on f7 at the start", "black_pawn", 
+			document.getElementsByClassName("light_square")[6].firstChild.alt);
+		
 	}
 });

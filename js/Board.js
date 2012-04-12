@@ -174,8 +174,9 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		input.title = this.opts['altRewind'];;
 		href.appendChild(input);
 		
+		theBoard = this;
 		input.onclick = function() {
-			startPosition(tmp);
+			theBoard.startPosition();
 		};
 		btnTd.appendChild(href);
 
@@ -358,19 +359,17 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		updateMovePane(this, true);
 		this.markLastMove();
 	};
-
-				this.startPosition = function() {
-					startPosition(this);
-				};
-
-				startPosition = function(board) {
-					board.deMarkLastMove(true);
-					var vBoard = board.conv.getStartPos(board.flipped);
-					board.syncBoard(vBoard);
-					board.conv.resetToStart();
-					updateMoveInfo(board);
-					updateMovePane(board);
-				};
+/**
+ *	Jumps the board all the way to the final position of the game
+ */
+	this.startPosition = function() {
+		this.deMarkLastMove(true);
+		var vBoard = this.conv.getStartPos(this.flipped);
+		this.syncBoard(vBoard);
+		this.conv.resetToStart();
+		updateMoveInfo(this);
+		updateMovePane(this);
+	};
 
 				makeBwMove = function(board, noUpdate) {
 					var move = board.conv.prevMove();
