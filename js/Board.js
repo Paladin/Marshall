@@ -310,32 +310,40 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 			}
 		}
 	};
-
-				this.skipToMove = function(no, color) {
-					var rNo = no*2+color+1;
-					if (this.conv.getCurMoveNo()<rNo) {
-						var i = 0;
-						while(this.conv.getCurMoveNo()<rNo && i < 400) {
-							makeMove(this, true);
-							i++;
-						}
-						updateMoveInfo(this);
-						updateMovePane(this);
-						this.deMarkLastMove();
-						this.markLastMove();
-					}
-					else if (this.conv.getCurMoveNo()>rNo) {
-						var i = 0;
-						while(this.conv.getCurMoveNo()>rNo && i < 200) {
-							makeBwMove(this, true);
-							i++;
-						};
-						updateMoveInfo(this);
-						updateMovePane(this);
-						this.deMarkLastMove();
-						this.markLastMove();
-					}
-				};
+/**
+ *	Rolls the board position to a specific ply (half-move).
+ *
+ *	moveNumber		The move number in the game to set the position to
+ *	color			Which ply? 0=white, 1=black
+ *
+ *	NOTE: the +1 in the ply calculation is because the computer is zero-based while
+ *			the move list, like all human lists, is one-based.
+ */
+	this.skipToMove = function(moveNumber, color) {
+		var ply = moveNumber*2+color+1;
+		if (this.conv.getCurMoveNo()<ply) {
+			var i = 0;
+			while(this.conv.getCurMoveNo()<ply && i < 400) {
+				makeMove(this, true);
+				i++;
+			}
+			updateMoveInfo(this);
+			updateMovePane(this);
+			this.deMarkLastMove();
+			this.markLastMove();
+		}
+		else if (this.conv.getCurMoveNo()>ply) {
+			var i = 0;
+			while(this.conv.getCurMoveNo()>ply && i < 200) {
+				makeBwMove(this, true);
+				i++;
+			};
+			updateMoveInfo(this);
+			updateMovePane(this);
+			this.deMarkLastMove();
+			this.markLastMove();
+		}
+	};
 
 				endPosition = function(board) {
 					board.deMarkLastMove();

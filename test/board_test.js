@@ -136,5 +136,24 @@ TestCase( "BoardTest",
 			lightSquares[0].getAttribute('data-squarename'));
 		assertEquals("First square should have last square's content", lastSquare,
 			lightSquares[0].firstChild);
+	},
+	
+	"test skipping backwards 2 moves": function() {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.aGame;
+
+		var board = new Board("game1", {"skipToMove": 6}); // Black's third move
+		board.init();
+		
+		marked = document.getElementsByClassName("move_numbers")[2].nextElementSibling.nextElementSibling.tagName;
+		unmarked = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.tagName;
+		assertNotEquals("marked and unmarked should not be the same", marked, unmarked );
+
+		board.skipToMove(1,1);		// 2nd 1 means "Black's move"
+		
+		current = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.tagName;
+		assertEquals("Previous move should now be marked", marked, current );
 	}
 });
