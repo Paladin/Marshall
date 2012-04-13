@@ -248,7 +248,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		href.appendChild(input);
 
 		input.onclick = function() {
-			makeMove(tmp);
+			theBoard.makeMove();
 		};
 
 		btnTd.appendChild(href);
@@ -330,7 +330,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		if (this.conv.getCurMoveNo()<ply) {
 			var i = 0;
 			while(this.conv.getCurMoveNo()<ply && i < 400) {
-				makeMove(this, true);
+				this.makeMove(true);
 				i++;
 			}
 			this.updateMoveInfo(this);
@@ -505,36 +505,41 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
  *			A simple classed p element or perhaps a cite
  *	TODO: Also check the first line. Something smells about that
  */
-	this.updateMoveInfo = function(board) {
-		var idx = board.conv.getCurMoveNo()-1;
-		var move = board.conv.moves[idx];
+	this.updateMoveInfo = function() {
+		var idx = this.conv.getCurMoveNo()-1;
+		var move = this.conv.moves[idx];
 		if (move && move.moveStr) {
 			 var str = Math.floor((idx==0?1:idx)/2+1)+". "+move.moveStr;
-			 board.moveInput.value = str;
+			 this.moveInput.value = str;
 		}
 		else
-			 board.moveInput.value = "...";
+			 this.moveInput.value = "...";
 	};
+/**
+ *	This makes the next move in the game, and optionally updates the
+ *	display.
+ *
+ *	update		Boolean indicating if the displays should be updated. Default is true
+ */
+	this.makeMove = function(update) {
+		var move = this.conv.nextMove();
+		if (move == null)
+			 return;
+		
+		if ( typeof(update) == 'undefined' || update) {
+			 this.deMarkLastMove();
+			 this.markLastMove();
 
-				makeMove = function(board, noUpdate) {
-					var move = board.conv.nextMove();
-					if (move == null)
-						 return;
-					
-					if (!noUpdate) {
-						 board.deMarkLastMove();
-						 board.markLastMove();
-
-						 this.updateMoveInfo(board);
-						 updateMovePane(board);
-					}
-					
-					for(var i=0;i < move.actions.length;i++) {
-						board.drawSquare(move.actions[i]);
-					}
-					
-					board.drawEnPassante(move);
-				};
+			 this.updateMoveInfo();
+			 updateMovePane(this);
+		}
+		
+		for(var i=0;i < move.actions.length;i++) {
+			this.drawSquare(move.actions[i]);
+		}
+		
+		this.drawEnPassante(move);
+	};
 
 				updateMovePane = function(board, bw) {
 					// highlight the move in the move's pane

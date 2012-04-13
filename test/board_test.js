@@ -318,7 +318,27 @@ TestCase( "BoardTest",
 		var expected = board.moveInput.value;
 		board.moveInput.value = "PreTest";
 
-		board.updateMoveInfo(board);
+		board.updateMoveInfo();
 		assertEquals("Should have correct move display", expected, board.moveInput.value);
+	},
+
+	"test making a move": function() {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.epGame;
+
+		var board = new Board("game1");
+		board.init();
+		board.skipToMove(2, 0);
+		var expected = board.moveInput.value;
+
+		board.makeMove(false);
+		assertEquals("Should not update move display", expected, board.moveInput.value);
+		board.makeMove(true);
+		assertNotEquals("Should update move display", expected, board.moveInput.value);
+		newexpected = board.moveInput.value;
+		board.makeMove();
+		assertNotEquals("Default should update move display", newexpected, board.moveInput.value);
 	}
 });
