@@ -174,7 +174,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		input.title = this.opts['altRewind'];;
 		href.appendChild(input);
 		
-		theBoard = this;
+		var theBoard = this;
 		input.onclick = function() {
 			theBoard.startPosition();
 		};
