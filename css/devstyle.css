@@ -167,22 +167,31 @@ a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-co
 
 .mainboard { height: 272px; width: 272px; }
 
-.gameboard { height: 255px; width: 255px; margin: 0 auto; }
+.gameboard { height: 270px; width: 270px; margin: 0 auto; }
 
 .dark_square { background-color: #666; }
 
 .light_square { background-color: #CCC; }
 
+.dark_square, .light_square { height:33px; width:264px; }
+
 .board_controls
 {
-	height: 10px;
+	height: 33px;
 	text-align: center;
 	vertical-align: top;
 }
 
+.board_controls a { font-size: 30px; }
 
+.current_move_box
+{
+	margin: 0 auto;
+	display: block;
+	width: 210px;
+}
 
-
+.game_info { text-align: center; }
 
 
 
