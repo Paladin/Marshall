@@ -419,14 +419,6 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		}
 	};
 
-				this.deMarkLastMove = function() {
-					var move = this.conv.moves[this.conv.iteIndex-2];
-					if (arguments.length && arguments[0]) {
-						move = this.conv.moves[this.conv.iteIndex-1];
-					}
-					
-					if (this.conv.iteIndex+1 == this.conv.moves.length)
-						 move = this.conv.getCurMove();
 	this.markLastMove = function() {
 		if (!this.opts['markLastMove'])
 			return;
@@ -445,17 +437,26 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		catch (e) {}
 	};
 
-					if (move) {
-						move = move.actions[1];
-						
-						var piece = this.pos[move.x][move.y];
-						if (this.flipped)
-							piece = this.pos[7-move.x][7-move.y];
-					}
-					if (this.lastSquare && this.lastSquare.lastBg) {
-						this.lastSquare = null;
-					}
-				};
+	this.deMarkLastMove = function() {
+		var move = this.conv.moves[this.conv.iteIndex-2];
+		if (arguments.length && arguments[0]) {
+			move = this.conv.moves[this.conv.iteIndex-1];
+		}
+		
+		if (this.conv.iteIndex+1 == this.conv.moves.length)
+			 move = this.conv.getCurMove();
+
+		if (move) {
+			move = move.actions[1];
+			
+			var piece = this.pos[move.x][move.y];
+			if (this.flipped)
+				piece = this.pos[7-move.x][7-move.y];
+		}
+		if (this.lastSquare && this.lastSquare.lastBg) {
+			this.lastSquare = null;
+		}
+	};
 
 				/*
 					Toggle moves pane, actually not toggle but
