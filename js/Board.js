@@ -360,7 +360,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		this.markLastMove();
 	};
 /**
- *	Jumps the board all the way to the final position of the game
+ *	Jumps the board all the way to the starting position of the game
  */
 	this.startPosition = function() {
 		this.deMarkLastMove(true);
