@@ -592,7 +592,16 @@ TestCase( "ConverterTest",
 				'[Result	"1-0"]\n' +
 				'[FEN	"K6k/8/8/8/8/8/8/7q w - - 0 13"]\n',
 
-	setup: function() {},
+	shortGame:	'[Event	"?"]' +
+				'[Site	"?"]\n' +
+				'[Date	"????.??.??"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"*"]\n' +
+				'1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Nbd7 5. Nf3 c6 6. e3 Qa5 7. Nd2 Bb4 8. Be2 0-0 *',
+
+	setup: function() { alert("setup");},
 	teardown: function() {},
 	
 	"test FEN position converter creation": function() {
@@ -646,6 +655,15 @@ TestCase( "ConverterTest",
 		assertEquals( pawn_to_e4, conv.moves[0].actions[1] );
 		assertEquals( moves, conv.moves );
 		assertEquals( 7, conv.moves.length );
+	},
+	
+	"test converting short game with castling": function() {
+		pgn = new Pgn( this.shortGame );
+		conv = new Converter(pgn);
+		conv.convert();
+		
+		expectedJSON = JSON.stringify(this.gameStart);
+		assertEquals( "Didn't get the starting position", expectedJSON , JSON.stringify(conv.getStartPos(false)));
 	},
 	
 	"test getting the current move": function() {

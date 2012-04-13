@@ -835,7 +835,7 @@ Converter.prototype.isMyKnight = function(virtualBoard, from, color) {
 			 virtualBoard[from[0]][from[1]].color == color);
 }
 
-Converter.prototype.originGiven = function( to ) { return (to[2][0] != -1 && to[2][-1]  != -1); }
+Converter.prototype.originGiven = function( to ) { return (to[2][0] != -1 && to[2][1]  != -1); }
 	
 Converter.prototype.possibleKnightOrigins = function ( destination ) {
 	return new Array(
