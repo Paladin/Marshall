@@ -582,92 +582,79 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		return rtrn;
 	};
 
-				this.drawEnPassante = function(move) {
-					if (!move.enP)
-						 return;
-					var x = move.enP.x, y = move.enP.y;
-					if (this.flipped) {
-						x = 7-x;
-						y = 7-y;
-					}
-					var sq = this.pos[x][y];
-					
-					sq.color = null;
-					sq.piece = null;
+	this.drawEnPassante = function(move) {
+		if (!move.enP)
+			 return;
+		var x = move.enP.x, y = move.enP.y;
+		if (this.flipped) {
+			x = 7-x;
+			y = 7-y;
+		}
+		var sq = this.pos[x][y];
+		
+		sq.color = null;
+		sq.piece = null;
 
-					sq.removeChild(sq.firstChild);
-				};
+		sq.removeChild(sq.firstChild);
+	};
 
-				this.drawSquare = function(square) {
-					var x = square.x, y = square.y;
-					if (this.flipped) {
-						x=7-x;
-						y=7-y;
-					}
-					var sq = this.pos[x][y];
+	this.drawSquare = function(square) {
+		var x = square.x, y = square.y;
+		if (this.flipped) {
+			x=7-x;
+			y=7-y;
+		}
+		var sq = this.pos[x][y];
 
-					sq.color = square.color;
-					sq.piece = square.piece;
+		sq.color = square.color;
+		sq.piece = square.piece;
 
-					if (sq.firstChild)
-						sq.removeChild(sq.firstChild);
+		if (sq.firstChild)
+			sq.removeChild(sq.firstChild);
 
-					if (sq.piece) {
-						sq.appendChild(this.getImg(sq.piece,sq.color));
-					}
-				};
+		if (sq.piece) {
+			sq.appendChild(this.getImg(sq.piece,sq.color));
+		}
+	};
 
-				this.updatePGNInfo = function() {
-					this.visuals['pgn']['players'].nodeValue = ' ';
-					this.visuals['pgn']['elos'].nodeValue = ' ';
-					this.visuals['pgn']['event'].nodeValue = ' ';
-					this.visuals['pgn']['timecontrol'].nodeValue = ' ';
-					if (this.conv.pgn.props['White']) {
-						this.visuals['pgn']['players'].nodeValue = this.conv.pgn.props['White'];
-					}
-					if (this.conv.pgn.props['White'] || this.conv.pgn.props['Black'])
-						this.visuals['pgn']['players'].nodeValue += " - ";
-					
-					if (this.conv.pgn.props['Black']) {
-						this.visuals['pgn']['players'].nodeValue += this.conv.pgn.props['Black'];
-					}
-					
-					if (this.conv.pgn.props['WhiteElo']) {
-						this.visuals['pgn']['elos'].nodeValue = 
-								this.conv.pgn.props['WhiteElo'];
-					}
-					if (this.conv.pgn.props['WhiteElo'] || this.conv.pgn.props['BlackElo'])
-						this.visuals['pgn']['elos'].nodeValue += " - ";
-					if (this.conv.pgn.props['BlackElo']) {
-						this.visuals['pgn']['elos'].nodeValue += 
-								this.conv.pgn.props['BlackElo'];
-					}
-					if (this.conv.pgn.props['Event']) {
-						this.visuals['pgn']['event'].nodeValue =
-								this.conv.pgn.props['Event'];
-					}
-					if (this.conv.pgn.props['Date']) {
-						this.visuals['pgn']['event'].nodeValue +=
-								", "+this.conv.pgn.props['Date'];
-					}
-					if (this.conv.pgn.props['TimeControl']) {
-						this.visuals['pgn']['timecontrol'].nodeValue =
-								this.conv.pgn.props['TimeControl'];
-					}
-				};
-
-				this.updateSettings = function() {
-					var blacks = this.opts['blackSqColor'];
-					var whites = this.opts['whiteSqColor'];
-					
-					for(var i=0;i<8;i++){
-						var flip = (i%2)?true:false;
-						for(var j=0;j<8;j++){
-							var color = flip?(j%2)?whites:blacks:!(j%2)?whites:blacks;
-						}
-					}
-				};
-
+	this.updatePGNInfo = function() {
+		this.visuals['pgn']['players'].nodeValue = ' ';
+		this.visuals['pgn']['elos'].nodeValue = ' ';
+		this.visuals['pgn']['event'].nodeValue = ' ';
+		this.visuals['pgn']['timecontrol'].nodeValue = ' ';
+		if (this.conv.pgn.props['White']) {
+			this.visuals['pgn']['players'].nodeValue = this.conv.pgn.props['White'];
+		}
+		if (this.conv.pgn.props['White'] || this.conv.pgn.props['Black'])
+			this.visuals['pgn']['players'].nodeValue += " - ";
+		
+		if (this.conv.pgn.props['Black']) {
+			this.visuals['pgn']['players'].nodeValue += this.conv.pgn.props['Black'];
+		}
+		
+		if (this.conv.pgn.props['WhiteElo']) {
+			this.visuals['pgn']['elos'].nodeValue = 
+					this.conv.pgn.props['WhiteElo'];
+		}
+		if (this.conv.pgn.props['WhiteElo'] || this.conv.pgn.props['BlackElo'])
+			this.visuals['pgn']['elos'].nodeValue += " - ";
+		if (this.conv.pgn.props['BlackElo']) {
+			this.visuals['pgn']['elos'].nodeValue += 
+					this.conv.pgn.props['BlackElo'];
+		}
+		if (this.conv.pgn.props['Event']) {
+			this.visuals['pgn']['event'].nodeValue =
+					this.conv.pgn.props['Event'];
+		}
+		if (this.conv.pgn.props['Date']) {
+			this.visuals['pgn']['event'].nodeValue +=
+					", "+this.conv.pgn.props['Date'];
+		}
+		if (this.conv.pgn.props['TimeControl']) {
+			this.visuals['pgn']['timecontrol'].nodeValue =
+					this.conv.pgn.props['TimeControl'];
+		}
+	};
 				/*
 				 * Draw the board with all the pieces in the initial
 				 * position
