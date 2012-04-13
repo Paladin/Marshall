@@ -25,6 +25,15 @@ TestCase( "BoardTest",
 				'[Result	"1-0"]\n' +
 				'{The Scholar\'s Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#',
 
+	epGame: 	'[Event	"?"]' +
+				'[Site	"?"]\n' +
+				'[Date	"???.??.??"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"*"]\n' +
+				'1. d4 e5 2. e3 e4 3. f4 exf3 4. Nf3 Nc6 5.Bc4 d5 6. 0-0 *',
+
 	setup: function () {
 	},
 	teardown: function() {},
@@ -185,5 +194,29 @@ TestCase( "BoardTest",
 		assertEquals("There should be a black pawn on f7 at the start", "black_pawn", 
 			document.getElementsByClassName("light_square")[6].firstChild.alt);
 		
+	},
+	
+	"test converting game with e.p. move, then backing over it": function() {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.epGame;
+
+		var board = new Board("game1");
+		board.init();
+		board.skipToMove(3, 0);	// past e.p. move
+
+		assertEquals("There should be a white knight on f3 after skipping", "white_knight", 
+			document.getElementsByClassName("light_square")[22].firstChild.alt);
+
+		board.makeBwMove(board, false);
+		
+		assertEquals("There should be a black pawn on f3 after moving backwards", "black_pawn", 
+			document.getElementsByClassName("light_square")[22].firstChild.alt);
+			
+		board.makeBwMove(board, false);
+		
+		assertNull("There should be nothing on f3 after moving backwards",  
+			document.getElementsByClassName("light_square")[22].firstChild);
 	}
 });

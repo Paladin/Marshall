@@ -188,7 +188,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		href.appendChild(input);
 		
 		input.onclick = function() {
-			makeBwMove(tmp);
+			theBoard.makeBwMove();
 		};
 
 		btnTd.appendChild(href);
@@ -338,7 +338,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		else if (this.conv.getCurMoveNo()>ply) {
 			var i = 0;
 			while(this.conv.getCurMoveNo()>ply && i < 200) {
-				makeBwMove(this, true);
+				this.makeBwMove(true);
 				i++;
 			};
 			updateMoveInfo(this);
@@ -370,49 +370,51 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		updateMoveInfo(this);
 		updateMovePane(this);
 	};
+/**
+ *	Backs up by one move.
+ */
+	this.makeBwMove = function(noUpdate) {
+		var move = this.conv.prevMove();
+		if (move == null)
+			 return;
+		
+		if (!noUpdate) {
+			this.deMarkLastMove(true);
+			this.markLastMove();
+			updateMoveInfo(this);
+			updateMovePane(this, true);
+		}
 
-				makeBwMove = function(board, noUpdate) {
-					var move = board.conv.prevMove();
-					if (move == null)
-						 return;
-					
-					if (!noUpdate) {
-						board.deMarkLastMove(true);
-						board.markLastMove();
-						updateMoveInfo(board);
-						updateMovePane(board, true);
-					}
+		for(var i=move.actions.length;i > 1;i-=2) {
+			var frst = move.actions[i-1].clone();
+			var snd = move.actions[i-2].clone();
+			var tmpM = new MySquare();
+			tmpM.piece = frst.piece;
+			tmpM.color = frst.color;
+			frst.piece = snd.piece;
+			frst.color = snd.color;
+			snd.piece = tmpM.piece;
+			snd.color = tmpM.color;
 
-					for(var i=move.actions.length;i > 1;i-=2) {
-						var frst = move.actions[i-1].clone();
-						var snd = move.actions[i-2].clone();
-						var tmpM = new MySquare();
-						tmpM.piece = frst.piece;
-						tmpM.color = frst.color;
-						frst.piece = snd.piece;
-						frst.color = snd.color;
-						snd.piece = tmpM.piece;
-						snd.color = tmpM.color;
+			frst.piece = move.oPiece;
+			frst.color = move.oColor;
 
-						frst.piece = move.oPiece;
-						frst.color = move.oColor;
+			if (move.pPiece)
+				 snd.piece = move.pPiece;
 
-						if (move.pPiece)
-							 snd.piece = move.pPiece;
-
-						board.drawSquare(frst);
-						board.drawSquare(snd);
-					}
-					if (move.enP) {
-						 var x = move.enP.x, y = move.enP.y;
-						 if (board.flipped) {
-							 x=7-x;
-							 y=7-y;
-						}
-						var sq = board.pos[x][y];
-						sq.appendChild(board.getImg(move.enP.piece, move.enP.color));
-					}
-				};
+			this.drawSquare(frst);
+			this.drawSquare(snd);
+		}
+		if (move.enP) {
+			 var x = move.enP.x, y = move.enP.y;
+			 if (this.flipped) {
+				 x=7-x;
+				 y=7-y;
+			}
+			var sq = this.pos[x][y];
+			sq.appendChild(this.getImg(move.enP.piece, move.enP.color));
+		}
+	};
 
 				this.markLastMove = function() {
 					if (!this.opts['markLastMove'])
