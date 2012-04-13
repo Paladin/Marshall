@@ -321,6 +321,9 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
  *
  *	NOTE: the +1 in the ply calculation is because the computer is zero-based while
  *			the move list, like all human lists, is one-based.
+ *
+ *	TODO: This whole thing appears off by one. give it "41" and it skips to move 42.
+ *			Needs to be re-examined after testing is complete.
  */
 	this.skipToMove = function(moveNumber, color) {
 		var ply = moveNumber*2+color+1;
