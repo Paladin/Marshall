@@ -222,7 +222,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		href.appendChild(input);
 
 		input.onclick = function() {
-			toggleMoves(tmp, "flip");
+			theBoard.toggleMoves("flip");
 		};
 
 		btnTd.appendChild(href);
@@ -458,22 +458,22 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		}
 	};
 
-				/*
-					Toggle moves pane, actually not toggle but
-					showing it depending the 'flag'.
-				*/
-				this.toggleMoves = function(flag) {
-					if (flag == "flip")
-						flag = this.movesDiv.style.visibility=="hidden";
-					if (flag) {
-						this.movesDiv.style.display = "block";
-						this.movesDiv.style.visibility = "visible";
-					}
-					else {
-						this.movesDiv.style.display = "none";
-						this.movesDiv.style.visibility = "hidden";
-					}
-				};
+	/*
+		Toggle moves pane, actually not toggle but
+		showing it depending the 'flag'.
+	*/
+	this.toggleMoves = function(flag) {
+		if (flag == "flip")
+			flag = this.movesDiv.style.visibility=="hidden";
+		if (flag) {
+			this.movesDiv.style.display = "block";
+			this.movesDiv.style.visibility = "visible";
+		}
+		else {
+			this.movesDiv.style.display = "none";
+			this.movesDiv.style.visibility = "hidden";
+		}
+	};
 
 				this.toggleComments = function(flag) {
 					if (flag == "flip")
@@ -495,15 +495,6 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 							}
 						}
 					}
-				};
-
-				/*
-					Non-member toggle function. The onClick that I'm
-					setting must not be a member function. I'm just
-					using it to proxy.
-				*/
-				toggleMoves = function(board, flag) {
-					board.toggleMoves(flag);
 				};
 
 				toggleComments = function(board, flag) {

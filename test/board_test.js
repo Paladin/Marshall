@@ -254,5 +254,24 @@ TestCase( "BoardTest",
 		board.init();
 
 		board.deMarkLastMove();
+	},
+	
+	"test toggling moves display": function() {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.aGame;
+
+		var board = new Board("game1");
+		board.init();
+
+		assertEquals("Should have started out visible", "visible",
+				document.getElementsByClassName("move_list")[0].style.visibility);
+		board.toggleMoves("flip");
+		assertEquals("Should have flipped to hidden", "hidden",
+				document.getElementsByClassName("move_list")[0].style.visibility);
+		board.toggleMoves("flip");
+		assertEquals("Should have returned to visible", "visible",
+				document.getElementsByClassName("move_list")[0].style.visibility);
 	}
 });
