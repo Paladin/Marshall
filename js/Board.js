@@ -264,7 +264,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				tmp.endPosition(tmp);
 		};
 		btnTd.appendChild(href);
-		updateMoveInfo(this);
+		this.updateMoveInfo(this);
 		this.toggleMoves(this.opts['showMovesPane']);	//force the moves pane overflow to get picked up
 		if (this.opts['skipToMove']) { 
 			try {
@@ -333,7 +333,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				makeMove(this, true);
 				i++;
 			}
-			updateMoveInfo(this);
+			this.updateMoveInfo(this);
 			updateMovePane(this);
 			this.deMarkLastMove();
 			this.markLastMove();
@@ -344,7 +344,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				this.makeBwMove(true);
 				i++;
 			};
-			updateMoveInfo(this);
+			this.updateMoveInfo(this);
 			updateMovePane(this);
 			this.deMarkLastMove();
 			this.markLastMove();
@@ -358,7 +358,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		var vBoard = this.conv.getEndPos(this.flipped);
 		this.syncBoard(vBoard);;
 		this.conv.resetToEnd();
-		updateMoveInfo(this);
+		this.updateMoveInfo(this);
 		updateMovePane(this, true);
 		this.markLastMove();
 	};
@@ -370,7 +370,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		var vBoard = this.conv.getStartPos(this.flipped);
 		this.syncBoard(vBoard);
 		this.conv.resetToStart();
-		updateMoveInfo(this);
+		this.updateMoveInfo(this);
 		updateMovePane(this);
 	};
 /**
@@ -384,7 +384,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		if (!noUpdate) {
 			this.deMarkLastMove(true);
 			this.markLastMove();
-			updateMoveInfo(this);
+			this.updateMoveInfo(this);
 			updateMovePane(this, true);
 		}
 
@@ -498,19 +498,23 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 			}
 		}
 	};
-
-				updateMoveInfo = function(board) {
-					var idx = board.conv.getCurMoveNo()-1;
-//						if (board.conv.getCurMoveNo() == board.conv.moves.length-1)
-//							idx = board.conv.getCurMoveNo();
-					var move = board.conv.moves[idx];
-					if (move && move.moveStr) {
-						 var str = Math.floor((idx==0?1:idx)/2+1)+". "+move.moveStr;
-						 board.moveInput.value = str;
-					}
-					else
-						 board.moveInput.value = "...";
-				};
+/*
+ *	Updates the form input box below the board display
+ *
+ *	TODO: Revise this code into something more browser-friendly.
+ *			A simple classed p element or perhaps a cite
+ *	TODO: Also check the first line. Something smells about that
+ */
+	this.updateMoveInfo = function(board) {
+		var idx = board.conv.getCurMoveNo()-1;
+		var move = board.conv.moves[idx];
+		if (move && move.moveStr) {
+			 var str = Math.floor((idx==0?1:idx)/2+1)+". "+move.moveStr;
+			 board.moveInput.value = str;
+		}
+		else
+			 board.moveInput.value = "...";
+	};
 
 				makeMove = function(board, noUpdate) {
 					var move = board.conv.nextMove();
@@ -521,7 +525,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 						 board.deMarkLastMove();
 						 board.markLastMove();
 
-						 updateMoveInfo(board);
+						 this.updateMoveInfo(board);
 						 updateMovePane(board);
 					}
 					

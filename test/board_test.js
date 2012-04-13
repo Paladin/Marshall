@@ -305,5 +305,20 @@ TestCase( "BoardTest",
 				comments[i].style.visibility == "visible" || 
 				comments[i].style.visibility == "");
 		}
+	},
+
+	"test updating move display": function() {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.aGame;
+
+		var board = new Board("game1", {"skipToMove": 1});
+		board.init();
+		var expected = board.moveInput.value;
+		board.moveInput.value = "PreTest";
+
+		board.updateMoveInfo(board);
+		assertEquals("Should have correct move display", expected, board.moveInput.value);
 	}
 });
