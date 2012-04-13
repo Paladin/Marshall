@@ -23,7 +23,7 @@ TestCase( "BoardTest",
 				'[White	"NoName]\n' +
 				'[Black	"Amateur"]\n' +
 				'[Result	"1-0"]\n' +
-				'{The Scholar\'s Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#',
+				'{The Scholar\'s Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 {Here it comes} 4. Qf7#',
 
 	epGame: 	'[Event	"?"]' +
 				'[Site	"?"]\n' +
@@ -273,5 +273,37 @@ TestCase( "BoardTest",
 		board.toggleMoves("flip");
 		assertEquals("Should have returned to visible", "visible",
 				document.getElementsByClassName("move_list")[0].style.visibility);
+	},
+	
+	"test toggling comments display": function() {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.aGame;
+
+		var board = new Board("game1");
+		board.init();
+		
+		var divId = document.getElementById("game1_board");
+		
+		var comments = divId.getElementsByClassName("commentary");
+		var comments_length = comments.length;
+		for(var i=0; i<comments_length; i++) {
+			assertTrue("Should have started out visible", 
+				comments[i].style.visibility == "visible" || 
+				comments[i].style.visibility == "");
+		}
+		board.toggleComments("flip");
+		for(var i=0; i<comments_length; i++) {
+			assertTrue("Should have flipped to hidden",
+				comments[i].style.visibility == "hidden" || 
+				comments[i].style.visibility == "");
+		}
+		board.toggleComments("flip");
+		for(var i=0; i<comments_length; i++) {
+			assertTrue("Should have returned to visible",
+				comments[i].style.visibility == "visible" || 
+				comments[i].style.visibility == "");
+		}
 	}
 });

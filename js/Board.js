@@ -235,7 +235,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		href.appendChild(input);
 
 		input.onclick = function() {
-			toggleComments(tmp, "flip");
+			theBoard.toggleComments("flip");
 		};
 
 		btnTd.appendChild(href);
@@ -474,32 +474,30 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 			this.movesDiv.style.visibility = "hidden";
 		}
 	};
-
-				this.toggleComments = function(flag) {
-					if (flag == "flip")
-						flag = !this.opts['showComments'];
-					if (flag) {
-						this.opts['showComments'] = true;
-					}
-					else {
-						this.opts['showComments'] = false;
-					}
-					var list = this.movesDiv.getElementsByTagName("span");
-					if (list) {
-						for (var i=0;i<list.length;i++) {
-							if (flag) {
-								list[i].style.display = "inline";
-							}
-							else {
-								list[i].style.display = "none";
-							}
-						}
-					}
-				};
-
-				toggleComments = function(board, flag) {
-					board.toggleComments(flag);
-				};
+/*
+ *	Toggles the display of comments inside the move list on and off
+ */
+	this.toggleComments = function(flag) {
+		if (flag == "flip")
+			flag = !this.opts['showComments'];
+		if (flag) {
+			this.opts['showComments'] = true;
+		}
+		else {
+			this.opts['showComments'] = false;
+		}
+		var list = this.movesDiv.getElementsByTagName("span");
+		if (list) {
+			for (var i=0;i<list.length;i++) {
+				if (flag) {
+					list[i].style.display = "inline";
+				}
+				else {
+					list[i].style.display = "none";
+				}
+			}
+		}
+	};
 
 				updateMoveInfo = function(board) {
 					var idx = board.conv.getCurMoveNo()-1;
