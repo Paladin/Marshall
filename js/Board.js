@@ -419,24 +419,6 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		}
 	};
 
-				this.markLastMove = function() {
-					if (!this.opts['markLastMove'])
-						return;
-					try {
-						var move = this.conv.moves[this.conv.iteIndex-1].actions[1];;
-						var piece = this.pos[move.x][move.y];
-						if (this.flipped) {
-							piece = this.pos[7-move.x][7-move.y];
-						}
-						// on konq the bg contains "initial initial initial "
-						// i guess xtra information. Anyways setting the
-						// background to a color containing the "initial"
-						// parts fails. Go figure
-						this.lastSquare = piece;
-					}
-					catch (e) {}
-				};
-
 				this.deMarkLastMove = function() {
 					var move = this.conv.moves[this.conv.iteIndex-2];
 					if (arguments.length && arguments[0]) {
@@ -445,6 +427,23 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 					
 					if (this.conv.iteIndex+1 == this.conv.moves.length)
 						 move = this.conv.getCurMove();
+	this.markLastMove = function() {
+		if (!this.opts['markLastMove'])
+			return;
+		try {
+			var move = this.conv.moves[this.conv.iteIndex-1].actions[1];;
+			var piece = this.pos[move.x][move.y];
+			if (this.flipped) {
+				piece = this.pos[7-move.x][7-move.y];
+			}
+			// on konq the bg contains "initial initial initial "
+			// i guess xtra information. Anyways setting the
+			// background to a color containing the "initial"
+			// parts fails. Go figure
+			this.lastSquare = piece;
+		}
+		catch (e) {}
+	};
 
 					if (move) {
 						move = move.actions[1];
