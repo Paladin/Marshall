@@ -333,8 +333,8 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				this.makeMove(true);
 				i++;
 			}
-			this.updateMoveInfo(this);
-			updateMovePane(this);
+			this.updateMoveInfo();
+			this.updateMovePane();
 			this.deMarkLastMove();
 			this.markLastMove();
 		}
@@ -344,8 +344,8 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 				this.makeBwMove(true);
 				i++;
 			};
-			this.updateMoveInfo(this);
-			updateMovePane(this);
+			this.updateMoveInfo();
+			this.updateMovePane();
 			this.deMarkLastMove();
 			this.markLastMove();
 		}
@@ -358,8 +358,8 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		var vBoard = this.conv.getEndPos(this.flipped);
 		this.syncBoard(vBoard);;
 		this.conv.resetToEnd();
-		this.updateMoveInfo(this);
-		updateMovePane(this, true);
+		this.updateMoveInfo();
+		this.updateMovePane();
 		this.markLastMove();
 	};
 /**
@@ -370,8 +370,8 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		var vBoard = this.conv.getStartPos(this.flipped);
 		this.syncBoard(vBoard);
 		this.conv.resetToStart();
-		this.updateMoveInfo(this);
-		updateMovePane(this);
+		this.updateMoveInfo();
+		this.updateMovePane();
 	};
 /**
  *	Backs up by one move.
@@ -384,8 +384,8 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		if (!noUpdate) {
 			this.deMarkLastMove(true);
 			this.markLastMove();
-			this.updateMoveInfo(this);
-			updateMovePane(this, true);
+			this.updateMoveInfo();
+			this.updateMovePane();
 		}
 
 		for(var i=move.actions.length;i > 1;i-=2) {
@@ -531,7 +531,7 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 			 this.markLastMove();
 
 			 this.updateMoveInfo();
-			 updateMovePane(this);
+			 this.updateMovePane();
 		}
 		
 		for(var i=0;i < move.actions.length;i++) {
@@ -540,36 +540,47 @@ if (options && typeof(options['buttonPrefix']) == 'undefined')
 		
 		this.drawEnPassante(move);
 	};
-
-				updateMovePane = function(board, bw) {
-					// highlight the move in the move's pane
-					var idx = board.conv.getCurMoveNo();
-					board.movesOnPane[this.lastBoldIdx] = deMakeBold(this.lastBold);
-//						if (bw)
-//							 idx+=1;
-					this.lastBold = null;
-					this.lastBoldIdx = null;
-					if (board.movesOnPane[idx-1]) {
-						board.movesOnPane[idx-1] = makeBold(board.movesOnPane[idx-1]);
-						this.lastBold = board.movesOnPane[idx-1];
-						this.lastBoldIdx = idx-1;
-					}
-				};
-
-				makeBold = function(el) {
-					var b = document.createElement("b");
-					b.appendChild(el.cloneNode(true));
-					el.parentNode.replaceChild(b, el);
-					return b;
-				};
-
-				deMakeBold = function(el) {
-					if (!el)
-						 return;
-					var rtrn = el.firstChild.cloneNode(true);
-					el.parentNode.replaceChild(rtrn, el);
-					return rtrn;
-				};
+/**
+ *	This makes the currently shown move Bold. (And yes, it uses the b element
+ *	because the move is neither emphasized nor strong when read, it's simply a
+ *	different indicator, in keeping with the HTML5 spec.
+ *
+ */
+	this.updateMovePane = function() {
+		// highlight the move in the move's pane
+		var idx = this.conv.getCurMoveNo();
+		this.movesOnPane[this.lastBoldIdx] = this.deMakeBold(this.lastBold);
+		this.lastBold = null;
+		this.lastBoldIdx = null;
+		if (this.movesOnPane[idx-1]) {
+			this.movesOnPane[idx-1] = this.makeBold(this.movesOnPane[idx-1]);
+			this.lastBold = this.movesOnPane[idx-1];
+			this.lastBoldIdx = idx-1;
+		}
+	};
+/**
+ *	This highlights the current move by wrapping it in a b element
+ *
+ *	el		The element to be wrapped
+ */
+	this.makeBold = function(el) {
+		var b = document.createElement("b");
+		b.appendChild(el.cloneNode(true));
+		el.parentNode.replaceChild(b, el);
+		return b;
+	};
+/**
+ *	This unwraps the b element from the previous current move
+ *
+ *	el		The unwrapped element
+ */
+	this.deMakeBold = function(el) {
+		if (!el)
+			 return;
+		var rtrn = el.firstChild.cloneNode(true);
+		el.parentNode.replaceChild(rtrn, el);
+		return rtrn;
+	};
 
 				this.drawEnPassante = function(move) {
 					if (!move.enP)
