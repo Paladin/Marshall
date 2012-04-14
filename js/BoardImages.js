@@ -34,14 +34,16 @@ function BoardImages(options) {
 								 ,"knight":"wKnight."+this.suf
 								 ,"queen":"wQueen."+this.suf
 								 ,"king":"wKing."+this.suf
-								 ,"pawn":"wPawn."+this.suf}
+								 ,"pawn":"wPawn."+this.suf
+						}
 				
 			,"black" : {"rook":"bRook."+this.suf
 								 ,"bishop":"bBishop."+this.suf
 								 ,"knight":"bKnight."+this.suf
 								 ,"queen":"bQueen."+this.suf
 								 ,"king":"bKing."+this.suf
-								 ,"pawn":"bPawn."+this.suf}
+								 ,"pawn":"bPawn."+this.suf
+						}
 
 			,"btns" : {"ffward":"buttons/ffward."+this.suf
 									,"rwind":"buttons/rwind."+this.suf
@@ -50,11 +52,12 @@ function BoardImages(options) {
 									,"toggle":"buttons/toggle."+this.suf
 									,"comments":"buttons/comments."+this.suf
 									,"flip":"buttons/flip."+this.suf
-									}
-		}
-	};
+						}
+					}
+	}
+}
 
-	this.preload = function() {
+BoardImages.prototype.preload = function() {
 		var set = this.set;
 		var pref = this.pref;
 		if (arguments.length>0)
@@ -62,11 +65,13 @@ function BoardImages(options) {
 		if (arguments.length>1)
 			pref = arguments[1];
 		var img;
+		var img_count = 0;
 		for (var i in this.imageNames[set]) {
 			for (var j in this.imageNames[set][i]) {
 				img = new Image();
 				img.src = this.imageNames[set][i][j];
+				img_count++;
 			}
 		}
-	};
-};
+		return img_count;
+	}
