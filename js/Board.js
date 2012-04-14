@@ -95,226 +95,226 @@ function Board(divId, options) {
 }
 
 Board.prototype.init = function() {
-		// the main frame
-		var boardFrame = document.getElementById(this.divId+"_board");
+	// the main frame
+	var boardFrame = document.getElementById(this.divId+"_board");
 
-		var gameSection = document.createElement("section");
-		gameSection.className = "game_section";
+	var gameSection = document.createElement("section");
+	gameSection.className = "game_section";
 
-		// toplevel table;
-		var topTable = document.createElement("table");
-		topTable.className = "mainboard"
-		gameSection.appendChild(topTable);
-		var topTableTb = document.createElement("tbody");
-		topTable.appendChild(topTableTb);
-		
-		var boardTd = document.createElement("td");
-		var btnTdNext = document.createElement("td");
-		btnTdNext.className = "current_move_cell"
-		var btnTd = document.createElement("td");
-		btnTd.className = "board_controls"
-		var propsTd = document.createElement("td");
-		propsTd.className = "game_info"
-		
-		// movesTable
-		var movesDiv = document.createElement("div");
-		movesDiv.className = "move_list";
-		this.movesDiv = movesDiv;
-		movesDiv.id = this.divId+"_board_moves";
-		gameSection.appendChild(movesDiv);
-		
-		var tmp = document.createElement("tr");
-		tmp.appendChild(boardTd);
-		topTableTb.appendChild(tmp);
+	// toplevel table;
+	var topTable = document.createElement("table");
+	topTable.className = "mainboard"
+	gameSection.appendChild(topTable);
+	var topTableTb = document.createElement("tbody");
+	topTable.appendChild(topTableTb);
+	
+	var boardTd = document.createElement("td");
+	var btnTdNext = document.createElement("td");
+	btnTdNext.className = "current_move_cell"
+	var btnTd = document.createElement("td");
+	btnTd.className = "board_controls"
+	var propsTd = document.createElement("td");
+	propsTd.className = "game_info"
+	
+	// movesTable
+	var movesDiv = document.createElement("div");
+	movesDiv.className = "move_list";
+	this.movesDiv = movesDiv;
+	movesDiv.id = this.divId+"_board_moves";
+	gameSection.appendChild(movesDiv);
+	
+	var tmp = document.createElement("tr");
+	tmp.appendChild(boardTd);
+	topTableTb.appendChild(tmp);
 
-		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd);
-		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTdNext);
-		topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd);
+	topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd);
+	topTableTb.appendChild(document.createElement("tr")).appendChild(btnTdNext);
+	topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd);
 
 
-		var board = document.createElement("table");
-		board.className = "gameboard"
-		var boardTb = document.createElement("tbody");
-		board.appendChild(boardTb);
+	var board = document.createElement("table");
+	board.className = "gameboard"
+	var boardTb = document.createElement("tbody");
+	board.appendChild(boardTb);
 
-		boardFrame.appendChild(gameSection);
-		boardTd.appendChild(board);
-		
-		var whiteC = 'light_square';
-		var blackC = 'dark_square';
+	boardFrame.appendChild(gameSection);
+	boardTd.appendChild(board);
+	
+	var whiteC = 'light_square';
+	var blackC = 'dark_square';
 
-		// white pieces
-		for(var i = 0; i < 8; i++) {
-			var tr = document.createElement("tr");
-			var flip = (i % 2)?1:0;
-			for(var j = 0; j < 8; j++) {
-				var td = document.createElement("td");
+	// white pieces
+	for(var i = 0; i < 8; i++) {
+		var tr = document.createElement("tr");
+		var flip = (i % 2)?1:0;
+		for(var j = 0; j < 8; j++) {
+			var td = document.createElement("td");
 
-				td.className = !flip?(j%2)?blackC:whiteC:!(j%2)?blackC:whiteC;
-				td.setAttribute( 'data-squarename', this.file[j]+(8-i) );
+			td.className = !flip?(j%2)?blackC:whiteC:!(j%2)?blackC:whiteC;
+			td.setAttribute( 'data-squarename', this.file[j]+(8-i) );
 
-				this.pos[i][j] = td;
-				tr.appendChild(td);
+			this.pos[i][j] = td;
+			tr.appendChild(td);
+		}
+		boardTb.appendChild(tr);
+	}
+	this.populatePieces();
+	if (this.opts['flipped'])
+		this.flipBoard();
+	this.populateProps(propsTd);
+	this.populateMoves(movesDiv, this.pgn.pgnOrig);
+
+	// in java i could do Board.this in anon function;
+	var tmp = this;
+
+	// rwnd;
+	var hrefS = document.createElement("a");
+	hrefS.href = "javascript:void(0)";
+	var href = hrefS.cloneNode(false);
+	var input = this.getImg("rwind","btns");
+	input.alt = this.opts['altRewind'];
+	input.title = this.opts['altRewind'];;
+	href.appendChild(input);
+	
+	var theBoard = this;
+	input.onclick = function() {
+		theBoard.startPosition();
+	};
+	btnTd.appendChild(href);
+
+	// back
+	input = this.getImg("back","btns");
+	input.alt = this.opts['altBack'];
+	input.title = this.opts['altBack'];
+	href = hrefS.cloneNode(false);
+	href.appendChild(input);
+	
+	input.onclick = function() {
+		theBoard.makeBwMove();
+	};
+
+	btnTd.appendChild(href);
+	
+	// flip the board
+	input = this.getImg("flip","btns");
+	input.alt = this.opts['altFlip'];
+	input.title = this.opts['altFlip'];
+	href = hrefS.cloneNode(false);
+	href.appendChild(input);
+	
+	input.onclick = function() {
+		tmp.flipBoard();
+	};
+
+	btnTd.appendChild(href);
+
+	// current move
+	// it is initialized in updateMoveInfo
+	var input = document.createElement("input");
+	input.className = "current_move_box";
+	this.moveInput = input;
+	btnTdNext.appendChild(input);
+	// end of current move
+
+	// hide
+	input = this.getImg("toggle","btns");
+	input.alt = this.opts['altShowMoves'];
+	input.title = this.opts['altShowMoves'];
+	href = hrefS.cloneNode(false);
+	href.appendChild(input);
+
+	input.onclick = function() {
+		theBoard.toggleMoves("flip");
+	};
+
+	btnTd.appendChild(href);
+
+	// comments
+	input = this.getImg("comments","btns");
+	input.alt = this.opts['altComments'];
+	input.title = this.opts['altComments'];
+	href = hrefS.cloneNode(false);
+	href.appendChild(input);
+
+	input.onclick = function() {
+		theBoard.toggleComments("flip");
+	};
+
+	btnTd.appendChild(href);
+
+	// next btn
+	input = this.getImg("forward","btns");
+	input.alt = this.opts['altPlayMove'];
+	input.title = this.opts['altPlayMove'];
+	href = hrefS.cloneNode(false);
+	href.appendChild(input);
+
+	input.onclick = function() {
+		theBoard.makeMove();
+	};
+
+	btnTd.appendChild(href);
+
+	// ffwd
+	input = this.getImg("ffward","btns");
+	input.alt = this.opts['altFastForward'];
+	input.title = this.opts['altFastForward'];
+	href = hrefS.cloneNode(false);
+	href.appendChild(input);
+
+	input.onclick = function() {
+			tmp.endPosition(tmp);
+	};
+	btnTd.appendChild(href);
+	this.updateMoveInfo(this);
+	this.toggleMoves(this.opts['showMovesPane']);	//force the moves pane overflow to get picked up
+	if (this.opts['skipToMove']) { 
+		try {
+			var tmp2 = parseInt(this.opts['skipToMove']);
+			if (tmp2>2) {
+				var color2 = tmp2%2==0?1:0;
+				tmp2 = Math.round(tmp2/2);
+				this.skipToMove(tmp2-1,color2);
 			}
-			boardTb.appendChild(tr);
-		}
-		this.populatePieces();
-		if (this.opts['flipped'])
-			this.flipBoard();
-		this.populateProps(propsTd);
-		this.populateMoves(movesDiv, this.pgn.pgnOrig);
-
-		// in java i could do Board.this in anon function;
-		var tmp = this;
-
-		// rwnd;
-		var hrefS = document.createElement("a");
-		hrefS.href = "javascript:void(0)";
-		var href = hrefS.cloneNode(false);
-		var input = this.getImg("rwind","btns");
-		input.alt = this.opts['altRewind'];
-		input.title = this.opts['altRewind'];;
-		href.appendChild(input);
-		
-		var theBoard = this;
-		input.onclick = function() {
-			theBoard.startPosition();
-		};
-		btnTd.appendChild(href);
-
-		// back
-		input = this.getImg("back","btns");
-		input.alt = this.opts['altBack'];
-		input.title = this.opts['altBack'];
-		href = hrefS.cloneNode(false);
-		href.appendChild(input);
-		
-		input.onclick = function() {
-			theBoard.makeBwMove();
-		};
-
-		btnTd.appendChild(href);
-		
-		// flip the board
-		input = this.getImg("flip","btns");
-		input.alt = this.opts['altFlip'];
-		input.title = this.opts['altFlip'];
-		href = hrefS.cloneNode(false);
-		href.appendChild(input);
-		
-		input.onclick = function() {
-			tmp.flipBoard();
-		};
-
-		btnTd.appendChild(href);
-
-		// current move
-		// it is initialized in updateMoveInfo
-		var input = document.createElement("input");
-		input.className = "current_move_box";
-		this.moveInput = input;
-		btnTdNext.appendChild(input);
-		// end of current move
-
-		// hide
-		input = this.getImg("toggle","btns");
-		input.alt = this.opts['altShowMoves'];
-		input.title = this.opts['altShowMoves'];
-		href = hrefS.cloneNode(false);
-		href.appendChild(input);
-
-		input.onclick = function() {
-			theBoard.toggleMoves("flip");
-		};
-
-		btnTd.appendChild(href);
-
-		// comments
-		input = this.getImg("comments","btns");
-		input.alt = this.opts['altComments'];
-		input.title = this.opts['altComments'];
-		href = hrefS.cloneNode(false);
-		href.appendChild(input);
-
-		input.onclick = function() {
-			theBoard.toggleComments("flip");
-		};
-
-		btnTd.appendChild(href);
-
-		// next btn
-		input = this.getImg("forward","btns");
-		input.alt = this.opts['altPlayMove'];
-		input.title = this.opts['altPlayMove'];
-		href = hrefS.cloneNode(false);
-		href.appendChild(input);
-
-		input.onclick = function() {
-			theBoard.makeMove();
-		};
-
-		btnTd.appendChild(href);
-
-		// ffwd
-		input = this.getImg("ffward","btns");
-		input.alt = this.opts['altFastForward'];
-		input.title = this.opts['altFastForward'];
-		href = hrefS.cloneNode(false);
-		href.appendChild(input);
-
-		input.onclick = function() {
-				tmp.endPosition(tmp);
-		};
-		btnTd.appendChild(href);
-		this.updateMoveInfo(this);
-		this.toggleMoves(this.opts['showMovesPane']);	//force the moves pane overflow to get picked up
-		if (this.opts['skipToMove']) { 
-			try {
-				var tmp2 = parseInt(this.opts['skipToMove']);
-				if (tmp2>2) {
-					var color2 = tmp2%2==0?1:0;
-					tmp2 = Math.round(tmp2/2);
-					this.skipToMove(tmp2-1,color2);
-				}
-				else if (tmp2 == 1) {
-					 this.skipToMove(0,0);
-				}
-				else if (tmp2 == 2) {
-					 this.skipToMove(0,1);
-				}
-			}catch(e){}
-		}
- 	}
+			else if (tmp2 == 1) {
+				 this.skipToMove(0,0);
+			}
+			else if (tmp2 == 2) {
+				 this.skipToMove(0,1);
+			}
+		}catch(e){}
+	}
+}
 /**
  *	Flips the board to display it from the other side's POV.
  */
 Board.prototype.flipBoard = function() {
-		this.deMarkLastMove(true);
-		var upper, lower, holdSquareContent;
-		this.flipped = !this.flipped;
-		for (var i = 0;i<8;i++) {
-			for (var j = 0;j<4;j++){
-				upper = this.pos[i][j];
-				lower = this.pos[7-i][7-j];
+	this.deMarkLastMove(true);
+	var upper, lower, holdSquareContent;
+	this.flipped = !this.flipped;
+	for (var i = 0;i<8;i++) {
+		for (var j = 0;j<4;j++){
+			upper = this.pos[i][j];
+			lower = this.pos[7-i][7-j];
 
-				try {
-					 holdSquareName = upper.getAttribute('data-squarename');
-					 holdSquareContent = upper.removeChild(upper.firstChild);
-				}
-				catch (e) {holdSquareContent=null;}
-
-				try{
-					 upper.setAttribute('data-squarename', lower.getAttribute('data-squarename'));
-					 upper.appendChild(lower.removeChild(lower.firstChild));
-				}
-				catch (e) {}
-				
-				lower.setAttribute('data-squarename', holdSquareName);
-				if (holdSquareContent)
-					lower.appendChild(holdSquareContent);
+			try {
+				 holdSquareName = upper.getAttribute('data-squarename');
+				 holdSquareContent = upper.removeChild(upper.firstChild);
 			}
+			catch (e) {holdSquareContent=null;}
+
+			try{
+				 upper.setAttribute('data-squarename', lower.getAttribute('data-squarename'));
+				 upper.appendChild(lower.removeChild(lower.firstChild));
+			}
+			catch (e) {}
+			
+			lower.setAttribute('data-squarename', holdSquareName);
+			if (holdSquareContent)
+				lower.appendChild(holdSquareContent);
 		}
 	}
+}
 /**
  *	Rolls the board position to a specific ply (half-move).
  *
@@ -328,178 +328,177 @@ Board.prototype.flipBoard = function() {
  *			Needs to be re-examined after testing is complete.
  */
 Board.prototype.skipToMove = function(moveNumber, color) {
-		var ply = moveNumber*2+color+1;
-		if (this.conv.getCurMoveNo()<ply) {
-			var i = 0;
-			while(this.conv.getCurMoveNo()<ply && i < 400) {
-				this.makeMove(true);
-				i++;
-			}
-			this.updateMoveInfo();
-			this.updateMovePane();
-			this.deMarkLastMove();
-			this.markLastMove();
+	var ply = moveNumber*2+color+1;
+	if (this.conv.getCurMoveNo()<ply) {
+		var i = 0;
+		while(this.conv.getCurMoveNo()<ply && i < 400) {
+			this.makeMove(true);
+			i++;
 		}
-		else if (this.conv.getCurMoveNo()>ply) {
-			var i = 0;
-			while(this.conv.getCurMoveNo()>ply && i < 200) {
-				this.makeBwMove(true);
-				i++;
-			};
-			this.updateMoveInfo();
-			this.updateMovePane();
-			this.deMarkLastMove();
-			this.markLastMove();
-		}
+		this.updateMoveInfo();
+		this.updateMovePane();
+		this.deMarkLastMove();
+		this.markLastMove();
 	}
+	else if (this.conv.getCurMoveNo()>ply) {
+		var i = 0;
+		while(this.conv.getCurMoveNo()>ply && i < 200) {
+			this.makeBwMove(true);
+			i++;
+		};
+		this.updateMoveInfo();
+		this.updateMovePane();
+		this.deMarkLastMove();
+		this.markLastMove();
+	}
+}
 /**
  *	Jumps the board all the way to the final position of the game
  */
 Board.prototype.endPosition = function() {
-		this.deMarkLastMove();
-		var vBoard = this.conv.getEndPos(this.flipped);
-		this.syncBoard(vBoard);;
-		this.conv.resetToEnd();
-		this.updateMoveInfo();
-		this.updateMovePane();
-		this.markLastMove();
-	}
+	this.deMarkLastMove();
+	var vBoard = this.conv.getEndPos(this.flipped);
+	this.syncBoard(vBoard);;
+	this.conv.resetToEnd();
+	this.updateMoveInfo();
+	this.updateMovePane();
+	this.markLastMove();
+}
 /**
  *	Jumps the board all the way to the starting position of the game
  */
 Board.prototype.startPosition = function() {
-		this.deMarkLastMove(true);
-		var vBoard = this.conv.getStartPos(this.flipped);
-		this.syncBoard(vBoard);
-		this.conv.resetToStart();
-		this.updateMoveInfo();
-		this.updateMovePane();
-	}
+	this.deMarkLastMove(true);
+	var vBoard = this.conv.getStartPos(this.flipped);
+	this.syncBoard(vBoard);
+	this.conv.resetToStart();
+	this.updateMoveInfo();
+	this.updateMovePane();
+}
 /**
  *	Backs up by one move.
  */
 Board.prototype.makeBwMove = function(noUpdate) {
-		var move = this.conv.prevMove();
-		if (move == null)
-			 return;
-		
-		if (!noUpdate) {
-			this.deMarkLastMove(true);
-			this.markLastMove();
-			this.updateMoveInfo();
-			this.updateMovePane();
-		}
-
-		for(var i=move.actions.length;i > 1;i-=2) {
-			var frst = move.actions[i-1].clone();
-			var snd = move.actions[i-2].clone();
-			var tmpM = new MySquare();
-			tmpM.piece = frst.piece;
-			tmpM.color = frst.color;
-			frst.piece = snd.piece;
-			frst.color = snd.color;
-			snd.piece = tmpM.piece;
-			snd.color = tmpM.color;
-
-			frst.piece = move.oPiece;
-			frst.color = move.oColor;
-
-			if (move.pPiece)
-				 snd.piece = move.pPiece;
-
-			this.drawSquare(frst);
-			this.drawSquare(snd);
-		}
-		if (move.enP) {
-			 var x = move.enP.x, y = move.enP.y;
-			 if (this.flipped) {
-				 x=7-x;
-				 y=7-y;
-			}
-			var sq = this.pos[x][y];
-			sq.appendChild(this.getImg(move.enP.piece, move.enP.color));
-		}
+	var move = this.conv.prevMove();
+	if (move == null)
+		 return;
+	
+	if (!noUpdate) {
+		this.deMarkLastMove(true);
+		this.markLastMove();
+		this.updateMoveInfo();
+		this.updateMovePane();
 	}
+
+	for(var i=move.actions.length;i > 1;i-=2) {
+		var frst = move.actions[i-1].clone();
+		var snd = move.actions[i-2].clone();
+		var tmpM = new MySquare();
+		tmpM.piece = frst.piece;
+		tmpM.color = frst.color;
+		frst.piece = snd.piece;
+		frst.color = snd.color;
+		snd.piece = tmpM.piece;
+		snd.color = tmpM.color;
+
+		frst.piece = move.oPiece;
+		frst.color = move.oColor;
+
+		if (move.pPiece)
+			 snd.piece = move.pPiece;
+
+		this.drawSquare(frst);
+		this.drawSquare(snd);
+	}
+	if (move.enP) {
+		 var x = move.enP.x, y = move.enP.y;
+		 if (this.flipped) {
+			 x=7-x;
+			 y=7-y;
+		}
+		var sq = this.pos[x][y];
+		sq.appendChild(this.getImg(move.enP.piece, move.enP.color));
+	}
+}
 
 Board.prototype.markLastMove = function() {
-		if (!this.opts['markLastMove'])
-			return;
-		try {
-			var move = this.conv.moves[this.conv.iteIndex-1].actions[1];;
-			var piece = this.pos[move.x][move.y];
-			if (this.flipped) {
-				piece = this.pos[7-move.x][7-move.y];
-			}
-			// on konq the bg contains "initial initial initial "
-			// i guess xtra information. Anyways setting the
-			// background to a color containing the "initial"
-			// parts fails. Go figure
-			this.lastSquare = piece;
+	if (!this.opts['markLastMove'])
+		return;
+	try {
+		var move = this.conv.moves[this.conv.iteIndex-1].actions[1];;
+		var piece = this.pos[move.x][move.y];
+		if (this.flipped) {
+			piece = this.pos[7-move.x][7-move.y];
 		}
-		catch (e) {}
+		// on konq the bg contains "initial initial initial "
+		// i guess xtra information. Anyways setting the
+		// background to a color containing the "initial"
+		// parts fails. Go figure
+		this.lastSquare = piece;
 	}
+	catch (e) {}
+}
 
 Board.prototype.deMarkLastMove = function() {
-		var move = this.conv.moves[this.conv.iteIndex-2];
-		if (arguments.length && arguments[0]) {
-			move = this.conv.moves[this.conv.iteIndex-1];
-		}
+	var move = this.conv.moves[this.conv.iteIndex-2];
+	if (arguments.length && arguments[0]) {
+		move = this.conv.moves[this.conv.iteIndex-1];
+	}
+	
+	if (this.conv.iteIndex+1 == this.conv.moves.length)
+		 move = this.conv.getCurMove();
+
+	if (move) {
+		move = move.actions[1];
 		
-		if (this.conv.iteIndex+1 == this.conv.moves.length)
-			 move = this.conv.getCurMove();
-
-		if (move) {
-			move = move.actions[1];
-			
-			var piece = this.pos[move.x][move.y];
-			if (this.flipped)
-				piece = this.pos[7-move.x][7-move.y];
-		}
-		if (this.lastSquare && this.lastSquare.lastBg) {
-			this.lastSquare = null;
-		}
+		var piece = this.pos[move.x][move.y];
+		if (this.flipped)
+			piece = this.pos[7-move.x][7-move.y];
 	}
-
-	/*
-		Toggle moves pane, actually not toggle but
-		showing it depending the 'flag'.
-	*/
+	if (this.lastSquare && this.lastSquare.lastBg) {
+		this.lastSquare = null;
+	}
+}
+/*
+	Toggle moves pane, actually not toggle but
+	showing it depending the 'flag'.
+*/
 Board.prototype.toggleMoves = function(flag) {
-		if (flag == "flip")
-			flag = this.movesDiv.style.visibility=="hidden";
-		if (flag) {
-			this.movesDiv.style.display = "block";
-			this.movesDiv.style.visibility = "visible";
-		}
-		else {
-			this.movesDiv.style.display = "none";
-			this.movesDiv.style.visibility = "hidden";
-		}
+	if (flag == "flip")
+		flag = this.movesDiv.style.visibility=="hidden";
+	if (flag) {
+		this.movesDiv.style.display = "block";
+		this.movesDiv.style.visibility = "visible";
 	}
+	else {
+		this.movesDiv.style.display = "none";
+		this.movesDiv.style.visibility = "hidden";
+	}
+}
 /*
  *	Toggles the display of comments inside the move list on and off
  */
 Board.prototype.toggleComments = function(flag) {
-		if (flag == "flip")
-			flag = !this.opts['showComments'];
-		if (flag) {
-			this.opts['showComments'] = true;
-		}
-		else {
-			this.opts['showComments'] = false;
-		}
-		var list = this.movesDiv.getElementsByTagName("span");
-		if (list) {
-			for (var i=0;i<list.length;i++) {
-				if (flag) {
-					list[i].style.display = "inline";
-				}
-				else {
-					list[i].style.display = "none";
-				}
+	if (flag == "flip")
+		flag = !this.opts['showComments'];
+	if (flag) {
+		this.opts['showComments'] = true;
+	}
+	else {
+		this.opts['showComments'] = false;
+	}
+	var list = this.movesDiv.getElementsByTagName("span");
+	if (list) {
+		for (var i=0;i<list.length;i++) {
+			if (flag) {
+				list[i].style.display = "inline";
+			}
+			else {
+				list[i].style.display = "none";
 			}
 		}
 	}
+}
 /*
  *	Updates the form input box below the board display
  *
@@ -508,15 +507,15 @@ Board.prototype.toggleComments = function(flag) {
  *	TODO: Also check the first line. Something smells about that
  */
 Board.prototype.updateMoveInfo = function() {
-		var idx = this.conv.getCurMoveNo()-1;
-		var move = this.conv.moves[idx];
-		if (move && move.moveStr) {
-			 var str = Math.floor((idx==0?1:idx)/2+1)+". "+move.moveStr;
-			 this.moveInput.value = str;
-		}
-		else
-			 this.moveInput.value = "...";
-	};
+	var idx = this.conv.getCurMoveNo()-1;
+	var move = this.conv.moves[idx];
+	if (move && move.moveStr) {
+		 var str = Math.floor((idx==0?1:idx)/2+1)+". "+move.moveStr;
+		 this.moveInput.value = str;
+	}
+	else
+		 this.moveInput.value = "...";
+}
 /**
  *	This makes the next move in the game, and optionally updates the
  *	display.
@@ -524,24 +523,24 @@ Board.prototype.updateMoveInfo = function() {
  *	update		Boolean indicating if the displays should be updated. Default is true
  */
 Board.prototype.makeMove = function(update) {
-		var move = this.conv.nextMove();
-		if (move == null)
-			 return;
-		
-		if ( typeof(update) == 'undefined' || update) {
-			 this.deMarkLastMove();
-			 this.markLastMove();
+	var move = this.conv.nextMove();
+	if (move == null)
+		 return;
+	
+	if ( typeof(update) == 'undefined' || update) {
+		 this.deMarkLastMove();
+		 this.markLastMove();
 
-			 this.updateMoveInfo();
-			 this.updateMovePane();
-		}
-		
-		for(var i=0;i < move.actions.length;i++) {
-			this.drawSquare(move.actions[i]);
-		}
-		
-		this.drawEnPassante(move);
+		 this.updateMoveInfo();
+		 this.updateMovePane();
 	}
+	
+	for(var i=0;i < move.actions.length;i++) {
+		this.drawSquare(move.actions[i]);
+	}
+	
+	this.drawEnPassante(move);
+}
 /**
  *	This makes the currently shown move Bold. (And yes, it uses the b element
  *	because the move is neither emphasized nor strong when read, it's simply a
@@ -549,328 +548,328 @@ Board.prototype.makeMove = function(update) {
  *
  */
 Board.prototype.updateMovePane = function() {
-		// highlight the move in the move's pane
-		var idx = this.conv.getCurMoveNo();
-		this.movesOnPane[this.lastBoldIdx] = this.deMakeBold(this.lastBold);
-		this.lastBold = null;
-		this.lastBoldIdx = null;
-		if (this.movesOnPane[idx-1]) {
-			this.movesOnPane[idx-1] = this.makeBold(this.movesOnPane[idx-1]);
-			this.lastBold = this.movesOnPane[idx-1];
-			this.lastBoldIdx = idx-1;
-		}
+	// highlight the move in the move's pane
+	var idx = this.conv.getCurMoveNo();
+	this.movesOnPane[this.lastBoldIdx] = this.deMakeBold(this.lastBold);
+	this.lastBold = null;
+	this.lastBoldIdx = null;
+	if (this.movesOnPane[idx-1]) {
+		this.movesOnPane[idx-1] = this.makeBold(this.movesOnPane[idx-1]);
+		this.lastBold = this.movesOnPane[idx-1];
+		this.lastBoldIdx = idx-1;
 	}
+}
 /**
  *	This highlights the current move by wrapping it in a b element
  *
  *	el		The element to be wrapped
  */
 Board.prototype.makeBold = function(el) {
-		var b = document.createElement("b");
-		b.appendChild(el.cloneNode(true));
-		el.parentNode.replaceChild(b, el);
-		return b;
-	}
+	var b = document.createElement("b");
+	b.appendChild(el.cloneNode(true));
+	el.parentNode.replaceChild(b, el);
+	return b;
+}
 /**
  *	This unwraps the b element from the previous current move
  *
  *	el		The unwrapped element
  */
 Board.prototype.deMakeBold = function(el) {
-		if (!el)
-			 return;
-		var rtrn = el.firstChild.cloneNode(true);
-		el.parentNode.replaceChild(rtrn, el);
-		return rtrn;
-	}
+	if (!el)
+		 return;
+	var rtrn = el.firstChild.cloneNode(true);
+	el.parentNode.replaceChild(rtrn, el);
+	return rtrn;
+}
 
 Board.prototype.drawEnPassante = function(move) {
-		if (!move.enP)
-			 return;
-		var x = move.enP.x, y = move.enP.y;
-		if (this.flipped) {
-			x = 7-x;
-			y = 7-y;
-		}
-		var sq = this.pos[x][y];
-		
-		sq.color = null;
-		sq.piece = null;
-
-		sq.removeChild(sq.firstChild);
+	if (!move.enP)
+		 return;
+	var x = move.enP.x, y = move.enP.y;
+	if (this.flipped) {
+		x = 7-x;
+		y = 7-y;
 	}
+	var sq = this.pos[x][y];
+	
+	sq.color = null;
+	sq.piece = null;
+
+	sq.removeChild(sq.firstChild);
+}
 
 Board.prototype.drawSquare = function(square) {
-		var x = square.x, y = square.y;
-		if (this.flipped) {
-			x=7-x;
-			y=7-y;
-		}
-		var sq = this.pos[x][y];
+	var x = square.x, y = square.y;
+	if (this.flipped) {
+		x=7-x;
+		y=7-y;
+	}
+	var sq = this.pos[x][y];
 
-		sq.color = square.color;
-		sq.piece = square.piece;
+	sq.color = square.color;
+	sq.piece = square.piece;
 
-		if (sq.firstChild)
-			sq.removeChild(sq.firstChild);
+	if (sq.firstChild)
+		sq.removeChild(sq.firstChild);
 
-		if (sq.piece) {
-			sq.appendChild(this.getImg(sq.piece,sq.color));
-		}
+	if (sq.piece) {
+		sq.appendChild(this.getImg(sq.piece,sq.color));
+	}
+}
+
+Board.prototype.updatePGNInfo = function() {
+	this.visuals['pgn']['players'].nodeValue = ' ';
+	this.visuals['pgn']['elos'].nodeValue = ' ';
+	this.visuals['pgn']['event'].nodeValue = ' ';
+	this.visuals['pgn']['timecontrol'].nodeValue = ' ';
+	if (this.conv.pgn.props['White']) {
+		this.visuals['pgn']['players'].nodeValue = this.conv.pgn.props['White'];
+	}
+	if (this.conv.pgn.props['White'] || this.conv.pgn.props['Black'])
+		this.visuals['pgn']['players'].nodeValue += " - ";
+	
+	if (this.conv.pgn.props['Black']) {
+		this.visuals['pgn']['players'].nodeValue += this.conv.pgn.props['Black'];
 	}
 	
-Board.prototype.updatePGNInfo = function() {
-		this.visuals['pgn']['players'].nodeValue = ' ';
-		this.visuals['pgn']['elos'].nodeValue = ' ';
-		this.visuals['pgn']['event'].nodeValue = ' ';
-		this.visuals['pgn']['timecontrol'].nodeValue = ' ';
-		if (this.conv.pgn.props['White']) {
-			this.visuals['pgn']['players'].nodeValue = this.conv.pgn.props['White'];
-		}
-		if (this.conv.pgn.props['White'] || this.conv.pgn.props['Black'])
-			this.visuals['pgn']['players'].nodeValue += " - ";
-		
-		if (this.conv.pgn.props['Black']) {
-			this.visuals['pgn']['players'].nodeValue += this.conv.pgn.props['Black'];
-		}
-		
-		if (this.conv.pgn.props['WhiteElo']) {
-			this.visuals['pgn']['elos'].nodeValue = 
-					this.conv.pgn.props['WhiteElo'];
-		}
-		if (this.conv.pgn.props['WhiteElo'] || this.conv.pgn.props['BlackElo'])
-			this.visuals['pgn']['elos'].nodeValue += " - ";
-		if (this.conv.pgn.props['BlackElo']) {
-			this.visuals['pgn']['elos'].nodeValue += 
-					this.conv.pgn.props['BlackElo'];
-		}
-		if (this.conv.pgn.props['Event']) {
-			this.visuals['pgn']['event'].nodeValue =
-					this.conv.pgn.props['Event'];
-		}
-		if (this.conv.pgn.props['Date']) {
-			this.visuals['pgn']['event'].nodeValue +=
-					", "+this.conv.pgn.props['Date'];
-		}
-		if (this.conv.pgn.props['TimeControl']) {
-			this.visuals['pgn']['timecontrol'].nodeValue =
-					this.conv.pgn.props['TimeControl'];
-		}
+	if (this.conv.pgn.props['WhiteElo']) {
+		this.visuals['pgn']['elos'].nodeValue = 
+				this.conv.pgn.props['WhiteElo'];
 	}
+	if (this.conv.pgn.props['WhiteElo'] || this.conv.pgn.props['BlackElo'])
+		this.visuals['pgn']['elos'].nodeValue += " - ";
+	if (this.conv.pgn.props['BlackElo']) {
+		this.visuals['pgn']['elos'].nodeValue += 
+				this.conv.pgn.props['BlackElo'];
+	}
+	if (this.conv.pgn.props['Event']) {
+		this.visuals['pgn']['event'].nodeValue =
+				this.conv.pgn.props['Event'];
+	}
+	if (this.conv.pgn.props['Date']) {
+		this.visuals['pgn']['event'].nodeValue +=
+				", "+this.conv.pgn.props['Date'];
+	}
+	if (this.conv.pgn.props['TimeControl']) {
+		this.visuals['pgn']['timecontrol'].nodeValue =
+				this.conv.pgn.props['TimeControl'];
+	}
+}
 /*
  * Draw the board with all the pieces in the initial
  * position
 */
 Board.prototype.populatePieces = function() {
-		for (var r=0;r<8;r++) {
-			for (var f=0;f<8;f++) {
-				var p = this.conv.initialBoard[r][f];
-				if (p.piece) {
-					var img = this.getImg(p.piece,p.color);
-					this.pos[r][f].appendChild(img);
-					this.pos[r][f].piece = p.piece;
-					this.pos[r][f].color = p.color;
-				}
+	for (var r=0;r<8;r++) {
+		for (var f=0;f<8;f++) {
+			var p = this.conv.initialBoard[r][f];
+			if (p.piece) {
+				var img = this.getImg(p.piece,p.color);
+				this.pos[r][f].appendChild(img);
+				this.pos[r][f].piece = p.piece;
+				this.pos[r][f].color = p.color;
 			}
 		}
 	}
+}
 /*
  *	This creates the text and elements in the move list
  */
 Board.prototype.populateMoves = function(cont, pgn) {
-		if (!this.opts['showMovesPane']) {
-			 cont.style.visibility="hidden";
-			 cont.style.display="none";
-		}
-		var tmp2=this.conv.pgn.moves;
-		var movesHeader = document.createElement('header');
-		var h = document.createElement("h1");
-		var tmpA = document.createElement("a");
+	if (!this.opts['showMovesPane']) {
+		 cont.style.visibility="hidden";
+		 cont.style.display="none";
+	}
+	var tmp2=this.conv.pgn.moves;
+	var movesHeader = document.createElement('header');
+	var h = document.createElement("h1");
+	var tmpA = document.createElement("a");
 
-		tmpA.href = this.opts['downloadURL']+escape(pgn);
-		tmpA.appendChild(document.createTextNode("PGN"));
+	tmpA.href = this.opts['downloadURL']+escape(pgn);
+	tmpA.appendChild(document.createTextNode("PGN"));
 
-		var txt = document.createTextNode("");
-		if (this.conv.pgn.props['White']) {
-			var txt = document.createTextNode(this.conv.pgn.props['White']
-							+" - "+this.conv.pgn.props['Black']);
-			h.appendChild(txt);
-		}
-		else {
-			var txt = document.createTextNode("Unknown - Unknown");
-			h.appendChild(txt);
-		}
-		h.appendChild(document.createTextNode(" ("));
-		h.appendChild(tmpA);
-		h.appendChild(document.createTextNode(")"));
-		movesHeader.appendChild(h)
-		cont.appendChild(movesHeader);
-		moveList = document.createElement("p");
-		cont.appendChild(moveList);
-		
-		var link, tmp, tmp3;
-		var lastMoveIdx = 0;
-		var comment;
+	var txt = document.createTextNode("");
+	if (this.conv.pgn.props['White']) {
+		var txt = document.createTextNode(this.conv.pgn.props['White']
+						+" - "+this.conv.pgn.props['Black']);
+		h.appendChild(txt);
+	}
+	else {
+		var txt = document.createTextNode("Unknown - Unknown");
+		h.appendChild(txt);
+	}
+	h.appendChild(document.createTextNode(" ("));
+	h.appendChild(tmpA);
+	h.appendChild(document.createTextNode(")"));
+	movesHeader.appendChild(h)
+	cont.appendChild(movesHeader);
+	moveList = document.createElement("p");
+	cont.appendChild(moveList);
+	
+	var link, tmp, tmp3;
+	var lastMoveIdx = 0;
+	var comment;
 
-		for (var i = 0;i < tmp2.length;i++) {
-			if (tmp2[i].white != null) {
-				link = document.createElement("a");
-				tmp = document.createTextNode(tmp2[i].white);
-				tmp3 = document.createElement("span");
-				tmp3.className = 'move_numbers';
+	for (var i = 0;i < tmp2.length;i++) {
+		if (tmp2[i].white != null) {
+			link = document.createElement("a");
+			tmp = document.createTextNode(tmp2[i].white);
+			tmp3 = document.createElement("span");
+			tmp3.className = 'move_numbers';
 
-				tmp3.appendChild(document.createTextNode(" "+(i+this.conv.startMoveNum)+". "));
-				moveList.appendChild(tmp3);
-				
-				link.className = "move";
-				link.href = 'javascript:void(window['+this.id+']'
-										+'.skipToMove('+i+','+0+'))';
-				link.appendChild(tmp);
-				moveList.appendChild(link);
+			tmp3.appendChild(document.createTextNode(" "+(i+this.conv.startMoveNum)+". "));
+			moveList.appendChild(tmp3);
+			
+			link.className = "move";
+			link.href = 'javascript:void(window['+this.id+']'
+									+'.skipToMove('+i+','+0+'))';
+			link.appendChild(tmp);
+			moveList.appendChild(link);
 
-				comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
-				if (comment[0]) {
-					var tmp4 = document.createElement("span");
-					tmp4.className = "commentary";
-					if (!this.opts['showComments']) {
-						tmp4.style.display = "none";
-					}
-					tmp4.appendChild(document.createTextNode(comment[0]));
-					moveList.appendChild(tmp4);
-					lastMoveIdx = comment[1];
+			comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
+			if (comment[0]) {
+				var tmp4 = document.createElement("span");
+				tmp4.className = "commentary";
+				if (!this.opts['showComments']) {
+					tmp4.style.display = "none";
 				}
-
-				this.movesOnPane[this.movesOnPane.length] = link;
+				tmp4.appendChild(document.createTextNode(comment[0]));
+				moveList.appendChild(tmp4);
+				lastMoveIdx = comment[1];
 			}
 
-			if (tmp2[i].black != null) {
-				moveList.appendChild(document.createTextNode(" "));
-				tmp = document.createTextNode(tmp2[i].black);
-				link = document.createElement("a");
-				link.className = "move";
-				link.appendChild(tmp);
-				link.href = 'javascript:void(window['+this.id+']'
-									+'.skipToMove('+i+','+1+'))';
-				moveList.appendChild(link);
-				comment = this.conv.pgn.getComment(tmp2[i].black,lastMoveIdx);
-				if (comment[0]) {
-					var tmp4 = document.createElement("span");
-					tmp4.className = "commentary";
-					if (!this.opts['showComments']) {
-						tmp4.style.display = "none";
-					}
-					tmp4.appendChild(document.createTextNode(comment[0]));
-					moveList.appendChild(tmp4);
-					lastMoveIdx = comment[1];
-				}
-				this.movesOnPane[this.movesOnPane.length] = link;
-			}
+			this.movesOnPane[this.movesOnPane.length] = link;
 		}
-		if(!(typeof(this.conv.pgn.props['Result']) == 'undefined')) {
-			txt = document.createTextNode("  "+this.conv.pgn.props['Result']);
-			tmp2 = document.createElement("span");
-			tmp2.className = "result";
-			tmp2.appendChild(txt);
-			moveList.appendChild(tmp2);
-			this.movesOnPane[this.movesOnPane.length] = tmp2;
+
+		if (tmp2[i].black != null) {
+			moveList.appendChild(document.createTextNode(" "));
+			tmp = document.createTextNode(tmp2[i].black);
+			link = document.createElement("a");
+			link.className = "move";
+			link.appendChild(tmp);
+			link.href = 'javascript:void(window['+this.id+']'
+								+'.skipToMove('+i+','+1+'))';
+			moveList.appendChild(link);
+			comment = this.conv.pgn.getComment(tmp2[i].black,lastMoveIdx);
+			if (comment[0]) {
+				var tmp4 = document.createElement("span");
+				tmp4.className = "commentary";
+				if (!this.opts['showComments']) {
+					tmp4.style.display = "none";
+				}
+				tmp4.appendChild(document.createTextNode(comment[0]));
+				moveList.appendChild(tmp4);
+				lastMoveIdx = comment[1];
+			}
+			this.movesOnPane[this.movesOnPane.length] = link;
 		}
 	}
+	if(!(typeof(this.conv.pgn.props['Result']) == 'undefined')) {
+		txt = document.createTextNode("  "+this.conv.pgn.props['Result']);
+		tmp2 = document.createElement("span");
+		tmp2.className = "result";
+		tmp2.appendChild(txt);
+		moveList.appendChild(tmp2);
+		this.movesOnPane[this.movesOnPane.length] = tmp2;
+	}
+}
 /*
  *	This filles in the information about the game in the designated container
  */
 Board.prototype.populateProps = function(container) {
 
-		// white - black;
-		var player_line = document.createElement('p');
-		player_line.className = 'players';
-		container.appendChild(player_line);
+	// white - black;
+	var player_line = document.createElement('p');
+	player_line.className = 'players';
+	container.appendChild(player_line);
 
-		var txt = document.createTextNode('&nbsp;');
-		this.visuals['pgn']['players'] = txt;
-		player_line.appendChild(txt);
-		
-		// ELO
-		var elo_line = document.createElement('p');
-		elo_line.className = 'elo';
-		container.appendChild(elo_line);
+	var txt = document.createTextNode('&nbsp;');
+	this.visuals['pgn']['players'] = txt;
+	player_line.appendChild(txt);
+	
+	// ELO
+	var elo_line = document.createElement('p');
+	elo_line.className = 'elo';
+	container.appendChild(elo_line);
 
-		txt = document.createTextNode('&nbsp;');
-		this.visuals['pgn']['elos'] = txt;
-		elo_line.appendChild(txt);
+	txt = document.createTextNode('&nbsp;');
+	this.visuals['pgn']['elos'] = txt;
+	elo_line.appendChild(txt);
 
-		// Date 
-		var date_line = document.createElement('p');
-		date_line.className = 'game_date';
-		container.appendChild(date_line);
+	// Date 
+	var date_line = document.createElement('p');
+	date_line.className = 'game_date';
+	container.appendChild(date_line);
 
-		txt = document.createTextNode('&nbsp;');
-		this.visuals['pgn']['event'] = txt;
-		date_line.appendChild(txt);
+	txt = document.createTextNode('&nbsp;');
+	this.visuals['pgn']['event'] = txt;
+	date_line.appendChild(txt);
 
-		// Time control
-		var time_line = document.createElement('p');
-		time_line.className = 'time_control';
-		container.appendChild(time_line);
+	// Time control
+	var time_line = document.createElement('p');
+	time_line.className = 'time_control';
+	container.appendChild(time_line);
 
-		txt = document.createTextNode('&nbsp;');
-		this.visuals['pgn']['timecontrol'] = txt;
-		time_line.appendChild(txt);
+	txt = document.createTextNode('&nbsp;');
+	this.visuals['pgn']['timecontrol'] = txt;
+	time_line.appendChild(txt);
 
-		this.updatePGNInfo();
-	}
+	this.updatePGNInfo();
+}
 /*
  *	This creates the img tag for the buttons and the pieces
  */
 Board.prototype.getImg = function(piece, color) {
-		var btns = {"ffward":true,"rwind":true,"forward":true,
-					"back":true,"toggle":true,"comments":true,"flip":true};
-		
-		var prefix = this.opts['imagePrefix'];
-		if (btns[piece]) {
-			prefix = this.opts['buttonPrefix'];
-			this.imageNames[color][piece] = this.imageNames[color][piece].replace("buttons\/","");
-		}
-		
-		var src = prefix + this.imageNames[color][piece];
-		var img = document.createElement("img");
-		
-		if ( /\.png$/.test( img.src.toLowerCase()) &&
-				navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
-			// set filter
-			img.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='" + 
-						src + "',sizingMethod='image')";	
-		}
-		else {
-			img.src = src;
-		}
-
-		img.alt = color + "_" + piece;
-		return img;
+	var btns = {"ffward":true,"rwind":true,"forward":true,
+				"back":true,"toggle":true,"comments":true,"flip":true};
+	
+	var prefix = this.opts['imagePrefix'];
+	if (btns[piece]) {
+		prefix = this.opts['buttonPrefix'];
+		this.imageNames[color][piece] = this.imageNames[color][piece].replace("buttons\/","");
 	}
+	
+	var src = prefix + this.imageNames[color][piece];
+	var img = document.createElement("img");
+	
+	if ( /\.png$/.test( img.src.toLowerCase()) &&
+			navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
+		// set filter
+		img.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='" + 
+					src + "',sizingMethod='image')";	
+	}
+	else {
+		img.src = src;
+	}
+
+	img.alt = color + "_" + piece;
+	return img;
+}
 /**
  *	This synchronizes the display board with the virtual board when you jump to a position
  *		without moving to it.
  */
 Board.prototype.syncBoard = function(result) {
-		for(var i=0;i<8;i++) {
-			for(var j=0;j<8;j++) {
-				this.syncSquare(result[i][j]
-										,this.pos[i][j]);
-			}
+	for(var i=0;i<8;i++) {
+		for(var j=0;j<8;j++) {
+			this.syncSquare(result[i][j]
+									,this.pos[i][j]);
 		}
 	}
+}
 /**
  *	This copies the contents of one square to another. It removes any piece image
  *		(or anything else) attached to the destination square, and attaches the
  *		piece image from the source square.
  */
 Board.prototype.syncSquare = function(from, to) {
-			to.piece = from.piece;
-			to.color = from.color;
+	to.piece = from.piece;
+	to.color = from.color;
 
-			if (to.firstChild)
-				 to.removeChild(to.firstChild);
-			if (to.piece) {
-				to.appendChild(this.getImg(to.piece, to.color));
-			}
-		}
+	if (to.firstChild)
+		 to.removeChild(to.firstChild);
+	if (to.piece) {
+		to.appendChild(this.getImg(to.piece, to.color));
+	}
+}
