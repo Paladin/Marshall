@@ -37,18 +37,11 @@ function Pgn(pgn) {
 	
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
-	if (this.isBroken(pgn))
-		this.pgnStripped = this.stripItBroken(pgn);
-	else
-		this.pgnStripped = this.stripIt(pgn);
+	this.pgnStripped = this.stripComments(pgn);
 	
 	this.pgn = this.extractTags(this.pgn);
 	
-	// strip comments
-	if (this.isBroken(pgn))
-		this.pgn = this.stripItBroken(this.pgn,true);
-	else
-		this.pgn = this.stripIt(this.pgn,true);
+	this.pgn = this.stripComments(this.pgn,true);
 	
 	var gameOverre = new Array(
 		/1\/2-1\/2/,
@@ -153,6 +146,15 @@ function Pgn(pgn) {
 		var move = new Move(ply[0], ply[1]);
 		this.moves[this.moves.length] = move;
 	}
+}
+/**
+ *	will return the pgn string without comments or with comments replaced by dashes.
+ */
+Pgn.prototype.stripComments = function(pgn, replace) {
+	if (this.isBroken(pgn))
+		return this.stripItBroken(pgn, replace);
+	else
+		return this.stripIt(pgn, replace);
 }
 /**
  *	Does the move have information on its origin as well as its destination
