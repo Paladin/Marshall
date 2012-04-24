@@ -86,24 +86,20 @@ function Pgn(pgn) {
 
 
 	for (var i=0;i<sizeOfTheMoves;i++) {	//don't handle game end bit
-		if (themoves[i]) {
-			themoves[i] = themoves[i].replace(/^\s+|\s+$/g, '');
-		}
-		
 		if (!themoves[i]) {
 			continue;
 		}
+		themoves[i] = themoves[i].trim();
 
 		if (this.moveHasOrigination(themoves[i])) {
 			var tmp2 = themoves[i].split("-");
-			var matches = tmp2[0].match(/[0-9]*?\.?([A-Z])/);
 			var newMove;
-			if (matches != null) {
+			if (tmp2[0].match(/[0-9]*?\.?([A-Z])/) != null) {
 				 // we can just replace the - with nothing
 				 newMove  = themoves[i].replace("-","");
 			}
 			else {
-				matches = tmp2[0].match(/[0-9]+\./);
+				var matches = tmp2[0].match(/[0-9]+\./);
 				if (matches) {
 					newMove = matches[0]+tmp2[1];
 				}
@@ -217,7 +213,7 @@ Pgn.prototype.extractTags = function (pgn) {
 			this.props[this.requiredProps[length]] = "?";
 	}
 
-	return pgn.replace(/\[[^\]]*\]/g,'').replace(/^\s+|\s+$/g, '');
+	return pgn.replace(/\[[^\]]*\]/g,'').trim();
 }
 
 Pgn.prototype.nextMove = function() {
