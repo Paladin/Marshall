@@ -33,21 +33,7 @@ function Pgn(pgn) {
 
 	// strip newlines
 	this.pgnOrig = pgn;
-	pgn = pgn.replace(/\n/g," ");
-	
-	// replace dollar signs
-	//"!", "?", "!!", "!?", "?!", and "??"
-	pgn = pgn.replace(/\ \$1[0-9]*/g, "!");
-	pgn = pgn.replace(/\ \$2[0-9]*/g, "?");
-	pgn = pgn.replace(/\ \$3[0-9]*/g, "!!");
-	pgn = pgn.replace(/\ \$4[0-9]*/g, "??");
-	pgn = pgn.replace(/\ \$5[0-9]*/g, "!?");
-	pgn = pgn.replace(/\ \$6[0-9]*/g, "?!");
-	pgn = pgn.replace(/\ \$[0-9]+/g, "");
-	
-
-	// make double spaces to single spaces
-	pgn = pgn.replace(/\s+/g,' ');
+	pgn = this.normalize(pgn);
 	
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
@@ -56,44 +42,14 @@ function Pgn(pgn) {
 	else
 		this.pgnStripped = this.stripIt(pgn);
 	
-	/* constructor */
-
+	this.pgn = this.extractTags(this.pgn);
+	
 	// strip comments
 	if (this.isBroken(pgn))
-		this.pgn = this.stripItBroken(pgn,true);
+		this.pgn = this.stripItBroken(this.pgn,true);
 	else
-		this.pgn = this.stripIt(pgn,true);
+		this.pgn = this.stripIt(this.pgn,true);
 	
-	// Match all properties
-	var reprop = /\[([^\]]*)\]/gi;
-	var matches = this.pgn.match(reprop);
-	if (matches) {
-		// extract information from each matched property
-		 for(var i = 0;i < matches.length; i++) {
-			 // lose the brackets
-			 tmpMatches = matches[i].substring(1, matches[i].length-1);
-			 // split by the first space
-			 var key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
-			 var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1);
-			 if (value.charAt(0) == '"')
-				 value = value.substr(1);
-			 if (value.charAt(value.length-1) == '"')
-				 value = value.substr(0, value.length-1);
-			 
-			 this.props[key] = value;
-			 this.pgn = this.pgn.replace(matches[i], "");
-		 }
-	}
-	length = this.requiredLength;
-	while(length--) {
-		if(!this.props[this.requiredProps[length]])
-			this.props[this.requiredProps[length]] = "?";
-	}
-	// remove the properties
-	this.pgn = this.pgn.replace(/\[[^\]]*\]/g,'');
-	//trim
-	this.pgn = this.pgn.replace(/^\s+|\s+$/g, '');
-
 	var gameOverre = new Array(
 		/1\/2-1\/2/,
 		/0-1/,
@@ -204,6 +160,59 @@ function Pgn(pgn) {
 		var move = new Move(tmp[0], tmp[1]);
 		this.moves[this.moves.length] = move;
 	}
+}
+/**
+ *	This will "normalize" the pgn file by removing line breaks, collapsing strings of
+ *	spaces, and replacing the symbols for moves with the characters (!, ?, etc.)
+ */
+Pgn.prototype.normalize = function(pgn) {
+	pgn = pgn.replace(/\n/g," ");
+	
+	// replace dollar signs
+	//"!", "?", "!!", "!?", "?!", and "??"
+	pgn = pgn.replace(/\ \$1[0-9]*/g, "!");
+	pgn = pgn.replace(/\ \$2[0-9]*/g, "?");
+	pgn = pgn.replace(/\ \$3[0-9]*/g, "!!");
+	pgn = pgn.replace(/\ \$4[0-9]*/g, "??");
+	pgn = pgn.replace(/\ \$5[0-9]*/g, "!?");
+	pgn = pgn.replace(/\ \$6[0-9]*/g, "?!");
+	pgn = pgn.replace(/\ \$[0-9]+/g, "");
+	
+
+	// make double spaces to single spaces
+	return pgn.replace(/\s+/g,' ');
+}
+/**
+ *	This function takes a pgn game string and extracts all the tags into the class
+ *	variable props as key/value pairs. it returns the pgn string, minus the tags.
+ */
+Pgn.prototype.extractTags = function (pgn) {
+	var matches;
+	var reprop = /\[([^\]]*)\]/gi;
+	if (matches = pgn.match(reprop)) {
+		// extract information from each matched property
+		for(var i = 0;i < matches.length; i++) {
+			// lose the brackets
+			tmpMatches = matches[i].substring(1, matches[i].length-1);
+			// split by the first space
+			var key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
+			var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1);
+			if (value.charAt(0) == '"')
+				value = value.substr(1);
+			if (value.charAt(value.length-1) == '"')
+				value = value.substr(0, value.length-1);
+
+			this.props[key] = value;
+			pgn = pgn.replace(matches[i], "");
+		}
+	}
+	length = this.requiredLength;
+	while(length--) {
+		if(!this.props[this.requiredProps[length]])
+			this.props[this.requiredProps[length]] = "?";
+	}
+
+	return pgn.replace(/\[[^\]]*\]/g,'').replace(/^\s+|\s+$/g, '');
 }
 
 Pgn.prototype.nextMove = function() {
