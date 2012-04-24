@@ -59,13 +59,13 @@ function Pgn(pgn) {
 
 	// the moves;
 	var themoves = this.pgn.split(" ");
-	var tmp = new Array();
-	tmp[1] = null;
-	var tmpidx = 0;	//make this 1 if FEN and black to move
+	var ply = new Array();
+	ply[1] = null;
+	var plyidx = 0;	//make this 1 if FEN and black to move
 	if (this.props["FEN"]) {
 		var fen = this.props['FEN'].split(/\/| /g);
 		if (fen[8] == 'b') {
-			tmpidx = 1;
+			plyidx = 1;
 			this.skip = 1;
 		}
 	}
@@ -143,21 +143,21 @@ function Pgn(pgn) {
 				continue;
 			}
 		}
-		tmp[tmpidx] = themoves[i];
-		if (tmpidx == 1) {	//black's move or last move
-			var move = new Move(tmp[0], tmp[1]);
+		ply[plyidx] = themoves[i];
+		if (plyidx == 1) {	//black's move or last move
+			var move = new Move(ply[0], ply[1]);
 			this.moves[this.moves.length] = move;
-			tmpidx = 0;
-			tmp = new Array();
-			tmp[1] = null;
+			plyidx = 0;
+			ply = new Array();
+			ply[1] = null;
 		}
 		else {
-			tmpidx = 1;
+			plyidx = 1;
 		}
 	}
 	
-	if (tmp[0] || tmp[1]) {
-		var move = new Move(tmp[0], tmp[1]);
+	if (ply[0] || ply[1]) {
+		var move = new Move(ply[0], ply[1]);
 		this.moves[this.moves.length] = move;
 	}
 }
