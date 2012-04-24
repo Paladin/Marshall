@@ -94,10 +94,7 @@ function Pgn(pgn) {
 			continue;
 		}
 
-		if (themoves[i].indexOf("-") != -1
-			 && !/[0|o]-[0|o]/i.test(themoves[i])
-			 && !/[0|o]-[0|o]-[0|o]/i.test(themoves[i])
-			) {
+		if (this.moveHasOrigination(themoves[i])) {
 			var tmp2 = themoves[i].split("-");
 			var matches = tmp2[0].match(/[0-9]*?\.?([A-Z])/);
 			var newMove;
@@ -160,6 +157,14 @@ function Pgn(pgn) {
 		var move = new Move(ply[0], ply[1]);
 		this.moves[this.moves.length] = move;
 	}
+}
+/**
+ *	Does the move have information on its origin as well as its destination
+ */
+Pgn.prototype.moveHasOrigination = function(move) {
+	return move.indexOf("-") != -1
+			 && !/[0|o]-[0|o]/i.test(move)
+			 && !/[0|o]-[0|o]-[0|o]/i.test(move);
 }
 /**
  *	This will "normalize" the pgn file by removing line breaks, collapsing strings of
