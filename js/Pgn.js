@@ -77,68 +77,42 @@ function Pgn(pgn) {
 		}
 	}
 
-
 	for (var i=0;i<sizeOfTheMoves;i++) {	//don't handle game end bit
-		if (!themoves[i]) {
-			continue;
-		}
-		themoves[i] = themoves[i].trim();
-
-		if (this.moveHasOrigination(themoves[i])) {
-			var tmp2 = themoves[i].split("-");
-			var newMove;
-			if (tmp2[0].match(/[0-9]*?\.?([A-Z])/) != null) {
-				 // we can just replace the - with nothing
-				 newMove  = themoves[i].replace("-","");
-			}
-			else {
-				var matches = tmp2[0].match(/[0-9]+\./);
-				if (matches) {
-					newMove = matches[0]+tmp2[1];
+		if (themoves[i]) {
+			themoves[i] = themoves[i].trim();
+	
+			if (this.moveHasOrigination(themoves[i])) {
+				var tmp2 = themoves[i].split("-");
+				var newMove;
+				if (tmp2[0].match(/[0-9]*?\.?([A-Z])/) != null) {
+					 // we can just replace the - with nothing
+					 newMove  = themoves[i].replace("-","");
 				}
 				else {
-					newMove = tmp2[1];
-				}				
+					var matches = tmp2[0].match(/[0-9]+\./);
+					if (matches) {
+						newMove = matches[0]+tmp2[1];
+					}
+					else {
+						newMove = tmp2[1];
+					}				
+				}
+				themoves[i] = newMove;
 			}
-			themoves[i] = newMove;
-		}
-		var c = themoves[i].charAt(0);
-		if (c >= '1' && c <= '9') {	//move number
-			c = themoves[i].charAt(themoves[i].length-1);
-			if (c == '.') {	//ends with . so nothing but a move
-				continue;
-			}
-			var found = false;
-			for (var j=0;j<themoves[i].length;j++) {
-				c = themoves[i].charAt(j);
-				if (c >= '0' && c <= '9') {
-					continue;
+			themoves[i] = this.removeMoveNumber(themoves[i])
+			if( themoves[i].length > 0 ) {
+				ply[plyidx] = themoves[i];
+				if (plyidx == 1) {	//black's move or last move
+					var move = new Move(ply[0], ply[1]);
+					this.moves[this.moves.length] = move;
+					plyidx = 0;
+					ply = new Array();
+					ply[1] = null;
 				}
 				else {
-					found = true;
-					var idx = j;
-					// 6.0-0 goes wrong as 0 is used for castling
-					if (!(themoves[i].charAt(j) >= '0' && themoves[i].charAt(j)<='9')) {
-						 idx = j+1;
-				}
-					themoves[i] = themoves[i].substring(idx);	//strip move number
-					break;
+					plyidx = 1;
 				}
 			}
-			if (!found) {
-				continue;
-			}
-		}
-		ply[plyidx] = themoves[i];
-		if (plyidx == 1) {	//black's move or last move
-			var move = new Move(ply[0], ply[1]);
-			this.moves[this.moves.length] = move;
-			plyidx = 0;
-			ply = new Array();
-			ply[1] = null;
-		}
-		else {
-			plyidx = 1;
 		}
 	}
 	
@@ -146,6 +120,12 @@ function Pgn(pgn) {
 		var move = new Move(ply[0], ply[1]);
 		this.moves[this.moves.length] = move;
 	}
+}
+/**
+ *	If the move is prefaced by a move number, remove it.
+ */
+Pgn.prototype.removeMoveNumber = function(move) {
+	return move.replace(/^[1-9][0-9]*\.?[ ]*/g,"")
 }
 /**
  *	will return the pgn string without comments or with comments replaced by dashes.
