@@ -117,29 +117,63 @@ Board.prototype.init = function() {
 	propsTd.className = "game_info"
 	
 	// movesTable
-	var movesDiv = document.createElement("div");
-	movesDiv.className = "move_list";
-	this.movesDiv = movesDiv;
-	movesDiv.id = this.divId+"_board_moves";
-	gameSection.appendChild(movesDiv);
+	this.movesDiv = document.createElement("div");
+	this.movesDiv.className = "move_list";
+	this.movesDiv.id = this.divId+"_board_moves";
+	gameSection.appendChild(this.movesDiv);
 	
-	var tmp = document.createElement("tr");
-	tmp.appendChild(boardTd);
-	topTableTb.appendChild(tmp);
-
+	topTableTb.appendChild(document.createElement("tr")).appendChild(boardTd);
 	topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd);
 	topTableTb.appendChild(document.createElement("tr")).appendChild(btnTdNext);
 	topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd);
 
+	var board = this.drawBoard();
 
+	boardFrame.appendChild(gameSection);
+	boardTd.appendChild(board);
+	
+	this.populatePieces();
+	if (this.opts['flipped'])
+		this.flipBoard();
+	this.populateProps(propsTd);
+	this.populateMoves(this.movesDiv, this.pgn.pgnOrig);
+
+	this.createButtonBar(btnTd);
+
+	// current move
+	// it is initialized in updateMoveInfo
+	var input = document.createElement("input");
+	input.className = "current_move_box";
+	this.moveInput = input;
+	btnTdNext.appendChild(input);
+	// end of current move
+
+ 	this.updateMoveInfo(this);
+	this.toggleMoves(this.opts['showMovesPane']);	//force the moves pane overflow to get picked up
+	if (this.opts['skipToMove']) { 
+		try {
+			var tmp2 = parseInt(this.opts['skipToMove']);
+			if (tmp2>2) {
+				var color2 = tmp2%2==0?1:0;
+				tmp2 = Math.round(tmp2/2);
+				this.skipToMove(tmp2-1,color2);
+			}
+			else if (tmp2 == 1) {
+				 this.skipToMove(0,0);
+			}
+			else if (tmp2 == 2) {
+				 this.skipToMove(0,1);
+			}
+		}catch(e){}
+	}
+}
+
+Board.prototype.drawBoard = function() {
 	var board = document.createElement("table");
 	board.className = "gameboard"
 	var boardTb = document.createElement("tbody");
 	board.appendChild(boardTb);
 
-	boardFrame.appendChild(gameSection);
-	boardTd.appendChild(board);
-	
 	var whiteC = 'light_square';
 	var blackC = 'dark_square';
 
@@ -158,132 +192,45 @@ Board.prototype.init = function() {
 		}
 		boardTb.appendChild(tr);
 	}
-	this.populatePieces();
-	if (this.opts['flipped'])
-		this.flipBoard();
-	this.populateProps(propsTd);
-	this.populateMoves(movesDiv, this.pgn.pgnOrig);
+	return board;
+}
 
-	// in java i could do Board.this in anon function;
-	var tmp = this;
-
-	// rwnd;
-	var hrefS = document.createElement("a");
-	hrefS.href = "javascript:void(0)";
-	var href = hrefS.cloneNode(false);
-	var input = this.getImg("rwind","btns");
-	input.alt = this.opts['altRewind'];
-	input.title = this.opts['altRewind'];;
-	href.appendChild(input);
-	
+Board.prototype.createButtonBar = function(theContainer) {
 	var theBoard = this;
-	input.onclick = function() {
+
+	this.makeButton( theContainer, "rwind", "altRewind").onclick = function() {
 		theBoard.startPosition();
 	};
-	btnTd.appendChild(href);
-
-	// back
-	input = this.getImg("back","btns");
-	input.alt = this.opts['altBack'];
-	input.title = this.opts['altBack'];
-	href = hrefS.cloneNode(false);
-	href.appendChild(input);
-	
-	input.onclick = function() {
+	this.makeButton( theContainer, "back", "altBack").onclick = function() {
 		theBoard.makeBwMove();
 	};
-
-	btnTd.appendChild(href);
-	
-	// flip the board
-	input = this.getImg("flip","btns");
-	input.alt = this.opts['altFlip'];
-	input.title = this.opts['altFlip'];
-	href = hrefS.cloneNode(false);
-	href.appendChild(input);
-	
-	input.onclick = function() {
-		tmp.flipBoard();
+	this.makeButton( theContainer, "flip", "altFlip").onclick = function() {
+		theBoard.flipBoard();
 	};
-
-	btnTd.appendChild(href);
-
-	// current move
-	// it is initialized in updateMoveInfo
-	var input = document.createElement("input");
-	input.className = "current_move_box";
-	this.moveInput = input;
-	btnTdNext.appendChild(input);
-	// end of current move
-
-	// hide
-	input = this.getImg("toggle","btns");
-	input.alt = this.opts['altShowMoves'];
-	input.title = this.opts['altShowMoves'];
-	href = hrefS.cloneNode(false);
-	href.appendChild(input);
-
-	input.onclick = function() {
+	this.makeButton( theContainer, "toggle", "altShowMoves").onclick = function() {
 		theBoard.toggleMoves("flip");
 	};
-
-	btnTd.appendChild(href);
-
-	// comments
-	input = this.getImg("comments","btns");
-	input.alt = this.opts['altComments'];
-	input.title = this.opts['altComments'];
-	href = hrefS.cloneNode(false);
-	href.appendChild(input);
-
-	input.onclick = function() {
+	this.makeButton( theContainer, "comments", "altComments").onclick = function() {
 		theBoard.toggleComments("flip");
 	};
-
-	btnTd.appendChild(href);
-
-	// next btn
-	input = this.getImg("forward","btns");
-	input.alt = this.opts['altPlayMove'];
-	input.title = this.opts['altPlayMove'];
-	href = hrefS.cloneNode(false);
-	href.appendChild(input);
-
-	input.onclick = function() {
+	this.makeButton( theContainer, "forward", "altPlayMove").onclick = function() {
 		theBoard.makeMove();
 	};
+	this.makeButton( theContainer, "ffward", "altFastForward").onclick = function() {
+ 			theBoard.endPosition();
+ 	}
+}
 
-	btnTd.appendChild(href);
-
-	// ffwd
-	input = this.getImg("ffward","btns");
-	input.alt = this.opts['altFastForward'];
-	input.title = this.opts['altFastForward'];
-	href = hrefS.cloneNode(false);
+Board.prototype.makeButton = function( btnContainer, btnName, btnTitle ) {
+	var href = document.createElement("a");
+	href.href = "javascript:void(0)";
+	var input = this.getImg(btnName,"btns");
+	input.alt = this.opts[btnTitle];
+	input.title = this.opts[btnTitle];;
 	href.appendChild(input);
-
-	input.onclick = function() {
-			tmp.endPosition(tmp);
-	};
-	btnTd.appendChild(href);
-	this.updateMoveInfo(this);
-	this.toggleMoves(this.opts['showMovesPane']);	//force the moves pane overflow to get picked up
-	if (this.opts['skipToMove']) { 
-		try {
-			var tmp2 = parseInt(this.opts['skipToMove']);
-			if (tmp2>2) {
-				var color2 = tmp2%2==0?1:0;
-				tmp2 = Math.round(tmp2/2);
-				this.skipToMove(tmp2-1,color2);
-			}
-			else if (tmp2 == 1) {
-				 this.skipToMove(0,0);
-			}
-			else if (tmp2 == 2) {
-				 this.skipToMove(0,1);
-			}
-		}catch(e){}
-	}
+	btnContainer.appendChild(href);
+	
+	return input;
 }
 /**
  *	Flips the board to display it from the other side's POV.
