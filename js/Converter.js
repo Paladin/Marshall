@@ -59,132 +59,7 @@ function Converter(pgn) {
 		}
 	}
 
-	if (pgn.props['FEN']) {
-		var val = pgn.props['FEN'].split(/\/| /g);
-		for (var i=0;i<8;i++) {
-			var file = 0;
-			for (var j=0;j<val[i].length;j++) {
-				var c = val[i].charAt(j);
-				switch (c) {
-					case 'p':
-						this.placePiece(this.vBoard[i][file], 'pawn', 'black');
-						file++;
-						break;
-					case 'n':
-						this.placePiece(this.vBoard[i][file], 'knight', 'black');
-						file++;
-						break;
-					case 'k':
-						this.placePiece(this.vBoard[i][file], 'king', 'black');
-						this.bKingX = i;
-						this.bKingY = file;
-						file++;
-						break;
-					case 'q':
-						this.placePiece(this.vBoard[i][file], 'queen', 'black');
-						this.bQueens[this.bQueens.length] = [i,file];
-						file++;
-						break;
-					case 'r':
-						this.placePiece(this.vBoard[i][file], 'rook', 'black');
-						this.bRooks[this.bRooks.length] = [i,file];
-						file++;
-						break;
-					case 'b':
-						this.placePiece(this.vBoard[i][file], 'bishop', 'black');
-						this.bBishops[this.bBishops.length] = [i,file];
-						file++;
-						break;
-					case 'P':
-						this.placePiece(this.vBoard[i][file], 'pawn', 'white');
-						file++;
-						break;
-					case 'N':
-						this.placePiece(this.vBoard[i][file], 'knight', 'white');
-						file++;
-						break;
-					case 'K':
-						this.placePiece(this.vBoard[i][file], 'king', 'white');
-						this.wKingX = i;
-						this.wKingY = file;
-						file++;
-						break;
-					case 'Q':
-						this.placePiece(this.vBoard[i][file], 'queen', 'white');
-						this.wQueens[this.wQueens.length] = [i,file];
-						file++;
-						break;
-					case 'R':
-						this.placePiece(this.vBoard[i][file], 'rook', 'white');
-						this.wRooks[this.wRooks.length] = [i,file];
-						file++;
-						break;
-					case 'B':
-						this.placePiece(this.vBoard[i][file], 'bishop', 'white');
-						this.wBishops[this.wBishops.length] = [i,file];
-						file++;
-						break;
-					case '1':
-					case '2':
-					case '3':
-					case '4':
-					case '5':
-					case '6':
-					case '7':
-					case '8':
-						file += parseInt(c);
-						break;
-				}
-			}
-		}
-		if (val[8] == "b") {
-			this.whiteToMove = false;
-		}
-		this.startMoveNum = parseInt(val[12]);
-	}
-	else {
-		/* Virtual board initialization */
-		
-		// pawns
-		for (var i = 0;i < 8; i++) {
-			this.placePiece(this.vBoard[6][i], 'pawn','white');
-	            
-			this.placePiece(this.vBoard[1][i], 'pawn', 'black');
-		}
-	
-		// rooks, bishops, knights
-		for(var i = 0; i < 2; i++) {
-			this.placePiece(this.vBoard[7][i*7], 'rook', 'white');
-			this.wRooks[this.wRooks.length] = [7,i*7];
-	          
-			this.placePiece(this.vBoard[0][i*7], 'rook', 'black');
-			this.bRooks[this.bRooks.length] = [0,i*7];
-	  
-			this.placePiece(this.vBoard[7][i*5+1], 'knight', 'white');
-	          
-			this.placePiece(this.vBoard[0][i*5+1], 'knight', 'black');
-	  
-			this.placePiece(this.vBoard[7][i*3+2], 'bishop', 'white');
-			this.wBishops[this.wBishops.length] = [7,i*3+2];
-
-			this.placePiece(this.vBoard[0][i*3+2], 'bishop', 'black');
-			this.bBishops[this.bBishops.length] = [0,i*3+2];
-		}
-	         
-		this.placePiece(this.vBoard[7][3], 'queen', 'white');
-		this.wQueens[this.wQueens.length] = [7,3];
-		
-		this.placePiece(this.vBoard[7][4], 'king', 'white');
-		this.wKingX = 7, this.wKingY = 4;
-	
-		this.placePiece(this.vBoard[0][3], 'queen', 'black');
-		this.bQueens[this.bQueens.length] = [0,3];
-	
-		this.placePiece(this.vBoard[0][4], 'king', 'black');
-		this.bKingX = 0, this.bKingY = 4;
-	
-		/* EO Virtual board initialization */
-	}
+	this.setupVirtualBoard(pgn.props['FEN']);
 		
 	// let's clone the initial pos
 	for (var i = 0;i < 8;i++){
@@ -194,7 +69,96 @@ function Converter(pgn) {
 		}	 
 	}
 }
-
+/**
+ *	Sets up a virtual board. Since the starting position is just a special case of
+ *	FEN, it checks to see if it was given a FEN, if not defaults to start.
+ */
+Converter.prototype.setupVirtualBoard = function(FEN) {
+	if(!FEN) {
+		FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+	}
+	var val = FEN.split(/\/| /g);
+	for (var i=0;i<8;i++) {
+		var file = 0;
+		for (var j=0;j<val[i].length;j++) {
+			var c = val[i].charAt(j);
+			switch (c) {
+				case 'p':
+					this.placePiece(this.vBoard[i][file], 'pawn', 'black');
+					file++;
+					break;
+				case 'n':
+					this.placePiece(this.vBoard[i][file], 'knight', 'black');
+					file++;
+					break;
+				case 'k':
+					this.placePiece(this.vBoard[i][file], 'king', 'black');
+					this.bKingX = i;
+					this.bKingY = file;
+					file++;
+					break;
+				case 'q':
+					this.placePiece(this.vBoard[i][file], 'queen', 'black');
+					this.bQueens[this.bQueens.length] = [i,file];
+					file++;
+					break;
+				case 'r':
+					this.placePiece(this.vBoard[i][file], 'rook', 'black');
+					this.bRooks[this.bRooks.length] = [i,file];
+					file++;
+					break;
+				case 'b':
+					this.placePiece(this.vBoard[i][file], 'bishop', 'black');
+					this.bBishops[this.bBishops.length] = [i,file];
+					file++;
+					break;
+				case 'P':
+					this.placePiece(this.vBoard[i][file], 'pawn', 'white');
+					file++;
+					break;
+				case 'N':
+					this.placePiece(this.vBoard[i][file], 'knight', 'white');
+					file++;
+					break;
+				case 'K':
+					this.placePiece(this.vBoard[i][file], 'king', 'white');
+					this.wKingX = i;
+					this.wKingY = file;
+					file++;
+					break;
+				case 'Q':
+					this.placePiece(this.vBoard[i][file], 'queen', 'white');
+					this.wQueens[this.wQueens.length] = [i,file];
+					file++;
+					break;
+				case 'R':
+					this.placePiece(this.vBoard[i][file], 'rook', 'white');
+					this.wRooks[this.wRooks.length] = [i,file];
+					file++;
+					break;
+				case 'B':
+					this.placePiece(this.vBoard[i][file], 'bishop', 'white');
+					this.wBishops[this.wBishops.length] = [i,file];
+					file++;
+					break;
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+					file += parseInt(c);
+					break;
+			}
+		}
+	}
+	if (val[8] == "b") {
+		this.whiteToMove = false;
+	}
+	this.startMoveNum = parseInt(val[12]);
+}
 Converter.prototype.placePiece = function(theSquare, thePiece, theColor) {
 	theSquare.piece = thePiece;
 	theSquare.color = theColor;
