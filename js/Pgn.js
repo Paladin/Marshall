@@ -94,20 +94,7 @@ Pgn.prototype.isBlackToMove = function(FEN) {
 	return (FEN && / b | B /.test(FEN));
 }
 Pgn.prototype.isResultIncluded = function(themoves) {
-	var gameOverregex = new Array(
-		/1\/2-1\/2/,
-		/0-1/,
-		/1-0/,
-		/\*/
-	);
-	var result = false;
-	
-	if (themoves.length>0) {
-		for (var i=0;i<gameOverregex.length;i++) {
-			result |= !!themoves[themoves.length-1].match(gameOverregex[i]);
-		}
-	}
-	return result;
+	return !!themoves[themoves.length-1].match(/1\/2-1\/2|0-1|1-0|\*/);
 }
 Pgn.prototype.includeOrigination = function(move) {
 	if (this.moveHasOrigination(move)) {
