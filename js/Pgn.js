@@ -26,7 +26,7 @@ function Pgn(pgn) {
 	this.requiredLength = this.requiredProps.length;
 	this.moves = new Array();	// the moves, one move contains the black and white move
 	this.currentMove = 0;	// the current move in the game
-	this.skip = 0;	// which ply? 0=white's, 1=black's
+	this.skip = 0;	// which ply at start? 0=white's, 1=black's
 
 	this.pgnOrig = pgn;
 	pgn = this.normalize(pgn);
@@ -49,11 +49,9 @@ function Pgn(pgn) {
 
 	var sizeOfTheMoves = this.dropLastMove(themoves) ? 
 							themoves.length - 1 : themoves.length;
-
 	for (var i=0;i<sizeOfTheMoves;i++) {
 		if (themoves[i]) {
 			themoves[i] = themoves[i].trim();
-	
 			themoves[i] = this.includeOrigination(themoves[i]);
 			themoves[i] = this.removeMoveNumber(themoves[i])
 			if( themoves[i].length > 0 ) {
@@ -90,6 +88,9 @@ Pgn.prototype.isBlackToMove = function(FEN) {
 Pgn.prototype.dropLastMove = function(themoves) {
 	return !!themoves[themoves.length-1].match(/1\/2-1\/2|0-1|1-0|\*|\.\.\./);
 }
+/**
+ *	Pull any info the move contains about its origin into the move as well
+ */
 Pgn.prototype.includeOrigination = function(move) {
 	if (this.moveHasOrigination(move)) {
 		var fromTo = move.split("-");
@@ -112,13 +113,14 @@ Pgn.prototype.includeOrigination = function(move) {
 	return move;
 }
 /**
- *	If the move is prefaced by a move number, remove it.
+ *	If the move is prefaced by a move number, remove it. If the token contains
+ *	only a move number, with no move, it will be emptied.
  */
 Pgn.prototype.removeMoveNumber = function(move) {
 	return move.replace(/^[1-9][0-9]*\.?[ ]*/g,"")
 }
 /**
- *	will return the pgn string without comments or with comments replaced by dashes.
+ *	will return the pgn string without comments or with comments replaced by underscores.
  */
 Pgn.prototype.stripComments = function(pgn, replace) {
 	if (this.isBroken(pgn))
