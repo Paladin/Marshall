@@ -53,14 +53,10 @@ function Pgn(pgn) {
 		this.skip = 1;
 	}
 
-	if (themoves.length>0 && themoves[themoves.length-1] == "...") {
-		 themoves = themoves.slice(0, themoves.length-1);
-	}
-
-	var sizeOfTheMoves = this.isResultIncluded(themoves) ? 
+	var sizeOfTheMoves = this.dropLastMove(themoves) ? 
 							themoves.length - 1 : themoves.length;
 
-	for (var i=0;i<sizeOfTheMoves;i++) {	//don't handle game end bit
+	for (var i=0;i<sizeOfTheMoves;i++) {
 		if (themoves[i]) {
 			themoves[i] = themoves[i].trim();
 	
@@ -93,8 +89,12 @@ function Pgn(pgn) {
 Pgn.prototype.isBlackToMove = function(FEN) {
 	return (FEN && / b | B /.test(FEN));
 }
-Pgn.prototype.isResultIncluded = function(themoves) {
-	return !!themoves[themoves.length-1].match(/1\/2-1\/2|0-1|1-0|\*/);
+/**
+ *	Tests to see if last move entry should be dropped. It should be dropped if
+ *	it's not a move, but rather a result/partial game indicator.
+ */
+Pgn.prototype.dropLastMove = function(themoves) {
+	return !!themoves[themoves.length-1].match(/1\/2-1\/2|0-1|1-0|\*|\.\.\./);
 }
 Pgn.prototype.includeOrigination = function(move) {
 	if (this.moveHasOrigination(move)) {
