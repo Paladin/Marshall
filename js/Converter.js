@@ -383,36 +383,7 @@ Converter.prototype.convertMove = function(board) {
 		}
 	}
 	
-	if ('queen' == to.piece) {
-		if ('white' == to.color) {
-			idx = this.findPieceIdx(this.wQueens,toCoords);
-			this.wQueens.splice(idx,1);
-		}
-		else {
-			idx = this.findPieceIdx(this.bQueens,toCoords);
-			this.bQueens.splice(idx,1);
-		}
-	}
-	else if ('bishop' == to.piece) {
-		if ('white' == to.color) {
-			idx = this.findPieceIdx(this.wBishops,toCoords);
-			this.wBishops.splice(idx,1);
-		}
-		else {
-			idx = this.findPieceIdx(this.bBishops,toCoords);
-			this.bBishops.splice(idx,1);
-		}
-	}
-	else if ('rook' == to.piece) {
-		if ('white' == to.color) {
-			idx = this.findPieceIdx(this.wRooks,toCoords);
-			this.wRooks.splice(idx,1);
-		}
-		else {
-			idx = this.findPieceIdx(this.bRooks,toCoords);
-			this.bRooks.splice(idx,1);
-		}
-	}
+	this.cleanUpAfterCapture(to, toCoords);
 
 	// in case of castling we don't have a null value
 	if (!myMove)
@@ -474,6 +445,41 @@ Converter.prototype.convertMove = function(board) {
 											,result[1].piece, result[1].color));
 
 	return myMove;
+}
+/**
+ *	Clean up after capturing a piece
+ */
+Converter.prototype.cleanUpAfterCapture = function(to, toCoords) {
+	if ('queen' == to.piece) {
+		if ('white' == to.color) {
+			idx = this.findPieceIdx(this.wQueens,toCoords);
+			this.wQueens.splice(idx,1);
+		}
+		else {
+			idx = this.findPieceIdx(this.bQueens,toCoords);
+			this.bQueens.splice(idx,1);
+		}
+	}
+	else if ('bishop' == to.piece) {
+		if ('white' == to.color) {
+			idx = this.findPieceIdx(this.wBishops,toCoords);
+			this.wBishops.splice(idx,1);
+		}
+		else {
+			idx = this.findPieceIdx(this.bBishops,toCoords);
+			this.bBishops.splice(idx,1);
+		}
+	}
+	else if ('rook' == to.piece) {
+		if ('white' == to.color) {
+			idx = this.findPieceIdx(this.wRooks,toCoords);
+			this.wRooks.splice(idx,1);
+		}
+		else {
+			idx = this.findPieceIdx(this.bRooks,toCoords);
+			this.bRooks.splice(idx,1);
+		}
+	}
 }
 
 	 
