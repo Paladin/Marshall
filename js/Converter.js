@@ -269,18 +269,36 @@ Converter.prototype.convertMove = function(board) {
 	var fromCoords, from, to, result, myMove = null, pawnM = false;
 	if (knightre.test(to)) {
 		fromCoords = this.findFromKnight(this, to, toCoords, color);
+		from = this.vBoard[fromCoords[0]][fromCoords[1]];
+		to = this.vBoard[toCoords[0]][toCoords[1]];
 	}
 	else if (bishre.test(to)) {
 		fromCoords = this.findFromBish(this, to, toCoords, color);
+		from = this.vBoard[fromCoords[0]][fromCoords[1]];
+		to = this.vBoard[toCoords[0]][toCoords[1]];
+		this.updatePieceLocation(from, fromCoords, toCoords, "Bishop" );
 	}
 	else if (queenre.test(to)) {
 		fromCoords = this.findFromQueen(this, this.vBoard, to, toCoords, color);
+		from = this.vBoard[fromCoords[0]][fromCoords[1]];
+		to = this.vBoard[toCoords[0]][toCoords[1]];
+		this.updatePieceLocation(from, fromCoords, toCoords, "Queen" );
 	}
 	else if (rookre.test(to)) {
 		fromCoords = this.findFromRook(this, this.vBoard, to, toCoords, color);
+		from = this.vBoard[fromCoords[0]][fromCoords[1]];
+		to = this.vBoard[toCoords[0]][toCoords[1]];
+		this.updatePieceLocation(from, fromCoords, toCoords, "Rook" );
 	}
 	else if (kingre.test(to)) {
 		fromCoords = this.findFromKing(this, color);
+		from = this.vBoard[fromCoords[0]][fromCoords[1]];
+		to = this.vBoard[toCoords[0]][toCoords[1]];
+		if ('white' == from.color) {
+			this.wKingX = toCoords[0], this.wKingY = toCoords[1];
+		} else {
+			this.bKingX = toCoords[0], this.bKingY = toCoords[1];
+		}
 	}
 	else if (sCastlere.test(to)) {
 		var bCoords = new Array('e8','g8','h8','f8');
@@ -319,10 +337,17 @@ Converter.prototype.convertMove = function(board) {
 
 		fromCoords = this.getSquare(coords[2]);
 		toCoords = this.getSquare(coords[3]);
+		from = this.vBoard[fromCoords[0]][fromCoords[1]];
+		to = this.vBoard[toCoords[0]][toCoords[1]];
+		this.updatePieceLocation(from, fromCoords, toCoords, "Rook" );
 	}
 	else if (genericre.test(to)) {
 		// dbl information move, g4-g6
 		fromCoords = this.findFromAny(to, toCoords);
+		from = this.vBoard[fromCoords[0]][fromCoords[1]];
+		to = this.vBoard[toCoords[0]][toCoords[1]];
+		this.updatePieceLocation(from, fromCoords, toCoords,
+				from.piece.charAt(0).toUpperCase() + from.piece.slice(1) );
 	}
 	else if (pawnre.test(to)) {
 		// let see if it is a promotional move
@@ -331,58 +356,12 @@ Converter.prototype.convertMove = function(board) {
 
 		fromCoords = this.findFromPawn(this.vBoard, to, toCoords, color);
 		pawnM = true;
+		from = this.vBoard[fromCoords[0]][fromCoords[1]];
+		to = this.vBoard[toCoords[0]][toCoords[1]];
 	}
 	else {
 		throw("Can't figure out which piece to move '"+oldTo+"'");
 	}
-
-	from = this.vBoard[fromCoords[0]][fromCoords[1]];
-	to = this.vBoard[toCoords[0]][toCoords[1]];
-		
-	// update king location
-	if ('king' == from.piece && 'white' == from.color) {
-		this.wKingX = toCoords[0], this.wKingY = toCoords[1];
-	} else if ('king' == from.piece && 'black' == from.color) {
-		this.bKingX = toCoords[0], this.bKingY = toCoords[1];
-	// update bishops location
-	} else if ('bishop' == from.piece) {
-		var idx;
-		if ('white' == from.color) {
-			idx = this.findPieceIdx(this.wBishops,fromCoords);
-			this.wBishops[idx][0] = toCoords[0];
-			this.wBishops[idx][1] = toCoords[1];
-		}
-		else {
-			idx = this.findPieceIdx(this.bBishops,fromCoords);
-			this.bBishops[idx][0] = toCoords[0];
-			this.bBishops[idx][1] = toCoords[1];
-		}
-	} else if ('queen' == from.piece) {
-		var idx;
-		if ('white' == from.color) {
-			idx = this.findPieceIdx(this.wQueens,fromCoords);
-			this.wQueens[idx][0] = toCoords[0];
-			this.wQueens[idx][1] = toCoords[1];
-		}
-		else {
-			idx = this.findPieceIdx(this.bQueens,fromCoords);
-			this.bQueens[idx][0] = toCoords[0];
-			this.bQueens[idx][1] = toCoords[1];
-		}
-	} else if ('rook' == from.piece) {
-		var idx;
-		if ('white' == from.color) {
-			idx = this.findPieceIdx(this.wRooks,fromCoords);
-			this.wRooks[idx][0] = toCoords[0];
-			this.wRooks[idx][1] = toCoords[1];
-		}
-		else {
-			idx = this.findPieceIdx(this.bRooks,fromCoords);
-			this.bRooks[idx][0] = toCoords[0];
-			this.bRooks[idx][1] = toCoords[1];
-		}
-	}
-	
 	this.cleanUpAfterCapture(to, toCoords);
 
 	// in case of castling we don't have a null value
@@ -445,6 +424,17 @@ Converter.prototype.convertMove = function(board) {
 											,result[1].piece, result[1].color));
 
 	return myMove;
+}
+/**
+ *	Update piece location Array
+ */
+Converter.prototype.updatePieceLocation = function(from, fromCoords, toCoords, piece) {
+	var idx;
+	var locationArray = from.color.substring(0,1) + piece + "s";
+	
+	idx = this.findPieceIdx(this[locationArray],fromCoords);
+	this[locationArray][idx][0] = toCoords[0];
+	this[locationArray][idx][1] = toCoords[1];
 }
 /**
  *	Clean up after capturing a piece
