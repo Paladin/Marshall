@@ -24,20 +24,16 @@ function Pgn(pgn) {
 	this.requiredProps = ['Result','Black','White','Date',
 								'Round','Site','Event'];
 	this.requiredLength = this.requiredProps.length;
-	// the moves, one move contains the black and white move
-	this.moves = new Array();
-	// the current move in the game
-	this.currentMove = 0;
-	// for outputting white and black moves separately
-	this.skip = 0;
+	this.moves = new Array();	// the moves, one move contains the black and white move
+	this.currentMove = 0;	// the current move in the game
+	this.skip = 0;	// which ply? 0=white's, 1=black's
 
-	// strip newlines
 	this.pgnOrig = pgn;
 	pgn = this.normalize(pgn);
 	
 	this.pgn = pgn;
-	this.pgnRaw = pgn;
-	this.pgnStripped = this.stripComments(pgn);
+	this.pgnRaw = this.pgn;
+	this.pgnStripped = this.stripComments(this.pgn);
 	
 	this.pgn = this.extractTags(this.pgn);
 	
