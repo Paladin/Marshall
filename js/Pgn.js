@@ -43,13 +43,6 @@ function Pgn(pgn) {
 	
 	this.pgn = this.stripComments(this.pgn,true);
 	
-	var gameOverre = new Array(
-		/1\/2-1\/2/,
-		/0-1/,
-		/1-0/,
-		/\*/
-	);
-
 	// the moves;
 	var themoves = this.pgn.split(" ");
 	var ply = new Array();
@@ -67,15 +60,8 @@ function Pgn(pgn) {
 		 themoves = themoves.slice(0, themoves.length-1);
 	}
 
-	var sizeOfTheMoves = themoves.length;
-	if (themoves.length>0) {
-		for (var i=0;i<gameOverre.length;i++) {
-			if (themoves[themoves.length-1].match(gameOverre[i])) {
-				sizeOfTheMoves = themoves.length-1;
-				continue;
-			}
-		}
-	}
+	var sizeOfTheMoves = this.isResultIncluded(themoves) ? 
+							themoves.length - 1 : themoves.length;
 
 	for (var i=0;i<sizeOfTheMoves;i++) {	//don't handle game end bit
 		if (themoves[i]) {
@@ -103,6 +89,22 @@ function Pgn(pgn) {
 		var move = new Move(ply[0], ply[1]);
 		this.moves[this.moves.length] = move;
 	}
+}
+Pgn.prototype.isResultIncluded = function(themoves) {
+	var gameOverregex = new Array(
+		/1\/2-1\/2/,
+		/0-1/,
+		/1-0/,
+		/\*/
+	);
+	var result = false;
+	
+	if (themoves.length>0) {
+		for (var i=0;i<gameOverregex.length;i++) {
+			result |= !!themoves[themoves.length-1].match(gameOverregex[i]);
+		}
+	}
+	return result;
 }
 Pgn.prototype.includeOrigination = function(move) {
 	if (this.moveHasOrigination(move)) {
