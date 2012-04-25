@@ -48,12 +48,9 @@ function Pgn(pgn) {
 	var ply = new Array();
 	ply[1] = null;
 	var plyidx = 0;	//make this 1 if FEN and black to move
-	if (this.props["FEN"]) {
-		var fen = this.props['FEN'].split(/\/| /g);
-		if (fen[8] == 'b') {
-			plyidx = 1;
-			this.skip = 1;
-		}
+	if (this.isBlackToMove(this.props['FEN'])) {
+		plyidx = 1;
+		this.skip = 1;
 	}
 
 	if (themoves.length>0 && themoves[themoves.length-1] == "...") {
@@ -89,6 +86,12 @@ function Pgn(pgn) {
 		var move = new Move(ply[0], ply[1]);
 		this.moves[this.moves.length] = move;
 	}
+}
+/**
+ *	Checks FEN to see if it is Black to start
+ */
+Pgn.prototype.isBlackToMove = function(FEN) {
+	return (FEN && / b | B /.test(FEN));
 }
 Pgn.prototype.isResultIncluded = function(themoves) {
 	var gameOverregex = new Array(
