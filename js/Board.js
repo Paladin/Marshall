@@ -38,39 +38,9 @@ function Board(divId, options) {
 	this.lastBoldIdx = null;
 	this.lastSquare = null;
 	this.visuals = {"pgn":{}};
-
-	this.opts = [];
-	this.opts['imagePrefix'] = "img/default/";
-	this.opts['buttonPrefix'] = "img/default/buttons/";
-	this.opts['imageSuffix'] = 'gif';
-
-	this.opts['blackSqColor'] = "#4b4b4b";
-	this.opts['whiteSqColor'] = "#ffffff";
-	this.opts['flipped'] = false;
-	this.opts['showMovesPane'] = true;
 	
-	this.opts['showComments'] = true;
-	this.opts['markLastMove'] = true;
-	
-	this.opts['altRewind'] = "Rewind to the beginning";
-	this.opts['altBack'] = "One move back";
-	this.opts['altFlip'] = "Flip the board";
-	this.opts['altShowMoves'] = "Show moves pane";
-	this.opts['altComments'] = "Show comments";
-	this.opts['altPlayMove'] = "Play one move";
-	this.opts['altFastForward'] = "Fast-forward to the end";
-	this.opts['downloadURL'] = "http://www.chesspastebin.com/asPgn.php?PGN=";
-	this.opts['skipToMove'] = null;
-
-	var optionNames = ['flipped', 'blackSqColor', 'whiteSqColor',
-									'imagePrefix', 'showMovesPane',
-									'imageSuffix', 'comments',
-									'markLastMove','altRewind',
-									'altBack','altFlip','altShowMoves',
-									'altComments','altPlayMove',
-									'altFastForward',
-									'skipToMove', 'downloadURL',
-									'buttonPrefix'];
+	this.opts = this.setDefaultOptions();
+	var optionNames = Object.keys(this.opts);
 
 	// if keys in options define new values then
 	// set the this.opts for that key with the 
@@ -92,6 +62,32 @@ function Board(divId, options) {
 
 	for(var i = 0;i<8;i++)
 		this.pos[i] = new Array();
+}
+/**
+ *	This sets up the default option list
+ */
+Board.prototype.setDefaultOptions = function() {
+	var options = {
+			imagePrefix:	"img/default/",
+			buttonPrefix:	"img/default/buttons/",
+			imageSuffix:	'gif',
+			blackSqColor:	"#4b4b4b",
+			whiteSqColor:	"#ffffff",
+			flipped:		false,
+			showMovesPane:	true,
+			showComments:	true,
+			markLastMove:	true,
+			altRewind:		"Rewind to the beginning",
+			altBack:		"One move back",
+			altFlip:		"Flip the board",
+			altShowMoves:	"Show moves pane",
+			altComments:	"Show comments",
+			altPlayMove:	"Play one move",
+			altFastForward:	"Fast-forward to the end",
+			downloadURL:	"http://www.chesspastebin.com/asPgn.php?PGN=",
+			skipToMove:		null
+		};
+	return options;
 }
 
 Board.prototype.init = function() {
