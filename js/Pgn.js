@@ -36,10 +36,8 @@ function Pgn(pgn) {
 	this.pgnStripped = this.stripComments(this.pgn);
 	
 	this.pgn = this.extractTags(this.pgn);
-	
 	this.pgn = this.stripComments(this.pgn,true);
 	
-	// the moves;
 	var themoves = this.pgn.split(" ");
 	var ply = new Array();
 	ply[1] = null;
