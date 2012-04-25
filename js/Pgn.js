@@ -81,24 +81,7 @@ function Pgn(pgn) {
 		if (themoves[i]) {
 			themoves[i] = themoves[i].trim();
 	
-			if (this.moveHasOrigination(themoves[i])) {
-				var tmp2 = themoves[i].split("-");
-				var newMove;
-				if (tmp2[0].match(/[0-9]*?\.?([A-Z])/) != null) {
-					 // we can just replace the - with nothing
-					 newMove  = themoves[i].replace("-","");
-				}
-				else {
-					var matches = tmp2[0].match(/[0-9]+\./);
-					if (matches) {
-						newMove = matches[0]+tmp2[1];
-					}
-					else {
-						newMove = tmp2[1];
-					}				
-				}
-				themoves[i] = newMove;
-			}
+			themoves[i] = this.includeOrigination(themoves[i]);
 			themoves[i] = this.removeMoveNumber(themoves[i])
 			if( themoves[i].length > 0 ) {
 				ply[plyidx] = themoves[i];
@@ -120,6 +103,27 @@ function Pgn(pgn) {
 		var move = new Move(ply[0], ply[1]);
 		this.moves[this.moves.length] = move;
 	}
+}
+Pgn.prototype.includeOrigination = function(move) {
+	if (this.moveHasOrigination(move)) {
+		var fromTo = move.split("-");
+		var newMove;
+		if (fromTo[0].match(/[0-9]*?\.?([A-Z])/) != null) {
+			 // we can just replace the - with nothing
+			 newMove  = move.replace("-","");
+		}
+		else {
+			var matches = fromTo[0].match(/[0-9]+\./);
+			if (matches) {
+				newMove = matches[0]+fromTo[1];
+			}
+			else {
+				newMove = fromTo[1];
+			}				
+		}
+		return newMove;
+	}
+	return move;
 }
 /**
  *	If the move is prefaced by a move number, remove it.
