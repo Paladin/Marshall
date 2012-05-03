@@ -566,15 +566,7 @@ Board.prototype.updatePGNInfo = function() {
 	this.visuals['pgn']['elos'].nodeValue = ' ';
 	this.visuals['pgn']['event'].nodeValue = ' ';
 	this.visuals['pgn']['timecontrol'].nodeValue = ' ';
-	if (this.conv.pgn.props['White']) {
-		this.visuals['pgn']['players'].nodeValue = this.conv.pgn.props['White'];
-	}
-	if (this.conv.pgn.props['White'] || this.conv.pgn.props['Black'])
-		this.visuals['pgn']['players'].nodeValue += " - ";
-	
-	if (this.conv.pgn.props['Black']) {
-		this.visuals['pgn']['players'].nodeValue += this.conv.pgn.props['Black'];
-	}
+	this.visuals['pgn']['players'].nodeValue = this.gameOpponents();
 	
 	if (this.conv.pgn.props['WhiteElo']) {
 		this.visuals['pgn']['elos'].nodeValue = 
@@ -628,17 +620,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 	var movesHeader = document.createElement('header');
 	var h = document.createElement("h1");
 
-
-	var txt = document.createTextNode("");
-	if (this.conv.pgn.props['White']) {
-		var txt = document.createTextNode(this.conv.pgn.props['White']
-						+" - "+this.conv.pgn.props['Black']);
-		h.appendChild(txt);
-	}
-	else {
-		var txt = document.createTextNode("Unknown - Unknown");
-		h.appendChild(txt);
-	}
+	h.appendChild( document.createTextNode(this.gameOpponents()) );
 	h.appendChild(document.createTextNode(" ("));
 	h.appendChild(this.addPGNLink(this.pgn.pgnOrig));
 	h.appendChild(document.createTextNode(")"));
@@ -825,4 +807,16 @@ Board.prototype.addPGNLink = function(pgn) {
 	pgnLink.appendChild(document.createTextNode("PGN"));
 	
 	return pgnLink;
+}
+/**
+ *	Lists opponents
+ */
+Board.prototype.gameOpponents = function() {
+	var white;
+	var black;
+	
+	white = this.conv.pgn.props['White'] ? this.conv.pgn.props['White'] : 'Unknown';
+	black = this.conv.pgn.props['Black'] ? this.conv.pgn.props['Black'] : 'Unknown';
+
+	return white + ' - ' + black;
 }
