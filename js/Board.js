@@ -636,14 +636,9 @@ Board.prototype.populateMoves = function(cont, pgn) {
 
 	for (var i = 0;i < tmp2.length;i++) {
 		if (tmp2[i].white != null) {
-			link = document.createElement("a");
-			tmp = document.createTextNode(tmp2[i].white);
 			moveList.appendChild(this.addMoveNumber((i+this.conv.startMoveNum)));
 			
-			link.className = "move";
-			link.href = 'javascript:void(window['+this.id+']'
-									+'.skipToMove('+i+','+0+'))';
-			link.appendChild(tmp);
+			link = this.addMoveLink(tmp2[i].white, i, 0);
 			moveList.appendChild(link);
 
 			comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
@@ -654,12 +649,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 
 		if (tmp2[i].black != null) {
 			moveList.appendChild(document.createTextNode(" "));
-			tmp = document.createTextNode(tmp2[i].black);
-			link = document.createElement("a");
-			link.className = "move";
-			link.appendChild(tmp);
-			link.href = 'javascript:void(window['+this.id+']'
-								+'.skipToMove('+i+','+1+'))';
+			link = this.addMoveLink(tmp2[i].black, i, 1);
 			moveList.appendChild(link);
 			comment = this.conv.pgn.getComment(tmp2[i].black,lastMoveIdx);
 			this.addComment( comment[0] );
@@ -825,4 +815,16 @@ Board.prototype.addMoveNumber = function(moveNumber) {
 
 	theElement.appendChild(document.createTextNode(" "+moveNumber+". "));
 	return theElement;
+}
+/**
+ *	Adds move link text
+ */
+Board.prototype.addMoveLink = function(moveText, moveNumber, color) {
+	var link = document.createElement("a");
+	link.appendChild(document.createTextNode(moveText));
+	link.className = "move";
+	link.href = 'javascript:void(window['+this.id+']'
+							+'.skipToMove('+moveNumber+','+color+'))';
+	
+	return link;
 }
