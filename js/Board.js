@@ -677,7 +677,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 				if (!this.opts['showComments']) {
 					tmp4.style.display = "none";
 				}
-				tmp4.appendChild(document.createTextNode(comment[0]));
+				tmp4.appendChild(document.createTextNode(' '+comment[0].substring(1,comment[0].length-1)));
 				moveList.appendChild(tmp4);
 				lastMoveIdx = comment[1];
 			}
