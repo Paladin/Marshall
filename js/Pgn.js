@@ -27,6 +27,7 @@ function Pgn(pgn) {
 	this.moves = new Array();	// the moves, one move contains the black and white move
 	this.currentMove = 0;	// the current move in the game
 	this.skip = 0;	// which ply at start? 0=white's, 1=black's
+	this.gameIntro = null;
 
 	this.pgnOrig = pgn;
 	pgn = this.normalize(pgn);
@@ -36,6 +37,8 @@ function Pgn(pgn) {
 	this.pgnStripped = this.stripComments(this.pgn);
 	
 	this.pgn = this.extractTags(this.pgn);
+	this.extractGameIntro();
+	this.extractPostGame();
 	this.pgn = this.stripComments(this.pgn,true);
 	
 	var themoves = this.pgn.split(" ");
@@ -436,3 +439,33 @@ Pgn.prototype.stripIt = function (val, strip) {
 	}
 	return out.join("");
 };
+/**
+ *	Extract a comment starting from the beginning of the the pgn string.
+ */
+Pgn.prototype.extractGameIntro = function() {
+	this.gameIntro = null;
+	
+	this.pgn.trim();
+	if (this.pgn.charAt(0) === '{') {
+		this.gameIntro = this.pgn.substring(1,this.pgn.indexOf("}"));
+		this.pgn = this.pgn.slice(this.pgn.indexOf("{"));
+	}
+	
+	return;
+};
+/**
+ *	Extract a comment starting from the beginning of the the pgn string.
+ */
+Pgn.prototype.extractPostGame = function() {
+	this.postGame = null;
+	
+	this.pgn.trim();
+	if (this.pgn.charAt(this.pgn.length-1) === '}') {
+		this.postGame = this.pgn.substring(this.pgn.lastIndexOf("{")+1,
+				this.pgn.lastIndexOf("}"));
+		this.pgn = this.pgn.slice(0, this.pgn.lastIndexOf("{"));
+	}
+	
+	this.pgn = this.pgn.trim();
+	return;
+}

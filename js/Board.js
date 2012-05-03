@@ -649,6 +649,15 @@ Board.prototype.populateMoves = function(cont, pgn) {
 	cont.appendChild(movesHeader);
 	moveList = document.createElement("p");
 	cont.appendChild(moveList);
+	if(this.pgn.gameIntro) {
+		var tmp4 = document.createElement("span");
+		tmp4.className = "commentary";
+		if (!this.opts['showComments']) {
+			tmp4.style.display = "none";
+		}
+		tmp4.appendChild(document.createTextNode(this.pgn.gameIntro));
+		moveList.appendChild(tmp4);
+	}
 	
 	var link, tmp, tmp3;
 	var lastMoveIdx = 0;
@@ -715,6 +724,15 @@ Board.prototype.populateMoves = function(cont, pgn) {
 		tmp2.appendChild(txt);
 		moveList.appendChild(tmp2);
 		this.movesOnPane[this.movesOnPane.length] = tmp2;
+	}
+	if(this.pgn.postGame) {
+		var tmp4 = document.createElement("span");
+		tmp4.className = "commentary";
+		if (!this.opts['showComments']) {
+			tmp4.style.display = "none";
+		}
+		tmp4.appendChild(document.createTextNode(this.pgn.postGame));
+		moveList.appendChild(tmp4);
 	}
 }
 /*
