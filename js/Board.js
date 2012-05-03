@@ -627,10 +627,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 	var tmp2=this.conv.pgn.moves;
 	var movesHeader = document.createElement('header');
 	var h = document.createElement("h1");
-	var tmpA = document.createElement("a");
 
-	tmpA.href = this.opts['downloadURL']+escape(pgn);
-	tmpA.appendChild(document.createTextNode("PGN"));
 
 	var txt = document.createTextNode("");
 	if (this.conv.pgn.props['White']) {
@@ -643,7 +640,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 		h.appendChild(txt);
 	}
 	h.appendChild(document.createTextNode(" ("));
-	h.appendChild(tmpA);
+	h.appendChild(this.addPGNLink(this.pgn.pgnOrig));
 	h.appendChild(document.createTextNode(")"));
 	movesHeader.appendChild(h)
 	cont.appendChild(movesHeader);
@@ -817,4 +814,15 @@ Board.prototype.addComment = function(theComment) {
 	}
 	commentElement.appendChild(document.createTextNode(theComment));
 	moveList.appendChild(commentElement);
+}
+/**
+ *	Creates a download link for the original pgn data file
+ */
+Board.prototype.addPGNLink = function(pgn) {
+	var pgnLink = document.createElement("a");
+
+	pgnLink.href = this.opts['downloadURL']+escape(pgn);
+	pgnLink.appendChild(document.createTextNode("PGN"));
+	
+	return pgnLink;
 }
