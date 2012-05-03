@@ -638,11 +638,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 		if (tmp2[i].white != null) {
 			link = document.createElement("a");
 			tmp = document.createTextNode(tmp2[i].white);
-			tmp3 = document.createElement("span");
-			tmp3.className = 'move_numbers';
-
-			tmp3.appendChild(document.createTextNode(" "+(i+this.conv.startMoveNum)+". "));
-			moveList.appendChild(tmp3);
+			moveList.appendChild(this.addMoveNumber((i+this.conv.startMoveNum)));
 			
 			link.className = "move";
 			link.href = 'javascript:void(window['+this.id+']'
@@ -819,4 +815,14 @@ Board.prototype.gameOpponents = function() {
 	black = this.conv.pgn.props['Black'] ? this.conv.pgn.props['Black'] : 'Unknown';
 
 	return white + ' - ' + black;
+}
+/**
+ *	Creates move number node
+ */
+Board.prototype.addMoveNumber = function(moveNumber) {
+	var theElement = document.createElement("span");
+	theElement.className = 'move_numbers';
+
+	theElement.appendChild(document.createTextNode(" "+moveNumber+". "));
+	return theElement;
 }
