@@ -649,15 +649,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 	cont.appendChild(movesHeader);
 	moveList = document.createElement("p");
 	cont.appendChild(moveList);
-	if(this.pgn.gameIntro) {
-		var tmp4 = document.createElement("span");
-		tmp4.className = "commentary";
-		if (!this.opts['showComments']) {
-			tmp4.style.display = "none";
-		}
-		tmp4.appendChild(document.createTextNode(this.pgn.gameIntro));
-		moveList.appendChild(tmp4);
-	}
+	this.addComment( this.pgn.gameIntro );
 	
 	var link, tmp, tmp3;
 	var lastMoveIdx = 0;
@@ -680,16 +672,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 			moveList.appendChild(link);
 
 			comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
-			if (comment[0]) {
-				var tmp4 = document.createElement("span");
-				tmp4.className = "commentary";
-				if (!this.opts['showComments']) {
-					tmp4.style.display = "none";
-				}
-				tmp4.appendChild(document.createTextNode(' '+comment[0].substring(1,comment[0].length-1)));
-				moveList.appendChild(tmp4);
-				lastMoveIdx = comment[1];
-			}
+			this.addComment( comment[0] );
 
 			this.movesOnPane[this.movesOnPane.length] = link;
 		}
@@ -704,16 +687,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 								+'.skipToMove('+i+','+1+'))';
 			moveList.appendChild(link);
 			comment = this.conv.pgn.getComment(tmp2[i].black,lastMoveIdx);
-			if (comment[0]) {
-				var tmp4 = document.createElement("span");
-				tmp4.className = "commentary";
-				if (!this.opts['showComments']) {
-					tmp4.style.display = "none";
-				}
-				tmp4.appendChild(document.createTextNode(comment[0]));
-				moveList.appendChild(tmp4);
-				lastMoveIdx = comment[1];
-			}
+			this.addComment( comment[0] );
 			this.movesOnPane[this.movesOnPane.length] = link;
 		}
 	}
@@ -725,15 +699,7 @@ Board.prototype.populateMoves = function(cont, pgn) {
 		moveList.appendChild(tmp2);
 		this.movesOnPane[this.movesOnPane.length] = tmp2;
 	}
-	if(this.pgn.postGame) {
-		var tmp4 = document.createElement("span");
-		tmp4.className = "commentary";
-		if (!this.opts['showComments']) {
-			tmp4.style.display = "none";
-		}
-		tmp4.appendChild(document.createTextNode(this.pgn.postGame));
-		moveList.appendChild(tmp4);
-	}
+	this.addComment( this.pgn.postGame );
 }
 /*
  *	This filles in the information about the game in the designated container
@@ -833,4 +799,22 @@ Board.prototype.syncSquare = function(from, to) {
 	if (to.piece) {
 		to.appendChild(this.getImg(to.piece, to.color));
 	}
+}
+/**
+ *	This adds a comment, if present to the output stream. The curly braces are removed
+ *	for humman readability.
+ */
+Board.prototype.addComment = function(theComment) {
+	if(!theComment) {
+		return;
+	}
+	
+	theComment = theComment.replace(/[\{\}]/g, ' '); 
+	var commentElement = document.createElement("span");
+	commentElement.className = "commentary";
+	if (!this.opts['showComments']) {
+		commentElement.style.display = "none";
+	}
+	commentElement.appendChild(document.createTextNode(theComment));
+	moveList.appendChild(commentElement);
 }
