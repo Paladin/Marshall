@@ -197,31 +197,42 @@ Board.prototype.drawBoard = function() {
 Board.prototype.createButtonBar = function(theContainer) {
 	var theBoard = this;
 
-	this.makeButton( theContainer, "rwind", "altRewind").onclick = function() {
+	theButton = this.makeButton( theContainer, "rwind", "altRewind");
+	theButton.onclick = function() {
 		theBoard.startPosition(); return false;
 	};
-	this.makeButton( theContainer, "back", "altBack").onclick = function() {
+	theButton = this.makeButton( theContainer, "back", "altBack");
+	theButton.onclick = function() {
 		theBoard.makeBwMove(); return false;
 	};
-	this.makeButton( theContainer, "up", "altUp").onclick = function() {
-		theBoard.makeBwMove(); return false;
+	theButton = this.makeButton( theContainer, "up", "altUp");
+	theButton.className = theButton.className + " disabled";
+	theButton.onclick = function() {
+		return false;
 	};
-	this.makeButton( theContainer, "flip", "altFlip").onclick = function() {
+	theButton = this.makeButton( theContainer, "flip", "altFlip");
+	theButton.onclick = function() {
 		theBoard.flipBoard(); return false;
 	};
-	this.makeButton( theContainer, "toggle", "altShowMoves").onclick = function() {
+	theButton = this.makeButton( theContainer, "toggle", "altShowMoves");
+	theButton.onclick = function() {
 		theBoard.toggleMoves("flip"); return false;
 	};
-	this.makeButton( theContainer, "comments", "altComments").onclick = function() {
+	theButton = this.makeButton( theContainer, "comments", "altComments");
+	theButton.onclick = function() {
 		theBoard.toggleComments("flip"); return false;
 	};
-	this.makeButton( theContainer, "down", "altDown").onclick = function() {
+	theButton = this.makeButton( theContainer, "down", "altDown");
+	theButton.className = theButton.className + " disabled";
+	theButton.onclick = function() {
+		return false;
+	};
+	theButton = this.makeButton( theContainer, "forward", "altPlayMove");
+	theButton.onclick = function() {
 		theBoard.makeMove(); return false;
 	};
-	this.makeButton( theContainer, "forward", "altPlayMove").onclick = function() {
-		theBoard.makeMove(); return false;
-	};
-	this.makeButton( theContainer, "ffward", "altFastForward").onclick = function() {
+	theButton = this.makeButton( theContainer, "ffward", "altFastForward");
+	theButton.onclick = function() {
  			theBoard.endPosition(); return false;
  	}
 }
