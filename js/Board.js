@@ -205,8 +205,7 @@ Board.prototype.createButtonBar = function(theContainer) {
 	theButton.onclick = function() {
 		theBoard.makeBwMove(); return false;
 	};
-	theButton = this.makeButton( theContainer, "up", "altUp");
-	theButton.className = theButton.className + " disabled";
+	theButton = this.makeButton( theContainer, "up", "altUp", true);
 	theButton.onclick = function() {
 		return false;
 	};
@@ -222,8 +221,7 @@ Board.prototype.createButtonBar = function(theContainer) {
 	theButton.onclick = function() {
 		theBoard.toggleComments("flip"); return false;
 	};
-	theButton = this.makeButton( theContainer, "down", "altDown");
-	theButton.className = theButton.className + " disabled";
+	theButton = this.makeButton( theContainer, "down", "altDown", true);
 	theButton.onclick = function() {
 		return false;
 	};
@@ -237,13 +235,13 @@ Board.prototype.createButtonBar = function(theContainer) {
  	}
 }
 
-Board.prototype.makeButton = function( btnContainer, btnName, btnTitle ) {
+Board.prototype.makeButton = function( btnContainer, btnName, btnTitle, disabled ) {
 	var href = document.createElement("a");
 	href.href = "#";
 	href.alt = this.opts[btnTitle];
 	href.title = this.opts[btnTitle];
 	href.innerHTML = "&nbsp;";
-	href.className = btnName;
+	href.className = btnName + (disabled ? ' disabled' : '');
 	btnContainer.appendChild(href);
 	
 	return href;
