@@ -1090,7 +1090,6 @@ TestCase( "ConverterTest",
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
 		conv.convert();
-		conv.resetToEnd();
 
 		assertTrue( "Couldn't see the check", conv.isKingChecked(conv, "black", conv.vBoard));
 	},
