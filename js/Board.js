@@ -198,44 +198,44 @@ Board.prototype.createButtonBar = function(theContainer) {
 	var theBoard = this;
 
 	this.makeButton( theContainer, "rwind", "altRewind").onclick = function() {
-		theBoard.startPosition();
+		theBoard.startPosition(); return false;
 	};
 	this.makeButton( theContainer, "back", "altBack").onclick = function() {
-		theBoard.makeBwMove();
+		theBoard.makeBwMove(); return false;
 	};
 	this.makeButton( theContainer, "up", "altUp").onclick = function() {
-		theBoard.makeBwMove();
+		theBoard.makeBwMove(); return false;
 	};
 	this.makeButton( theContainer, "flip", "altFlip").onclick = function() {
-		theBoard.flipBoard();
+		theBoard.flipBoard(); return false;
 	};
 	this.makeButton( theContainer, "toggle", "altShowMoves").onclick = function() {
-		theBoard.toggleMoves("flip");
+		theBoard.toggleMoves("flip"); return false;
 	};
 	this.makeButton( theContainer, "comments", "altComments").onclick = function() {
-		theBoard.toggleComments("flip");
+		theBoard.toggleComments("flip"); return false;
 	};
 	this.makeButton( theContainer, "down", "altDown").onclick = function() {
-		theBoard.makeMove();
+		theBoard.makeMove(); return false;
 	};
 	this.makeButton( theContainer, "forward", "altPlayMove").onclick = function() {
-		theBoard.makeMove();
+		theBoard.makeMove(); return false;
 	};
 	this.makeButton( theContainer, "ffward", "altFastForward").onclick = function() {
- 			theBoard.endPosition();
+ 			theBoard.endPosition(); return false;
  	}
 }
 
 Board.prototype.makeButton = function( btnContainer, btnName, btnTitle ) {
 	var href = document.createElement("a");
-	href.href = "javascript:void(0)";
-	var input = this.getImg(btnName,"btns");
-	input.alt = this.opts[btnTitle];
-	input.title = this.opts[btnTitle];;
-	href.appendChild(input);
+	href.href = "#";
+	href.alt = this.opts[btnTitle];
+	href.title = this.opts[btnTitle];
+	href.innerHTML = "&nbsp;";
+	href.className = btnName;
 	btnContainer.appendChild(href);
 	
-	return input;
+	return href;
 }
 /**
  *	Flips the board to display it from the other side's POV.

@@ -182,7 +182,43 @@ a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-co
 	vertical-align: top;
 }
 
-.board_controls a { font-size: 30px; }
+.board_controls a {
+	text-decoration: none;
+	width: 31px;
+	height: 27px;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+	background-image: url(../img/buttons/bar.gif);
+	background-repeat: no-repeat;
+}
+.board_controls a.rwind {
+	background-position: left center;
+}
+.board_controls a.back {
+	background-position: -31px center;
+}
+.board_controls a.up {
+	background-position: -62px center;
+}
+.board_controls a.flip {
+	background-position: -93px center;
+}
+.board_controls a.toggle {
+	background-position: -124px center;
+}
+.board_controls a.comments {
+	background-position: -155px center;
+}
+.board_controls a.down {
+	background-position: -186px center;
+}
+.board_controls a.forward {
+	background-position: -217px center;
+}
+.board_controls a.ffward {
+\	background-position: -248px center;
+}
 
 .current_move_box
 {
