@@ -38,6 +38,7 @@ function Board(divId, options) {
 	this.lastBoldIdx = null;
 	this.lastSquare = null;
 	this.visuals = {"pgn":{}};
+	this.displayBoard = null;
 	
 	this.opts = this.setDefaultOptions();
 	var optionNames = Object.keys(this.opts);
@@ -167,8 +168,8 @@ Board.prototype.init = function() {
 Board.prototype.drawBoard = function() {
 	var board = document.createElement("table");
 	board.className = "gameboard"
-	var boardTb = document.createElement("tbody");
-	board.appendChild(boardTb);
+	this.displayBoard = document.createElement("tbody");
+	board.appendChild(this.displayBoard);
 
 	var whiteC = 'light_square';
 	var blackC = 'dark_square';
@@ -186,7 +187,7 @@ Board.prototype.drawBoard = function() {
 			this.pos[i][j] = td;
 			tr.appendChild(td);
 		}
-		boardTb.appendChild(tr);
+		this.displayBoard.appendChild(tr);
 	}
 	return board;
 }
@@ -736,6 +737,18 @@ Board.prototype.getImg = function(piece, color) {
 	}
 
 	img.alt = color + "_" + piece;
+	
+	if (color == 'black') {
+		var thePiece = piece.toLowerCase();
+	} else {
+		var thePiece = piece.toUpperCase();
+	}
+	if (piece == 'knight') {
+		var symbolPos = 1;
+	} else {
+		var symbolPos = 0;
+	}
+	img.setAttribute("data-symbol", thePiece.charAt(symbolPos));
 	return img;
 }
 /**
@@ -827,4 +840,36 @@ Board.prototype.addMoveLink = function(moveText, moveNumber, color) {
 							+'.skipToMove('+moveNumber+','+color+'))';
 	
 	return link;
+}
+/**
+ *	Returns the current position in Forsythe notation.
+ */
+Board.prototype.getForsytheFromDisplay = function() {
+	var position = "/";		// establish position as string
+	var empty;
+	var ranks = this.displayBoard.childNodes;	// all child nodes are tr's
+
+	function addEmpties() {
+		if (empty > 0) {
+			position = position + empty;
+			empty = 0;
+		}
+	}
+	for (var rank=0;rank<8;rank++) {
+		empty = 0;
+		var files = ranks[rank].childNodes;		// all child nodes are td's
+		for (var file=0;file<8;file++) {
+			if (files[file].childNodes.length > 0) {	// only child node is img of piece
+				addEmpties();
+				var piece = files[file].childNodes[0].getAttribute('data-symbol');
+				position = position + piece;
+			} else {
+				empty++;
+			}
+		}
+		addEmpties();
+		position = position + "/";
+	}
+	
+	return position.slice(1,-1);	// Remove the first and last slash
 }
