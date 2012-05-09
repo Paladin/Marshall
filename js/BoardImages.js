@@ -52,6 +52,8 @@ function BoardImages(options) {
 									,"toggle":"buttons/toggle."+this.suf
 									,"comments":"buttons/comments."+this.suf
 									,"flip":"buttons/flip."+this.suf
+									,"up":"buttons/up."+this.suf
+									,"down":"buttons/down."+this.suf
 						}
 					}
 	}

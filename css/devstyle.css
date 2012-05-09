@@ -165,7 +165,7 @@ a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-co
 
 .game_section { display: block; }
 
-.mainboard { height: 272px; width: 272px; }
+.mainboard { height: 272px; width: 280px; }
 
 .gameboard { height: 270px; width: 270px; margin: 0 auto; }
 

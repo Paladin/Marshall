@@ -85,6 +85,8 @@ Board.prototype.setDefaultOptions = function() {
 			altComments:	"Show comments",
 			altPlayMove:	"Play one move",
 			altFastForward:	"Fast-forward to the end",
+			altUp:			"Go up one variation",
+			altDown:		"Go down into variation",
 			downloadURL:	"http://www.chesspastebin.com/asPgn.php?PGN=",
 			skipToMove:		null
 		};
@@ -201,6 +203,9 @@ Board.prototype.createButtonBar = function(theContainer) {
 	this.makeButton( theContainer, "back", "altBack").onclick = function() {
 		theBoard.makeBwMove();
 	};
+	this.makeButton( theContainer, "up", "altUp").onclick = function() {
+		theBoard.makeBwMove();
+	};
 	this.makeButton( theContainer, "flip", "altFlip").onclick = function() {
 		theBoard.flipBoard();
 	};
@@ -209,6 +214,9 @@ Board.prototype.createButtonBar = function(theContainer) {
 	};
 	this.makeButton( theContainer, "comments", "altComments").onclick = function() {
 		theBoard.toggleComments("flip");
+	};
+	this.makeButton( theContainer, "down", "altDown").onclick = function() {
+		theBoard.makeMove();
 	};
 	this.makeButton( theContainer, "forward", "altPlayMove").onclick = function() {
 		theBoard.makeMove();
@@ -715,7 +723,8 @@ Board.prototype.populateProps = function(container) {
  */
 Board.prototype.getImg = function(piece, color) {
 	var btns = {"ffward":true,"rwind":true,"forward":true,
-				"back":true,"toggle":true,"comments":true,"flip":true};
+				"back":true,"toggle":true,"comments":true,
+				"flip":true,"up":true,"down":true};
 	
 	var prefix = this.opts['imagePrefix'];
 	if (btns[piece]) {

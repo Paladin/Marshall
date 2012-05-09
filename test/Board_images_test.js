@@ -31,7 +31,7 @@ TestCase( "BoardImagesTest",
 	"test preloading images": function () {
 		testObject = new BoardImages( Array() );
 		
-		assertEquals( 'Should load all images', 19, testObject.preload() );
-		assertEquals( 'Should load default images', 19, testObject.preload('default') );
+		assertEquals( 'Should load all images', 21, testObject.preload() );
+		assertEquals( 'Should load default images', 21, testObject.preload('default') );
 	}
 });
