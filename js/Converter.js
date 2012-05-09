@@ -1007,3 +1007,46 @@ Converter.prototype.checkFound = function( board, rank, file, deltaRank,
 	catch(e) {}
 	return false;
 }
+/**
+ *	Gets the forsythe notation of a vBoard position.
+ *
+ *	TODO: Reconcile the inconsistent ways a vBoard is used in this code.
+ */
+Converter.prototype.getForsythe = function(theBoard) {
+	var position = "/";		// establish position as string
+	var empty;
+
+	function addEmpties() {
+		if (empty > 0) {
+			position = position + empty;
+			empty = 0;
+		}
+	}
+	for (var rank=0;rank<8;rank++) {
+		empty = 0;
+		for (var file=0;file<8;file++) {
+			var p = theBoard[7-rank][7-file];	// FEN input board is opposite of vBoard
+			var piece = p.piece;
+			if (p.piece) {
+				addEmpties();
+				if (p.color == 'black') {
+					piece = p.piece.toLowerCase();
+				} else {
+					piece = p.piece.toUpperCase();
+				}
+				if (piece == 'KNIGHT' || piece == 'knight') {
+					piece = piece.charAt(1);
+				} else {
+					piece = piece.charAt(0);
+				}
+				position = position + piece;
+			} else {
+				empty++;
+			}
+		}
+		addEmpties();
+		position = position + "/";
+	}
+	
+	return position.slice(1,-1);	// Remove the first and last slash
+}
