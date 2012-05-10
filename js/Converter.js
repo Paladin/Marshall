@@ -169,6 +169,7 @@ Converter.prototype.convert = function() {
 	do {
 		 move = this.convertMove();
 		 if (move)
+		 	move.position = this.getForsythe(this.vBoard);
 			this.moves[this.moves.length] = move;
 	}
 	while(move);
@@ -1025,7 +1026,7 @@ Converter.prototype.getForsythe = function(theBoard) {
 	for (var rank=0;rank<8;rank++) {
 		empty = 0;
 		for (var file=0;file<8;file++) {
-			var p = theBoard[7-rank][7-file];	// FEN input board is opposite of vBoard
+			var p = theBoard[rank][file];	// FEN input board is opposite of vBoard
 			var piece = p.piece;
 			if (p.piece) {
 				addEmpties();

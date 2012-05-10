@@ -26,6 +26,7 @@ function MyMove() {
 	this.enP = null;
 	//
 	this.moveStr = null;
+	this.position = '';
 
 	this.add = function(action) {
 		this.actions[this.actions.length] = action;

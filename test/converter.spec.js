@@ -22,13 +22,13 @@
 				this.conv.convert();
 			});
 			
-			it('should produce forsythe notation of starting position', function(){
-				expect(this.conv.getForsythe(this.conv.getStartPos())).
-						toBe("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1");
+			it('should have produced forsythe notation after first move', function(){
+				expect(this.conv.moves[0].position).
+						toBe("r3qr1k/ppp1nbBB/1b1p4/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1");
 			});
 			
-			it('should produce forsythe notation of final position', function(){
-				expect(this.conv.getForsythe(this.conv.getEndPos())).
+			it('should have produced forsythe notation of final position', function(){
+				expect(this.conv.moves[this.conv.moves.length-2].position).
 						toBe("r3qr2/ppp1nb1B/1b1p4/4pN2/3PNnkR/2P5/PP4PP/R5K1");
 			});
 		});
@@ -49,13 +49,13 @@
 				this.conv.convert();
 			});
 			
-			it('should produce forsythe notation of starting position', function(){
-				expect(this.conv.getForsythe(this.conv.getStartPos())).
-						toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+			it('should have produced forsythe notation after first move', function(){
+				expect(this.conv.moves[0].position).
+						toBe("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR");
 			});
 			
-			it('should produce forsythe notation of final position', function(){
-				expect(this.conv.getForsythe(this.conv.getEndPos())).
+			it('should have produced forsythe notation of final position', function(){
+				expect(this.conv.moves[this.conv.moves.length-2].position).
 						toBe("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR");
 			});
 		});

@@ -641,9 +641,6 @@ TestCase( "ConverterTest",
 	},
 	
 	"test converting moves": function() {
-		moves = "MyMove -- no. actions 2,MyMove -- no. actions 2,"+
-				"MyMove -- no. actions 2,MyMove -- no. actions 2,"+
-				"MyMove -- no. actions 2,MyMove -- no. actions 2,MyMove -- no. actions 2";
 		from_e2 = "MySquare -- x = 6 y=4 color=null piece=null";
 		pawn_to_e4 = "MySquare -- x = 4 y=4 color=white piece=pawn";
 
@@ -653,8 +650,7 @@ TestCase( "ConverterTest",
 		
 		assertEquals( from_e2, conv.moves[0].actions[0] );
 		assertEquals( pawn_to_e4, conv.moves[0].actions[1] );
-		assertEquals( moves, conv.moves );
-		assertEquals( 7, conv.moves.length );
+		assertEquals( 8, conv.moves.length );
 	},
 	
 	"test converting short game with castling": function() {
@@ -668,7 +664,7 @@ TestCase( "ConverterTest",
 	
 	"test getting the current move": function() {
 		expected = "MyMove -- no. actions 2";
-		expectedJSON = '{"actions":[{"x":6,"y":4,"color":null,"piece":null},{"x":4,"y":4,"color":"white","piece":"pawn"}],"oPiece":null,"oColor":null,"pPiece":null,"enP":null,"moveStr":"e4"}';
+		expectedJSON = '{"actions":[{"x":6,"y":4,"color":null,"piece":null},{"x":4,"y":4,"color":"white","piece":"pawn"}],"oPiece":null,"oColor":null,"pPiece":null,"enP":null,"moveStr":"e4","position":"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR"}';
 
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
@@ -692,7 +688,7 @@ TestCase( "ConverterTest",
 	
 	"test getting the next move": function() {
 		expected = "MyMove -- no. actions 2";
-		expectedJSON = '{"actions":[{"x":6,"y":4,"color":null,"piece":null},{"x":4,"y":4,"color":"white","piece":"pawn"}],"oPiece":null,"oColor":null,"pPiece":null,"enP":null,"moveStr":"e4"}';
+		expectedJSON = '{"actions":[{"x":6,"y":4,"color":null,"piece":null},{"x":4,"y":4,"color":"white","piece":"pawn"}],"oPiece":null,"oColor":null,"pPiece":null,"enP":null,"moveStr":"e4","position":"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR"}';
 
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
@@ -719,7 +715,7 @@ TestCase( "ConverterTest",
 	"test resetting to end": function() {
 		expected = null;
 		expectedJSON = 'null';
-		expectedNumber = 7;
+		expectedNumber = 8;
 
 		pgn = new Pgn( this.goodGame );
 		conv = new Converter(pgn);
@@ -735,7 +731,7 @@ TestCase( "ConverterTest",
 	
 	"test getting previous move decrements move index": function() {
 		expected = "MyMove -- no. actions 2";
-		expectedJSON = '{"actions":[{"x":3,"y":7,"color":null,"piece":null},{"x":1,"y":5,"color":"white","piece":"queen"}],"oPiece":"pawn","oColor":"black","pPiece":null,"enP":null,"moveStr":"Qf7#"}';
+		expectedJSON = '{"actions":[{"x":3,"y":7,"color":null,"piece":null},{"x":1,"y":5,"color":"white","piece":"queen"}],"oPiece":"pawn","oColor":"black","pPiece":null,"enP":null,"moveStr":"Qf7#","position":"r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR"}';
 		expectedNumber = 6;
 
 		pgn = new Pgn( this.goodGame );
@@ -743,16 +739,15 @@ TestCase( "ConverterTest",
 		conv.convert();
 		conv.resetToEnd();
 		move = conv.prevMove();
+		move = conv.prevMove();
 		moveNumber = conv.getCurMoveNo();
 
-		assertEquals( expected, move );
 		assertEquals( expectedJSON, JSON.stringify(move) );
 		assertEquals( expectedNumber, moveNumber );
 	},
 	
 	"test resetting to start": function() {
-		expected = "MyMove -- no. actions 2";
-		expectedJSON = '{"actions":[{"x":6,"y":4,"color":null,"piece":null},{"x":4,"y":4,"color":"white","piece":"pawn"}],"oPiece":null,"oColor":null,"pPiece":null,"enP":null,"moveStr":"e4"}';
+		expectedJSON = '{"actions":[{"x":6,"y":4,"color":null,"piece":null},{"x":4,"y":4,"color":"white","piece":"pawn"}],"oPiece":null,"oColor":null,"pPiece":null,"enP":null,"moveStr":"e4","position":"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR"}';
 		expectedNumber = 0;
 
 		pgn = new Pgn( this.goodGame );
@@ -761,7 +756,6 @@ TestCase( "ConverterTest",
 		move = conv.getCurMove();
 		moveNumber = conv.getCurMoveNo();
 
-		assertEquals( expected, move );
 		assertEquals( expectedJSON, JSON.stringify(move) );
 		assertEquals( expectedNumber, moveNumber );
 	},
