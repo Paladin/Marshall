@@ -12,9 +12,16 @@ function Ply(data) {
 	for( var key in data ){
 		this[key] = data[key];
 	}
+	
+	if (this['color'].toLowerCase() != 'white' &&
+			this['color'].toLowerCase() != 'black') {
+		this['color'] = '';
+	}
 }
 
 Ply.prototype = {
+	moveNumber:	null,
+	color:	'',
 	piece:	'',
 	from:	{ file: '', rank: 0 },
 	to:	{ file: '', rank: 0 },
@@ -25,14 +32,20 @@ Ply.prototype = {
 	fen:		'',
 	previous:	null,
 	next:		null,
-	toString:	function( format ) {
-					if( format === 'short' ){
-						var move = this.piece + this.to.file + this.to.rank;
-					} else {
-						var move = this.piece + this.from.file + this.from.rank;
-						move = this.captured === '' ? move + '-' : move + 'x' + this.captured;
-						move = move + this.to.file + this.to.rank;
-					}
+	toString:	function( format, numbered ) {
+					var move = '';
+					
+					move = move + (numbered ? this.moveNumber + '. ' : '');
+					move = move + (numbered && (this.color == 'black') ? '... ' : '');
+					move = move + this.piece;
+					move = move + (format !== 'short' ?
+							this.from.file + this.from.rank : '');
+					move = move + ((format !== 'short' && this.captured === '') ?
+							'-' : '');
+					move = move + ((format !== 'short' && this.captured !== '') ?
+							'x' + this.captured : '');
+					move = move + this.to.file + this.to.rank;
+
 					return move;
 				}
 };
