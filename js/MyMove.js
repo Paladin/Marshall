@@ -1,38 +1,44 @@
-/** Version: 0.7.1 **/
 /**
- * Copyright 2008 Toomas Ršmer
+ * MyMove
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * @constructor
+ * @property {array}	actions		- 
+ * @property {string}	oPiece		- 
+ * @property {string}	oColor		- 
+ * @property {string}	pPiece		- What the piece was (used after promotion)
+ * @property {string}	enP			- Is it a capture enpassant?
+ * @property {string}	moveStr		- The string representing the move
+ * @property {string}	position	- FEN notation of the resulting position
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @version 0.7.1
+ * @author Toomas Ršmer
+ * @author Arlen P Walker
+ * @copyright 2008 Toomas Ršmer
+ * @copyright 2012 Arlen P Walker (some portions)
+ * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-	
-function MyMove() {
-	this.actions = new Array();
+var MyMove = function () {
+	"use strict";
+	this.actions = [];
 	this.oPiece = null;
 	this.oColor = null;
-	// in case of promotion have to remember the prev
-	// piece
 	this.pPiece = null;
-	//
 	this.enP = null;
-	//
 	this.moveStr = null;
 	this.position = '';
-
-	this.add = function(action) {
+	/**
+	 * Add an action to the move
+	 *
+	 * @param array
+	 */
+	this.add = function (action) {
 		this.actions[this.actions.length] = action;
 	};
-
-	this.toString = function() {
-		return "MyMove -- no. actions "+this.actions.length;
+	/*
+	 * When asked for a string representation of this object,
+	 * return the count for the number of actions.
+	 */
+	this.toString = function () {
+		return "MyMove -- no. actions " + this.actions.length;
 	};
 };

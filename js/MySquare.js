@@ -1,35 +1,38 @@
-/** Version: 0.7.1 **/
 /**
- * Copyright 2008 Toomas Ršmer
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * @constructor
+ * @property {integer}	x		- chessboard rank
+ * @property {integer}	y		- chessboard file
+ * @property {string}	piece	- What piece is on the square
+ * @property {string}	color	- Black or White
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @version 0.7.1
+ * @author Toomas Ršmer
+ * @author Arlen P Walker
+ * @copyright 2008 Toomas Ršmer
+ * @copyright 2012 Arlen P Walker (some portions)
+ * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-
-function MySquare(x, y, piece, color) {
+var MySquare = function (x, y, piece, color) {
+	"use strict";
 	this.x = x;
 	this.y = y;
 	this.color = color;
 	this.piece = piece;
-
-	this.toString = function() {
-		return "MySquare -- x = "+this.x+" y="+this.y
-							+" color="+this.color
-							+ " piece="+this.piece;
+    /**
+     * String version of this class identifies all the properties
+     **/
+	this.toString = function () {
+		return "MySquare -- x = " + this.x + " y=" + this.y
+							+ " color=" + this.color
+							+ " piece=" + this.piece;
 	};
-
-	this.clone = function() {
+    /**
+     * clone creates an identical square to this one.
+     */
+	this.clone = function () {
 		var sq = new MySquare(this.x, this.y,
-		this.piece, this.color);
+		        this.piece, this.color);
 		return sq;
 	};
 };
