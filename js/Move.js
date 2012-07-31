@@ -1,25 +1,32 @@
-/** Version: 0.7.1 **/
 /**
- * Copyright 2008 Toomas Ršmer
+ * Move
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * An object aggregator, containing the move objects for both white and black
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * @constructor
+ * @param   {object}    - The white move object
+ * @param   {object}    - The black move object
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @property {object}	white		- 
+ * @property {object}	black		- 
+ *
+ * @version 0.7.1
+ * @author Toomas Ršmer
+ * @author Arlen P Walker
+ * @copyright 2008 Toomas Ršmer
+ * @copyright 2012 Arlen P Walker (some portions)
+ * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
+function Move (white, black) {
+    "use strict";
 
-function Move(white, black) {
 	this.white = white;
 	this.black = black;
-
+    /**
+     * The string version of this object is simply the move texts
+     * separated by a space.
+     */
 	this.toString = function() {
-		return this.white+" "+this.black;
+		return this.white + " " + this.black;
 	};
 };
