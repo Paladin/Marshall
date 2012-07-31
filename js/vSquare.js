@@ -1,31 +1,32 @@
-/** Version: 0.7.1 **/
 /**
- * Copyright 2008 Toomas Ršmer
+ * vSquare
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * @constructor
+ * @property {string}	piece		- 
+ * @property {string}	color		- 
+ * @property {string}	type		- 
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @version 0.7.1
+ * @author Toomas Ršmer
+ * @author Arlen P Walker
+ * @copyright 2008 Toomas Ršmer
+ * @copyright 2012 Arlen P Walker (some portions)
+ * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-
-function vSquare() {
+var vSquare = function () {
+    "use strict";
 	this.piece = null;
 	this.color = null;
 	this.type = "";
-	
-	this.toString = function() {
-		return "vSquare -- piece = "+this.piece+" color="+this.color
-					+" type="+this.type;
+	/**
+	 * The text version of this object is a description of the square contents
+	 */
+	this.toString = function () {
+		return "vSquare -- piece = " + this.piece + " color=" + this.color +
+					" type=" + this.type;
 	};
 
-	this.clone = function() {
+	this.clone = function () {
 		var sq = new vSquare();
 		sq.piece = this.piece;
 		sq.color = this.color;
