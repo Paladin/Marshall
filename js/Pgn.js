@@ -164,7 +164,7 @@ Pgn.prototype.stripComments = function (pgn, replace) {
     while (interim.match(/\([^()]*\)/)) {
         interim = interim.replace(/\([^()]*\)/g, substitute);
     }
-    
+
     theMoves = interim.replace(/\[[^\]]*\]/g, '').trim();
     theMovesBegin = theMoves.replace(/[_ ]*/, "");
     if (!parseInt(theMovesBegin.charAt(0), 10)) {
