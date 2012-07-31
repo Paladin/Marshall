@@ -17,7 +17,7 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-function Move (white, black) {
+var Move = function (white, black) {
     "use strict";
 
 	this.white = white;
@@ -26,7 +26,7 @@ function Move (white, black) {
      * The string version of this object is simply the move texts
      * separated by a space.
      */
-	this.toString = function() {
+	this.toString = function () {
 		return this.white + " " + this.black;
 	};
 };
