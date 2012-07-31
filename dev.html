@@ -246,30 +246,14 @@ Be8 42.b5 axb5 43.cxb5 1-0
   <!-- end scripts-->
 	<script>
   		var board = new Array();
-  		try {
 			board[0] = new Board("blum_pos");
 			board[0].init();
-		} catch (e) {
-			document.getElementById("blum_pos_board").appendChild(document.createTextNode(e));
-		}
-  		try {
 			board[1] = new Board("walkerlopez");
 			board[1].init();
-		} catch (e) { alert (
-			document.getElementById("walkerlopez_board").appendChild(document.createTextNode(e));
-		}
-  		try {
 			board[2] = new Board("pehnecMartz");
 			board[2].init();
-		} catch (e) {
-			document.getElementById("pehnecMartz_board")..appendChild(document.createTextNode(e));
-		}
-  		try {
 			board[3] = new Board("walker_coons");
 			board[3].init();
-		} catch (e) {
-			document.getElementById("walker_coons_board")..appendChild(document.createTextNode(e));
-		}
 	</script>
 
   </body>

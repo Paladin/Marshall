@@ -426,7 +426,10 @@ Pgn.prototype.stripIt = function (val, strip) {
         };
     }
     interim = val.replace(/\{(.)*?\}/g, replace);
-    return interim.replace(/\((.)*?\)/g, replace);
+    while (interim.match(/\([^()]*\)/)) {
+        interim = interim.replace(/\([^()]*\)/g, replace);
+    }
+    return interim;
 };
 /**
  *	Extract a comment starting from the beginning of the the pgn string.
