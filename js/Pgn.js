@@ -146,10 +146,36 @@ Pgn.prototype.removeMoveNumber = function (move) {
  */
 Pgn.prototype.stripComments = function (pgn, replace) {
     "use strict";
-	if (this.isBroken(pgn)) {
-		return this.stripItBroken(pgn, replace);
-	}
-	return this.stripIt(pgn, replace);
+    var substitute,
+        interim,
+        theMoves,
+        theMovesBegin;
+
+    if (replace) {
+        substitute = "";
+    } else {
+        substitute = function (theString) {
+            var a = [];
+            a.length = parseInt(theString.length, 10) + 1;
+            return a.join("_");
+        };
+    }
+    interim = pgn.replace(/\{(.)*?\}/g, substitute);
+    while (interim.match(/\([^()]*\)/)) {
+        interim = interim.replace(/\([^()]*\)/g, substitute);
+    }
+    
+    theMoves = interim.replace(/\[[^\]]*\]/g, '').trim();
+    theMovesBegin = theMoves.replace(/[_ ]*/, "");
+    if (!parseInt(theMovesBegin.charAt(0), 10)) {
+        if (replace) {
+            interim = interim.substring(0, interim.length - theMoves.length);
+        } else {
+            interim = interim.substring(0, interim.length - theMoves.length) +
+                    substitute(theMoves);
+        }
+    }
+    return interim;
 };
 /**
  *	Does the move have information on its origin as well as its destination
@@ -290,146 +316,6 @@ Pgn.prototype.getComment = function (move, idx) {
         }
     }
     return [null, idx];
-};
-
-Pgn.prototype.isBroken = function (val) {
-    "use strict";
-    var pCount = 0,
-        cCount = 0,
-        lastOne = "",
-        inComment = false,
-        i,
-        c;
-
-    for (i = 0; i < val.length; i += 1) {
-        c = val.charAt(i);
-        if (inComment) {
-            switch (c) {
-            case '}':
-                inComment = false;
-                // closing a non-existent curly brace
-                if (cCount === 0) { return true; }
-                // if we're closing a parenthesis instead of a curly
-                if (lastOne === "p") { return true; }
-                lastOne = "";
-                cCount -= 1;
-                break;
-            case '{':
-                // Cannot nest comments
-                return true;
-            }
-        } else {
-            switch (c) {
-            case '(':
-                pCount += 1;
-                lastOne = "p";
-                break;
-            case ')':
-                // closing a non-existent curly brace
-                if (pCount === 0) { return true; }
-                // closing a curly instead of a parenthesis
-                if (lastOne === "c") { return true; }
-                lastOne = "";
-                pCount -= 1;
-                break;
-            case '{':
-                inComment = true;
-                cCount += 1;
-                lastOne = "c";
-                break;
-            }
-        }
-    }
-    return false;
-};
-/*
-    At one point chesspastebin.com started getting cames
-    with invalid PGNs, mostly in the form
-    { comment comment ( something between starting brackets}.
-    As you can see, the ( is not closed. 
-    isOpen and isCurlyO are just for that to take normal
-    guesses in that kind of situations.
-*/
-Pgn.prototype.stripItBroken = function (val, strip) {
-    "use strict";
-	var count = 0,
-	    out = [],
-	    isOpen = false,
-	    isCurlyO = false,
-	    curlyOpenedFst = false,
-	    i,
-	    c;
-
-	for (i = 0; i < val.length; i += 1) {
-		c = val.charAt(i);
-		switch (c) {
-        case '(':
-            if (!strip) { out[out.length] = '_'; }
-            count += 1;
-            if (isOpen) { count -= 1; }
-            isOpen = true;
-            break;
-        case '{':
-            isCurlyO = true;
-            if (!strip) { out[out.length] = '_'; }
-            count += 1;
-            if (!isOpen) { curlyOpenedFst = true; }
-            break;
-        case '}':
-            if (isOpen && isCurlyO && curlyOpenedFst) {
-                // lets close the open (
-                count -= 1;
-                isOpen = false;
-            }
-            isCurlyO = false;
-            curlyOpenedFst = false;
-            count -= 1;
-            if (!strip) { out[out.length] = '_'; }
-            break;
-        case ')':
-            if (isOpen) {
-                count -= 1;
-                if (!strip) { out[out.length] = '_'; }
-                isOpen = false;
-            }
-            break;
-        case '\t':
-            out[out.length] = ' ';
-            break;
-        default:
-            if (count > 0) {
-                if (!strip) { out[out.length] = '_'; }
-            } else {
-                out[out.length] = c;
-            }
-		}
-	}
-	return out.join("");
-};
-/*
-	Strip game comments from a PGN string. If second
-	parameter set false true then comments will be replaced
-	by an underscore.
-*/
-Pgn.prototype.stripIt = function (val, strip) {
-    "use strict";
-    var replace,
-        interim;
-
-    if (strip) {
-        replace = "";
-    } else {
-        replace = function (theString) {
-            var a = [];
-            a.length = parseInt(theString.length, 10) + 1;
-            return a.join("_");
-        };
-    }
-    interim = val.replace(/\{(.)*?\}/g, replace);
-    while (interim.match(/\([^()]*\)/)) {
-        interim = interim.replace(/\([^()]*\)/g, replace);
-    }
-    return interim;
 };
 /**
  *	Extract a comment starting from the beginning of the the pgn string.

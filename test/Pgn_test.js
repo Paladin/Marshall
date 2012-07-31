@@ -110,7 +110,7 @@ TestCase( "PgnTest", {
 	trickyIntro:	'3)c is correct',
 	trickyPost:	'or 5.Ne3++. This brilliancy was published far more than 100 years ago - in May 1890 on page 155 of International Chess Magazine. (Source: "A Chess Omnibus", Edward Winter, Russel Enterprises, Inc., 2003)',
 
-	evilSt:		'[Event \"Dayton\"][Site \"?\"]\n[Date \"1890.02.25\"]\n[Round \"?\"]\n[White \"Blumenschein, E..\"]\n[Black \"Smith, W.H..\"]\n[Result \"*\"]\n[Annotator \"Reeh,Oliver\"]\n[SetUp \"1\"]\n[FEN \"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1\"]\n[PlyCount \"9\"]\n[SourceDate \"2009.06.14\"]\n____________________________________________________________________________________________________________________________________________________________ _____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________',
+	evilSt:		'[Event \"Dayton\"][Site \"?\"]\n[Date \"1890.02.25\"]\n[Round \"?\"]\n[White \"Blumenschein, E..\"]\n[Black \"Smith, W.H..\"]\n[Result \"*\"]\n[Annotator \"Reeh,Oliver\"]\n[SetUp \"1\"]\n[FEN \"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1\"]\n[PlyCount \"9\"]\n[SourceDate \"2009.06.14\"]\n__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________',
 	evilSNC:	'[Event \"Dayton\"][Site \"?\"]\n[Date \"1890.02.25\"]\n[Round \"?\"]\n[White \"Blumenschein, E..\"]\n[Black \"Smith, W.H..\"]\n[Result \"*\"]\n[Annotator \"Reeh,Oliver\"]\n[SetUp \"1\"]\n[FEN \"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1\"]\n[PlyCount \"9\"]\n[SourceDate \"2009.06.14\"]\n ',
 
     nestedSt:   '[Event "UW Winter Open"][Site "Madison"][Date "2003.02.01"][Round "1"][White "Walker Arlen P"][Black "Lopez Eugene"][Result "1-0"][ECO "B23"][WhiteElo "0"][BlackElo "0"][Annotator "Walker Arlen P"][Source ""][Remark ""]1.e4 g6 2.Nc3 Bg7 3.Bc4 ______ ____________________________________________________________________________________________________________________________________________________ ___________________ c5 4.f4 Nc6 5.Nf3 e6 6.f5 Nge7 7.fxe6 fxe6 8.O-O _______ _______ ___________________________________________________ O-O 9.d3 h6 _______________________________________________________________________________________________ 10.Be3?? _________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________ ____________________________________________________________________________________________________________________________________________________________________________________________________________ Nd4 _______ ___________________________________________________________ 11.Qd2 _______ Kh7 _______ ____________________________________________________________________________________________________ 12.Rae1 _______ __________________________________________ a6 ______ _____________________________________________ 13.Nd1 d5 14.Bb3 _______ _______________________ Nxb3 15.axb3 _______ dxe4 _______ ___________ 16.dxe4 _______ Qxd2 _______ ___________________________________________ 17.Nxd2 b6 18.Nc4 Bb7 ____ ___________________ _______ ______________________________________________________________________________________ 19.Nxb6 Rxf1+ 20.Rxf1 Rf8 _________________________________ 21.Rxf8 Bxf8 22.Nd7 Bg7 23.Nxc5 Bc8 24.c3 Be5 25.Nf2 h5 26.Nfd3 Bc7 27.Kf2 e5 28.Bg5 Nc6 29.b4 Kg7 30.Ne1 Bb6 31.Ke2 Bxc5 32.bxc5 Kf7 ____ ______________________________________________________________________ 33.b4 Ke6 34.Nd3 Kd7 ___ ___________________________________________________________ 35.Bf6 Ke6 36.Bh8 ___________________________ Bd7 37.Bg7 Be8 38.h4 Bd7 39.Kd2 Be8 40.c4 Bd7 41.Kc3 ______________________________________________ Be8 42.b5 axb5 43.cxb5 1-0',
@@ -157,52 +157,40 @@ TestCase( "PgnTest", {
 		);
 	},
 	
-	"test for pgn parsing bug in tricky PGN": function() {
-		pgn = new Pgn(this.goodPGN);
-		
-		assertFalse( pgn.isBroken( this.trickyPGN ) );
-	},
-	
-	"test for pgn parsing in bad PGN": function() {
-		pgn = new Pgn(this.goodPGN);
-		
-		assertTrue( pgn.isBroken( this.evilPGN ) );
-	},
-	
 	"test for blanking comments in tricky PGN": function() {
 		pgn = new Pgn(this.goodPGN);
 		
-		assertEquals( this.trickySt, pgn.stripIt( this.trickyPGN ) );
+		assertEquals( this.trickySt, pgn.stripComments( this.trickyPGN ) );
 	},
 	
 	"test for stripping comments in tricky PGN": function() {
 		pgn = new Pgn(this.goodPGN);
 		
-		assertEquals( this.trickySNC, pgn.stripIt( this.trickyPGN, true ) );
+		assertEquals( this.trickySNC, pgn.stripComments( this.trickyPGN, true ) );
 	},
 	
 	"test for blanking comments in bad PGN": function() {
 		pgn = new Pgn(this.goodPGN);
 		
-		assertEquals( this.evilSt, pgn.stripItBroken( this.evilPGN ) );
+		assertEquals( this.evilSt, pgn.stripComments( this.evilPGN ) );
 	},
 	
 	"test for stripping comments in nested PGN": function() {
 		pgn = new Pgn(this.goodPGN);
 		
-		assertEquals( this.nestedSNC, pgn.stripIt( this.nestedPGN, true ) );
+		assertEquals( this.nestedSNC, pgn.stripComments( this.nestedPGN, true ) );
 	},
 	
 	"test for blanking comments in nested PGN": function() {
 		pgn = new Pgn(this.goodPGN);
 		
-		assertEquals( this.nestedSt, pgn.stripIt( this.nestedPGN ) );
+		assertEquals( this.nestedSt, pgn.stripComments( this.nestedPGN ) );
 	},
 	
 	"test for stripping comments in bad PGN": function() {
 		pgn = new Pgn(this.goodPGN);
 		
-		assertEquals( this.evilSNC, pgn.stripItBroken( this.evilPGN, true ) );
+		assertEquals( this.evilSNC, pgn.stripComments( this.evilPGN, true ) );
 	},
 	
 	"test for pulling introductory comment in tricky PGN": function() {
