@@ -413,45 +413,20 @@ Pgn.prototype.stripItBroken = function (val, strip) {
 */
 Pgn.prototype.stripIt = function (val, strip) {
     "use strict";
-	var count = 0,
-	    out = [],
-	    inComment = false,
-	    i,
-	    c;
+    var replace,
+        interim;
 
-	for (i = 0; i < val.length; i += 1) {
-		c = val.charAt(i);
-		switch (c) {
-        case '(':
-            if (!strip) { out[out.length] = '_'; }
-            if (!inComment) { count += 1; }
-            break;
-        case '{':
-            inComment = true;
-            if (!strip) { out[out.length] = '_'; }
-            count += 1;
-            break;
-        case '}':
-            count -= 1;
-            if (!strip) { out[out.length] = '_'; }
-            inComment = false;
-            break;
-        case ')':
-            if (!inComment) { count -= 1; }
-            if (!strip) { out[out.length] = '_'; }
-            break;
-        case '\t':
-            out[out.length] = ' ';
-            break;
-        default:
-            if (count > 0) {
-                if (!strip) { out[out.length] = '_'; }
-            } else {
-                out[out.length] = c;
-            }
-		}
-	}
-	return out.join("");
+    if (strip) {
+        replace = "";
+    } else {
+        replace = function (theString) {
+            var a = [];
+            a.length = parseInt(theString.length, 10) + 1;
+            return a.join("_");
+        };
+    }
+    interim = val.replace(/\{(.)*?\}/g, replace);
+    return interim.replace(/\((.)*?\)/g, replace);
 };
 /**
  *	Extract a comment starting from the beginning of the the pgn string.
