@@ -205,7 +205,7 @@ VBoard.prototype = {
      */
     whereIs:      function (piece) {
         "use strict";
-        var squares = [], 
+        var squares = [],
             index;
 
         for (index = 11; index < 89; index += 1) {
