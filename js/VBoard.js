@@ -48,7 +48,7 @@ VBoard.prototype = {
                 "a".charCodeAt(0) + 1,
             rank = parseInt(address.charAt(1), 10);
 
-        return this.addressLimit(rank) * 10 + this.addressLimit(file);
+        return this.limitAddress(rank) * 10 + this.limitAddress(file);
     },
     /**
      * Limits a square address to the board, or returns zero.
@@ -57,7 +57,7 @@ VBoard.prototype = {
      *
      * @return  {integer}   - The rank or file address. 0 if illegal
      */
-    addressLimit:   function (address) {
+    limitAddress:   function (address) {
         "use strict";
         return address < 1 || address > 8 ? 0 : address;
     },
