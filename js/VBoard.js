@@ -91,5 +91,19 @@ VBoard.prototype = {
     whatsOn:   function (square) {
         "use strict";
         return this.squares[this.algebraic2Index(square)];
+    },
+    /**
+     * Places a piece on a given square
+     *
+     * @param   {string}    - The piece
+     * @param   {string}    - Where to put it (algebraic notation)
+     */
+    place:      function (piece, where) {
+        "use strict";
+        var square = this.algebraic2Index(where);
+
+        if (square > 0) { this.squares[square] = piece; }
+
+        return;
     }
 };

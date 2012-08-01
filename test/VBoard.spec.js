@@ -69,5 +69,19 @@
 		    });
 		});
 
+        describe("Setting a piece on a square", function () {
+            beforeEach(function () {
+                this.vBoard = new VBoard();
+            });
+            it("should set a white Queen on d5", function () {
+                this.vBoard.place("Q", "d5");
+                expect(this.vBoard.whatsOn("d5")).toBe("Q");
+            });
+            it("should set a black Bishop on b6", function () {
+                this.vBoard.place("b", "b6");
+                expect(this.vBoard.whatsOn("b6")).toBe("b");
+            });
+        });
+
 	});
 }) ();
