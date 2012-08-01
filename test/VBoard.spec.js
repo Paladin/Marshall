@@ -9,8 +9,8 @@
 			it('should be able to translate standard algebraic f2', function () {
 				expect(this.vBoard.algebraic2Index('f2')).toBe(26);
 			});
-			it('should be able to translate standard algebraic j9', function () {
-				expect(this.vBoard.algebraic2Index('j9')).toBe(0);
+			it('should be able to translate standard algebraic h9', function () {
+				expect(this.vBoard.algebraic2Index('h9')).toBe(0);
 			});
 			it("should be able to translate index 35 to e3", function () {
 			    expect(this.vBoard.index2Algebraic(35)).toBe("e3");

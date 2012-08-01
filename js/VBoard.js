@@ -44,11 +44,13 @@ VBoard.prototype = {
      */
     algebraic2Index:    function (address) {
         "use strict";
-        var file = address.toLowerCase().charCodeAt(0) -
-                "a".charCodeAt(0) + 1,
-            rank = parseInt(address.charAt(1), 10);
+        var file = this.limitAddress(address.toLowerCase().charCodeAt(0) -
+                "a".charCodeAt(0) + 1),
+            rank = this.limitAddress(parseInt(address.charAt(1), 10));
 
-        return this.limitAddress(rank) * 10 + this.limitAddress(file);
+        if (file === 0 || rank === 0) { return 0; }
+
+        return rank * 10 + file;
     },
     /**
      * Translates an array index to a "normal" algebraic square address
