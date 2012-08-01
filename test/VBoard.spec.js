@@ -38,6 +38,33 @@
             it("should find White Queen on d1", function () {
                 expect(this.vBoard.whereIs("Q")).toEqual(["d1"]);
             });
+            it("should find square d3 is open", function () {
+                expect(this.vBoard.isOccupied("d3")).toBe(false);
+            });
+            it("should find square d2 is occupied", function () {
+                expect(this.vBoard.isOccupied("d2")).toBe(true);
+            });
+            it("should find square a2 is occupied by White", function () {
+                expect(this.vBoard.isOccupiedBy("a2")).toBe("white");
+            });
+            it("should find square a8 is occupied by Black", function () {
+                expect(this.vBoard.isOccupiedBy("a8")).toBe("black");
+            });
+            it("should find square d4 is not occupied", function () {
+                expect(this.vBoard.isOccupiedBy("d4")).toBe("");
+            });
+            it("should find the square d3 exists", function () {
+                expect(this.vBoard.exists("d3")).toBe(true);
+            });
+            it("should find the square 56 exists", function () {
+                expect(this.vBoard.exists("56")).toBe(true);
+            });
+            it("should find the square h9 doesn't exist", function () {
+                expect(this.vBoard.exists("h9")).toBe(false);
+            });
+            it("should find the square 98 doesn't exist", function () {
+                expect(this.vBoard.exists("98")).toBe(false);
+            });
 		});
 		describe("Working with FEN", function () {
 		    beforeEach(function () {

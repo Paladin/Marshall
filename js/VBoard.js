@@ -217,5 +217,46 @@ VBoard.prototype = {
         }
 
         return squares;
+    },
+    /**
+     * Checks to see if the square is occupied.
+     *
+     * @param   {string}    - The square to check
+     */
+    isOccupied:     function (square) {
+        "use strict";
+
+        if (this.squares[this.algebraic2Index(square)]) { return true; }
+
+        return false;
+    },
+    /**
+     * Checks to see which color is occupying the square
+     *
+     * @param   {string}    - The square to check
+     */
+    isOccupiedBy:    function (square) {
+        "use strict";
+
+        if (!this.squares[this.algebraic2Index(square)]) { return ""; }
+
+        return this.squares[this.algebraic2Index(square)] > "Z" ?
+                "black" : "white";
+    },
+    /**
+     * Checks to see if a given square (algebraic or index) is legitimate.
+     */
+    exists:         function (square) {
+        "use strict";
+        var index = parseInt(square, 10);
+
+        if (!index) {
+            index = this.algebraic2Index(square);
+        }
+
+        if (index < 11 || index > 88 || index % 10 === 0 || index % 10 === 9) {
+            return false;
+        }
+        return true;
     }
 };
