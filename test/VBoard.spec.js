@@ -29,7 +29,7 @@
 		    });
 		});
 		
-		describe("Setting up midgame position", function () {
+		describe("Working with FEN", function () {
 		    beforeEach(function () {
 		        var start = 
 		"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1";
@@ -65,7 +65,11 @@
 		        expect(this.vBoard.whatsOn("a1")).toBe("R");
 		        expect(this.vBoard.whatsOn("g1")).toBe("K");
 		    });
-		    it("should have a white pawn on c3", function () {
+		    it("should return the modified position", function () {
+		        this.vBoard.place("P", "f4");
+		        expect(this.vBoard.getFEN()).toBe(
+		"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1P1N/2P4R/PP1N2PP/R5K1 w - - 0 1"
+		        );
 		    });
 		});
 

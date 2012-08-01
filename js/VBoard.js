@@ -6,6 +6,14 @@
  * @constructor
  *
  * @property {array}	squares		    - The squares, with a border
+ * @property {boolean}  whiteToMove     - Is white to move
+ * @property {boolean}	whiteCastles00  - Can White castle 0-0
+ * @property {boolean}	whiteCastles000 - Can White castle 0-0-0
+ * @property {boolean}	blackCastles00  - Can Black castle 0-0
+ * @property {boolean}	blackCastles000 - Can Black castle 0-0-0
+ * @property {string}	epTarget        - Target square for en passant
+ * @property {integer}	halfMoveClock   - Plies since capture or pawn move
+ * @property {integer}	currentMove     - Current move number
  *
  * @version 0.7.1
  * @author Arlen P Walker
@@ -18,7 +26,15 @@ var VBoard = function (start) {
 };
 
 VBoard.prototype = {
-    squares:        new Array(100), //one square border simplifies the math
+    squares:            new Array(100), //one square border simplifies the math
+    whiteToMove:        true,
+    whiteCasltes00:     true,
+    whiteCastles000:    true,
+    blackCastles00:     true,
+    blackCastles000:    true,
+    epTarget:           "",
+    halfMoveClock:      0,
+    currentMove:        1,
     /**
      * Translates a "normal" algebraic square address to an array index
      *
@@ -56,7 +72,6 @@ VBoard.prototype = {
             file,
             skip,
             FEN,
-            flags,
             flagstart,
             FENIndex;
 
@@ -66,7 +81,7 @@ VBoard.prototype = {
                 split("/").reverse();
         flagstart = FEN[0].indexOf(" ");
         if (flagstart > 0) {
-            flags = FEN[0].substring(flagstart);
+            this.setFlags(FEN[0].substring(flagstart));
             FEN[0] = FEN[0].substring(0, flagstart).trim();
         }
         for (rank = 1; rank <= FEN.length; rank += 1) {
@@ -105,5 +120,69 @@ VBoard.prototype = {
         if (square > 0) { this.squares[square] = piece; }
 
         return;
+    },
+    /**
+     * Returns the the FEN of the current position
+     */
+    getFEN:     function () {
+        "use strict";
+        var FEN = "",
+            castles = "",
+            empty,
+            rank,
+            file;
+
+        function addEmpties() {
+            if (empty > 0) {
+                FEN = FEN + empty;
+                empty = 0;
+            }
+        }
+
+        for (rank = 80; rank > 9; rank -= 10) {
+            empty = 0;
+            for (file = 1; file < 9; file += 1) {
+                if (this.squares[rank + file]) {
+                    addEmpties();
+                    FEN = FEN + this.squares[rank + file];
+                } else {
+                    empty += 1;
+                }
+            }
+            addEmpties();
+            if (rank !== 10) { FEN += "/"; }
+        }
+
+        FEN += this.whiteToMove ? " w" : " b";
+
+        castles += this.whiteCastles00 ? "K" : "";
+        castles += this.whiteCastles000 ? "Q" : "";
+        castles += this.blackCastles00 ? "k" : "";
+        castles += this.blackCastles000 ? "q" : "";
+        FEN += castles.length > 0 ? " " + castles : " -";
+
+        FEN += this.epTarget.length > 0 ? " " + this.epTarget : " -";
+        FEN += " " + this.halfMoveClock;
+        FEN += " " + this.currentMove;
+
+        return FEN;
+    },
+    /**
+     *  Sets the flags associated with Forsythe-Edwards notation
+     */
+    setFlags:   function (theFlags) {
+        "use strict";
+        var flags = theFlags.split(" ");
+
+        this.whiteToMove = flags[1].toLowerCase().indexOf("w") >= 0;
+
+        this.whiteCastles00 = flags[2].indexOf("K") >= 0;
+        this.whiteCastles000 = flags[2].indexOf("Q") >= 0;
+        this.blackCastles00 = flags[2].indexOf("k") >= 0;
+        this.blackCastles000 = flags[2].indexOf("q") >= 0;
+
+        this.epTarget = flags[3] === "-" ? "" : flags[3];
+        this.halfMoveClock = parseInt(flags[4], 10);
+        this.currentMove = parseInt(flags[5], 10);
     }
 };
