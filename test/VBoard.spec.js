@@ -1,8 +1,7 @@
 (function (){
 
 	describe("Virtual Board", function () {
-		describe("Square Addresses", function () {
-
+		describe("Working with squares", function () {
 			beforeEach(function () {
 			    this.vBoard = new VBoard();
 			});
@@ -10,25 +9,36 @@
 			it('should be able to translate standard algebraic f2', function () {
 				expect(this.vBoard.algebraic2Index('f2')).toBe(26);
 			});
-
 			it('should be able to translate standard algebraic j9', function () {
 				expect(this.vBoard.algebraic2Index('j9')).toBe(0);
 			});
-
-		});
-		
-		describe("Setting up 'normal' position", function () {
-		    beforeEach(function () {
-		        this.vBoard = new VBoard();
-		    });
+			it("should be able to translate index 35 to e3", function () {
+			    expect(this.vBoard.index2Algebraic(35)).toBe("e3");
+			});
+			it("should not be able to translate index 93", function () {
+			    expect(this.vBoard.index2Algebraic(93)).toBe("");
+			});
 		    it("should have a black knight on g8", function () {
 		        expect(this.vBoard.whatsOn("g8")).toBe("n");
 		    });
 		    it("should have a white pawn on c2", function () {
 		        expect(this.vBoard.whatsOn("c2")).toBe("P");
 		    });
+            it("should set a white Queen on d5", function () {
+                this.vBoard.place("Q", "d5");
+                expect(this.vBoard.whatsOn("d5")).toBe("Q");
+            });
+            it("should set a black Bishop on b6", function () {
+                this.vBoard.place("b", "b6");
+                expect(this.vBoard.whatsOn("b6")).toBe("b");
+            });
+            it("should find Black knights on g8 and b8", function () {
+                expect(this.vBoard.whereIs("n")).toEqual(["b8", "g8"]);
+            });
+            it("should find White Queen on d1", function () {
+                expect(this.vBoard.whereIs("Q")).toEqual(["d1"]);
+            });
 		});
-		
 		describe("Working with FEN", function () {
 		    beforeEach(function () {
 		        var start = 
@@ -72,20 +82,5 @@
 		        );
 		    });
 		});
-
-        describe("Setting a piece on a square", function () {
-            beforeEach(function () {
-                this.vBoard = new VBoard();
-            });
-            it("should set a white Queen on d5", function () {
-                this.vBoard.place("Q", "d5");
-                expect(this.vBoard.whatsOn("d5")).toBe("Q");
-            });
-            it("should set a black Bishop on b6", function () {
-                this.vBoard.place("b", "b6");
-                expect(this.vBoard.whatsOn("b6")).toBe("b");
-            });
-        });
-
 	});
 }) ();

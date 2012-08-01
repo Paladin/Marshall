@@ -51,6 +51,22 @@ VBoard.prototype = {
         return this.limitAddress(rank) * 10 + this.limitAddress(file);
     },
     /**
+     * Translates an array index to a "normal" algebraic square address
+     *
+     * @param   {integer}   - The index to translate (34, 27, etc.)
+     *
+     * @return  {string}   - The square name ("" if illegal)
+     */
+    index2Algebraic:    function (index) {
+        "use strict";
+        var rank = Math.floor(index / 10),
+            file = String.fromCharCode((index % 10) + "a".charCodeAt(0) - 1);
+
+        if (rank < 1 || rank > 8 || file < "a" || file > "h") { return ""; }
+
+        return file + rank;
+    },
+    /**
      * Limits a square address to the board, or returns zero.
      *
      * @param   {integer}    - The address
@@ -179,5 +195,25 @@ VBoard.prototype = {
         FEN += " " + this.currentMove;
 
         return FEN;
+    },
+    /**
+     * Locates all squares with a given piece
+     *
+     * @param   {string}    - The piece
+     */
+    whereIs:      function (piece) {
+        "use strict";
+        var squares = [], 
+            index;
+
+        for (index = 11; index < 89; index += 1) {
+            if (index % 10 > 0 && index % 10 < 9) {
+                if (this.squares[index] === piece) {
+                    squares.push(this.index2Algebraic(index));
+                }
+            }
+        }
+
+        return squares;
     }
 };
