@@ -72,6 +72,7 @@ VBoard.prototype = {
             file,
             skip,
             FEN,
+            flags,
             flagstart,
             FENIndex;
 
@@ -81,7 +82,19 @@ VBoard.prototype = {
                 split("/").reverse();
         flagstart = FEN[0].indexOf(" ");
         if (flagstart > 0) {
-            this.setFlags(FEN[0].substring(flagstart));
+            flags = FEN[0].substring(flagstart).split(" ");
+
+            this.whiteToMove = flags[1].toLowerCase().indexOf("w") >= 0;
+
+            this.whiteCastles00 = flags[2].indexOf("K") >= 0;
+            this.whiteCastles000 = flags[2].indexOf("Q") >= 0;
+            this.blackCastles00 = flags[2].indexOf("k") >= 0;
+            this.blackCastles000 = flags[2].indexOf("q") >= 0;
+
+            this.epTarget = flags[3] === "-" ? "" : flags[3];
+            this.halfMoveClock = parseInt(flags[4], 10);
+            this.currentMove = parseInt(flags[5], 10);
+
             FEN[0] = FEN[0].substring(0, flagstart).trim();
         }
         for (rank = 1; rank <= FEN.length; rank += 1) {
@@ -166,23 +179,5 @@ VBoard.prototype = {
         FEN += " " + this.currentMove;
 
         return FEN;
-    },
-    /**
-     *  Sets the flags associated with Forsythe-Edwards notation
-     */
-    setFlags:   function (theFlags) {
-        "use strict";
-        var flags = theFlags.split(" ");
-
-        this.whiteToMove = flags[1].toLowerCase().indexOf("w") >= 0;
-
-        this.whiteCastles00 = flags[2].indexOf("K") >= 0;
-        this.whiteCastles000 = flags[2].indexOf("Q") >= 0;
-        this.blackCastles00 = flags[2].indexOf("k") >= 0;
-        this.blackCastles000 = flags[2].indexOf("q") >= 0;
-
-        this.epTarget = flags[3] === "-" ? "" : flags[3];
-        this.halfMoveClock = parseInt(flags[4], 10);
-        this.currentMove = parseInt(flags[5], 10);
     }
 };
