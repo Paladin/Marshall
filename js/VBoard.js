@@ -56,11 +56,19 @@ VBoard.prototype = {
             file,
             skip,
             FEN,
+            flags,
+            flagstart,
             FENIndex;
 
         this.squares = new Array(100);
-        FEN = (position || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR").
+        FEN = (position ||
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").
                 split("/").reverse();
+        flagstart = FEN[0].indexOf(" ");
+        if (flagstart > 0) {
+            flags = FEN[0].substring(flagstart);
+            FEN[0] = FEN[0].substring(0, flagstart).trim();
+        }
         for (rank = 1; rank <= FEN.length; rank += 1) {
             file = 1;
             for (FENIndex = 0; FENIndex < FEN[rank - 1].length; FENIndex += 1) {
@@ -70,8 +78,8 @@ VBoard.prototype = {
                 } else {
                     this.squares[rank * 10 + file] = FEN[rank - 1].
                             charAt(FENIndex);
+                    file += 1;
                 }
-                file += 1;
             }
         }
     },
