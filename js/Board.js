@@ -7,7 +7,7 @@
  *
  * @property {array}	file		- Array of the names of the chessboard files
  * @property {object}	pgn			- The game object
- * @property {string}	divId		- The ID of the element to display the board
+ * @property {string}	divId		- The ID of the board's display element
  * @property {object}	conv		- The Converter object
  * @property {array}	movesOnPane	- The array of displayed moves
  * @property {boolean}	flipped		- White or Black (true) on top
@@ -29,7 +29,7 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-function Board(divId, options) {
+var Board = function (divId, options) {
 	"use strict";
 	var optionNames,
 		i,
@@ -43,7 +43,8 @@ function Board(divId, options) {
 	this.file = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 	this.pgn = null;
 	if (this.isYahoo(document.getElementById(divId).firstChild.nodeValue)) {
-		this.pgn = new Yahoo(document.getElementById(divId).firstChild.nodeValue);
+		this.pgn = new Yahoo(document.getElementById(divId).
+		        firstChild.nodeValue);
 	} else {
 		this.pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
 	}
@@ -74,12 +75,12 @@ function Board(divId, options) {
 	// set the this.opts for that key with the 
 	// custom value
 	for (i = 0; i < optionNames.length; i += 1) {
-		if (options && (typeof options[optionNames[i]] !== 'undefined')) {
+		if (options && (options[optionNames[i]] !== undefined)) {
 			this.opts[optionNames[i]] = options[optionNames[i]];
 		}
 	}
 
-	if (options && (typeof options.buttonPrefix) === 'undefined') {
+	if (options && (options.buttonPrefix) === undefined) {
 		this.opts.buttonPrefix = this.opts.imagePrefix + "buttons/";
 	}
 
@@ -92,7 +93,7 @@ function Board(divId, options) {
 	for (i = 0; i < 8; i += 1) {
 		this.pos[i] = [];
 	}
-}
+};
 /**
  *	This sets up the default option list
  */
@@ -181,7 +182,7 @@ Board.prototype.init = function () {
 	// end of current move
 
 	this.updateMoveInfo(this);
-	this.toggleMoves(this.opts.showMovesPane);	//force the moves pane overflow to get picked up
+	this.toggleMoves(this.opts.showMovesPane);	//picks up moves pane overflow
 	if (this.opts.skipToMove) {
 		try {
 			tmp2 = parseInt(this.opts.skipToMove, 10);
@@ -220,7 +221,8 @@ Board.prototype.drawBoard = function () {
 		for (j = 0; j < 8; j += 1) {
 			td = document.createElement("td");
 
-			td.className = !flip ? (j % 2) ? blackC : whiteC : (j % 2) ? whiteC : blackC;
+			td.className = !flip ? (j % 2) ? blackC : whiteC : (j % 2) ?
+			        whiteC : blackC;
 			td.setAttribute('data-squarename', this.file[j] + (8 - i));
 
 			this.pos[i][j] = td;
@@ -319,7 +321,8 @@ Board.prototype.flipBoard = function () {
 			} catch (e) {holdSquareContent = null; }
 
 			try {
-				upper.setAttribute('data-squarename', lower.getAttribute('data-squarename'));
+				upper.setAttribute('data-squarename',
+				        lower.getAttribute('data-squarename'));
 				upper.appendChild(lower.removeChild(lower.firstChild));
 			} catch (er) {}
 
@@ -336,11 +339,11 @@ Board.prototype.flipBoard = function () {
  *	moveNumber		The move number in the game to set the position to
  *	color			Which ply? 0=white, 1=black
  *
- *	NOTE: the +1 in the ply calculation is because the computer is zero-based while
- *			the move list, like all human lists, is one-based.
+ *	NOTE: the +1 in the ply calculation is because the computer is zero-based
+ *          while the move list, like all human lists, is one-based.
  *
- *	TODO: This whole thing appears off by one. give it "41" and it skips to move 42.
- *			Needs to be re-examined after testing is complete.
+ *	TODO: This whole thing appears off by one. give it "41" and it skips to
+ *          move 42. Needs to be re-examined after testing is complete.
  */
 Board.prototype.skipToMove = function (moveNumber, color) {
 	"use strict";
@@ -475,12 +478,12 @@ Board.prototype.markLastMove = function () {
 	} catch (e) {}
 };
 
-Board.prototype.deMarkLastMove = function () {
+Board.prototype.deMarkLastMove = function (update) {
 	"use strict";
 	var move = this.conv.moves[this.conv.iteIndex - 2],
 		piece;
 
-	if (arguments.length && arguments[0]) {
+	if (arguments.length && update) {
 		move = this.conv.moves[this.conv.iteIndex - 1];
 	}
 
@@ -567,7 +570,7 @@ Board.prototype.updateMoveInfo = function () {
  *	This makes the next move in the game, and optionally updates the
  *	display.
  *
- *	update		Boolean indicating if the displays should be updated. Default is true
+ *	@param  {boolean}   should displays be updated. Default true
  */
 Board.prototype.makeMove = function (update) {
 	"use strict";
@@ -577,7 +580,7 @@ Board.prototype.makeMove = function (update) {
 	if (move === null) {
 		return;
 	}
-	if (typeof update === 'undefined' || update) {
+	if (update === undefined || update) {
 		this.deMarkLastMove();
 		this.markLastMove();
 
@@ -774,7 +777,8 @@ Board.prototype.populateMoves = function (cont, pgn) {
 
 	for (i = 0; i < tmp2.length; i += 1) {
 		if (tmp2[i].white !== null) {
-			moveList.appendChild(this.addMoveNumber((i + this.conv.startMoveNum)));
+			moveList.appendChild(this.addMoveNumber((i +
+			        this.conv.startMoveNum)));
 			link = this.addMoveLink(tmp2[i].white, i, 0);
 			moveList.appendChild(link);
 			comment = this.conv.pgn.getComment(tmp2[i].white, lastMoveIdx);
@@ -791,7 +795,7 @@ Board.prototype.populateMoves = function (cont, pgn) {
 			this.movesOnPane[this.movesOnPane.length] = link;
 		}
 	}
-	if (typeof this.conv.pgn.props.Result !== 'undefined') {
+	if (this.conv.pgn.props.Result !== undefined) {
 		txt = document.createTextNode("  " + this.conv.pgn.props.Result);
 		tmp2 = document.createElement("span");
 		tmp2.className = "result";
@@ -876,8 +880,9 @@ Board.prototype.getImg = function (piece, color) {
 	if (/\.png$/.test(img.src.toLowerCase()) &&
 			navigator.userAgent.toLowerCase().indexOf("msie") !== -1) {
 		// set filter
-		img.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='" +
-					src + "',sizingMethod='image')";
+		img.runtimeStyle.filter = "progid:DXImageTransform.Microsoft." +
+		        "AlphaImageLoader(enabled=true,src='" + src +
+		        "',sizingMethod='image')";
 	} else {
 		img.src = src;
 	}
@@ -898,8 +903,8 @@ Board.prototype.getImg = function (piece, color) {
 	return img;
 };
 /**
- *	This synchronizes the display board with the virtual board when you jump to a position
- *		without moving to it.
+ *	This synchronizes the display board with the virtual board when you jump
+ *  to a position without moving to it.
  */
 Board.prototype.syncBoard = function (result) {
 	"use strict";
@@ -913,9 +918,9 @@ Board.prototype.syncBoard = function (result) {
 	}
 };
 /**
- *	This copies the contents of one square to another. It removes any piece image
- *		(or anything else) attached to the destination square, and attaches the
- *		piece image from the source square.
+ *	This copies the contents of one square to another. It removes any piece
+ *      image (or anything else) attached to the destination square, and
+ *      attaches the piece image from the source square.
  */
 Board.prototype.syncSquare = function (from, to) {
 	"use strict";
@@ -930,8 +935,8 @@ Board.prototype.syncSquare = function (from, to) {
 	}
 };
 /**
- *	This adds a comment, if present to the output stream. The curly braces are removed
- *	for humman readability.
+ *	This adds a comment, if present to the output stream. The curly braces are
+ *  removed for humman readability.
  */
 Board.prototype.addComment = function (theComment, moveList) {
 	"use strict";
@@ -1020,7 +1025,7 @@ Board.prototype.getForsytheFromDisplay = function () {
 		empty = 0;
 		files = ranks[rank].childNodes;		// all child nodes are td's
 		for (file = 0; file < 8; file += 1) {
-			if (files[file].childNodes.length > 0) {	// only child node is img of piece
+			if (files[file].childNodes.length > 0) {	// Piece img only child
 				addEmpties();
 				piece = files[file].childNodes[0].getAttribute('data-symbol');
 				position = position + piece;
