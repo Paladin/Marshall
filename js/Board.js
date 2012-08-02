@@ -77,8 +77,6 @@ var Board = function (divId, options) {
 /**
  * Setting up class attributes
  */
-	link.href = 'javascript:void(window[' + this.id + ']' +
-							'.skipToMove(' + moveNumber + ',' + color + '))';
 Board.prototype = {
     divId:      null,
 	file:       ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
@@ -619,7 +617,8 @@ Board.prototype = {
         this.lastBoldIdx = null;
         if (this.movesOnPane[idx - 1]) {
             this.movesOnPane[idx - 1] = this.makeBold(
-                    this.movesOnPane[idx - 1]);
+                this.movesOnPane[idx - 1]
+            );
             this.lastBold = this.movesOnPane[idx - 1];
             this.lastBoldIdx = idx - 1;
         }
@@ -867,7 +866,7 @@ Board.prototype = {
         }
 
         img.alt = color + "_" + piece;
-    
+
         if (color === 'black') {
             thePiece = piece.toLowerCase();
         } else {
@@ -882,7 +881,7 @@ Board.prototype = {
         return img;
     },
     /**
-     *	This synchronizes the display board with the virtual board when you jump
+     * This synchronizes the display board with the virtual board when you jump
      *  to a position without moving to it.
      */
     syncBoard:  function (result) {
@@ -897,9 +896,9 @@ Board.prototype = {
         }
     },
     /**
-     *	This copies the contents of one square to another. It removes any piece
-     *      image (or anything else) attached to the destination square, and
-     *      attaches the piece image from the source square.
+     * This copies the contents of one square to another. It removes any
+     * piece image (or anything else) attached to the destination square,
+     * and attaches the piece image from the source square.
      */
     syncSquare: function (from, to) {
         "use strict";
@@ -914,8 +913,8 @@ Board.prototype = {
         }
     },
     /**
-     *	This adds a comment, if present to the output stream. The curly braces are
-     *  removed for humman readability.
+     *	This adds a comment, if present to the output stream. The curly braces
+     *  are removed for humman readability.
      */
     addComment: function (theComment, moveList) {
         "use strict";
@@ -965,7 +964,9 @@ Board.prototype = {
         var theElement = document.createElement("span");
         theElement.className = 'move_numbers';
 
-        theElement.appendChild(document.createTextNode(" " + moveNumber + ". "));
+        theElement.appendChild(document.createTextNode(
+            " " + moveNumber + ". "
+        ));
         return theElement;
     },
     /**
@@ -977,6 +978,8 @@ Board.prototype = {
             theBoard = this;
         link.appendChild(document.createTextNode(moveText));
         link.className = "move";
+        link.href = 'javascript:void(window[' + this.id + ']' +
+                '.skipToMove(' + moveNumber + ',' + color + '))';
         link.setAttribute("data-moveNumber", moveNumber);
         link.setAttribute("data-color", color);
         return link;
@@ -1004,9 +1007,10 @@ Board.prototype = {
             empty = 0;
             files = ranks[rank].childNodes;		// all child nodes are td's
             for (file = 0; file < 8; file += 1) {
-                if (files[file].childNodes.length > 0) {	// child is piece img
+                if (files[file].childNodes.length > 0) { // child is piece img
                     addEmpties();
-                    piece = files[file].childNodes[0].getAttribute('data-symbol');
+                    piece = files[file].childNodes[0].
+                        getAttribute('data-symbol');
                     position = position + piece;
                 } else {
                     empty += 1;
