@@ -47,10 +47,10 @@ var Board = function (divId, options) {
 	this.visuals = { "pgn": {} };
     this.pos = [];
     this.id = (new Date()).getTime();
+	this.movesOnPane = [];
 
 	this.conv = new Converter(this.pgn);
 	this.conv.convert();
-	this.movesOnPane = [];
 
 	window[this.id] = this;
 
@@ -90,6 +90,11 @@ Board.prototype = {
 	lastSquare: null,
 	displayBoard:   null,
 	pgn:        null,
+	pos:        [],
+	movesOnPane:    [],
+	divId:          null,
+	visuals:        {},
+	id:             null,
     isYahoo:    function (pgn) {
         "use strict";
 		pgn = pgn.replace(/^\s+|\s+$/g, '');
