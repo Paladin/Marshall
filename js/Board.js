@@ -104,31 +104,28 @@ Board.prototype = {
         "use strict";
         // the main frame
         var boardFrame = document.getElementById(this.divId + "_board"),
-            gameSection = document.createElement("section"),
-            topTable = document.createElement("table"),
+            gameSection =
+                this.createWithAttribs("section", { "class": "game_section" }),
+            topTable =
+                this.createWithAttribs("table", { "class": "mainboard" }),
             topTableTb = document.createElement("tbody"),
             boardTd = document.createElement("td"),
-            btnTdNext = document.createElement("td"),
-            btnTd = document.createElement("td"),
-            propsTd = document.createElement("td"),
+            btnTdNext =
+                this.createWithAttribs("td", { "class": "current_move_cell" }),
+            btnTd = this.createWithAttribs("td", { "class": "board_controls" }),
+            propsTd =
+                this.createWithAttribs("td", { "class": "game_info" }),
             board,
-            input = document.createElement("input"),
+            input = this.createWithAttribs("input",
+                { "class": "current_move_box" }),
             tmp2,
             color2;
-
-        gameSection.className = "game_section";
-        topTable.className = "mainboard";
-        btnTdNext.className = "current_move_cell";
-        btnTd.className = "board_controls";
-        propsTd.className = "game_info";
-        input.className = "current_move_box";
 
         gameSection.appendChild(topTable);
         topTable.appendChild(topTableTb);
 
         // movesTable
-        this.movesDiv = document.createElement("div");
-        this.movesDiv.className = "move_list";
+        this.movesDiv = this.createWithAttribs("div", { "class": "move_list" });
         this.movesDiv.id = this.divId + "_board_moves";
         gameSection.appendChild(this.movesDiv);
 
@@ -219,16 +216,16 @@ Board.prototype = {
      */
     drawBoard:  function () {
         "use strict";
-        var board = document.createElement("table"),
+        var board = this.createWithAttribs("table", { "class": "gameboard" }),
             whiteC = 'light_square',
             blackC = 'dark_square',
             i,
             j,
+            attributes,
             tr,
             td,
             flip;
 
-        board.className = "gameboard";
         this.displayBoard = document.createElement("tbody");
         board.appendChild(this.displayBoard);
 
@@ -236,11 +233,11 @@ Board.prototype = {
             tr = document.createElement("tr");
             flip = (i % 2) ? 1 : 0;
             for (j = 0; j < 8; j += 1) {
-                td = document.createElement("td");
-
-                td.className = !flip ? (j % 2) ? blackC : whiteC : (j % 2) ?
-                        whiteC : blackC;
-                td.setAttribute('data-squarename', this.file[j] + (8 - i));
+                attributes = {};
+                attributes["class"] = !flip ? (j % 2) ? blackC : whiteC :
+                        (j % 2) ? whiteC : blackC;
+                attributes["data-squarename"] = this.file[j] + (8 - i);
+                td = this.createWithAttribs("td", attributes);
 
                 this.pos[i][j] = td;
                 tr.appendChild(td);
@@ -300,16 +297,16 @@ Board.prototype = {
     },
     makeButton: function (btnContainer, btnName, btnTitle, disabled) {
         "use strict";
-        var href = document.createElement("a");
+        var button = this.createWithAttribs("a",
+            { "class": btnName + (disabled ? ' disabled' : '') });
 
-        href.href = "#";
-        href.alt = this.opts[btnTitle];
-        href.title = this.opts[btnTitle];
-        href.innerHTML = "&nbsp;";
-        href.className = btnName + (disabled ? ' disabled' : '');
-        btnContainer.appendChild(href);
+        button.href = "#";
+        button.alt = this.opts[btnTitle];
+        button.title = this.opts[btnTitle];
+        button.innerHTML = "&nbsp;";
+        btnContainer.appendChild(button);
 
-        return href;
+        return button;
     },
     /**
      *	Flips the board to display it from the other side's POV.
@@ -786,8 +783,7 @@ Board.prototype = {
         }
         if (this.conv.pgn.props.Result !== undefined) {
             txt = document.createTextNode("  " + this.conv.pgn.props.Result);
-            tmp2 = document.createElement("span");
-            tmp2.className = "result";
+            tmp2 = this.createWithAttribs("span", { "class": "result" });
             tmp2.appendChild(txt);
             moveList.appendChild(tmp2);
             this.movesOnPane[this.movesOnPane.length] = tmp2;
@@ -820,17 +816,24 @@ Board.prototype = {
     },
     addTextElement:  function (container, element, attributes) {
         "use strict";
-        var theElement = document.createElement(element),
-            attribute,
+        var theElement = this.createWithAttribs(element, attributes),
             child = document.createTextNode("&nbsp;");
+
+        theElement.appendChild(child);
+        container.appendChild(theElement);
+        return child;
+    },
+    createWithAttribs:   function (element, attributes) {
+        "use strict";
+        var theElement = document.createElement(element),
+            attribute;
+
         for (attribute in attributes) {
             if (attributes.hasOwnProperty(attribute)) {
                 theElement.setAttribute(attribute, attributes[attribute]);
             }
         }
-        theElement.appendChild(child);
-        container.appendChild(theElement);
-        return child;
+        return theElement;
     },
     /*
      *	This creates the img tag for the buttons and the pieces
@@ -923,13 +926,13 @@ Board.prototype = {
      */
     addComment: function (theComment, moveList) {
         "use strict";
-        var commentElement = document.createElement("span");
+        var commentElement =
+            this.createWithAttribs("span", { "class": "commentary" });
         if (theComment === null) {
             return;
         }
 
         theComment = theComment.replace(/[\{\}]/g, ' ');
-        commentElement.className = "commentary";
         if (!this.opts.showComments) {
             commentElement.style.display = "none";
         }
@@ -966,8 +969,8 @@ Board.prototype = {
      */
     addMoveNumber:  function (moveNumber) {
         "use strict";
-        var theElement = document.createElement("span");
-        theElement.className = 'move_numbers';
+        var theElement =
+            this.createWithAttribs("span", { "class": "move_numbers" });
 
         theElement.appendChild(document.createTextNode(
             " " + moveNumber + ". "
@@ -979,10 +982,9 @@ Board.prototype = {
      */
     addMoveLink:    function (moveText, moveNumber, color) {
         "use strict";
-        var link = document.createElement("a"),
+        var link = this.createWithAttribs("a", {"class": "move"}),
             theBoard = this;
         link.appendChild(document.createTextNode(moveText));
-        link.className = "move";
         link.href = 'javascript:void(window[' + this.id + ']' +
                 '.skipToMove(' + moveNumber + ',' + color + '))';
         link.setAttribute("data-moveNumber", moveNumber);
