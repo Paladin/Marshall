@@ -42,7 +42,12 @@ var Board = function (divId, options) {
 	} else {
 		this.pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
 	}
+	//Instance attributes
 	this.divId = divId;
+	this.visuals = { "pgn": {} };
+    this.pos = [];
+    this.id = (new Date()).getTime();
+
 	this.conv = new Converter(this.pgn);
 	this.conv.convert();
 	this.movesOnPane = [];
@@ -67,9 +72,8 @@ var Board = function (divId, options) {
 
 	brdI = new BoardImages(this.opts);
 	this.imageNames = brdI.imageNames['default'];
-	brdI = null;
-	// end of static
 
+	// end of static
 	for (i = 0; i < 8; i += 1) {
 		this.pos[i] = [];
 	}
@@ -78,18 +82,14 @@ var Board = function (divId, options) {
  * Setting up class attributes
  */
 Board.prototype = {
-    divId:      null,
 	file:       ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
 	flipped:    false,
-	id:         (new Date()).getTime(),
 	moveInput:  null,
 	lastBold:   null,
 	lastBoldIdx:    null,
 	lastSquare: null,
-	visuals:    { "pgn": {} },
 	displayBoard:   null,
 	pgn:        null,
-	pos:        [],
     isYahoo:    function (pgn) {
         "use strict";
 		pgn = pgn.replace(/^\s+|\s+$/g, '');
