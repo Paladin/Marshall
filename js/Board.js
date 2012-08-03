@@ -1007,10 +1007,9 @@ Board.prototype = {
             empty = 0;
             files = ranks[rank].childNodes;		// all child nodes are td's
             for (file = 0; file < 8; file += 1) {
-                if (files[file].childNodes.length > 0) { // child is piece img
+                piece = files[file].firstChild.getAttribute('data-symbol');
+                if (piece !== " ") {
                     addEmpties();
-                    piece = files[file].childNodes[0].
-                        getAttribute('data-symbol');
                     position = position + piece;
                 } else {
                     empty += 1;
