@@ -136,7 +136,25 @@ VBoard.prototype = {
      */
     whatsOn:   function (square) {
         "use strict";
-        return this.squares[this.algebraic2Index(square)];
+        var types = {
+            "e":  {"piece": "empty", "color": "black"},
+            "p":  {"piece": "pawn", "color": "black"},
+            "n":  {"piece": "knight", "color": "black"},
+            "b":  {"piece": "bishop", "color": "black"},
+            "r":  {"piece": "rook", "color": "black"},
+            "q":  {"piece": "queen", "color": "black"},
+            "k":  {"piece": "king", "color": "black"},
+            "P":  {"piece": "pawn", "color": "white"},
+            "N":  {"piece": "knight", "color": "white"},
+            "B":  {"piece": "bishop", "color": "white"},
+            "R":  {"piece": "rook", "color": "white"},
+            "Q":  {"piece": "queen", "color": "white"},
+            "K":  {"piece": "king", "color": "white"}
+        },
+            code;
+
+        code = this.squares[this.algebraic2Index(square)] || "e";
+        return types[code];
     },
     /**
      * Places a piece on a given square

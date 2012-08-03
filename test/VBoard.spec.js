@@ -1,6 +1,20 @@
 (function (){
 
 	describe("Virtual Board", function () {
+	    var blackPawn = { piece : 'pawn', color : 'black' },
+	    	blackKnight = { piece : 'knight', color : 'black' },
+	    	blackBishop = { piece : 'bishop', color : 'black' },
+	    	blackRook = { piece : 'rook', color : 'black' },
+	    	blackKing = { piece : 'king', color : 'black' },
+	    	blackQueen = { piece : 'queen', color : 'black' },
+	    	whitePawn = { piece : 'pawn', color : 'white' },
+	    	whiteKnight = { piece : 'knight', color : 'white' },
+	    	whiteBishop = { piece : 'bishop', color : 'white' },
+	    	whiteRook = { piece : 'rook', color : 'white' },
+	    	whiteKing = { piece : 'king', color : 'white' },
+	    	whiteQueen = { piece : 'queen', color : 'white' },
+	    	empty = { piece : 'empty', color : null};
+
 		describe("Working with squares", function () {
 			beforeEach(function () {
 			    this.vBoard = new VBoard();
@@ -19,18 +33,18 @@
 			    expect(this.vBoard.index2Algebraic(93)).toBe("");
 			});
 		    it("should have a black knight on g8", function () {
-		        expect(this.vBoard.whatsOn("g8")).toBe("n");
+		        expect(this.vBoard.whatsOn("g8")).toEqual(blackKnight);
 		    });
 		    it("should have a white pawn on c2", function () {
-		        expect(this.vBoard.whatsOn("c2")).toBe("P");
+		        expect(this.vBoard.whatsOn("c2")).toEqual(whitePawn);
 		    });
             it("should set a white Queen on d5", function () {
                 this.vBoard.place("Q", "d5");
-                expect(this.vBoard.whatsOn("d5")).toBe("Q");
+                expect(this.vBoard.whatsOn("d5")).toEqual(whiteQueen);
             });
             it("should set a black Bishop on b6", function () {
                 this.vBoard.place("b", "b6");
-                expect(this.vBoard.whatsOn("b6")).toBe("b");
+                expect(this.vBoard.whatsOn("b6")).toEqual(blackBishop);
             });
             it("should find Black knights on g8 and b8", function () {
                 expect(this.vBoard.whereIs("n")).toEqual(["b8", "g8"]);
@@ -73,34 +87,34 @@
 		        this.vBoard = new VBoard(start);
 		    });
 		    it("should have the pieces all set up properly", function () {
-		        expect(this.vBoard.whatsOn("a8")).toBe("r");
-		        expect(this.vBoard.whatsOn("e8")).toBe("q");
-		        expect(this.vBoard.whatsOn("f8")).toBe("r");
-		        expect(this.vBoard.whatsOn("h8")).toBe("k");
-		        expect(this.vBoard.whatsOn("a7")).toBe("p");
-		        expect(this.vBoard.whatsOn("b7")).toBe("p");
-		        expect(this.vBoard.whatsOn("c7")).toBe("p");
-		        expect(this.vBoard.whatsOn("e7")).toBe("n");
-		        expect(this.vBoard.whatsOn("f7")).toBe("b");
-		        expect(this.vBoard.whatsOn("g7")).toBe("p");
-		        expect(this.vBoard.whatsOn("h7")).toBe("B");
-		        expect(this.vBoard.whatsOn("b6")).toBe("b");
-		        expect(this.vBoard.whatsOn("d6")).toBe("p");
-		        expect(this.vBoard.whatsOn("h6")).toBe("B");
-		        expect(this.vBoard.whatsOn("e5")).toBe("p");
-		        expect(this.vBoard.whatsOn("h5")).toBe("Q");
-		        expect(this.vBoard.whatsOn("d4")).toBe("P");
-		        expect(this.vBoard.whatsOn("f4")).toBe("n");
-		        expect(this.vBoard.whatsOn("h4")).toBe("N");
-		        expect(this.vBoard.whatsOn("c3")).toBe("P");
-		        expect(this.vBoard.whatsOn("h3")).toBe("R");
-		        expect(this.vBoard.whatsOn("a2")).toBe("P");
-		        expect(this.vBoard.whatsOn("b2")).toBe("P");
-		        expect(this.vBoard.whatsOn("d2")).toBe("N");
-		        expect(this.vBoard.whatsOn("g2")).toBe("P");
-		        expect(this.vBoard.whatsOn("h2")).toBe("P");
-		        expect(this.vBoard.whatsOn("a1")).toBe("R");
-		        expect(this.vBoard.whatsOn("g1")).toBe("K");
+		        expect(this.vBoard.whatsOn("a8")).toEqual(blackRook);
+		        expect(this.vBoard.whatsOn("e8")).toEqual(blackQueen);
+		        expect(this.vBoard.whatsOn("f8")).toEqual(blackRook);
+		        expect(this.vBoard.whatsOn("h8")).toEqual(blackKing);
+		        expect(this.vBoard.whatsOn("a7")).toEqual(blackPawn);
+		        expect(this.vBoard.whatsOn("b7")).toEqual(blackPawn);
+		        expect(this.vBoard.whatsOn("c7")).toEqual(blackPawn);
+		        expect(this.vBoard.whatsOn("e7")).toEqual(blackKnight);
+		        expect(this.vBoard.whatsOn("f7")).toEqual(blackBishop);
+		        expect(this.vBoard.whatsOn("g7")).toEqual(blackPawn);
+		        expect(this.vBoard.whatsOn("h7")).toEqual(whiteBishop);
+		        expect(this.vBoard.whatsOn("b6")).toEqual(blackBishop);
+		        expect(this.vBoard.whatsOn("d6")).toEqual(blackPawn);
+		        expect(this.vBoard.whatsOn("h6")).toEqual(whiteBishop);
+		        expect(this.vBoard.whatsOn("e5")).toEqual(blackPawn);
+		        expect(this.vBoard.whatsOn("h5")).toEqual(whiteQueen);
+		        expect(this.vBoard.whatsOn("d4")).toEqual(whitePawn);
+		        expect(this.vBoard.whatsOn("f4")).toEqual(blackKnight);
+		        expect(this.vBoard.whatsOn("h4")).toEqual(whiteKnight);
+		        expect(this.vBoard.whatsOn("c3")).toEqual(whitePawn);
+		        expect(this.vBoard.whatsOn("h3")).toEqual(whiteRook);
+		        expect(this.vBoard.whatsOn("a2")).toEqual(whitePawn);
+		        expect(this.vBoard.whatsOn("b2")).toEqual(whitePawn);
+		        expect(this.vBoard.whatsOn("d2")).toEqual(whiteKnight);
+		        expect(this.vBoard.whatsOn("g2")).toEqual(whitePawn);
+		        expect(this.vBoard.whatsOn("h2")).toEqual(whitePawn);
+		        expect(this.vBoard.whatsOn("a1")).toEqual(whiteRook);
+		        expect(this.vBoard.whatsOn("g1")).toEqual(whiteKing);
 		    });
 		    it("should return the modified position", function () {
 		        this.vBoard.place("P", "f4");
