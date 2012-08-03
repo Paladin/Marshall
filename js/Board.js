@@ -846,6 +846,7 @@ Board.prototype = {
                 "up":		true,
                 "down":		true
             },
+            prefix,
             img = document.createElement("img");
 
         if (btns[piece]) {
@@ -1037,18 +1038,18 @@ Board.prototype = {
      * @param   {string}    The FEN string
      */
     drawFEN:    function (theFEN) {
+        "use strict";
         var vBoard = new VBoard(theFEN),
             rank = 0,
             file = 0,
             square,
             thePiece;
-        
-        
+
         for (rank = 0; rank < 8; rank += 1) {
             for (file = 0; file < 8; file += 1) {
                 square = this.pos[rank][file].getAttribute("data-squarename");
                 thePiece = vBoard.whatsOn(square);
-                this.updateImg( this.pos[rank][file].firstChild, thePiece.piece,
+                this.updateImg(this.pos[rank][file].firstChild, thePiece.piece,
                     thePiece.color);
             }
         }
