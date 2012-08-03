@@ -148,7 +148,7 @@ Board.prototype = {
             this.flipBoard();
         }
         this.populateProps(propsTd);
-        this.populateMoves(this.movesDiv, this.pgn.pgnOrig);
+        this.populateMoves(this.movesDiv);
 
         this.createButtonBar(btnTd);
 
@@ -614,13 +614,11 @@ Board.prototype = {
         "use strict";
         // highlight the move in the move's pane
         var idx = this.conv.getCurMoveNo();
-        this.movesOnPane[this.lastBoldIdx] = this.deMakeBold(this.lastBold);
+        this.deMakeBold(this.lastBold);
         this.lastBold = null;
         this.lastBoldIdx = null;
         if (this.movesOnPane[idx - 1]) {
-            this.movesOnPane[idx - 1] = this.makeBold(
-                this.movesOnPane[idx - 1]
-            );
+            this.makeBold(this.movesOnPane[idx - 1]);
             this.lastBold = this.movesOnPane[idx - 1];
             this.lastBoldIdx = idx - 1;
         }
@@ -633,7 +631,6 @@ Board.prototype = {
     makeBold:   function (el) {
         "use strict";
         el.className += " current_move";
-        return el;
     },
     /**
      *	This removes the current_move class
@@ -642,12 +639,9 @@ Board.prototype = {
      */
     deMakeBold: function (el) {
         "use strict";
-         if (el === null) {
-             return;
-         }
+        if (el === null) { return; }
 
         el.className = el.className.replace(/\bcurrent_move\b/, "").trim();
-        return el;
     },
     drawEnPassante: function (move) {
         "use strict";
@@ -729,14 +723,12 @@ Board.prototype = {
     /*
      *	This creates the text and elements in the move list
      */
-    populateMoves:  function (cont, pgn) {
+    populateMoves:  function (cont) {
         "use strict";
         var tmp2 = this.conv.pgn.moves,
             movesHeader = document.createElement('header'),
             h = document.createElement("h1"),
             link,
-            tmp,
-            tmp3,
             lastMoveIdx = 0,
             comment,
             moveList = document.createElement("p"),
@@ -1028,11 +1020,12 @@ Board.prototype = {
     },
     clickMove:  function (e) {
         "use strict";
-        var moveNumber = parseInt(e.currentTarget.getAttribute("data-moveNumber"), 10),
+        var moveNumber =
+                parseInt(e.currentTarget.getAttribute("data-moveNumber"), 10),
             color = parseInt(e.currentTarget.getAttribute("data-color"), 10),
             myId = parseInt(e.currentTarget.getAttribute("data-id"), 10);
         e.preventDefault();
-        window[myId].skipToMove( moveNumber, color);
+        window[myId].skipToMove(moveNumber, color);
         return false;
     }
 };
