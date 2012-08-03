@@ -907,15 +907,10 @@ Board.prototype = {
      */
     syncSquare: function (from, to) {
         "use strict";
-        to.piece = from.piece;
-        to.color = from.color;
+        to.piece = from.piece || "empty";
+        to.color = from.color || "black";
 
-        if (to.firstChild) {
-            to.removeChild(to.firstChild);
-        }
-        if (to.piece) {
-            to.appendChild(this.getImg(to.piece, to.color));
-        }
+        this.updateImg(to.firstChild, to.piece, to.color);
     },
     /**
      *	This adds a comment, if present to the output stream. The curly braces
