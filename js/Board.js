@@ -662,6 +662,12 @@ Board.prototype = {
 
         sq.removeChild(sq.firstChild);
     },
+    /**
+     * performs the desired action on the square. If piece is null, the square
+     * be empty.
+     *
+     * @param   {Object}    A MySquare Object, describing the result.
+     */
     drawSquare: function (square) {
         "use strict";
         var x = square.x,
@@ -676,11 +682,10 @@ Board.prototype = {
         sq.color = square.color;
         sq.piece = square.piece;
 
-        if (sq.firstChild) {
-            sq.removeChild(sq.firstChild);
-        }
-        if (sq.piece) {
-            sq.appendChild(this.getImg(sq.piece, sq.color));
+        if (sq.piece === null) {
+            this.updateImg(sq.firstChild, "empty", "black");
+        } else {
+            this.updateImg(sq.firstChild, sq.piece, sq.color);
         }
     },
     updatePGNInfo:  function () {
@@ -713,10 +718,12 @@ Board.prototype = {
                 p = this.conv.initialBoard[r][f];
                 if (p.piece) {
                     img = this.getImg(p.piece, p.color);
-                    this.pos[r][f].appendChild(img);
                     this.pos[r][f].piece = p.piece;
                     this.pos[r][f].color = p.color;
+                } else {
+                    img = this.getImg("empty", "black");
                 }
+                this.pos[r][f].appendChild(img);
             }
         }
     },
@@ -839,10 +846,6 @@ Board.prototype = {
                 "up":		true,
                 "down":		true
             },
-            thePiece,
-            symbolPos,
-            prefix = this.opts.imagePrefix,
-            src = prefix + this.imageNames[color][piece],
             img = document.createElement("img");
 
         if (btns[piece]) {
@@ -851,30 +854,36 @@ Board.prototype = {
                     replace("buttons\/", "");
         }
 
-        if (/\.png$/.test(img.src.toLowerCase()) &&
-                navigator.userAgent.toLowerCase().indexOf("msie") !== -1) {
-            // set filter
-            img.runtimeStyle.filter = "progid:DXImageTransform.Microsoft." +
-                    "AlphaImageLoader(enabled=true,src='" + src +
-                    "',sizingMethod='image')";
+        this.updateImg(img, piece, color);
+
+        return img;
+    },
+    /**
+     * This method will update the img element passed to it with the new piece
+     */
+    updateImg:  function (img, piece, color) {
+        "use strict";
+        var thePiece;
+
+        img.src = this.opts.imagePrefix + this.imageNames[color][piece];
+        if (piece && piece !== "empty") {
+            img.alt = color + "_" + piece;
         } else {
-            img.src = src;
+            img.alt = "empty";
         }
-
-        img.alt = color + "_" + piece;
-
         if (color === 'black') {
             thePiece = piece.toLowerCase();
         } else {
             thePiece = piece.toUpperCase();
         }
         if (piece === 'knight') {
-            symbolPos = 1;
+            img.setAttribute("data-symbol", thePiece.charAt(1));
+        } else if (piece === "empty") {
+            img.setAttribute("data-symbol", " ");
         } else {
-            symbolPos = 0;
+            img.setAttribute("data-symbol", thePiece.charAt(0));
         }
-        img.setAttribute("data-symbol", thePiece.charAt(symbolPos));
-        return img;
+        return;
     },
     /**
      * This synchronizes the display board with the virtual board when you jump

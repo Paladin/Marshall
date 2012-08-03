@@ -1,6 +1,9 @@
 /**
  * The images used on the chess board
  *
+ * TODO: update rest of image sets to include empty image.
+ * TODO: Turn into object for use in rest of system.
+ *
  * @constructor
  * @param {array} options The configuration options
  *
@@ -16,7 +19,7 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
-function BoardImages(options) {
+var BoardImages = function (options) {
     "use strict";
 	this.set = options.set || "default";
 	this.pref = options.imagePrefix || "";
@@ -30,7 +33,8 @@ function BoardImages(options) {
 				"knight": "wKnight." + this.suf,
 				"queen": "wQueen." + this.suf,
 				"king": "wKing." + this.suf,
-				"pawn": "wPawn." + this.suf
+				"pawn": "wPawn." + this.suf,
+				"empty": "empty." + this.suf
 			},
 
 			"black" : {
@@ -39,7 +43,8 @@ function BoardImages(options) {
 				"knight": "bKnight." + this.suf,
 				"queen": "bQueen." + this.suf,
 				"king": "bKing." + this.suf,
-				"pawn": "bPawn." + this.suf
+				"pawn": "bPawn." + this.suf,
+				"empty": "empty." + this.suf
 			},
 
 			"btns" : {
@@ -55,26 +60,28 @@ function BoardImages(options) {
 			}
 		}
 	};
-}
+};
 
-BoardImages.prototype.preload = function (theSet) {
-    "use strict";
-    var set = arguments.length > 0 ? theSet : this.set,
-        i,
-        j,
-        img,
-        img_count = 0;
+BoardImages.prototype = {
+    preload:    function (theSet) {
+        "use strict";
+        var set = arguments.length > 0 ? theSet : this.set,
+            i,
+            j,
+            img,
+            img_count = 0;
 
-    for (i in this.imageNames[set]) {
-        if (this.imageNames[set].hasOwnProperty(i)) {
-            for (j in this.imageNames[set][i]) {
-                if (this.imageNames[set][i].hasOwnProperty(j)) {
-                    img = new Image();
-                    img.src = this.imageNames[set][i][j];
-                    img_count += 1;
+        for (i in this.imageNames[set]) {
+            if (this.imageNames[set].hasOwnProperty(i)) {
+                for (j in this.imageNames[set][i]) {
+                    if (this.imageNames[set][i].hasOwnProperty(j)) {
+                        img = new Image();
+                        img.src = this.imageNames[set][i][j];
+                        img_count += 1;
+                    }
                 }
             }
         }
+        return img_count;
     }
-    return img_count;
 };

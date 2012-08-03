@@ -216,8 +216,8 @@ TestCase( "BoardTest",
 			
 		board.makeBwMove(board, false);
 		
-		assertNull("There should be nothing on f3 after moving backwards",  
-			document.getElementsByClassName("light_square")[22].firstChild);
+		assertEquals("There should be nothing on f3 after moving backwards", "empty",
+			document.getElementsByClassName("light_square")[22].firstChild.alt);
 	},
 	
 	"test marking the last move": function() {
