@@ -1030,6 +1030,28 @@ Board.prototype = {
         e.preventDefault();
         window[myId].skipToMove(moveNumber, color);
         return false;
+    },
+    /**
+     * Given a FEN, create it on the output position.
+     *
+     * @param   {string}    The FEN string
+     */
+    drawFEN:    function (theFEN) {
+        var vBoard = new VBoard(theFEN),
+            rank = 0,
+            file = 0,
+            square,
+            thePiece;
+        
+        
+        for (rank = 0; rank < 8; rank += 1) {
+            for (file = 0; file < 8; file += 1) {
+                square = this.pos[rank][file].getAttribute("data-squarename");
+                thePiece = vBoard.whatsOn(square);
+                this.updateImg( this.pos[rank][file].firstChild, thePiece.piece,
+                    thePiece.color);
+            }
+        }
     }
 };
 

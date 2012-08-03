@@ -70,4 +70,45 @@
 					toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 		});
 	});
+	
+	describe("Working with Forsythe and display boards", function() {
+		var aGame = '[Event	"Dayton"]' +
+				'[Site	"?"]\n' +
+				'[Date	"1890.02.25"]\n' +
+				'[Round	"?"]\n' +
+				'[White	"NoName]\n' +
+				'[Black	"Amateur"]\n' +
+				'[Result	"1-0"]\n' +
+				'{The Scholar\'s Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 {Here it comes} 4. Qf7#';
+
+		beforeEach(function(){
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+		
+			var movediv = document.getElementById("game1");
+			movediv.innerHTML = aGame;
+	
+			this.board = new Board("game1");
+			this.board.init();
+		});
+		
+		it('should draw the correct position on screen', function(){
+		    var forsythe =
+		            "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR",
+		        flags = " b KQ - 0 4";
+
+			this.board.drawFEN(forsythe + flags);
+			expect(this.board.getForsytheFromDisplay()).
+					toBe("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR");
+		});
+		
+		it('should work without requiring the FEN flags', function(){
+		    var forsythe =
+		            "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR";
+
+			this.board.drawFEN(forsythe);
+			expect(this.board.getForsytheFromDisplay()).
+					toBe("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR");
+		});
+		
+	});
 })();
