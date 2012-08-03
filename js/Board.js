@@ -626,32 +626,28 @@ Board.prototype = {
         }
     },
     /**
-     *	This highlights the current move by wrapping it in a b element
+     *	This highlights the current move by giving it the "current_move" class
      *
-     *	el		The element to be wrapped
+     *	el		The current move element
      */
     makeBold:   function (el) {
         "use strict";
-        var b = document.createElement("b");
-
-        b.appendChild(el.cloneNode(true));
-        el.parentNode.replaceChild(b, el);
-        return b;
+        el.className += " current_move";
+        return el;
     },
     /**
-     *	This unwraps the b element from the previous current move
+     *	This removes the current_move class
      *
-     *	el		The unwrapped element
+     *	el		The no longer current move element
      */
     deMakeBold: function (el) {
         "use strict";
-        var rtrn = el === null ? null : el.firstChild.cloneNode(true);
+         if (el === null) {
+             return;
+         }
 
-        if (el === null) {
-            return;
-        }
-        el.parentNode.replaceChild(rtrn, el);
-        return rtrn;
+        el.className = el.className.replace(/\bcurrent_move\b/, "").trim();
+        return el;
     },
     drawEnPassante: function (move) {
         "use strict";
@@ -985,10 +981,11 @@ Board.prototype = {
         var link = this.createWithAttribs("a", {"class": "move"}),
             theBoard = this;
         link.appendChild(document.createTextNode(moveText));
-        link.href = 'javascript:void(window[' + this.id + ']' +
-                '.skipToMove(' + moveNumber + ',' + color + '))';
+        link.href = '#';
+        link.onclick = theBoard.clickMove;
         link.setAttribute("data-moveNumber", moveNumber);
         link.setAttribute("data-color", color);
+        link.setAttribute("data-id", this.id);
         return link;
     },
     /**
@@ -1028,6 +1025,15 @@ Board.prototype = {
         }
 
         return position.slice(1, -1);	// Remove the first and last slash
+    },
+    clickMove:  function (e) {
+        "use strict";
+        var moveNumber = parseInt(e.currentTarget.getAttribute("data-moveNumber"), 10),
+            color = parseInt(e.currentTarget.getAttribute("data-color"), 10),
+            myId = parseInt(e.currentTarget.getAttribute("data-id"), 10);
+        e.preventDefault();
+        window[myId].skipToMove( moveNumber, color);
+        return false;
     }
 };
 
