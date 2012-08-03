@@ -162,13 +162,13 @@ TestCase( "BoardTest",
 		var board = new Board("game1", {"skipToMove": 6}); // Black's third move
 		board.init();
 		
-		marked = document.getElementsByClassName("move_numbers")[2].nextElementSibling.nextElementSibling.tagName;
-		unmarked = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.tagName;
+		marked = document.getElementsByClassName("move_numbers")[2].nextElementSibling.nextElementSibling.className;
+		unmarked = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.className;
 		assertNotEquals("marked and unmarked should not be the same", marked, unmarked );
 
 		board.skipToMove(1,1);		// 2nd 1 means "Black's move"
 		
-		current = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.tagName;
+		current = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.className;
 		assertEquals("Previous move should now be marked", marked, current );
 	},
 	
