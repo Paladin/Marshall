@@ -250,9 +250,9 @@ Board.prototype = {
         theButton.onclick = function () {
             return false;
         };
-        theButton = this.makeButton(theContainer, "flip", "altFlip", true);
+        theButton = this.makeButton(theContainer, "flip", "altFlip");
         theButton.onclick = function () {
-//            theBoard.flipBoard();
+            theBoard.flipBoard();
             return false;
         };
         theButton = this.makeButton(theContainer, "toggle", "altShowMoves");
@@ -656,10 +656,7 @@ Board.prototype = {
             y = square.y,
             sq = this.pos[x][y];
 
-        if (this.flipped) {
-            x = 7 - x;
-            y = 7 - y;
-        }
+        if (this.flipped) { sq = this.pos[7 - x][7 - y]; }
 
         sq.color = square.color || "black";
         sq.piece = square.piece || "empty";
