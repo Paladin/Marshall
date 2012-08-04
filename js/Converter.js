@@ -209,6 +209,11 @@ Converter.prototype.getCurMoveNo = function () {
 	return this.iteIndex;
 };
 
+Converter.prototype.setCurMoveNo = function (ply) {
+	"use strict";
+	this.iteIndex = ply;
+};
+
 Converter.prototype.nextMove = function () {
 	"use strict";
 	if (this.moves.length > this.iteIndex) {
@@ -216,6 +221,11 @@ Converter.prototype.nextMove = function () {
 		return this.moves[this.iteIndex - 1];
 	}
 	return null;
+};
+
+Converter.prototype.getPrevPosition = function () {
+	"use strict";
+	return this.moves[this.iteIndex - 1].position;
 };
 
 Converter.prototype.prevMove = function () {

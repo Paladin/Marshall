@@ -341,30 +341,14 @@ Board.prototype = {
      */
     skipToMove: function (moveNumber, color) {
         "use strict";
-        var ply = moveNumber * 2 + color + 1,
-            i;
+        var ply = moveNumber * 2 + color;
 
-        if (this.conv.getCurMoveNo() < ply) {
-            i = 0;
-            while (this.conv.getCurMoveNo() < ply && i < 400) {
-                this.makeMove(true);
-                i += 1;
-            }
-            this.updateMoveInfo();
-            this.updateMovePane();
-            this.deMarkLastMove();
-            this.markLastMove();
-        } else if (this.conv.getCurMoveNo() > ply) {
-            i = 0;
-            while (this.conv.getCurMoveNo() > ply && i < 200) {
-                this.makeBwMove(true);
-                i += 1;
-            }
-            this.updateMoveInfo();
-            this.updateMovePane();
-            this.deMarkLastMove();
-            this.markLastMove();
-        }
+        this.conv.setCurMoveNo(ply);
+        this.makeMove(true);
+        this.updateMoveInfo();
+        this.updateMovePane();
+        this.deMarkLastMove();
+        this.markLastMove();
     },
     /**
      *	Jumps the board all the way to the final position of the game
@@ -396,59 +380,21 @@ Board.prototype = {
     /**
      *	Backs up by one move.
      */
-    makeBwMove: function (noUpdate) {
+    makeBwMove: function (update) {
         "use strict";
-        var move = this.conv.prevMove(),
-            i,
-            frst,
-            snd,
-            tmpM,
-            sq,
-            x,
-            y;
+        var move = this.conv.prevMove();
 
         if (move === null) {
             return;
         }
 
-        if (!noUpdate) {
+        if (update === undefined || update) {
             this.deMarkLastMove(true);
             this.markLastMove();
             this.updateMoveInfo();
             this.updateMovePane();
         }
-
-        for (i = move.actions.length; i > 1; i -= 2) {
-            frst = move.actions[i - 1].clone();
-            snd = move.actions[i - 2].clone();
-            tmpM = new MySquare();
-            tmpM.piece = frst.piece;
-            tmpM.color = frst.color;
-            frst.piece = snd.piece;
-            frst.color = snd.color;
-            snd.piece = tmpM.piece;
-            snd.color = tmpM.color;
-
-            frst.piece = move.oPiece;
-            frst.color = move.oColor;
-
-            if (move.pPiece) {
-                snd.piece = move.pPiece;
-            }
-
-            this.drawSquare(frst);
-            this.drawSquare(snd);
-        }
-        if (move.enP) {
-            x = move.enP.x;
-            y = move.enP.y;
-            if (this.flipped) {
-                x = 7 - x;
-                y = 7 - y;
-            }
-            sq = this.pos[x][y];
-            this.updateSquare(sq, move.enP.piece, move.enP.color);
-        }
+        this.drawFEN(this.conv.getPrevPosition());
     },
     markLastMove:   function () {
         "use strict";
@@ -566,8 +512,7 @@ Board.prototype = {
      */
     makeMove:   function (update) {
         "use strict";
-        var move = this.conv.nextMove(),
-            i;
+        var move = this.conv.nextMove();
 
         if (move === null) {
             return;
@@ -579,12 +524,7 @@ Board.prototype = {
             this.updateMoveInfo();
             this.updateMovePane();
         }
-
-        for (i = 0; i < move.actions.length; i += 1) {
-            this.drawSquare(move.actions[i]);
-        }
-
-        this.drawEnPassante(move);
+        this.drawFEN(move.position);
     },
     /**
      *	This makes the currently shown move Bold. (And yes, it uses the b
