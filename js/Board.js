@@ -555,44 +555,6 @@ Board.prototype = {
 
         el.className = el.className.replace(/\bcurrent_move\b/, "").trim();
     },
-    drawEnPassante: function (move) {
-        "use strict";
-        var x = move.enP === null ? null : move.enP.x,
-            y = move.enP === null ? null : move.enP.y,
-            sq = move.enP === null ? null : this.pos[x][y];
-
-        if (move.enP === null) {
-            return;
-        }
-        if (this.flipped) {
-            x = 7 - x;
-            y = 7 - y;
-        }
-
-        sq.color = "black";
-        sq.piece = "empty";
-
-        this.updateSquare(sq, sq.piece, sq.color);
-    },
-    /**
-     * performs the desired action on the square. If piece is null, the square
-     * be empty.
-     *
-     * @param   {Object}    A MySquare Object, describing the result.
-     */
-    drawSquare: function (square) {
-        "use strict";
-        var x = square.x,
-            y = square.y,
-            sq = this.pos[x][y];
-
-        if (this.flipped) { sq = this.pos[7 - x][7 - y]; }
-
-        sq.color = square.color || "black";
-        sq.piece = square.piece || "empty";
-
-        this.updateSquare(sq, sq.piece, sq.color);
-    },
     updatePGNInfo:  function () {
         "use strict";
         this.visuals.pgn.players.nodeValue = this.gameOpponents();
