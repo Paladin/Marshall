@@ -182,17 +182,17 @@ TestCase( "BoardTest",
 		board.init();
 
 		assertEquals("There should be a black pawn on f7 after init", "black_pawn", 
-			document.getElementsByClassName("light_square")[6].firstChild.alt);
+			document.getElementsByClassName("light_square")[6].title);
 
 		board.endPosition(board);
 		
 		assertEquals("There should be a white_queen on f7 at the start", "white_queen",
-			document.getElementsByClassName("light_square")[6].firstChild.alt);
+			document.getElementsByClassName("light_square")[6].title);
 			
 		board.startPosition(board);
 		
 		assertEquals("There should be a black pawn on f7 at the start", "black_pawn", 
-			document.getElementsByClassName("light_square")[6].firstChild.alt);
+			document.getElementsByClassName("light_square")[6].title);
 		
 	},
 	
@@ -207,17 +207,17 @@ TestCase( "BoardTest",
 		board.skipToMove(3, 0);	// past e.p. move
 
 		assertEquals("There should be a white knight on f3 after skipping", "white_knight", 
-			document.getElementsByClassName("light_square")[22].firstChild.alt);
+			document.getElementsByClassName("light_square")[22].title);
 
 		board.makeBwMove(board, false);
 		
 		assertEquals("There should be a black pawn on f3 after moving backwards", "black_pawn", 
-			document.getElementsByClassName("light_square")[22].firstChild.alt);
+			document.getElementsByClassName("light_square")[22].title);
 			
 		board.makeBwMove(board, false);
 		
 		assertEquals("There should be nothing on f3 after moving backwards", "empty",
-			document.getElementsByClassName("light_square")[22].firstChild.alt);
+			document.getElementsByClassName("light_square")[22].title);
 	},
 	
 	"test marking the last move": function() {

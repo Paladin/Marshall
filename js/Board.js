@@ -66,13 +66,6 @@ var Board = function (divId, options) {
 		}
 	}
 
-	if (givenOptions.buttonPrefix === undefined) {
-		this.opts.buttonPrefix = this.opts.imagePrefix + "buttons/";
-	}
-
-	brdI = new BoardImages(this.opts);
-	this.imageNames = brdI.imageNames['default'];
-
 	// end of static
 	for (i = 0; i < 8; i += 1) {
 		this.pos[i] = [];
@@ -181,11 +174,6 @@ Board.prototype = {
     setDefaultOptions:  function () {
         "use strict";
         var options = {
-                imagePrefix:	"img/default/",
-                buttonPrefix:	"img/default/buttons/",
-                imageSuffix:	'gif',
-                blackSqColor:	"#4b4b4b",
-                whiteSqColor:	"#ffffff",
                 flipped:		false,
                 showMovesPane:	true,
                 showComments:	true,
@@ -265,9 +253,9 @@ Board.prototype = {
         theButton.onclick = function () {
             return false;
         };
-        theButton = this.makeButton(theContainer, "flip", "altFlip");
+        theButton = this.makeButton(theContainer, "flip", "altFlip", true);
         theButton.onclick = function () {
-            theBoard.flipBoard();
+//            theBoard.flipBoard();
             return false;
         };
         theButton = this.makeButton(theContainer, "toggle", "altShowMoves");
@@ -315,8 +303,7 @@ Board.prototype = {
         "use strict";
         var upper,
             lower,
-            holdSquareContent,
-            holdSquareName,
+            hold = [],
             i,
             j;
 
@@ -327,21 +314,19 @@ Board.prototype = {
                 upper = this.pos[i][j];
                 lower = this.pos[7 - i][7 - j];
 
-                try {
-                    holdSquareName = upper.getAttribute('data-squarename');
-                    holdSquareContent = upper.removeChild(upper.firstChild);
-                } catch (e) {holdSquareContent = null; }
+                hold.squarename = upper.getAttribute('data-squarename');
+                hold.symbol = upper.getAttribute('data-symbol');
+                hold.title = upper.title;
 
-                try {
-                    upper.setAttribute('data-squarename',
-                            lower.getAttribute('data-squarename'));
-                    upper.appendChild(lower.removeChild(lower.firstChild));
-                } catch (er) {}
+                upper.setAttribute('data-squarename',
+                        lower.getAttribute('data-squarename'));
+                upper.setAttribute('data-symbol',
+                        lower.getAttribute('data-symbol'));
+                upper.title = lower.title;
 
-                lower.setAttribute('data-squarename', holdSquareName);
-                if (holdSquareContent) {
-                    lower.appendChild(holdSquareContent);
-                }
+                lower.setAttribute('data-squarename', hold.squarename);
+                lower.setAttribute('data-symbol', hold.symbol);
+                lower.title = hold.title;
             }
         }
     },
@@ -465,7 +450,7 @@ Board.prototype = {
                 y = 7 - y;
             }
             sq = this.pos[x][y];
-            sq.appendChild(this.getImg(move.enP.piece, move.enP.color));
+            this.updateSquare(sq, move.enP.piece, move.enP.color);
         }
     },
     markLastMove:   function () {
@@ -657,10 +642,10 @@ Board.prototype = {
             y = 7 - y;
         }
 
-        sq.color = null;
-        sq.piece = null;
+        sq.color = "black";
+        sq.piece = "empty";
 
-        sq.removeChild(sq.firstChild);
+        this.updateSquare(sq, sq.piece, sq.color);
     },
     /**
      * performs the desired action on the square. If piece is null, the square
@@ -679,14 +664,10 @@ Board.prototype = {
             y = 7 - y;
         }
 
-        sq.color = square.color;
-        sq.piece = square.piece;
+        sq.color = square.color || "black";
+        sq.piece = square.piece || "empty";
 
-        if (sq.piece === null) {
-            this.updateImg(sq.firstChild, "empty", "black");
-        } else {
-            this.updateImg(sq.firstChild, sq.piece, sq.color);
-        }
+        this.updateSquare(sq, sq.piece, sq.color);
     },
     updatePGNInfo:  function () {
         "use strict";
@@ -710,20 +691,15 @@ Board.prototype = {
         "use strict";
         var r,
             f,
-            p,
-            img;
+            p;
 
         for (r = 0; r < 8; r += 1) {
             for (f = 0; f < 8; f += 1) {
                 p = this.conv.initialBoard[r][f];
-                if (p.piece) {
-                    img = this.getImg(p.piece, p.color);
-                    this.pos[r][f].piece = p.piece;
-                    this.pos[r][f].color = p.color;
-                } else {
-                    img = this.getImg("empty", "black");
-                }
-                this.pos[r][f].appendChild(img);
+                this.pos[r][f].piece = p.piece || "empty";
+                this.pos[r][f].color = p.color || "black";
+                this.updateSquare(this.pos[r][f], this.pos[r][f].piece,
+                    this.pos[r][f].color);
             }
         }
     },
@@ -830,47 +806,17 @@ Board.prototype = {
         }
         return theElement;
     },
-    /*
-     *	This creates the img tag for the buttons and the pieces
-     */
-    getImg: function (piece, color) {
-        "use strict";
-        var btns = {
-                "ffward":	true,
-                "rwind":	true,
-                "forward":	true,
-                "back":		true,
-                "toggle":	true,
-                "comments":	true,
-                "flip":		true,
-                "up":		true,
-                "down":		true
-            },
-            prefix,
-            img = document.createElement("img");
-
-        if (btns[piece]) {
-            prefix = this.opts.buttonPrefix;
-            this.imageNames[color][piece] = this.imageNames[color][piece].
-                    replace("buttons\/", "");
-        }
-
-        this.updateImg(img, piece, color);
-
-        return img;
-    },
     /**
      * This method will update the img element passed to it with the new piece
      */
-    updateImg:  function (img, piece, color) {
+    updateSquare:  function (square, piece, color) {
         "use strict";
         var thePiece;
 
-        img.src = this.opts.imagePrefix + this.imageNames[color][piece];
         if (piece && piece !== "empty") {
-            img.alt = color + "_" + piece;
+            square.title = color + "_" + piece;
         } else {
-            img.alt = "empty";
+            square.title = "empty";
         }
         if (color === 'black') {
             thePiece = piece.toLowerCase();
@@ -878,11 +824,11 @@ Board.prototype = {
             thePiece = piece.toUpperCase();
         }
         if (piece === 'knight') {
-            img.setAttribute("data-symbol", thePiece.charAt(1));
+            square.setAttribute("data-symbol", thePiece.charAt(1));
         } else if (piece === "empty") {
-            img.setAttribute("data-symbol", " ");
+            square.setAttribute("data-symbol", " ");
         } else {
-            img.setAttribute("data-symbol", thePiece.charAt(0));
+            square.setAttribute("data-symbol", thePiece.charAt(0));
         }
         return;
     },
@@ -911,7 +857,7 @@ Board.prototype = {
         to.piece = from.piece || "empty";
         to.color = from.color || "black";
 
-        this.updateImg(to.firstChild, to.piece, to.color);
+        this.updateSquare(to, to.piece, to.color);
     },
     /**
      *	This adds a comment, if present to the output stream. The curly braces
@@ -1008,7 +954,7 @@ Board.prototype = {
             empty = 0;
             files = ranks[rank].childNodes;		// all child nodes are td's
             for (file = 0; file < 8; file += 1) {
-                piece = files[file].firstChild.getAttribute('data-symbol');
+                piece = files[file].getAttribute('data-symbol');
                 if (piece !== " ") {
                     addEmpties();
                     position = position + piece;
@@ -1049,7 +995,7 @@ Board.prototype = {
             for (file = 0; file < 8; file += 1) {
                 square = this.pos[rank][file].getAttribute("data-squarename");
                 thePiece = vBoard.whatsOn(square);
-                this.updateImg(this.pos[rank][file].firstChild, thePiece.piece,
+                this.updateSquare(this.pos[rank][file], thePiece.piece,
                     thePiece.color);
             }
         }

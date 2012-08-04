@@ -231,7 +231,66 @@ a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-co
 .current_move { font-weight: bold; background-color: #CEC; }
 .game_info { text-align: center; }
 
+td[data-symbol="p"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -29px center;
+	background-repeat: none;
+}
 
+td[data-symbol="n"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -59px center;
+}
+
+td[data-symbol="b"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -89px center;
+}
+
+td[data-symbol="r"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -119px center;
+}
+
+td[data-symbol="q"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -149px center;
+}
+
+td[data-symbol="k"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -179px center;
+}
+
+td[data-symbol="K"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -209px center;
+}
+
+td[data-symbol="Q"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -239px center;
+}
+
+td[data-symbol="R"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -269px center;
+}
+
+td[data-symbol="B"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -299px center;
+}
+
+td[data-symbol="N"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -329px center;
+}
+
+td[data-symbol="P"] {
+	background-image: url(../img/default/default.gif);
+	background-position: -359px center;
+}
 
 
 
