@@ -377,9 +377,7 @@ Board.prototype = {
         "use strict";
         var move = this.conv.prevMove();
 
-        if (move === null) {
-            return;
-        }
+        if (move === null) { return; }
 
         if (update === undefined || update) {
             this.deMarkLastMove(true);
@@ -393,9 +391,8 @@ Board.prototype = {
         "use strict";
         var move,
             piece;
-        if (!this.opts.markLastMove) {
-            return;
-        }
+        if (!this.opts.markLastMove) { return; }
+
         try {
             move = this.conv.moves[this.conv.iteIndex - 1].actions[1];
             piece = this.pos[move.x][move.y];
