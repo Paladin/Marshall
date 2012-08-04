@@ -214,12 +214,12 @@ TestCase( "BoardTest",
 		assertEquals("There should be a white knight on f3 after skipping", "white_knight", 
 			document.getElementsByClassName("light_square")[22].title);
 
-		board.makeBwMove(board, false);
+		board.makeBwMove(false);
 		
 		assertEquals("There should be a black pawn on f3 after moving backwards", "black_pawn", 
 			document.getElementsByClassName("light_square")[22].title);
 			
-		board.makeBwMove(board, false);
+		board.makeBwMove(false);
 		
 		assertEquals("There should be nothing on f3 after moving backwards", "empty",
 			document.getElementsByClassName("light_square")[22].title);
