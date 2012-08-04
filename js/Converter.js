@@ -384,12 +384,6 @@ Converter.prototype.convertMove = function (board) {
 		myMove.oColor = result[2].color;
 		myMove.pPiece = result[3];
 
-		myMove.add(new MySquare(fromCoords[0], fromCoords[1],
-			result[0].piece, result[0].color));
-
-		myMove.add(new MySquare(toCoords[0], toCoords[1],
-			result[1].piece, result[1].color));
-
 		fromCoords = this.getSquare(coords[2]);
 		toCoords = this.getSquare(coords[3]);
 		from = this.vBoard[fromCoords[0]][fromCoords[1]];
@@ -462,12 +456,6 @@ Converter.prototype.convertMove = function (board) {
 			}
 		}
 	}
-
-	myMove.add(new MySquare(fromCoords[0], fromCoords[1], result[0].piece,
-		result[0].color));
-
-	myMove.add(new MySquare(toCoords[0], toCoords[1], result[1].piece,
-		result[1].color));
 
 	return myMove;
 };
