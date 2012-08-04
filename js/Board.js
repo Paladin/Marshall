@@ -233,54 +233,48 @@ Board.prototype = {
     },
     createButtonBar:    function (theContainer) {
         "use strict";
-        var theBoard = this,
-            theButton;
+        var theBoard = this;
 
-        theButton = this.makeButton(theContainer, "rwind", "altRewind");
-        theButton.onclick = function () {
+        this.makeButton(theContainer, "rwind", "altRewind", false, function () {
             theBoard.startPosition();
             return false;
-        };
-        theButton = this.makeButton(theContainer, "back", "altBack");
-        theButton.onclick = function () {
+        });
+        this.makeButton(theContainer, "back", "altBack", false, function () {
             theBoard.makeBwMove();
             return false;
-        };
-        theButton = this.makeButton(theContainer, "up", "altUp", true);
-        theButton.onclick = function () {
+        });
+        this.makeButton(theContainer, "up", "altUp", true, function () {
             return false;
-        };
-        theButton = this.makeButton(theContainer, "flip", "altFlip");
-        theButton.onclick = function () {
+        });
+        this.makeButton(theContainer, "flip", "altFlip", false, function () {
             theBoard.flipBoard();
             return false;
-        };
-        theButton = this.makeButton(theContainer, "toggle", "altShowMoves");
-        theButton.onclick = function () {
-            theBoard.toggleMoves("flip");
+        });
+        this.makeButton(theContainer, "toggle", "altShowMoves", false,
+            function () {
+                theBoard.toggleMoves("flip");
+                return false;
+            });
+        this.makeButton(theContainer, "comments", "altComments", false,
+            function () {
+                theBoard.toggleComments("flip");
+                return false;
+            });
+        this.makeButton(theContainer, "down", "altDown", true, function () {
             return false;
-        };
-        theButton = this.makeButton(theContainer, "comments", "altComments");
-        theButton.onclick = function () {
-            theBoard.toggleComments("flip");
-            return false;
-        };
-        theButton = this.makeButton(theContainer, "down", "altDown", true);
-        theButton.onclick = function () {
-            return false;
-        };
-        theButton = this.makeButton(theContainer, "forward", "altPlayMove");
-        theButton.onclick = function () {
-            theBoard.makeMove();
-            return false;
-        };
-        theButton = this.makeButton(theContainer, "ffward", "altFastForward");
-        theButton.onclick = function () {
-            theBoard.endPosition();
-            return false;
-        };
+        });
+        this.makeButton(theContainer, "forward", "altPlayMove", false,
+            function () {
+                theBoard.makeMove();
+                return false;
+            });
+        this.makeButton(theContainer, "ffward", "altFastForward", false,
+            function () {
+                theBoard.endPosition();
+                return false;
+            });
     },
-    makeButton: function (btnContainer, btnName, btnTitle, disabled) {
+    makeButton: function (btnContainer, btnName, btnTitle, disabled, handler) {
         "use strict";
         var button = this.createWithAttribs("a",
             { "class": btnName + (disabled ? ' disabled' : '') });
@@ -289,9 +283,8 @@ Board.prototype = {
         button.alt = this.opts[btnTitle];
         button.title = this.opts[btnTitle];
         button.innerHTML = "&nbsp;";
+        button.onclick = handler;
         btnContainer.appendChild(button);
-
-        return button;
     },
     /**
      *	Flips the board to display it from the other side's POV.
