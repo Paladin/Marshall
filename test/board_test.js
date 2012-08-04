@@ -43,6 +43,11 @@ TestCase( "BoardTest",
 
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
+		
+		var gameboard = document.getElementById("game1_board");
+        while(gameboard.firstChild) {
+            gameboard.removeChild(gameboard.firstChild);
+        }
 
 		var board = new Board("game1");
 		board.init();
@@ -315,11 +320,11 @@ TestCase( "BoardTest",
 
 		var board = new Board("game1", {"skipToMove": 1});
 		board.init();
-		var expected = board.moveInput.value;
+		var expected = board.moveInput.data;
 		board.moveInput.value = "PreTest";
 
 		board.updateMoveInfo();
-		assertEquals("Should have correct move display", expected, board.moveInput.value);
+		assertEquals("Should have correct move display", expected, board.moveInput.data);
 	},
 
 	"test making a move": function() {
@@ -331,14 +336,14 @@ TestCase( "BoardTest",
 		var board = new Board("game1");
 		board.init();
 		board.skipToMove(2, 0);
-		var expected = board.moveInput.value;
+		var expected = board.moveInput.data;
 
 		board.makeMove(false);
-		assertEquals("Should not update move display", expected, board.moveInput.value);
+		assertEquals("Should not update move display", expected, board.moveInput.data);
 		board.makeMove(true);
-		assertNotEquals("Should update move display", expected, board.moveInput.value);
+		assertNotEquals("Should update move display", expected, board.moveInput.data);
 		newexpected = board.moveInput.value;
 		board.makeMove();
-		assertNotEquals("Default should update move display", newexpected, board.moveInput.value);
+		assertNotEquals("Default should update move display", newexpected, board.moveInput.data);
 	}
 });

@@ -601,7 +601,7 @@ TestCase( "ConverterTest",
 				'[Result	"*"]\n' +
 				'1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Nbd7 5. Nf3 c6 6. e3 Qa5 7. Nd2 Bb4 8. Be2 0-0 *',
 
-	setup: function() { alert("setup");},
+	setup: function() {},
 	teardown: function() {},
 	
 	"test FEN position converter creation": function() {

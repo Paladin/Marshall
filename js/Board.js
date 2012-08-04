@@ -33,7 +33,6 @@ var Board = function (divId, options) {
 	"use strict";
 	var optionNames,
 		i,
-		brdI,
         givenOptions = options || {};
 
 	if (this.isYahoo(document.getElementById(divId).firstChild.nodeValue)) {
@@ -109,8 +108,6 @@ Board.prototype = {
             propsTd =
                 this.createWithAttribs("td", { "class": "game_info" }),
             board,
-            input = this.createWithAttribs("input",
-                { "class": "current_move_box" }),
             tmp2,
             color2;
 
@@ -147,8 +144,8 @@ Board.prototype = {
 
         // current move
         // it is initialized in updateMoveInfo
-        this.moveInput = input;
-        btnTdNext.appendChild(input);
+        this.moveInput = this.addTextElement(btnTdNext, "p",
+            { "class": "current_move_box" });
         // end of current move
 
         this.updateMoveInfo(this);
@@ -556,9 +553,9 @@ Board.prototype = {
         if (move && move.moveStr) {
             str = Math.floor((idx === 0 ? 1 : idx) / 2 + 1) +
                     ". " + move.moveStr;
-            this.moveInput.value = str;
+            this.moveInput.data = str;
         } else {
-            this.moveInput.value = "...";
+            this.moveInput.data = "...";
         }
     },
     /**

@@ -158,14 +158,37 @@ a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-co
 /**
  * Primary styles
  *
- * Author: 
+ * Author: Arlen P. Walker
  */
+ 
+header
+{
+	margin: 2em 0 2em 20%;
+}
+h1
+{
+	font-size: 200%;
+}
 
+header p {font-size: 130%;}
+
+.game_display {
+	margin: 1em;
+	padding: 1em;
+	border: 5px gray double;
+}
 .pgn_source { display: none; }
 
 .game_section { display: block; }
 
-.mainboard { height: 272px; width: 280px; }
+.mainboard {
+	height: 272px;
+	width: 300px;
+	float: left;
+	margin: 0 1em 1em 0;
+	padding-right: 20px;
+	border-right: 3px #999 inset;
+}
 
 .gameboard { height: 270px; width: 270px; margin: 0 auto; }
 
@@ -221,15 +244,15 @@ a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-co
 }
 .board_controls a.disabled { opacity: 0.4; }
 
-.current_move_box
-{
-	margin: 0 auto;
-	display: block;
-	width: 210px;
-}
+.current_move_box { text-align: center;}
 
-.current_move { font-weight: bold; background-color: #CEC; }
-.game_info { text-align: center; }
+.current_move { font-weight: bold; background-color: #CCC; padding: 1px 5px !important; }
+.move {font-style: normal; font-weight: bold; color: black !important;}
+.move_list {font-style: italic; }
+.game_info { text-align: center; padding: 0.5em 0; }
+.game_info p {
+	font-variant: small-caps;
+}
 
 td[data-symbol="p"] {
 	background-image: url(../img/default/default.gif);
