@@ -225,42 +225,6 @@ TestCase( "BoardTest",
 			document.getElementsByClassName("light_square")[22].title);
 	},
 	
-	"test marking the last move": function() {
-//
-//		Indications in the code are that this method doesn't do anything at the moment
-//		so I'm putting this in here as a placeholder. If jsTestDriver had the ability
-//		to mark a test Incomplete, I'd put it here as well
-//
-//
-		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.epGame;
-
-		var board = new Board("game1", {"skipToMove": 2});
-		board.init();
-
-		board.markLastMove();
-	},
-	
-	"test unmarking the last move": function() {
-//
-//		Indications in the code are that this method doesn't do anything at the moment
-//		so I'm putting this in here as a placeholder. If jsTestDriver had the ability
-//		to mark a test Incomplete, I'd put it here as well
-//
-//
-		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.epGame;
-
-		var board = new Board("game1", {"skipToMove": 2});
-		board.init();
-
-		board.deMarkLastMove();
-	},
-	
 	"test toggling moves display": function() {
 		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
 

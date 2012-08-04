@@ -174,7 +174,6 @@ Board.prototype = {
                 flipped:		false,
                 showMovesPane:	true,
                 showComments:	true,
-                markLastMove:	true,
                 altRewind:		"Rewind to the beginning",
                 altBack:		"One move back",
                 altFlip:		"Flip the board",
@@ -297,7 +296,6 @@ Board.prototype = {
             i,
             j;
 
-        this.deMarkLastMove(true);
         this.flipped = !this.flipped;
         for (i = 0; i < 8; i += 1) {
             for (j = 0; j < 4; j += 1) {
@@ -340,8 +338,6 @@ Board.prototype = {
         this.makeMove(true);
         this.updateMoveInfo();
         this.updateMovePane();
-        this.deMarkLastMove();
-        this.markLastMove();
     },
     /**
      *	Jumps the board all the way to the final position of the game
@@ -350,12 +346,10 @@ Board.prototype = {
         "use strict";
         var vBoard = this.conv.getEndPos(this.flipped);
 
-        this.deMarkLastMove();
         this.syncBoard(vBoard);
         this.conv.resetToEnd();
         this.updateMoveInfo();
         this.updateMovePane();
-        this.markLastMove();
     },
     /**
      *	Jumps the board all the way to the starting position of the game
@@ -364,7 +358,6 @@ Board.prototype = {
         "use strict";
         var vBoard = this.conv.getStartPos(this.flipped);
 
-        this.deMarkLastMove(true);
         this.syncBoard(vBoard);
         this.conv.resetToStart();
         this.updateMoveInfo();
@@ -380,56 +373,10 @@ Board.prototype = {
         if (move === null) { return; }
 
         if (update === undefined || update) {
-            this.deMarkLastMove(true);
-            this.markLastMove();
             this.updateMoveInfo();
             this.updateMovePane();
         }
         this.drawFEN(this.conv.getPrevPosition());
-    },
-    markLastMove:   function () {
-        "use strict";
-        var move,
-            piece;
-        if (!this.opts.markLastMove) { return; }
-
-        try {
-            move = this.conv.moves[this.conv.iteIndex - 1].actions[1];
-            piece = this.pos[move.x][move.y];
-            if (this.flipped) {
-                piece = this.pos[7 - move.x][7 - move.y];
-            }
-            // on konq the bg contains "initial initial initial "
-            // i guess xtra information. Anyways setting the
-            // background to a color containing the "initial"
-            // parts fails. Go figure
-            this.lastSquare = piece;
-        } catch (e) {}
-    },
-    deMarkLastMove: function (update) {
-        "use strict";
-        var move = this.conv.moves[this.conv.iteIndex - 2],
-            piece;
-
-        if (arguments.length && update) {
-            move = this.conv.moves[this.conv.iteIndex - 1];
-        }
-
-        if (this.conv.iteIndex + 1 === this.conv.moves.length) {
-            move = this.conv.getCurMove();
-        }
-
-        if (move) {
-            move = move.actions[1];
-
-            piece = this.pos[move.x][move.y];
-            if (this.flipped) {
-                piece = this.pos[7 - move.x][7 - move.y];
-            }
-        }
-        if (this.lastSquare && this.lastSquare.lastBg) {
-            this.lastSquare = null;
-        }
     },
     /*
         Shows moves pane, depending the 'flag'.
@@ -508,9 +455,6 @@ Board.prototype = {
             return;
         }
         if (update === undefined || update) {
-            this.deMarkLastMove();
-            this.markLastMove();
-
             this.updateMoveInfo();
             this.updateMovePane();
         }
@@ -887,4 +831,3 @@ Board.prototype = {
         }
     }
 };
-
