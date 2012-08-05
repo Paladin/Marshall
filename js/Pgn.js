@@ -37,13 +37,7 @@ function Pgn(pgn) {
 
 	// properties of the game eg players, ELOs etc
 	this.props = {};
-	this.requiredProps = ['Result', 'Black', 'White', 'Date',
-								'Round', 'Site', 'Event'];
-	this.requiredLength = this.requiredProps.length;
 	this.moves = [];	// the moves, one move contains the black and white move
-	this.currentMove = 0;	// the current move in the game
-	this.skip = 0;	// which ply at start? 0=white's, 1=black's
-	this.gameIntro = null;
 
 	this.pgnOrig = pgn;
 	pgn = this.normalize(pgn);
@@ -91,261 +85,277 @@ function Pgn(pgn) {
 		this.moves[this.moves.length] = move;
 	}
 }
-/**
- *	Checks FEN to see if it is Black to start
- */
-Pgn.prototype.isBlackToMove = function (FEN) {
-    "use strict";
-	return (FEN && / b | B /.test(FEN));
-};
-/**
- *	Tests to see if last move entry should be dropped. It should be dropped if
- *	it's not a move, but rather a result/partial game indicator.
- */
-Pgn.prototype.dropLastMove = function (themoves) {
-    "use strict";
-	return !!themoves[themoves.length - 1].match(/1\/2-1\/2|0-1|1-0|\*|\.\.\./);
-};
-/**
- *	Pull any info the move contains about its origin into the move as well
- */
-Pgn.prototype.includeOrigination = function (move) {
-    "use strict";
-    var fromTo,
-        newMove,
-        matches;
+Pgn.prototype = {
+	props:          null,
+	requiredProps:	['Result', 'Black', 'White', 'Date',
+								'Round', 'Site', 'Event'],
+	requiredLength:	7,
+	moves:          null,	// the moves,
+	currentMove:    0,	// the current move in the game
+	skip:			0,	// which ply at start? 0=white's, 1=black's
+	gameIntro:		null,
+	pgnOrig:        null,
+	pgn:            null,
+	pgnRaw:         null,
+	pgnStripped:    null,
+    /**
+     *	Checks FEN to see if it is Black to start
+     */
+    isBlackToMove:	function (FEN) {
+        "use strict";
+        return (FEN && / b | B /.test(FEN));
+    },
+    /**
+     *	Tests to see if last move entry should be dropped. It should be
+     *  dropped if not a move, but rather a result/partial game indicator.
+     */
+    dropLastMove:	function (themoves) {
+        "use strict";
+        return !!themoves[themoves.length - 1].
+            match(/1\/2-1\/2|0-1|1-0|\*|\.\.\./);
+    },
+    /**
+     *	Pull any info the move contains about its origin into the move as well
+     */
+    includeOrigination:	function (move) {
+        "use strict";
+        var fromTo,
+            newMove,
+            matches;
 
-	if (this.moveHasOrigination(move)) {
-		fromTo = move.split("-");
-		if (fromTo[0].match(/[0-9]*?\.?([A-Z])/) !== null) {
-			// we can just replace the - with nothing
-			newMove = move.replace("-", "");
-		} else {
-			matches = fromTo[0].match(/[0-9]+\./);
-			if (matches) {
-				newMove = matches[0] + fromTo[1];
-			} else {
-				newMove = fromTo[1];
-			}
-		}
-		return newMove;
-	}
-	return move;
-};
-/**
- *	If the move is prefaced by a move number, remove it. If the token contains
- *	only a move number, with no move, it will be emptied.
- */
-Pgn.prototype.removeMoveNumber = function (move) {
-    "use strict";
-	return move.replace(/^[1-9][0-9]*\.?[ ]*/g, "");
-};
-/**
- *	will return the pgn string without comments or with comments replaced
- *  by underscores.
- */
-Pgn.prototype.stripComments = function (pgn, replace) {
-    "use strict";
-    var substitute,
-        interim,
-        theMoves,
-        theMovesBegin;
-
-    if (replace) {
-        substitute = "";
-    } else {
-        substitute = function (theString) {
-            var a = [];
-            a.length = parseInt(theString.length, 10) + 1;
-            return a.join("_");
-        };
-    }
-    interim = pgn.replace(/\{(.)*?\}/g, substitute);
-    while (interim.match(/\([^()]*\)/)) {
-        interim = interim.replace(/\([^()]*\)/g, substitute);
-    }
-
-    theMoves = interim.replace(/\[[^\]]*\]/g, '').trim();
-    theMovesBegin = theMoves.replace(/[_ ]*/, "");
-    if (!parseInt(theMovesBegin.charAt(0), 10)) {
-        if (replace) {
-            interim = interim.substring(0, interim.length - theMoves.length);
-        } else {
-            interim = interim.substring(0, interim.length - theMoves.length) +
-                    substitute(theMoves);
-        }
-    }
-    return interim;
-};
-/**
- *	Does the move have information on its origin as well as its destination
- */
-Pgn.prototype.moveHasOrigination = function (move) {
-    "use strict";
-	return move.indexOf("-") !== -1 &&
-			 !/[0|o]-[0|o]/i.test(move) &&
-			 !/[0|o]-[0|o]-[0|o]/i.test(move);
-};
-/**
- *	This will "normalize" the pgn file by removing line breaks, collapsing
- *  strings of spaces, and replacing the symbols for moves with the characters
- *  (!, ?, etc.)
- */
-Pgn.prototype.normalize = function (pgn) {
-    "use strict";
-	pgn = pgn.replace(/\n/g, " ");
-
-	// replace dollar signs
-	//"!", "?", "!!", "!?", "?!", and "??"
-	pgn = pgn.replace(/\ \$1[0-9]*/g, "!");
-	pgn = pgn.replace(/\ \$2[0-9]*/g, "?");
-	pgn = pgn.replace(/\ \$3[0-9]*/g, "!!");
-	pgn = pgn.replace(/\ \$4[0-9]*/g, "??");
-	pgn = pgn.replace(/\ \$5[0-9]*/g, "!?");
-	pgn = pgn.replace(/\ \$6[0-9]*/g, "?!");
-	pgn = pgn.replace(/\ \$[0-9]+/g, "");
-
-	// make double spaces to single spaces
-	return pgn.replace(/\s+/g, ' ');
-};
-/**
- *	This function takes a pgn game string and extracts all the tags into the
- *  class variable props as key/value pairs. it returns the pgn string, minus
- *  the tags.
- */
-Pgn.prototype.extractTags = function (pgn) {
-    "use strict";
-	var matches,
-	    reprop = /\[([^\]]*)\]/gi,
-	    tmpMatches,
-	    key,
-	    i,
-	    length,
-	    value;
-
-    matches = pgn.match(reprop);
-	if (matches) {
-		// extract information from each matched property
-		for (i = 0; i < matches.length; i += 1) {
-			// lose the brackets
-			tmpMatches = matches[i].substring(1, matches[i].length - 1);
-			// split by the first space
-			key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
-			value = tmpMatches.substring(tmpMatches.indexOf(" ") + 1);
-			if (value.charAt(0) === '"') {
-				value = value.substr(1);
-			}
-			if (value.charAt(value.length - 1) === '"') {
-				value = value.substr(0, value.length - 1);
-			}
-
-			this.props[key] = value;
-			pgn = pgn.replace(matches[i], "");
-		}
-	}
-	length = this.requiredLength - 1;
-	while (length) {
-		if (!this.props[this.requiredProps[length]]) {
-			this.props[this.requiredProps[length]] = "?";
-		}
-        length -= 1;
-    }
-
-	return pgn.replace(/\[[^\]]*\]/g, '').trim();
-};
-
-Pgn.prototype.nextMove = function () {
-    "use strict";
-    var rtrn = null;
-    try {
-        if (this.skip) {
-            this.skip = 0;
-            rtrn = [this.moves[this.currentMove].black, 'black'];
-            this.currentMove += 1;
-        } else {
-            this.skip = 1;
-            rtrn = [this.moves[this.currentMove].white, 'white'];
-        }
-
-        if (rtrn[0] === null || rtrn[0].length === 0) { rtrn = null; }
-        return rtrn;
-    } catch (e) {
-        return null;
-    }
-};
-
-Pgn.prototype.getComment = function (move, idx) {
-    "use strict";
-    var i = this.pgnStripped.indexOf(move, idx),
-        j,
-        c,
-        k,
-        c2;
-
-    if (i === -1) {
-        //throw("getComment error, could not find move '"
-        //				+move+"'"+", with index '"+idx+"'");
-        return [null, idx];
-    }
-
-    for (j = i + move.length; j < this.pgnStripped.length; j += 1) {
-        c = this.pgnStripped.charAt(j);
-        switch (c) {
-        case ' ':
-            break;
-        case '_':	//found comment
-            for (k = j; k < this.pgnStripped.length; k += 1) {
-                c2 = this.pgnStripped.charAt(k);
-                switch (c2) {
-                case '_':	//found comment
-                    break;
-                default:	//no comment
-                    // we might have many comments separated with spaces
-                    // as we strip all double spaces to single ones we
-                    // can just check for the next char being '_'
-                    if (this.pgnStripped.length > k + 1 &&
-                            this.pgnStripped.charAt(k + 1) === '_') {
-                        continue;
-                    }
-                    return [this.pgnRaw.substring(j, k), k];
+        if (this.moveHasOrigination(move)) {
+            fromTo = move.split("-");
+            if (fromTo[0].match(/[0-9]*?\.?([A-Z])/) !== null) {
+                // we can just replace the - with nothing
+                newMove = move.replace("-", "");
+            } else {
+                matches = fromTo[0].match(/[0-9]+\./);
+                if (matches) {
+                    newMove = matches[0] + fromTo[1];
+                } else {
+                    newMove = fromTo[1];
                 }
             }
-            break;
-        default:	//no comment
+            return newMove;
+        }
+        return move;
+    },
+    /**
+     *	If the move is prefaced by a move number, remove it. If the token
+     *  contains only a move number, with no move, it will be emptied.
+     */
+    removeMoveNumber:	function (move) {
+        "use strict";
+        return move.replace(/^[1-9][0-9]*\.?[ ]*/g, "");
+    },
+    /**
+     *	will return the pgn string without comments or with comments replaced
+     *  by underscores.
+     */
+    stripComments:	function (pgn, replace) {
+        "use strict";
+        var substitute,
+            interim,
+            theMoves,
+            theMovesBegin;
+
+        if (replace) {
+            substitute = "";
+        } else {
+            substitute = function (theString) {
+                var a = [];
+                a.length = parseInt(theString.length, 10) + 1;
+                return a.join("_");
+            };
+        }
+        interim = pgn.replace(/\{(.)*?\}/g, substitute);
+        while (interim.match(/\([^()]*\)/)) {
+            interim = interim.replace(/\([^()]*\)/g, substitute);
+        }
+
+        theMoves = interim.replace(/\[[^\]]*\]/g, '').trim();
+        theMovesBegin = theMoves.replace(/[_ ]*/, "");
+        if (!parseInt(theMovesBegin.charAt(0), 10)) {
+            if (replace) {
+                interim =
+                    interim.substring(0, interim.length - theMoves.length);
+            } else {
+                interim = interim.substring(0,
+                    interim.length - theMoves.length) + substitute(theMoves);
+            }
+        }
+        return interim;
+    },
+    /**
+     *	Does the move have information on its origin as well as destination
+     */
+    moveHasOrigination:	function (move) {
+        "use strict";
+        return move.indexOf("-") !== -1 &&
+                 !/[0|o]-[0|o]/i.test(move) &&
+                 !/[0|o]-[0|o]-[0|o]/i.test(move);
+    },
+    /**
+     *	This will "normalize" the pgn file by removing line breaks, collapsing
+     *  strings of spaces, and replacing the symbols for moves with the
+     *  characters (!, ?, etc.)
+     */
+    normalize:	function (pgn) {
+        "use strict";
+        pgn = pgn.replace(/\n/g, " ");
+
+        // replace dollar signs
+        //"!", "?", "!!", "!?", "?!", and "??"
+        pgn = pgn.replace(/\ \$1[0-9]*/g, "!");
+        pgn = pgn.replace(/\ \$2[0-9]*/g, "?");
+        pgn = pgn.replace(/\ \$3[0-9]*/g, "!!");
+        pgn = pgn.replace(/\ \$4[0-9]*/g, "??");
+        pgn = pgn.replace(/\ \$5[0-9]*/g, "!?");
+        pgn = pgn.replace(/\ \$6[0-9]*/g, "?!");
+        pgn = pgn.replace(/\ \$[0-9]+/g, "");
+
+        // make double spaces to single spaces
+        return pgn.replace(/\s+/g, ' ');
+    },
+    /**
+     *	This function takes a pgn game string and extracts all the tags into
+     *  the class variable props as key/value pairs. it returns the pgn string,
+     *  minus the tags.
+     */
+    extractTags:	function (pgn) {
+        "use strict";
+        var matches,
+            reprop = /\[([^\]]*)\]/gi,
+            tmpMatches,
+            key,
+            i,
+            length,
+            value;
+
+        matches = pgn.match(reprop);
+        if (matches) {
+            // extract information from each matched property
+            for (i = 0; i < matches.length; i += 1) {
+                // lose the brackets
+                tmpMatches = matches[i].substring(1, matches[i].length - 1);
+                // split by the first space
+                key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
+                value = tmpMatches.substring(tmpMatches.indexOf(" ") + 1);
+                if (value.charAt(0) === '"') {
+                    value = value.substr(1);
+                }
+                if (value.charAt(value.length - 1) === '"') {
+                    value = value.substr(0, value.length - 1);
+                }
+
+                this.props[key] = value;
+                pgn = pgn.replace(matches[i], "");
+            }
+        }
+        length = this.requiredLength - 1;
+        while (length) {
+            if (!this.props[this.requiredProps[length]]) {
+                this.props[this.requiredProps[length]] = "?";
+            }
+            length -= 1;
+        }
+
+        return pgn.replace(/\[[^\]]*\]/g, '').trim();
+    },
+
+    nextMove:	function () {
+        "use strict";
+        var rtrn = null;
+        try {
+            if (this.skip) {
+                this.skip = 0;
+                rtrn = [this.moves[this.currentMove].black, 'black'];
+                this.currentMove += 1;
+            } else {
+                this.skip = 1;
+                rtrn = [this.moves[this.currentMove].white, 'white'];
+            }
+
+            if (rtrn[0] === null || rtrn[0].length === 0) { rtrn = null; }
+            return rtrn;
+        } catch (e) {
+            return null;
+        }
+    },
+
+    getComment:	function (move, idx) {
+        "use strict";
+        var i = this.pgnStripped.indexOf(move, idx),
+            j,
+            c,
+            k,
+            c2;
+
+        if (i === -1) {
+            //throw("getComment error, could not find move '"
+            //				+move+"'"+", with index '"+idx+"'");
             return [null, idx];
         }
+
+        for (j = i + move.length; j < this.pgnStripped.length; j += 1) {
+            c = this.pgnStripped.charAt(j);
+            switch (c) {
+            case ' ':
+                break;
+            case '_':	//found comment
+                for (k = j; k < this.pgnStripped.length; k += 1) {
+                    c2 = this.pgnStripped.charAt(k);
+                    switch (c2) {
+                    case '_':	//found comment
+                        break;
+                    default:	//no comment
+                        // we might have many comments separated with spaces
+                        // as we strip all double spaces to single ones we
+                        // can just check for the next char being '_'
+                        if (this.pgnStripped.length > k + 1 &&
+                                this.pgnStripped.charAt(k + 1) === '_') {
+                            continue;
+                        }
+                        return [this.pgnRaw.substring(j, k), k];
+                    }
+                }
+                break;
+            default:	//no comment
+                return [null, idx];
+            }
+        }
+        return [null, idx];
+    },
+    /**
+     *	Extract a comment starting from the beginning of the the pgn string.
+     */
+    extractGameIntro:	function () {
+        "use strict";
+        this.gameIntro = null;
+
+        this.pgn.trim();
+        if (this.pgn.charAt(0) === '{') {
+            this.gameIntro = this.pgn.substring(1, this.pgn.indexOf("}"));
+            this.pgn = this.pgn.slice(this.pgn.indexOf("{"));
+        }
+
+        return;
+    },
+    /**
+     *	Extract a comment starting from the beginning of the the pgn string.
+     */
+    extractPostGame:	function () {
+        "use strict";
+        this.postGame = null;
+
+        this.pgn.trim();
+        if (this.pgn.charAt(this.pgn.length - 1) === '}') {
+            this.postGame = this.pgn.substring(this.pgn.lastIndexOf("{") + 1,
+                    this.pgn.lastIndexOf("}"));
+            this.pgn = this.pgn.slice(0, this.pgn.lastIndexOf("{"));
+        }
+
+        this.pgn = this.pgn.trim();
+        return;
     }
-    return [null, idx];
-};
-/**
- *	Extract a comment starting from the beginning of the the pgn string.
- */
-Pgn.prototype.extractGameIntro = function () {
-    "use strict";
-	this.gameIntro = null;
-
-	this.pgn.trim();
-	if (this.pgn.charAt(0) === '{') {
-		this.gameIntro = this.pgn.substring(1, this.pgn.indexOf("}"));
-		this.pgn = this.pgn.slice(this.pgn.indexOf("{"));
-	}
-
-	return;
-};
-/**
- *	Extract a comment starting from the beginning of the the pgn string.
- */
-Pgn.prototype.extractPostGame = function () {
-    "use strict";
-	this.postGame = null;
-
-	this.pgn.trim();
-	if (this.pgn.charAt(this.pgn.length - 1) === '}') {
-		this.postGame = this.pgn.substring(this.pgn.lastIndexOf("{") + 1,
-				this.pgn.lastIndexOf("}"));
-		this.pgn = this.pgn.slice(0, this.pgn.lastIndexOf("{"));
-	}
-
-	this.pgn = this.pgn.trim();
-	return;
 };
