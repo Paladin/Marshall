@@ -368,6 +368,7 @@ Pgn.prototype = {
         "use strict";
         var text = theText,
             switcher,
+            previous,
             move = new MoveTree();
 
         this.tags = [];
@@ -381,13 +382,17 @@ Pgn.prototype = {
             } else if (/[0-9]/.test(switcher)) {
                 if (!move.isEmpty()) {
                     move.next = new MoveTree();
+                    previous = move;
                     move = move.next;
+                    move.previous = previous;
                 }
                 text = this.parseMoveNumber(text, move);
             } else if (/[a-hKQRBN]/.test(switcher)) {
                 if (move.text !== null) {
                     move.next = new MoveTree();
+                    previous = move;
                     move = move.next;
+                    move.previous = previous;
                 }
                 text = this.parseMoveText(text, move);
             } else if (/[{]/.test(switcher)) {
@@ -395,6 +400,14 @@ Pgn.prototype = {
             } else if (/\(/.test(switcher)) {
                 move = move.goBottom();
                 move.down = new MoveTree();
+                previous = move;
+                move = move.down;
+                move.up = previous;
+                text = text.slice(1);
+            } else if (/\)/.test(switcher)) {
+                move = move.goStart();
+                move = move.goTop();
+                text = text.slice(1);
             } else {
                 text = text.slice(1);
             }

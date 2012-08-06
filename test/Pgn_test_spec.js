@@ -29,7 +29,8 @@
         "[Result \"1-0\"]" +
         "{Bad Opening play}" +
         "1. e4 e5 2. f4 f6 {This should not be moved this early in the game}" +
-        "3. fxe5 fxe5 4. Qh5+ Ke7 5. Qe5+ Kf7 6.Bc4+ Kg6 7. Qf5# 1-0";
+        "( 2... Nf3 ) (2... d5 3. exd5 e4 ( 3...exf5 4.Nf3 ) 4 c3) 3. fxe5" +
+        " fxe5 4. Qh5+ Ke7 5. Qe5+ Kf7 6.Bc4+ Kg6 7. Qf5# 1-0";
 
     var theXPGN = "[Event \"Waukesha Team\"]" +
         "[Site \"Waukesha\"]" +
@@ -200,12 +201,6 @@
             	expect(text).toBe("1. e4 e5 2. f4 f6 3. fxe5 fxe5 4. Qh5+" +
             	    " Ke7 5. Qe5+ Kf7 6. Bc4+ Kg6 7. Qf5#");
             });
-        });
-        describe(" Parsing Commentary", function () {
-        	beforeEach(function () {
-        		this.pgn = new Pgn(theXPGN);
-        		this.pgn.parse(withCommentary);
-        	});
             it(" Should have a game intro comment", function () {
                 expect(this.pgn.gameIntro).toBe("Bad Opening play");
             });
@@ -217,6 +212,29 @@
             	expect(this.pgn.moveTree.next.next.next.text).toBe("f6");
             	expect(this.pgn.moveTree.next.next.next.commentary).
             	    toEqual(["This should not be moved this early in the game"]);
+            });
+            it(" Should have found a variation on Black's second", function () {
+            	expect(this.pgn.moveTree.next.next.next.down.text).toBe("Nf3");
+            });
+            it(" Should have a second variation", function () {
+            	var text = "",
+            	    move = this.pgn.moveTree.next.next.next.down.down;
+            	text = move;
+            	while (move.next !== null) {
+            	    move = move.next;
+            	    text += " " + move;
+            	}
+            	expect(text).toBe("2. d5 3. exd5 e4 4. c3");
+            });
+            it(" Should find a sub variation to the second variation", function () {
+            	var text = "",
+            	    move = this.pgn.moveTree.next.next.next.down.down.next.next.down;
+            	text = move;
+            	while (move.next !== null) {
+            	    move = move.next;
+            	    text += " " + move;
+            	}
+            	expect(text).toBe("3. exf5 4. Nf3");
             });
         });
     });
