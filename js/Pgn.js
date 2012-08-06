@@ -372,14 +372,18 @@ Pgn.prototype = {
             previous,
             move = new MoveTree();
 
+        this.color = "white";
         this.tags = [];
         this.moveTree = move;
+
         while (text.length > 0) {
             switcher = text.charAt(0);
             if (/[\[]/.test(switcher)) {
                 text = this.parseTag(text);
+
             } else if (this.isResult(text)) {
                 text = this.parseResult(text, move);
+
             } else if (/[0-9]/.test(switcher)) {
                 if (!move.isEmpty()) {
                     move.next = new MoveTree();
@@ -388,6 +392,7 @@ Pgn.prototype = {
                     move.previous = previous;
                 }
                 text = this.parseMoveNumber(text, move);
+
             } else if (/[a-hKQRBN]/.test(switcher)) {
                 if (move.text !== null) {
                     move.next = new MoveTree();
@@ -396,19 +401,27 @@ Pgn.prototype = {
                     move.previous = previous;
                 }
                 text = this.parseMoveText(text, move);
+                move.color = this.color;
+                this.color = this.color === "white" ? "black" : "white";
+
             } else if (/[{]/.test(switcher)) {
                 text = this.parseCommentary(text, move);
+
             } else if (/\(/.test(switcher)) {
+                this.color = move.color;
                 move = move.goBottom();
                 move.down = new MoveTree();
                 previous = move;
                 move = move.down;
                 move.up = previous;
                 text = text.slice(1);
+
             } else if (/\)/.test(switcher)) {
                 move = move.goStart();
                 move = move.goTop();
+                this.color = move.color === "white" ? "black" : "white";
                 text = text.slice(1);
+
             } else {
                 text = text.slice(1);
             }

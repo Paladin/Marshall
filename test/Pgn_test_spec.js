@@ -29,7 +29,7 @@
         "[Result \"1-0\"]" +
         "{Bad Opening play}" +
         "1. e4 e5 2. f4 f6 {This should not be moved this early in the game}" +
-        "( 2... Nf3 ) (2... d5 3. exd5 e4 ( 3...exf5 4.Nf3 ) 4 c3) 3. fxe5" +
+        "( 2... Nf6 ) (2... d5 3. exd5 e4 ( 3...exf5 4.Nf3 ) 4 c3) 3. fxe5" +
         " fxe5 4. Qh5+ Ke7 5. Qe5+ Kf7 6.Bc4+ Kg6 7. Qf5# 1-0";
 
     var theXPGN = "[Event \"Waukesha Team\"]" +
@@ -203,7 +203,7 @@
             	    toEqual(["This should not be moved this early in the game"]);
             });
             it(" Should have found a variation on Black's second", function () {
-            	expect(this.pgn.moveTree.next.next.next.down.text).toBe("Nf3");
+            	expect(this.pgn.moveTree.next.next.next.down.text).toBe("Nf6");
             });
             it(" Should have a second variation", function () {
             	expect(this.pgn.moveTree.next.next.next.down.down.list()).
@@ -212,6 +212,9 @@
             it(" Should find a sub variation to the second variation", function () {
             	expect(this.pgn.moveTree.next.next.next.down.down.next.next.
             	    down.list()).toBe("3. exf5 4. Nf3");
+            });
+            it(" Should find the right color on the first variation", function () {
+            	expect(this.pgn.moveTree.next.next.next.down.color).toBe("black");
             });
         });
     });
