@@ -357,5 +357,27 @@ Pgn.prototype = {
 
         this.pgn = this.pgn.trim();
         return;
+    },
+    parse:  function (theText) {
+        "use strict";
+        var text = theText,
+            tag,
+            key,
+            value;
+
+        this.tags = [];
+        while (text.length > 0) {
+            switch (text.charAt(0)) {
+            case "[":
+                tag = text.substring(0,text.indexOf("]"));
+                text = text.slice(tag.length);
+                tag = tag.match(/([a-zA-Z0-9]*)\s\"((.)*)\"/);
+                this.tags[tag[1].trim()] = tag[2];
+                break;
+            default:
+                break;
+            }
+            text = text.slice(1);
+        }
     }
 };
