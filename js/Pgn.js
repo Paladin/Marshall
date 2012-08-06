@@ -456,10 +456,9 @@ Pgn.prototype = {
      */
     isResult:  function (gameText) {
         "use strict";
-        var text = gameText,
-            match;
+        var text = gameText;
 
-        return /^(1-0|0-1|1\/2-1\/2|1 - 0|0 - 1|1\/2 - 1\/2)/.test(text);
+        return (/^(1-0|0-1|1\/2-1\/2|1 - 0|0 - 1|1\/2 - 1\/2)/).test(text);
     },
     /**
      *  Parses a PGN result
@@ -470,8 +469,7 @@ Pgn.prototype = {
      */
     parseResult:  function (gameText, move) {
         "use strict";
-        var text = gameText,
-            tag;
+        var text = gameText;
 
         move.result =
             text.match(/^(1-0|0-1|1 - 0|0 - 1|1\/2-1\/2|1\/2 - 1\/2)/)[0];
@@ -487,8 +485,7 @@ Pgn.prototype = {
      */
     parseMoveText:  function (gameText, move) {
         "use strict";
-        var text = gameText,
-            tag;
+        var text = gameText;
 
         move.text = text.match(/(^[a-hxNBRQKO\-+#=0-8!?]+)/)[0];
         text = text.slice(move.text.length);
@@ -506,9 +503,9 @@ Pgn.prototype = {
         var text = gameText,
             commentary;
 
-        commentary = text.substring(1,text.indexOf("}"));
+        commentary = text.substring(1, text.indexOf("}"));
         text = text.slice(commentary.length + 1);
-        if(move.isEmpty()) {
+        if (move.isEmpty()) {
             this.gameIntro = commentary;
         } else {
             move.commentary.push(commentary);

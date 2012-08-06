@@ -18,13 +18,16 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
 var MoveTree = function (properties) {
+    "use strict";
+    var property;
+
     for (property in properties) {
         if (properties.hasOwnProperty(property)) {
             this[property] = properties[property];
         }
     }
     this.commentary = [];
-}
+};
 MoveTree.prototype = {
     previous:   null,
     next:       null,
@@ -37,15 +40,19 @@ MoveTree.prototype = {
     result:     null,
     color:      null,
     getNextMove:    function () {
+        "use strict";
         return this || this.next;
     },
     isEnd:          function () {
+        "use strict";
         return this.next === null;
     },
     isEmpty:        function () {
+        "use strict";
         return !(this.number || this.text || this.result);
     },
     goStart:         function () {
+        "use strict";
         var move = this;
 
         while (move.previous !== null) {
@@ -54,6 +61,7 @@ MoveTree.prototype = {
         return move;
     },
     goEnd:         function () {
+        "use strict";
         var move = this;
 
         while (move.next !== null) {
@@ -62,6 +70,7 @@ MoveTree.prototype = {
         return move;
     },
     goTop:          function () {
+        "use strict";
         var move = this;
 
         while (move.up !== null) {
@@ -70,6 +79,7 @@ MoveTree.prototype = {
         return move;
     },
     goBottom:       function () {
+        "use strict";
         var move = this;
 
         while (move.down !== null) {
@@ -78,6 +88,7 @@ MoveTree.prototype = {
         return move;
     },
     list:           function () {
+        "use strict";
         var move = this,
             text = move;
 
@@ -88,6 +99,7 @@ MoveTree.prototype = {
         return text;
     },
     toString:       function () {
+        "use strict";
         return (this.number ? this.number + ". " : "") + this.text;
     }
-}
+};
