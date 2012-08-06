@@ -216,6 +216,13 @@
             it(" Should find the right color on the first variation", function () {
             	expect(this.pgn.moveTree.next.next.next.down.color).toBe("black");
             });
+            it(" Should have an initial destination of e4", function () {
+            	expect(this.pgn.moveTree.destination).toBe("e4");
+            });
+            it(" Should find the subvariation's second move heads for f3", function () {
+            	expect(this.pgn.moveTree.next.next.next.down.down.next.
+            	    next.down.next.destination).toBe("f3");
+            });
         });
     });
 } ());

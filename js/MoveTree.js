@@ -29,16 +29,17 @@ var MoveTree = function (properties) {
     this.commentary = [];
 };
 MoveTree.prototype = {
-    previous:   null,
-    next:       null,
-    up:         null,
-    down:       null,
-    text:       null,
-    commentary: null,
-    number:     null,
-    piece:      null,
-    result:     null,
-    color:      null,
+    previous:       null,
+    next:           null,
+    up:             null,
+    down:           null,
+    text:           null,
+    commentary:     null,
+    number:         null,
+    piece:          null,
+    result:         null,
+    color:          null,
+    destination:    null,
     getNextMove:    function () {
         "use strict";
         return this || this.next;

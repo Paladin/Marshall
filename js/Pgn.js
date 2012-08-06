@@ -402,6 +402,7 @@ Pgn.prototype = {
                 }
                 text = this.parseMoveText(text, move);
                 move.color = this.color;
+                move.destination = move.text.match(/([a-z][1-8])[!?+#]?$/)[1];
                 this.color = this.color === "white" ? "black" : "white";
 
             } else if (/[{]/.test(switcher)) {
