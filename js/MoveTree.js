@@ -35,6 +35,7 @@ MoveTree.prototype = {
     number:     null,
     piece:      null,
     result:     null,
+    color:      null,
     getNextMove:    function () {
         return this || this.next;
     },

@@ -99,6 +99,7 @@ Pgn.prototype = {
 	pgnRaw:         null,
 	pgnStripped:    null,
 	moveTree:       null,
+	toMove:         null,
     /**
      *	Checks FEN to see if it is Black to start
      */
