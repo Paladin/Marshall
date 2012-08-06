@@ -358,26 +358,42 @@ Pgn.prototype = {
         this.pgn = this.pgn.trim();
         return;
     },
+    /**
+     *  Main parsing function for PGN text
+     *
+     * @param   {string}    The PGN text to be parsed
+     */
     parse:  function (theText) {
         "use strict";
-        var text = theText,
-            tag,
-            key,
-            value;
+        var text = theText;
 
         this.tags = [];
         while (text.length > 0) {
             switch (text.charAt(0)) {
             case "[":
-                tag = text.substring(0,text.indexOf("]"));
-                text = text.slice(tag.length);
-                tag = tag.match(/([a-zA-Z0-9]*)\s\"((.)*)\"/);
-                this.tags[tag[1].trim()] = tag[2];
+                text = this.parseTag(text);
                 break;
             default:
                 break;
             }
             text = text.slice(1);
         }
+    },
+    /**
+     *  Parses a PGN tag
+     *
+     * @param   {string}    The text that is being parsed
+     * @return  {string}    The text with all but the "]" removed
+     */
+    parseTag:  function (gameText) {
+        "use strict";
+        var text = gameText,
+            tag;
+
+        tag = text.substring(0, text.indexOf("]"));
+        text = text.slice(tag.length);
+        tag = tag.match(/([a-zA-Z0-9]*)\s\"((.)*)\"/);
+        this.tags[tag[1]] = tag[2];
+        return text;
     }
 };
