@@ -1,5 +1,37 @@
 (function () {
-    var thePGN = "[Event \"Waukesha Team\"]" +
+    var tagsOnly = "[Event \"Waukesha Team\"]" +
+        "[Site \"Waukesha\"]" +
+        "[Date \"2001.07.11\"]" +
+        "[Round \"1\"]" +
+        "[White \"Walker\"]" +
+        "[Black \"Coons\"]" +
+        "[Result \"1-0\"]" +
+        "[Annotator	\"Shredder\"]" +
+        "[SetUp	\"1\"]" +
+        "[PlyCount	\"9\"]" +
+        "[SourceDate	\"2009.06.14\"]";
+
+    var simpleMoves = "[Event \"testing\"]" +
+        "[Site \"lab\"]" +
+        "[Date \"2001.07.11\"]" +
+        "[Round \"1\"]" +
+        "[White \"Walker\"]" +
+        "[Black \"Anon\"]" +
+        "[Result \"1-0\"]" +
+        "1. e4 e5 2. f4 f6 3. fxe5 fxe5 4. Qh5+ Ke7 5. Qe5+ Kf7 6.Bc4+ Kg6 7. Qf5# 1-0";
+
+    var withCommentary = "[Event \"testing\"]" +
+        "[Site \"lab\"]" +
+        "[Date \"2001.07.11\"]" +
+        "[Round \"1\"]" +
+        "[White \"Walker\"]" +
+        "[Black \"Anon\"]" +
+        "[Result \"1-0\"]" +
+        "{Bad Opening play}" +
+        "1. e4 e5 2. f4 f6 {This should not be moved this early in the game}" +
+        "3. fxe5 fxe5 4. Qh5+ Ke7 5. Qe5+ Kf7 6.Bc4+ Kg6 7. Qf5# 1-0";
+
+    var theXPGN = "[Event \"Waukesha Team\"]" +
         "[Site \"Waukesha\"]" +
         "[Date \"2001.07.11\"]" +
         "[Round \"1\"]" +
@@ -10,7 +42,9 @@
         "[SetUp	\"1\"]" +
         "[PlyCount	\"9\"]" +
         "[SourceDate	\"2009.06.14\"]" +
-        "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. Bd3 Nc6 5. c3 Qc7 6. Ne2 { +0.58 6. Nf3 Bg4" +
+        "{Opening commentary}" +
+        "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. Bd3 Nc6 5. c3 Qc7 ;end of line\n" +
+        "6. Ne2 { +0.58 6. Nf3 Bg4" +
         "7. O-O e6 8. Re1 Be7 9. h3 Bf5 10. Bxf5 exf5 } Bg4 { -0.30 6... Bd7 7. O-O Nf6" +
         "8. Bf4 e5 9. dxe5 Nxe5 10. b3 } 7. Bf4 { +0.38 7. f3 Bd7 8. Bf4 e5 9. dxe5 Nxe5" +
         "10. Ba6 Bc6 11. Nd4 } Bxe2 { +0.16 7... Qxf4 8. Nxf4 Bxd1 9. Kxd1 e6 10. b4 Bd6" +
@@ -88,46 +122,100 @@
         "62. Rc7 Kb8 63. h8=Q Rd8 64. Qxd8 } 59. h7 Rc8+ { 0.00 59... Rd8 } 60. Rc7 {" +
         "mate 3 60. Kd6 Rc3 61. h8=Q Rc8 62. Qxc8 } Rxc7+ 61. bxc7 1-0 { The pawns are unbeatable }";
 
-    describe("While Parsing a PGN File", function () {
+    describe("Parsing PGN input", function () {
     	beforeEach(function () {
-    	    this.pgn = new Pgn(thePGN);
-    	    this.pgn.parse(thePGN);
     	});
-    	it(" Should get the tag count correct", function () {
-    	    expect(11).toBe(Object.keys(this.pgn.tags).length);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("Walker").toBe(this.pgn.tags.White);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("Coons").toBe(this.pgn.tags.Black);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("Waukesha Team").toBe(this.pgn.tags.Event);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("Waukesha").toBe(this.pgn.tags.Site);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("2001.07.11").toBe(this.pgn.tags.Date);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("1").toBe(this.pgn.tags.Round);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("Shredder").toBe(this.pgn.tags.Annotator);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("1-0").toBe(this.pgn.tags.Result);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("1").toBe(this.pgn.tags.SetUp);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("9").toBe(this.pgn.tags.PlyCount);
-    	});
-    	it(" Should correctly name White", function () {
-    		expect("2009.06.14").toBe(this.pgn.tags.SourceDate);
-    	});
+        describe("Parsing tags", function () {
+            beforeEach(function () {
+                this.pgn = new Pgn(theXPGN);
+                this.pgn.parse(tagsOnly);
+            });
+            it(" Should get the tag count correct", function () {
+                expect(11).toBe(Object.keys(this.pgn.tags).length);
+            });
+            it(" Should correctly name White", function () {
+                expect("Walker").toBe(this.pgn.tags.White);
+            });
+            it(" Should correctly name White", function () {
+                expect("Coons").toBe(this.pgn.tags.Black);
+            });
+            it(" Should correctly name White", function () {
+                expect("Waukesha Team").toBe(this.pgn.tags.Event);
+            });
+            it(" Should correctly name White", function () {
+                expect("Waukesha").toBe(this.pgn.tags.Site);
+            });
+            it(" Should correctly name White", function () {
+                expect("2001.07.11").toBe(this.pgn.tags.Date);
+            });
+            it(" Should correctly name White", function () {
+                expect("1").toBe(this.pgn.tags.Round);
+            });
+            it(" Should correctly name White", function () {
+                expect("Shredder").toBe(this.pgn.tags.Annotator);
+            });
+            it(" Should correctly name White", function () {
+                expect("1-0").toBe(this.pgn.tags.Result);
+            });
+            it(" Should correctly name White", function () {
+                expect("1").toBe(this.pgn.tags.SetUp);
+            });
+            it(" Should correctly name White", function () {
+                expect("9").toBe(this.pgn.tags.PlyCount);
+            });
+            it(" Should correctly name White", function () {
+                expect("2009.06.14").toBe(this.pgn.tags.SourceDate);
+            });
+        });
+        describe(" Parsing Moves", function () {
+        	beforeEach(function () {
+        		this.pgn = new Pgn(simpleMoves);
+        		this.pgn.parse(simpleMoves);
+        	});
+            it(" Should have created some moves", function () {
+                expect(this.pgn.moveTree).toNotBe(null);
+            });
+            it(" Should have created a move number", function () {
+                expect(this.pgn.moveTree.number).toBeGreaterThan(0);
+            });
+            it(" Should start with move number 1", function () {
+            	expect(this.pgn.moveTree.number).toBe(1);
+            });
+            it(" Should end with white winning", function () {
+            	var move = this.pgn.moveTree;
+            	while (move.next !== null) {
+            	    move = move.next;
+            	}
+            	expect(move.result).toBe("1-0");
+            });
+            it(" Should provide the correct move list", function () {
+            	var text = "",
+            	    move = this.pgn.moveTree;
+            	text = move;
+            	while (move.next !== null) {
+            	    move = move.next;
+            	    text += " " + move;
+            	}
+            	expect(text).toBe("1. e4 e5 2. f4 f6 3. fxe5 fxe5 4. Qh5+" +
+            	    " Ke7 5. Qe5+ Kf7 6. Bc4+ Kg6 7. Qf5#");
+            });
+        });
+        describe(" Parsing Commentary", function () {
+        	beforeEach(function () {
+        		this.pgn = new Pgn(theXPGN);
+        		this.pgn.parse(withCommentary);
+        	});
+            it(" Should have a game intro comment", function () {
+                expect(this.pgn.gameIntro).toBe("Bad Opening play");
+            });
+            it(" Should have a comment on black's second move", function () {
+            	expect(this.pgn.moveTree.next.next.next.commentary.length).
+            	    toBe(1);
+            });
+            it(" Should have this comment on Black's second", function () {
+            	expect(this.pgn.moveTree.next.next.next.commentary).
+            	    toEqual(["This should not be moved this early in the game"]);
+            });
+        });
     });
 } ());

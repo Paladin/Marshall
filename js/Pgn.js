@@ -98,6 +98,7 @@ Pgn.prototype = {
 	pgn:            null,
 	pgnRaw:         null,
 	pgnStripped:    null,
+	moveTree:       null,
     /**
      *	Checks FEN to see if it is Black to start
      */
@@ -365,18 +366,38 @@ Pgn.prototype = {
      */
     parse:  function (theText) {
         "use strict";
-        var text = theText;
+        var text = theText,
+            switcher,
+            move = new MoveTree();
 
         this.tags = [];
+        this.moveTree = move;
         while (text.length > 0) {
-            switch (text.charAt(0)) {
-            case "[":
+            switcher = text.charAt(0);
+            if (/[\[]/.test(switcher)) {
                 text = this.parseTag(text);
-                break;
-            default:
-                break;
+            } else if (this.isResult(text)) {
+                text = this.parseResult(text, move);
+            } else if (/[0-9]/.test(switcher)) {
+                if (!move.isEmpty()) {
+                    move.next = new MoveTree();
+                    move = move.next;
+                }
+                text = this.parseMoveNumber(text, move);
+            } else if (/[a-hKQRBN]/.test(switcher)) {
+                if (move.text !== null) {
+                    move.next = new MoveTree();
+                    move = move.next;
+                }
+                text = this.parseMoveText(text, move);
+            } else if (/[{]/.test(switcher)) {
+                text = this.parseCommentary(text, move);
+            } else if (/\(/.test(switcher)) {
+                move = move.goBottom();
+                move.down = new MoveTree();
+            } else {
+                text = text.slice(1);
             }
-            text = text.slice(1);
         }
     },
     /**
@@ -394,6 +415,90 @@ Pgn.prototype = {
         text = text.slice(tag.length);
         tag = tag.match(/([a-zA-Z0-9]*)\s\"((.)*)\"/);
         this.tags[tag[1]] = tag[2];
+        return text;
+    },
+    /**
+     *  Parses a PGN move number
+     *
+     * @param   {string}    The text that is being parsed
+     * @param   {MoveTree}  The move to add the number to
+     * @return  {string}    The text with all but the "]" removed
+     */
+    parseMoveNumber:  function (gameText, move) {
+        "use strict";
+        var text = gameText,
+            tag;
+
+        tag = text.match(/([0-9\. ]+)/);
+        move.number = parseInt(tag[0], 10);
+        text = text.slice(tag[0].length);
+        return text;
+    },
+    /**
+     *  Is the next token a result?
+     *
+     * @param   {string}    The text that is being parsed
+     * @return  {boolean}   Is the next token a known result string?
+     */
+    isResult:  function (gameText) {
+        "use strict";
+        var text = gameText,
+            match;
+
+        return /^(1-0|0-1|1\/2-1\/2|1 - 0|0 - 1|1\/2 - 1\/2)/.test(text);
+    },
+    /**
+     *  Parses a PGN result
+     *
+     * @param   {string}    The text that is being parsed
+     * @param   {MoveTree}  The move to add the number to
+     * @return  {string}    The text with all but the "]" removed
+     */
+    parseResult:  function (gameText, move) {
+        "use strict";
+        var text = gameText,
+            tag;
+
+        move.result =
+            text.match(/^(1-0|0-1|1 - 0|0 - 1|1\/2-1\/2|1\/2 - 1\/2)/)[0];
+        text = text.slice(move.result.length);
+        return text;
+    },
+    /**
+     *  Parses a PGN move
+     *
+     * @param   {string}    The text that is being parsed
+     * @param   {MoveTree}  The move to add the number to
+     * @return  {string}    The text with all but the "]" removed
+     */
+    parseMoveText:  function (gameText, move) {
+        "use strict";
+        var text = gameText,
+            tag;
+
+        move.text = text.match(/(^[a-hxNBRQKO\-+#=0-8!?]+)/)[0];
+        text = text.slice(move.text.length);
+        return text;
+    },
+    /**
+     *  Parses a PGN comment
+     *
+     * @param   {string}    The text that is being parsed
+     * @param   {MoveTree}  The move to add the number to
+     * @return  {string}    The text with all but the "]" removed
+     */
+    parseCommentary:  function (gameText, move) {
+        "use strict";
+        var text = gameText,
+            commentary;
+
+        commentary = text.substring(1,text.indexOf("}"));
+        text = text.slice(commentary.length);
+        if(move.isEmpty()) {
+            this.gameIntro = commentary;
+        } else {
+            move.commentary.push(commentary);
+        }
         return text;
     }
 };
