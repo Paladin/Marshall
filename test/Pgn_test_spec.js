@@ -170,7 +170,7 @@
         describe(" Parsing Moves", function () {
         	beforeEach(function () {
         		this.pgn = new Pgn(simpleMoves);
-        		this.pgn.parse(simpleMoves);
+        		this.pgn.parse(withCommentary);
         	});
             it(" Should have created some moves", function () {
                 expect(this.pgn.moveTree).toNotBe(null);
@@ -187,6 +187,7 @@
             	    move = move.next;
             	}
             	expect(move.result).toBe("1-0");
+            	expect(move.text).toBe("Qf5#");
             });
             it(" Should provide the correct move list", function () {
             	var text = "",
@@ -213,6 +214,7 @@
             	    toBe(1);
             });
             it(" Should have this comment on Black's second", function () {
+            	expect(this.pgn.moveTree.next.next.next.text).toBe("f6");
             	expect(this.pgn.moveTree.next.next.next.commentary).
             	    toEqual(["This should not be moved this early in the game"]);
             });

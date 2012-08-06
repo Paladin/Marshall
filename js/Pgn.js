@@ -493,7 +493,7 @@ Pgn.prototype = {
             commentary;
 
         commentary = text.substring(1,text.indexOf("}"));
-        text = text.slice(commentary.length);
+        text = text.slice(commentary.length + 1);
         if(move.isEmpty()) {
             this.gameIntro = commentary;
         } else {
