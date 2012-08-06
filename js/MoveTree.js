@@ -53,6 +53,14 @@ MoveTree.prototype = {
         }
         return move;
     },
+    goEnd:         function () {
+        var move = this;
+
+        while (move.next !== null) {
+            move = move.next;
+        }
+        return move;
+    },
     goTop:          function () {
         var move = this;
 
@@ -68,6 +76,16 @@ MoveTree.prototype = {
             move = move.down;
         }
         return move;
+    },
+    list:           function () {
+        var move = this,
+            text = move;
+
+        while (move.next !== null) {
+            move = move.next;
+            text += " " + move;
+        }
+        return text;
     },
     toString:       function () {
         return (this.number ? this.number + ". " : "") + this.text;

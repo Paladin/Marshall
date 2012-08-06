@@ -183,22 +183,11 @@
             	expect(this.pgn.moveTree.number).toBe(1);
             });
             it(" Should end with white winning", function () {
-            	var move = this.pgn.moveTree;
-            	while (move.next !== null) {
-            	    move = move.next;
-            	}
-            	expect(move.result).toBe("1-0");
-            	expect(move.text).toBe("Qf5#");
+            	expect(this.pgn.moveTree.goEnd().result).toBe("1-0");
+            	expect(this.pgn.moveTree.goEnd().text).toBe("Qf5#");
             });
             it(" Should provide the correct move list", function () {
-            	var text = "",
-            	    move = this.pgn.moveTree;
-            	text = move;
-            	while (move.next !== null) {
-            	    move = move.next;
-            	    text += " " + move;
-            	}
-            	expect(text).toBe("1. e4 e5 2. f4 f6 3. fxe5 fxe5 4. Qh5+" +
+            	expect(this.pgn.moveTree.list()).toBe("1. e4 e5 2. f4 f6 3. fxe5 fxe5 4. Qh5+" +
             	    " Ke7 5. Qe5+ Kf7 6. Bc4+ Kg6 7. Qf5#");
             });
             it(" Should have a game intro comment", function () {
@@ -217,24 +206,12 @@
             	expect(this.pgn.moveTree.next.next.next.down.text).toBe("Nf3");
             });
             it(" Should have a second variation", function () {
-            	var text = "",
-            	    move = this.pgn.moveTree.next.next.next.down.down;
-            	text = move;
-            	while (move.next !== null) {
-            	    move = move.next;
-            	    text += " " + move;
-            	}
-            	expect(text).toBe("2. d5 3. exd5 e4 4. c3");
+            	expect(this.pgn.moveTree.next.next.next.down.down.list()).
+            	    toBe("2. d5 3. exd5 e4 4. c3");
             });
             it(" Should find a sub variation to the second variation", function () {
-            	var text = "",
-            	    move = this.pgn.moveTree.next.next.next.down.down.next.next.down;
-            	text = move;
-            	while (move.next !== null) {
-            	    move = move.next;
-            	    text += " " + move;
-            	}
-            	expect(text).toBe("3. exf5 4. Nf3");
+            	expect(this.pgn.moveTree.next.next.next.down.down.next.next.
+            	    down.list()).toBe("3. exf5 4. Nf3");
             });
         });
     });
