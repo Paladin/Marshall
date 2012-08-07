@@ -390,7 +390,7 @@ Pgn.prototype = {
                 text = this.parseMoveText(text, move);
                 move.color = this.color;
                 move.destination = move.text.match(/([a-z][1-8])[!?+#]?$/)[1];
-                this.color = this.color === "white" ? "black" : "white";
+                this.color = this.alternate(this.color, "white", "black");
 
             } else if (/[{]/.test(text.charAt(0))) {
                 text = this.parseCommentary(text, move);
@@ -404,7 +404,7 @@ Pgn.prototype = {
             } else if (/\)/.test(text.charAt(0))) {
                 move = move.goStart();
                 move = move.goTop();
-                this.color = move.color === "white" ? "black" : "white";
+                this.color = this.alternate(this.color, "white", "black");
                 text = text.slice(1);
 
             } else {
