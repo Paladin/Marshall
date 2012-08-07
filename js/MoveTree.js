@@ -99,6 +99,20 @@ MoveTree.prototype = {
         }
         return text;
     },
+    addNext:        function (properties) {
+        "use strict";
+        var move = new MoveTree(properties);
+        this.next = move;
+        move.previous = this;
+        return move;
+    },
+    addVariation:        function (properties) {
+        "use strict";
+        var move = new MoveTree(properties);
+        this.down = move;
+        move.up = this;
+        return move;
+    },
     toString:       function () {
         "use strict";
         return (this.number ? this.number + ". " : "") + this.text;

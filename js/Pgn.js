@@ -368,8 +368,6 @@ Pgn.prototype = {
     parse:  function (theText) {
         "use strict";
         var text = theText,
-            switcher,
-            previous,
             move = new MoveTree();
 
         this.color = "white";
@@ -377,47 +375,33 @@ Pgn.prototype = {
         this.moveTree = move;
 
         while (text.length > 0) {
-            switcher = text.charAt(0);
-            if (/[\[]/.test(switcher)) {
+            if (/[\[]/.test(text.charAt(0))) {
                 text = this.parseTag(text);
 
             } else if (this.isResult(text)) {
                 text = this.parseResult(text, move);
 
-            } else if (/[0-9]/.test(switcher)) {
-                if (!move.isEmpty()) {
-                    move.next = new MoveTree();
-                    previous = move;
-                    move = move.next;
-                    move.previous = previous;
-                }
+            } else if (/[0-9]/.test(text.charAt(0))) {
+                if (!move.isEmpty()) { move = move.addNext(); }
                 text = this.parseMoveNumber(text, move);
 
-            } else if (/[a-hKQRBN]/.test(switcher)) {
-                if (move.text !== null) {
-                    move.next = new MoveTree();
-                    previous = move;
-                    move = move.next;
-                    move.previous = previous;
-                }
+            } else if (/[a-hKQRBN]/.test(text.charAt(0))) {
+                if (move.text !== null) { move = move.addNext(); }
                 text = this.parseMoveText(text, move);
                 move.color = this.color;
                 move.destination = move.text.match(/([a-z][1-8])[!?+#]?$/)[1];
                 this.color = this.color === "white" ? "black" : "white";
 
-            } else if (/[{]/.test(switcher)) {
+            } else if (/[{]/.test(text.charAt(0))) {
                 text = this.parseCommentary(text, move);
 
-            } else if (/\(/.test(switcher)) {
+            } else if (/\(/.test(text.charAt(0))) {
                 this.color = move.color;
                 move = move.goBottom();
-                move.down = new MoveTree();
-                previous = move;
-                move = move.down;
-                move.up = previous;
+                move = move.addVariation();
                 text = text.slice(1);
 
-            } else if (/\)/.test(switcher)) {
+            } else if (/\)/.test(text.charAt(0))) {
                 move = move.goStart();
                 move = move.goTop();
                 this.color = move.color === "white" ? "black" : "white";
