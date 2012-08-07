@@ -207,11 +207,11 @@
             });
             it(" Should have a second variation", function () {
             	expect(this.pgn.moveTree.next.next.next.down.down.list()).
-            	    toBe("2. d5 3. exd5 e4 4. c3");
+            	    toBe("2. ... d5 3. exd5 e4 4. c3");
             });
             it(" Should find a sub variation to the second variation", function () {
             	expect(this.pgn.moveTree.next.next.next.down.down.next.next.
-            	    down.list()).toBe("3. exf5 4. Nf3");
+            	    down.list()).toBe("3. ... exf5 4. Nf3");
             });
             it(" Should find the right color on the first variation", function () {
             	expect(this.pgn.moveTree.next.next.next.down.color).toBe("black");

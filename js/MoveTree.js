@@ -91,7 +91,10 @@ MoveTree.prototype = {
     list:           function () {
         "use strict";
         var move = this,
-            text = move;
+            text;
+
+        text = this.number ? this.number + ". " : "";
+        text += (this.color === "black" ? "... " : "") + this.text;
 
         while (move.next !== null) {
             move = move.next;
@@ -115,6 +118,7 @@ MoveTree.prototype = {
     },
     toString:       function () {
         "use strict";
-        return (this.number ? this.number + ". " : "") + this.text;
+        return ((this.color === "white") && this.number ? this.number +
+            ". " : "") + this.text;
     }
 };

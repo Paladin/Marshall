@@ -62,5 +62,13 @@
     	it(" Should add variation", function () {
     		expect(this.moveTree.next.next).toBe(this.moveTree.next.next.down.up);
     	});
+    	it(" Should list main line", function () {
+    		expect(this.moveTree.list()).
+    		    toBe("1. e4 c5 2. Nc3 Nc6 3. f4 e6 4. Nf3 d5");
+    	});
+    	it(" Should list variation e", function () {
+    		expect(this.moveTree.next.next.next.next.next.down.next.
+    		    next.down.list()).toBe("4. ... d6 5. Bb5");
+    	});
     });
 } ());
