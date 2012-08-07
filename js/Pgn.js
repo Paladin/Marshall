@@ -413,6 +413,18 @@ Pgn.prototype = {
         }
     },
     /**
+     *  Alternates between two options
+     *
+     * @param   {any}       - Current status
+     * @param   {any}       - Option 1
+     * @param   {any}       - Option 2
+     */
+    alternate:  function (current, option1, option2) {
+        "use strict";
+        if (current === option1) { return option2; }
+        return option1;
+    },
+    /**
      *  Parses a PGN tag
      *
      * @param   {string}    The text that is being parsed
