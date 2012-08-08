@@ -179,15 +179,14 @@ TestCase( "ConverterTest",
 						{"piece":"rook","color":"black","type":""}
 					]
 				],
-
-	goodGame: 	"[Event	\"Dayton\"]" +
+	dummyTags: 	"[Event	\"Dayton\"]" +
 				"[Site	\"?\"]\n" +
 				"[Date	\"1890.02.25\"]\n" +
 				"[Round	\"?\"]\n" +
 				"[White	\"NoName\"]\n" +
 				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#",
+				"[Result	\"1-0\"]\n",
+
 	gameStartF:	[
 					[
 						{"piece":"rook","color":"white","type":""},
@@ -520,78 +519,6 @@ TestCase( "ConverterTest",
 					]
 				],
 
-	rookCheck: 	"[Event	\"Dayton\"]" +
-				"[Site	\"?\"]\n" +
-				"[Date	\"1890.02.25\"]\n" +
-				"[Round	\"?\"]\n" +
-				"[White	\"NoName\"]\n" +
-				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"[FEN	\"r6K/8/8/8/8/8/8/7k w - - 0 13\"]\n",
-
-	rookCheckR: 	"[Event	\"Dayton\"]" +
-				"[Site	\"?\"]\n" +
-				"[Date	\"1890.02.25\"]\n" +
-				"[Round	\"?\"]\n" +
-				"[White	\"NoName\"]\n" +
-				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"[FEN	\"K6r/8/8/8/8/8/8/7k w - - 0 13\"]\n",
-
-	rookCheckU: 	"[Event	\"Dayton\"]" +
-				"[Site	\"?\"]\n" +
-				"[Date	\"1890.02.25\"]\n" +
-				"[Round	\"?\"]\n" +
-				"[White	\"NoName\"]\n" +
-				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"[FEN	\"K6R/8/8/8/8/8/8/7k b - - 0 13\"]\n",
-
-	rookCheckD: 	"[Event	\"Dayton\"]" +
-				"[Site	\"?\"]\n" +
-				"[Date	\"1890.02.25\"]\n" +
-				"[Round	\"?\"]\n" +
-				"[White	\"NoName\"]\n" +
-				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"[FEN	\"K6k/8/8/8/8/8/8/7R b - - 0 13\"]\n",
-
-	bishopCheckUL: 	"[Event	\"Dayton\"]" +
-				"[Site	\"?\"]\n" +
-				"[Date	\"1890.02.25\"]\n" +
-				"[Round	\"?\"]\n" +
-				"[White	\"NoName\"]\n" +
-				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"[FEN	\"B6K/8/8/8/8/8/8/7k b - - 0 13\"]\n",
-
-	bishopCheckUR: 	"[Event	\"Dayton\"]" +
-				"[Site	\"?\"]\n" +
-				"[Date	\"1890.02.25\"]\n" +
-				"[Round	\"?\"]\n" +
-				"[White	\"NoName\"]\n" +
-				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"[FEN	\"k6b/8/8/8/8/8/8/K7 w - - 0 13\"]\n",
-
-	queenCheckDL: 	"[Event	\"Dayton\"]" +
-				"[Site	\"?\"]\n" +
-				"[Date	\"1890.02.25\"]\n" +
-				"[Round	\"?\"]\n" +
-				"[White	\"NoName\"]\n" +
-				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"[FEN	\"k6K/8/8/8/8/8/8/q7 w - - 0 13\"]\n",
-
-	queenCheckDR: 	"[Event	\"Dayton\"]" +
-				"[Site	\"?\"]\n" +
-				"[Date	\"1890.02.25\"]\n" +
-				"[Round	\"?\"]\n" +
-				"[White	\"NoName\"]\n" +
-				"[Black	\"Amateur\"]\n" +
-				"[Result	\"1-0\"]\n" +
-				"[FEN	\"K6k/8/8/8/8/8/8/7q w - - 0 13\"]\n",
-
 	shortGame:	"[Event	\"?\"]" +
 				"[Site	\"?\"]\n" +
 				"[Date	\"????.??.??\"]\n" +
@@ -616,7 +543,8 @@ TestCase( "ConverterTest",
 	},
 	
 	"test starting position converter creation": function() {
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags +
+		    "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		
 		assertEquals( pgn, conv.pgn );
@@ -627,7 +555,7 @@ TestCase( "ConverterTest",
 	},
 	
 	"test converting short game with castling": function() {
-		pgn = new Pgn( this.shortGame );
+		pgn = new Pgn( this.dummyTags + "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Nbd7 5. Nf3 c6 6. e3 Qa5 7. Nd2 Bb4 8. Be2 0-0 *" );
 		conv = new Converter(pgn);
 		conv.convert();
 		
@@ -638,7 +566,7 @@ TestCase( "ConverterTest",
 	"test getting the current move number": function() {
 		expected = 0;
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		move = conv.getCurMoveNo();
@@ -650,7 +578,7 @@ TestCase( "ConverterTest",
 		expected = null;
 		expectedJSON = "null";
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		move = conv.prevMove();
@@ -664,7 +592,7 @@ TestCase( "ConverterTest",
 		expectedJSON = "null";
 		expectedNumber = 8;
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		conv.resetToEnd();
@@ -680,7 +608,7 @@ TestCase( "ConverterTest",
 		expected = null;
 		expectedJSON = JSON.stringify(this.gameStart);
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		position = conv.getStartPos(false);
@@ -692,7 +620,7 @@ TestCase( "ConverterTest",
 		expected = null;
 		expectedJSON = JSON.stringify(this.gameStartF);
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		position = conv.getStartPos(true);
@@ -727,7 +655,7 @@ TestCase( "ConverterTest",
 		expectedJSON = JSON.stringify(this.gameEnd);
 		expectedNumber = 0;
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		position = conv.getEndPos(false);
@@ -742,7 +670,7 @@ TestCase( "ConverterTest",
 		expectedJSON = JSON.stringify(this.gameEndF);
 		expectedNumber = 0;
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		position = conv.getEndPos(true);
@@ -869,7 +797,7 @@ TestCase( "ConverterTest",
 		g8Origin = [6,0];
 		gOrigin = [6,-1];
 		
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		conv.resetToEnd();
@@ -930,7 +858,7 @@ TestCase( "ConverterTest",
 	"test capturing en passant": function() {
 	    e3 = [6,4];
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		conv.resetToStart();
@@ -940,7 +868,7 @@ TestCase( "ConverterTest",
 	
 	"test getting opponent's color": function() {
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -959,7 +887,7 @@ TestCase( "ConverterTest",
 		to.color = "black";
 		to.type = null;
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		result = conv.movePiece(conv, from, to, "");
@@ -979,7 +907,7 @@ TestCase( "ConverterTest",
 		to.color = "black";
 		to.type = null;
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 		conv.movePiece(conv, pawnFrom, to, "Q");
@@ -997,7 +925,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if black king is in check": function() {
 
-		pgn = new Pgn( this.goodGame );
+		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -1006,7 +934,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if white king is in check from rook": function() {
 
-		pgn = new Pgn( this.rookCheck );
+		pgn = new Pgn( this.dummyTags + "[FEN	\"r6K/8/8/8/8/8/8/7k w - - 0 13\"]\n" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -1015,7 +943,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if white king is in check from rook (right)": function() {
 
-		pgn = new Pgn( this.rookCheckR );
+		pgn = new Pgn( this.dummyTags + "[FEN	\"K6r/8/8/8/8/8/8/7k w - - 0 13\"]" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -1024,7 +952,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if black king is in check from rook (up)": function() {
 
-		pgn = new Pgn( this.rookCheckU );
+		pgn = new Pgn( this.dummyTags + "[FEN	\"K6R/8/8/8/8/8/8/7k b - - 0 13\"]" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -1033,7 +961,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if black king is in check from rook (down)": function() {
 
-		pgn = new Pgn( this.rookCheckD );
+		pgn = new Pgn( this.dummyTags + "[FEN	\"K6k/8/8/8/8/8/8/7R b - - 0 13\"]" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -1042,7 +970,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if black king is in check from bishop (ul)": function() {
 
-		pgn = new Pgn( this.bishopCheckUL );
+		pgn = new Pgn( this.dummyTags + "[FEN	\"B6K/8/8/8/8/8/8/7k b - - 0 13\"]" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -1051,7 +979,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if white king is in check from bishop (ur)": function() {
 
-		pgn = new Pgn( this.bishopCheckUR );
+		pgn = new Pgn( this.dummyTags + "[FEN	\"k6b/8/8/8/8/8/8/K7 w - - 0 13\"]" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -1060,7 +988,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if white king is in check from queen (dl)": function() {
 
-		pgn = new Pgn( this.queenCheckDL );
+		pgn = new Pgn( this.dummyTags + "[FEN	\"k6K/8/8/8/8/8/8/q7 w - - 0 13\"]" );
 		conv = new Converter(pgn);
 		conv.convert();
 
@@ -1069,7 +997,7 @@ TestCase( "ConverterTest",
 	
 	"test finding if white king is in check from queen (dr)": function() {
 
-		pgn = new Pgn( this.queenCheckDR );
+		pgn = new Pgn( this.dummyTags + "[FEN	\"K6k/8/8/8/8/8/8/7q w - - 0 13\"]" );
 		conv = new Converter(pgn);
 		conv.convert();
 
