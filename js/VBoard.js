@@ -289,5 +289,78 @@ VBoard.prototype = {
             return false;
         }
         return true;
+    },
+    /**
+     * Get the current move number
+     *
+     *  @return {integer}   the current move number value
+     */
+    getMoveNumber:      function () {
+        "use strict";
+        return this.currentMove;
+    },
+    /**
+     * @return  {string}    the letter of the file for the square.
+     */
+    file:               function (square) {
+        "use strict";
+        var index = parseInt(square, 10);
+        if(!index) { index = this.algebraic2Index(square); }
+        return String.fromCharCode((index % 10) + "a".charCodeAt(0) - 1)
+    },
+    /**
+     * Is the square a possible en passant square?
+     *
+     *  @param  {var}       square
+     *  @return {boolean}   is it a legal 3rd or 6th rank square?
+     */
+    possibleEPTarget:   function (square) {
+        "use strict";
+        var index = parseInt(square, 10);
+        
+        if (!index) { index = this.algebraic2Index(square); }
+        
+        if ((Math.floor(index / 10) === 3 || 
+                Math.floor(index / 10) === 6) &&
+                this.exists(index)) {
+            return true;
+        }
+        return false;
+    },
+    findFromPawn:   function (to, color) {
+        var possibles = [],
+            index,
+            text = to.match(/([a-h][1-8]?)x?([a-h][1-8])?=?([NBRQ]?)/),
+            enemy = color === "white" ? "black" : "white",
+            direction = color === "white" ? 1 : -1,
+            promotedTo,
+            destination = null,
+            from = null,
+            capture = false;
+
+        if (text[4]) { promotedTo = text[4]; }
+        if (text[2] === "x") {
+            destination = text[3];
+            from = text[1];
+            capture = true;
+        } else {
+            destination = text[1];
+        }
+        index = this.algebraic2Index(destination);
+        
+        if (capture) {
+            if (this.file(this.index2Algebraic(index - 9 * direction)) === from){
+                from = this.index2Algebraic(index - 9 * direction);
+            } else {
+                from = this.index2Algebraic(index - 11 * direction);
+            }
+        } else {
+            if (this.isOccupied(this.index2Algebraic(this.algebraic2Index(destination) - 10 * direction))) {
+                from = this.index2Algebraic(this.algebraic2Index(destination) - 10 * direction);
+            } else {
+                from = this.index2Algebraic(this.algebraic2Index(destination) - 20 * direction);
+            }
+        }
+        return from;
     }
 };

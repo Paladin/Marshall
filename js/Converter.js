@@ -46,8 +46,9 @@ function Converter(pgn) {
 		j;
 
 	this.pgn = pgn;
-	this.vBoard = new Array(8);
-	this.initialBoard = new Array(8);
+	this.vBoard = new VBoard(this.pgn.props.FEN);
+	this.initialBoard = new VBoard(this.pgn.props.FEN);
+	this.startMoveNum = this.vBoard.getMoveNumber();
 	this.moves = [];
 
 	this.wKing = [];
@@ -58,23 +59,6 @@ function Converter(pgn) {
 	this.bBishops = [];
 	this.wRooks = [];
 	this.bRooks = [];
-
-	for (i = 0; i < 8; i += 1) {
-		this.vBoard[i] = new Array(8);
-		for (j = 0; j < 8; j += 1) {
-			this.vBoard[i][j] = new vSquare();
-		}
-	}
-
-	this.setupVirtualBoard(pgn.props.FEN);
-
-	// let's clone the initial pos
-	for (i = 0; i < 8; i += 1) {
-		this.initialBoard[i] = new Array(8);
-		for (j = 0; j < 8; j += 1) {
-			this.initialBoard[i][j] = this.vBoard[i][j].clone();
-		}
-	}
 }
 Converter.prototype = {
 	iteIndex:			0,
@@ -82,101 +66,6 @@ Converter.prototype = {
 	startMoveNum:		1,
 	flippedI:			false,
 	flippedV:			false,
-/**
- *	Sets up a virtual board. Since the starting position is just a special
- *  case of FEN, it checks to see if it was given a FEN, defaults to start.
- */
-    setupVirtualBoard:	function (FEN) {
-        "use strict";
-        var val,
-            i,
-            j,
-            c,
-            file;
-
-        FEN = FEN || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        val = FEN.split(/\/| /g);
-        for (i = 0; i < 8; i += 1) {
-            file = 0;
-            for (j = 0; j < val[i].length; j += 1) {
-                c = val[i].charAt(j);
-                switch (c) {
-                case 'p':
-                    this.placePiece(this.vBoard[i][file], 'pawn', 'black');
-                    file += 1;
-                    break;
-                case 'n':
-                    this.placePiece(this.vBoard[i][file], 'knight', 'black');
-                    file += 1;
-                    break;
-                case 'k':
-                    this.placePiece(this.vBoard[i][file], 'king', 'black');
-                    this.bKingX = i;
-                    this.bKingY = file;
-                    file += 1;
-                    break;
-                case 'q':
-                    this.placePiece(this.vBoard[i][file], 'queen', 'black');
-                    this.bQueens[this.bQueens.length] = [i, file];
-                    file += 1;
-                    break;
-                case 'r':
-                    this.placePiece(this.vBoard[i][file], 'rook', 'black');
-                    this.bRooks[this.bRooks.length] = [i, file];
-                    file += 1;
-                    break;
-                case 'b':
-                    this.placePiece(this.vBoard[i][file], 'bishop', 'black');
-                    this.bBishops[this.bBishops.length] = [i, file];
-                    file += 1;
-                    break;
-                case 'P':
-                    this.placePiece(this.vBoard[i][file], 'pawn', 'white');
-                    file += 1;
-                    break;
-                case 'N':
-                    this.placePiece(this.vBoard[i][file], 'knight', 'white');
-                    file += 1;
-                    break;
-                case 'K':
-                    this.placePiece(this.vBoard[i][file], 'king', 'white');
-                    this.wKingX = i;
-                    this.wKingY = file;
-                    file += 1;
-                    break;
-                case 'Q':
-                    this.placePiece(this.vBoard[i][file], 'queen', 'white');
-                    this.wQueens[this.wQueens.length] = [i, file];
-                    file += 1;
-                    break;
-                case 'R':
-                    this.placePiece(this.vBoard[i][file], 'rook', 'white');
-                    this.wRooks[this.wRooks.length] = [i, file];
-                    file += 1;
-                    break;
-                case 'B':
-                    this.placePiece(this.vBoard[i][file], 'bishop', 'white');
-                    this.wBishops[this.wBishops.length] = [i, file];
-                    file += 1;
-                    break;
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                    file += parseInt(c, 10);
-                    break;
-                }
-            }
-        }
-        if (val[8] === "b") {
-            this.whiteToMove = false;
-        }
-        this.startMoveNum = parseInt(val[12], 10);
-    },
     placePiece:	function (theSquare, thePiece, theColor) {
         "use strict";
         theSquare.piece = thePiece;
@@ -189,7 +78,7 @@ Converter.prototype = {
         do {
             move = this.convertMove();
             if (move) {
-                move.position = this.getForsythe(this.vBoard);
+                move.position = this.vBoard.getFEN();
             }
             this.moves[this.moves.length] = move;
         } while (move);
@@ -252,38 +141,14 @@ Converter.prototype = {
         EOF Result Iterator
     */
 
-    getStartPos:	function (flipped) {
+    getStartPos:	function () {
         "use strict";
-        if (flipped !== this.flippedI) {
-            this.flipBoard(this.initialBoard);
-            this.flippedI = !this.flippedI;
-        }
         return this.initialBoard;
     },
 
-    getEndPos:	function (flipped) {
+    getEndPos:	function () {
         "use strict";
-        if (flipped !== this.flippedV) {
-            this.flipBoard(this.vBoard);
-            this.flippedV = !this.flippedV;
-        }
         return this.vBoard;
-    },
-
-    flipBoard:	function (board) {
-        "use strict";
-        var i,
-            j,
-            tmp;
-
-        this.flipped = !this.flipped;
-        for (i = 0; i < 8; i += 1) {
-            for (j = 0; j < 4; j += 1) {
-                tmp = board[i][j];
-                board[i][j] = board[7 - i][7 - j];
-                board[7 - i][7 - j] = tmp;
-            }
-        }
     },
 
         /*
@@ -306,14 +171,19 @@ Converter.prototype = {
             sq,
             enP,
             parsed,
+<<<<<<< HEAD
             moveText,
+=======
+>>>>>>> Developing new converter logic
             myMove = null,
             pawnM = false;
 
         if (to === null) {
             return;
         }
+
         color = to[1];
+        to = to[0];
         moveText = to[0];
         toCoords = this.getSquare(moveText);
 
@@ -551,7 +421,6 @@ Converter.prototype = {
             Find the pawn from location.
         */
     findFromPawn:	function (pos, to, tmp, color) {
-        "use strict";
         var x = tmp[1],
             y = tmp[0],
             froms,
@@ -1144,54 +1013,5 @@ Converter.prototype = {
             }
         } catch (e) {}
         return false;
-    },
-    /**
-     *	Gets the forsythe notation of a vBoard position.
-     *
-     *	TODO: Reconcile the inconsistent ways a vBoard is used in this code.
-     */
-    getForsythe:	function (theBoard) {
-        "use strict";
-        var position = "/",		// establish position as string
-            empty,
-            rank,
-            file,
-            p,
-            piece;
-
-        function addEmpties() {
-            if (empty > 0) {
-                position = position + empty;
-                empty = 0;
-            }
-        }
-
-        for (rank = 0; rank < 8; rank += 1) {
-            empty = 0;
-            for (file = 0; file < 8; file += 1) {
-                p = theBoard[rank][file];	// FEN board is opposite of vBoard
-                piece = p.piece;
-                if (p.piece) {
-                    addEmpties();
-                    if (p.color === 'black') {
-                        piece = p.piece.toLowerCase();
-                    } else {
-                        piece = p.piece.toUpperCase();
-                    }
-                    if (piece === 'KNIGHT' || piece === 'knight') {
-                        piece = piece.charAt(1);
-                    } else {
-                        piece = piece.charAt(0);
-                    }
-                    position = position + piece;
-                } else {
-                    empty += 1;
-                }
-            }
-            addEmpties();
-            position = position + "/";
-        }
-
-        return position.slice(1, -1);	// Remove the first and last slash
     }
 };

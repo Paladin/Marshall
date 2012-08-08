@@ -40,6 +40,7 @@ MoveTree.prototype = {
     result:         null,
     color:          null,
     destination:    null,
+    origin:         null,
     getNextMove:    function () {
         "use strict";
         return this.next || this;

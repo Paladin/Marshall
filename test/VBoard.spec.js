@@ -84,11 +84,19 @@
             	this.vBoard.clear("a8");
             	expect(this.vBoard.isOccupied("a8")).toBe(false);
             });
+            it(" Should not find this a possible ep target", function () {
+            	expect(this.vBoard.possibleEPTarget("e4")).
+            	    toBe(false);
+            });
+            it(" Should find this a possible ep target", function () {
+            	expect(this.vBoard.possibleEPTarget("e6")).
+            	    toBe(true);
+            });
 		});
 		describe("Working with FEN", function () {
 		    beforeEach(function () {
 		        var start = 
-		"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1";
+		"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 10";
 		        this.vBoard = new VBoard(start);
 		    });
 		    it("should have the pieces all set up properly", function () {
@@ -124,8 +132,11 @@
 		    it("should return the modified position", function () {
 		        this.vBoard.place("P", "f4");
 		        expect(this.vBoard.getFEN()).toBe(
-		"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1P1N/2P4R/PP1N2PP/R5K1 w - - 0 1"
+		"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1P1N/2P4R/PP1N2PP/R5K1 w - - 0 10"
 		        );
+		    });
+		    it(" Should return the correct move number", function () {
+		    	expect(this.vBoard.getMoveNumber()).toBe(10);
 		    });
 		});
 	});
