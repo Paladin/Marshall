@@ -225,14 +225,9 @@ Pgn.prototype = {
      *  minus the tags.
      */
     extractTags:	function (theText) {
+        "use strict";
         var text = theText,
-            matches,
-            reprop = /\[([^\]]*)\]/gi,
-            tmpMatches,
-            key,
-            i,
-            length,
-            value;
+            i;
 
         while (text.length > 0 && (/[\s\[]/).test(text.charAt(0))) {
             if (text.charAt(0) === "[") {
