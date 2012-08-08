@@ -44,6 +44,10 @@ MoveTree.prototype = {
         "use strict";
         return this.next || this;
     },
+    getPreviousMove:    function () {
+        "use strict";
+        return this.previous || this;
+    },
     isEnd:          function () {
         "use strict";
         return this.next === null;

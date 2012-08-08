@@ -84,6 +84,10 @@
     	it(" Should get next move", function () {
     		expect(this.moveTree.getNextMove()).toBe(this.moveTree.next);
     	});
+    	it(" Should get previous move", function () {
+    		expect(this.moveTree.next.next.getPreviousMove()).
+    		    toBe(this.moveTree.next);
+    	});
     	it(" Should not be at the end of a line", function () {
     		expect(this.moveTree.isEnd()).toBe(false);
     	});
