@@ -419,7 +419,7 @@ Pgn.prototype = {
 
         tag = text.substring(0, text.indexOf("]"));
         text = text.slice(tag.length);
-        tag = tag.match(/([\w]*)\s\"((.)*)\"/);
+        tag = tag.match(/([\w]*)\s\"([\w \\\/,\.:\-\?\*]*)\"/);
         this.props[tag[1]] = tag[2];
         return text;
     },
