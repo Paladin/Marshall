@@ -314,6 +314,7 @@ Converter.prototype = {
             enPassante,
             sq,
             enP,
+            parsed,
             myMove = null,
             pawnM = false;
 
@@ -322,8 +323,10 @@ Converter.prototype = {
         }
         color = to[1];
         to = to[0];
-
         toCoords = this.getSquare(to);
+        
+        parsed = to.match(/(O-O-O|O-O|[NBRQK]?)([a-h][1-8]?)(x)?([a-h][1-8])?=?([NBRQ]?)([\+#!\?]?)/);
+
         if (knightre.test(to)) {
             fromCoords = this.findFromKnight(this, to, toCoords, color);
             from = this.vBoard[fromCoords[0]][fromCoords[1]];
