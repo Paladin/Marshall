@@ -224,9 +224,9 @@ Pgn.prototype = {
      *  the class variable props as key/value pairs. it returns the pgn string,
      *  minus the tags.
      */
-    extractTags:	function (pgn) {
-        "use strict";
-        var matches,
+    extractTags:	function (theText) {
+        var text = theText,
+            matches,
             reprop = /\[([^\]]*)\]/gi,
             tmpMatches,
             key,
@@ -234,35 +234,17 @@ Pgn.prototype = {
             length,
             value;
 
-        matches = pgn.match(reprop);
-        if (matches) {
-            // extract information from each matched property
-            for (i = 0; i < matches.length; i += 1) {
-                // lose the brackets
-                tmpMatches = matches[i].substring(1, matches[i].length - 1);
-                // split by the first space
-                key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
-                value = tmpMatches.substring(tmpMatches.indexOf(" ") + 1);
-                if (value.charAt(0) === '"') {
-                    value = value.substr(1);
-                }
-                if (value.charAt(value.length - 1) === '"') {
-                    value = value.substr(0, value.length - 1);
-                }
-
-                this.props[key] = value;
-                pgn = pgn.replace(matches[i], "");
+        while (text.length > 0 && (/[\s\[]/).test(text.charAt(0))) {
+            if (text.charAt(0) === "[") {
+                text = this.parseTag(text);
             }
+            text = text.slice(1);
         }
-        length = this.requiredLength - 1;
-        while (length) {
-            if (!this.props[this.requiredProps[length]]) {
-                this.props[this.requiredProps[length]] = "?";
-            }
-            length -= 1;
+        for (i = 0; i < this.requiredProps.length; i += 1) {
+            this.props[this.requiredProps[i]] =
+                this.props[this.requiredProps[i]] || "?";
         }
-
-        return pgn.replace(/\[[^\]]*\]/g, '').trim();
+        return text.trim();
     },
 
     nextMove:	function () {
@@ -371,7 +353,7 @@ Pgn.prototype = {
             move = new MoveTree();
 
         this.color = "white";
-        this.tags = [];
+        this.tags = {};
         this.moveTree = move;
 
         while (text.length > 0) {
@@ -438,7 +420,7 @@ Pgn.prototype = {
         tag = text.substring(0, text.indexOf("]"));
         text = text.slice(tag.length);
         tag = tag.match(/([a-zA-Z0-9]*)\s\"((.)*)\"/);
-        this.tags[tag[1]] = tag[2];
+        this.props[tag[1]] = tag[2];
         return text;
     },
     /**

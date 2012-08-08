@@ -132,40 +132,40 @@
                 this.pgn.parse(tagsOnly);
             });
             it(" Should get the tag count correct", function () {
-                expect(11).toBe(Object.keys(this.pgn.tags).length);
+                expect(11).toBe(Object.keys(this.pgn.props).length);
             });
             it(" Should correctly name White", function () {
-                expect("Walker").toBe(this.pgn.tags.White);
+                expect("Walker").toBe(this.pgn.props.White);
             });
             it(" Should correctly name White", function () {
-                expect("Coons").toBe(this.pgn.tags.Black);
+                expect("Coons").toBe(this.pgn.props.Black);
             });
             it(" Should correctly name White", function () {
-                expect("Waukesha Team").toBe(this.pgn.tags.Event);
+                expect("Waukesha Team").toBe(this.pgn.props.Event);
             });
             it(" Should correctly name White", function () {
-                expect("Waukesha").toBe(this.pgn.tags.Site);
+                expect("Waukesha").toBe(this.pgn.props.Site);
             });
             it(" Should correctly name White", function () {
-                expect("2001.07.11").toBe(this.pgn.tags.Date);
+                expect("2001.07.11").toBe(this.pgn.props.Date);
             });
             it(" Should correctly name White", function () {
-                expect("1").toBe(this.pgn.tags.Round);
+                expect("1").toBe(this.pgn.props.Round);
             });
             it(" Should correctly name White", function () {
-                expect("Shredder").toBe(this.pgn.tags.Annotator);
+                expect("Shredder").toBe(this.pgn.props.Annotator);
             });
             it(" Should correctly name White", function () {
-                expect("1-0").toBe(this.pgn.tags.Result);
+                expect("1-0").toBe(this.pgn.props.Result);
             });
             it(" Should correctly name White", function () {
-                expect("1").toBe(this.pgn.tags.SetUp);
+                expect("1").toBe(this.pgn.props.SetUp);
             });
             it(" Should correctly name White", function () {
-                expect("9").toBe(this.pgn.tags.PlyCount);
+                expect("9").toBe(this.pgn.props.PlyCount);
             });
             it(" Should correctly name White", function () {
-                expect("2009.06.14").toBe(this.pgn.tags.SourceDate);
+                expect("2009.06.14").toBe(this.pgn.props.SourceDate);
             });
         });
         describe(" Parsing Moves", function () {
