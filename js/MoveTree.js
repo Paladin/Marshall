@@ -111,9 +111,10 @@ MoveTree.prototype = {
     },
     addVariation:        function (properties) {
         "use strict";
-        var move = new MoveTree(properties);
-        this.down = move;
-        move.up = this;
+        var move = new MoveTree(properties),
+            addedTo = this.goBottom();
+        addedTo.down = move;
+        move.up = addedTo;
         return move;
     },
     toString:       function () {

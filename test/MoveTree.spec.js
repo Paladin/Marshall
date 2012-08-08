@@ -68,6 +68,11 @@
     	it(" Should add variation", function () {
     		expect(this.moveTree.next.next).toBe(this.moveTree.next.next.down.up);
     	});
+    	it(" Should add the variation at the bottom", function () {
+    		expect(this.moveTree.next.next.
+    		    addVariation({number: 2, text: "c3", color: "white" })).
+    		    toBe(this.moveTree.next.next.down.down.down);
+    	});
     	it(" Should list main line", function () {
     		expect(this.moveTree.list()).
     		    toBe("1. e4 c5 2. Nc3 Nc6 3. f4 e6 4. Nf3 d5");
