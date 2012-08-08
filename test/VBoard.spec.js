@@ -79,6 +79,11 @@
             it("should find the square 98 doesn't exist", function () {
                 expect(this.vBoard.exists("98")).toBe(false);
             });
+            it(" Should be able to clear square a8", function () {
+            	expect(this.vBoard.isOccupied("a8")).toBe(true);
+            	this.vBoard.clear("a8");
+            	expect(this.vBoard.isOccupied("a8")).toBe(false);
+            });
 		});
 		describe("Working with FEN", function () {
 		    beforeEach(function () {
