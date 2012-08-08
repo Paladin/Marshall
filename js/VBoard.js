@@ -171,6 +171,19 @@ VBoard.prototype = {
         return;
     },
     /**
+     * Clears a given square
+     *
+     * @param   {string}    - Which square (algebraic notation)
+     */
+    clear:      function (where) {
+        "use strict";
+        var square = this.algebraic2Index(where);
+
+        this.squares[square] = null;
+
+        return;
+    },
+    /**
      * Returns the the FEN of the current position
      */
     getFEN:     function () {
