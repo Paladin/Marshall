@@ -1,5 +1,6 @@
 (function () {
-    var initial = { "next": "another move tree", "number": 1 };
+    var initial = { "next": "another move tree", "number": 1,
+        "text": "Nf3", "color": "black", "commentary": "This is a comment"};
  
     describe("Move Tree", function () {
     	beforeEach(function () {
