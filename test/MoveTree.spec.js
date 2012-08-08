@@ -70,5 +70,8 @@
     		expect(this.moveTree.next.next.next.next.next.down.next.
     		    next.down.list()).toBe("4. ... d6 5. Bb5");
     	});
+    	it(" Should get next move", function () {
+    		expect(this.moveTree.getNextMove()).toBe(this.moveTree.next);
+    	});
     });
 } ());
