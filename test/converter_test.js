@@ -890,7 +890,7 @@ TestCase( "ConverterTest",
 		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
-		result = conv.movePiece(conv, from, to, "");
+		result = conv.movePiece(from, to, "");
 
 		assertEquals( "Incorrect piece moved", "knight", to.piece);
 		assertEquals( "Incorrect color moved", "white", to.color);
@@ -910,16 +910,16 @@ TestCase( "ConverterTest",
 		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
 		conv = new Converter(pgn);
 		conv.convert();
-		conv.movePiece(conv, pawnFrom, to, "Q");
+		conv.movePiece(pawnFrom, to, "Q");
 
 		assertEquals( "Incorrect piece promoted - Q", "queen", to.piece);
 		assertEquals( "Incorrect color moved", "white", to.color);
 		assertEquals( "Incorrect type moved", -1, to.type);
-		conv.movePiece(conv, pawnFrom, to, "R");
+		conv.movePiece(pawnFrom, to, "R");
 		assertEquals( "Incorrect piece promoted - R", "rook", to.piece);
-		conv.movePiece(conv, pawnFrom, to, "N");
+		conv.movePiece(pawnFrom, to, "N");
 		assertEquals( "Incorrect piece promoted - N", "knight", to.piece);
-		conv.movePiece(conv, pawnFrom, to, "B");
+		conv.movePiece(pawnFrom, to, "B");
 		assertEquals( "Incorrect piece promoted - B", "bishop", to.piece);
 	},
 	

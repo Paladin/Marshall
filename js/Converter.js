@@ -289,20 +289,11 @@ Converter.prototype = {
         /*
             Convert a move.
         */
-    convertMove:	function (board) {
+    convertMove:	function () {
         "use strict";
         var to = this.pgn.nextMove(),
             oldTo = to,
             color,
-            pawnre = /^[a-z]+[1-8]/,
-            genericre = /^[a-z][1-8]-[a-z][1-8]/,
-            knightre = /^N[0-9]?[a-z]+[1-8]/i,
-            bishre = /^B[a-z]+[1-8]/,
-            queenre = /^Q([a-z]|[0-9])?[a-z]+[1-8]/i,
-            rookre = /^R([a-z]|[0-9])?[a-z]+[1-8]/i,
-            lCastlere = /^(0|O)-(0|O)-(0|O)/i,
-            sCastlere = /^(0|O)-(0|O)/i,
-            kingre = /^K[a-z]+[1-8]/i,
             prom = "",
             wCoords,
             bCoords,
@@ -315,6 +306,7 @@ Converter.prototype = {
             sq,
             enP,
             parsed,
+            moveText,
             myMove = null,
             pawnM = false;
 
@@ -322,48 +314,19 @@ Converter.prototype = {
             return;
         }
         color = to[1];
-        to = to[0];
-        toCoords = this.getSquare(to);
-        
-        parsed = to.match(/(O-O-O|O-O|[NBRQK]?)([a-h][1-8]?)(x)?([a-h][1-8])?=?([NBRQ]?)([\+#!\?]?)/);
+        moveText = to[0];
+        toCoords = this.getSquare(moveText);
 
-        if (knightre.test(to)) {
-            fromCoords = this.findFromKnight(this, to, toCoords, color);
-            from = this.vBoard[fromCoords[0]][fromCoords[1]];
-            to = this.vBoard[toCoords[0]][toCoords[1]];
-        } else if (bishre.test(to)) {
-            fromCoords = this.findFromBish(this, to, toCoords, color);
-            from = this.vBoard[fromCoords[0]][fromCoords[1]];
-            to = this.vBoard[toCoords[0]][toCoords[1]];
-            this.updatePieceLocation(from, fromCoords, toCoords, "Bishop");
-        } else if (queenre.test(to)) {
-            fromCoords =
-                this.findFromQueen(this, this.vBoard, to, toCoords, color);
-            from = this.vBoard[fromCoords[0]][fromCoords[1]];
-            to = this.vBoard[toCoords[0]][toCoords[1]];
-            this.updatePieceLocation(from, fromCoords, toCoords, "Queen");
-        } else if (rookre.test(to)) {
-            fromCoords =
-                this.findFromRook(this, this.vBoard, to, toCoords, color);
-            from = this.vBoard[fromCoords[0]][fromCoords[1]];
-            to = this.vBoard[toCoords[0]][toCoords[1]];
-            this.updatePieceLocation(from, fromCoords, toCoords, "Rook");
-        } else if (kingre.test(to)) {
-            fromCoords = this.findFromKing(this, color);
-            from = this.vBoard[fromCoords[0]][fromCoords[1]];
-            to = this.vBoard[toCoords[0]][toCoords[1]];
-            if ('white' === from.color) {
-                this.wKingX = toCoords[0];
-                this.wKingY = toCoords[1];
-            } else {
-                this.bKingX = toCoords[0];
-                this.bKingY = toCoords[1];
-            }
-        } else if (sCastlere.test(to)) {
+        parsed = moveText.match(/O-O-O|O-O|0-0|0-0-0|([NBRQK]?)([a-h]?[1-8]?)(x)?([a-h][1-8])?=?([NBRQ]?)([\+#!\?]*)/);
+        switch (parsed[0]) {
+        case "O-O":
+        case "0-0":
+        case "O-O-O":
+        case "0-0-0":
             bCoords = ['e8', 'g8', 'h8', 'f8'];
             wCoords = ['e1', 'g1', 'h1', 'f1'];
 
-            if (lCastlere.test(to)) {
+            if (parsed[0] === "O-O-O" || parsed[0] === "0-0-0") {
                 bCoords = ['e8', 'c8', 'a8', 'd8'];
                 wCoords = ['e1', 'c1', 'a1', 'd1'];
             }
@@ -382,7 +345,7 @@ Converter.prototype = {
                 this.bKingX = toCoords[0];
                 this.bKingY = toCoords[1];
             }
-            result = this.movePiece(this, from, to, prom);
+            result = this.movePiece(from, to, prom);
 
             myMove = new MyMove();
             myMove.moveStr = oldTo[0];
@@ -395,25 +358,73 @@ Converter.prototype = {
             from = this.vBoard[fromCoords[0]][fromCoords[1]];
             to = this.vBoard[toCoords[0]][toCoords[1]];
             this.updatePieceLocation(from, fromCoords, toCoords, "Rook");
-        } else if (genericre.test(to)) {
-            // dbl information move, g4-g6
-            fromCoords = this.findFromAny(to, toCoords);
-            from = this.vBoard[fromCoords[0]][fromCoords[1]];
-            to = this.vBoard[toCoords[0]][toCoords[1]];
-            this.updatePieceLocation(from, fromCoords, toCoords,
-                from.piece.charAt(0).toUpperCase() + from.piece.slice(1));
-        } else if (pawnre.test(to)) {
-            // let see if it is a promotional move
-            if (/^[a-z]+[1-8]=[A-Z]/.test(to)) {
-                prom = to.charAt(to.indexOf('=') + 1);
+            break;
+        default:
+            switch (parsed[1]) {
+            case "N":
+                fromCoords = this.findFromKnight(this, to, toCoords, color);
+                from = this.vBoard[fromCoords[0]][fromCoords[1]];
+                to = this.vBoard[toCoords[0]][toCoords[1]];
+                break;
+            case "B":
+                fromCoords = this.findFromBish(this, to, toCoords, color);
+                from = this.vBoard[fromCoords[0]][fromCoords[1]];
+                to = this.vBoard[toCoords[0]][toCoords[1]];
+                this.updatePieceLocation(from, fromCoords, toCoords, "Bishop");
+                break;
+            case "Q":
+                fromCoords =
+                    this.findFromQueen(this, this.vBoard, to, toCoords, color);
+                from = this.vBoard[fromCoords[0]][fromCoords[1]];
+                to = this.vBoard[toCoords[0]][toCoords[1]];
+                this.updatePieceLocation(from, fromCoords, toCoords, "Queen");
+                break;
+            case "R":
+                fromCoords =
+                    this.findFromRook(this, this.vBoard, to, toCoords, color);
+                from = this.vBoard[fromCoords[0]][fromCoords[1]];
+                to = this.vBoard[toCoords[0]][toCoords[1]];
+                this.updatePieceLocation(from, fromCoords, toCoords, "Rook");
+                break;
+            case "K":
+                fromCoords = this.findFromKing(this, color);
+                from = this.vBoard[fromCoords[0]][fromCoords[1]];
+                to = this.vBoard[toCoords[0]][toCoords[1]];
+                if ('white' === from.color) {
+                    this.wKingX = toCoords[0];
+                    this.wKingY = toCoords[1];
+                } else {
+                    this.bKingX = toCoords[0];
+                    this.bKingY = toCoords[1];
+                }
+                break;
+            case "":
+                if ((parsed[2] && parsed[2].length === 2) &&
+                        (parsed[4] && parsed[4].length === 2)) {
+                    // dbl information move, g4-g6
+                    fromCoords = this.findFromAny(to, toCoords);
+                    from = this.vBoard[fromCoords[0]][fromCoords[1]];
+                    to = this.vBoard[toCoords[0]][toCoords[1]];
+                    this.updatePieceLocation(from, fromCoords, toCoords,
+                        from.piece.charAt(0).toUpperCase() +
+                        from.piece.slice(1));
+                } else {
+                    // let see if it is a promotional move
+                    if (/^[a-z]+[1-8]=[A-Z]/.test(moveText)) {
+                        prom = to.charAt(to.indexOf('=') + 1);
+                    }
+                    fromCoords =
+                        this.findFromPawn(this.vBoard, to, toCoords, color);
+                    pawnM = true;
+                    from = this.vBoard[fromCoords[0]][fromCoords[1]];
+                    to = this.vBoard[toCoords[0]][toCoords[1]];
+                }
+                break;
+            default:
+                throw ("Can't figure out which piece to move '" + oldTo + "'");
             }
-            fromCoords = this.findFromPawn(this.vBoard, to, toCoords, color);
-            pawnM = true;
-            from = this.vBoard[fromCoords[0]][fromCoords[1]];
-            to = this.vBoard[toCoords[0]][toCoords[1]];
-        } else {
-            throw ("Can't figure out which piece to move '" + oldTo + "'");
         }
+
         this.cleanUpAfterCapture(to, toCoords);
 
         // in case of castling we don't have a null value
@@ -435,7 +446,7 @@ Converter.prototype = {
             this.vBoard[enPassante[0]][enPassante[1]].type = null;
         }
 
-        result = this.movePiece(this, from, to, prom);
+        result = this.movePiece(from, to, prom);
 
         myMove.oPiece = result[2].piece;
         myMove.oColor = result[2].color;
@@ -1027,7 +1038,7 @@ Converter.prototype = {
         "use strict";
         return "white" === color ? "black" : "white";
     },
-    movePiece:	function (board, from, to, prom) {
+    movePiece:	function (from, to, prom) {
         "use strict";
         var hist = to.clone(),
             tmpPiece = from.piece,
