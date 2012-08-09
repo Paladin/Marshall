@@ -1,18 +1,18 @@
 (function (){
 
 	describe("Virtual Board", function () {
-	    var blackPawn = { piece : 'pawn', color : 'black' },
-	    	blackKnight = { piece : 'knight', color : 'black' },
-	    	blackBishop = { piece : 'bishop', color : 'black' },
-	    	blackRook = { piece : 'rook', color : 'black' },
-	    	blackKing = { piece : 'king', color : 'black' },
-	    	blackQueen = { piece : 'queen', color : 'black' },
-	    	whitePawn = { piece : 'pawn', color : 'white' },
-	    	whiteKnight = { piece : 'knight', color : 'white' },
-	    	whiteBishop = { piece : 'bishop', color : 'white' },
-	    	whiteRook = { piece : 'rook', color : 'white' },
-	    	whiteKing = { piece : 'king', color : 'white' },
-	    	whiteQueen = { piece : 'queen', color : 'white' },
+	    var blackPawn = { piece : 'pawn', color : 'black', symbol: "p" },
+	    	blackKnight = { piece : 'knight', color : 'black', symbol: "n" },
+	    	blackBishop = { piece : 'bishop', color : 'black', symbol: "b" },
+	    	blackRook = { piece : 'rook', color : 'black', symbol: "r" },
+	    	blackKing = { piece : 'king', color : 'black', symbol: "k" },
+	    	blackQueen = { piece : 'queen', color : 'black', symbol: "q" },
+	    	whitePawn = { piece : 'pawn', color : 'white', symbol: "P" },
+	    	whiteKnight = { piece : 'knight', color : 'white', symbol: "N" },
+	    	whiteBishop = { piece : 'bishop', color : 'white', symbol: "B" },
+	    	whiteRook = { piece : 'rook', color : 'white', symbol: "R" },
+	    	whiteKing = { piece : 'king', color : 'white', symbol: "K" },
+	    	whiteQueen = { piece : 'queen', color : 'white', symbol: "Q" },
 	    	empty = { piece : 'empty', color : null};
 
 		describe("Working with squares", function () {

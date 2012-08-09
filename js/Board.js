@@ -521,11 +521,13 @@ Board.prototype = {
         "use strict";
         var r,
             f,
-            p;
+            p,
+            square;
 
         for (r = 0; r < 8; r += 1) {
             for (f = 0; f < 8; f += 1) {
-                p = this.conv.initialBoard[r][f];
+                square = this.pos[r][f].getAttribute("data-squarename");
+                p = this.conv.initialBoard.whatsOn(square);
                 this.pos[r][f].piece = p.piece || "empty";
                 this.pos[r][f].color = p.color || "black";
                 this.updateSquare(this.pos[r][f], this.pos[r][f].piece,
@@ -668,12 +670,19 @@ Board.prototype = {
      */
     syncBoard:  function (result) {
         "use strict";
-        var i,
-            j;
+        var r,
+            f,
+            square,
+            p;
 
-        for (i = 0; i < 8; i += 1) {
-            for (j = 0; j < 8; j += 1) {
-                this.syncSquare(result[i][j], this.pos[i][j]);
+        for (r = 0; r < 8; r += 1) {
+            for (f = 0; f < 8; f += 1) {
+                square = this.pos[r][f].getAttribute("data-squarename");
+                p = result.whatsOn(square);
+                this.pos[r][f].piece = p.piece || "empty";
+                this.pos[r][f].color = p.color || "";
+                this.updateSquare(this.pos[r][f], this.pos[r][f].piece,
+                    this.pos[r][f].color);
             }
         }
     },
