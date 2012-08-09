@@ -42,8 +42,6 @@
  **/
 function Converter(pgn) {
 	"use strict";
-	var i,
-		j;
 
 	this.pgn = pgn;
 	this.vBoard = new VBoard(this.pgn.props.FEN);
@@ -159,17 +157,8 @@ Converter.prototype = {
         var to = this.pgn.nextMove(),
             oldTo = to,
             color,
-            prom = "",
-            wCoords,
-            bCoords,
             toCoords,
-            fromCoords,
-            coords,
             from,
-            result,
-            enPassante,
-            sq,
-            enP,
             parsed,
             moveText,
             thePiece,
@@ -180,8 +169,7 @@ Converter.prototype = {
             promotedTo,
             theNotes,
             newPiece,
-            myMove = null,
-            pawnM = false;
+            myMove = null;
 
         if (to === null) {
             return;
@@ -194,7 +182,7 @@ Converter.prototype = {
 
         parsed = moveText.match(/O-O-O|O-O|0-0|0-0-0|([NBRQK]?)([a-h]?[1-8]?)(x)?([a-h][1-8])?=?([NBRQ]?)([\+#!\?]*)/);
         theMove = parsed[0];
-        thePiece = parsed [1];
+        thePiece = parsed[1];
         if (parsed[4]) {
             theSource = parsed[2];
             theDestination = parsed[4];
@@ -259,7 +247,8 @@ Converter.prototype = {
             }
         }
         promotedTo = color === "black" ? promotedTo.toLowerCase() : promotedTo;
-        newPiece = promotedTo === "" ? this.vBoard.whatsOn(from).symbol : promotedTo;
+        newPiece =
+            promotedTo === "" ? this.vBoard.whatsOn(from).symbol : promotedTo;
         this.vBoard.place(newPiece, theDestination);
         this.vBoard.clear(from);
 
@@ -337,6 +326,7 @@ Converter.prototype = {
             Find the pawn from location.
         */
     findFromPawn:	function (pos, to, tmp, color) {
+        "use strict";
         var x = tmp[1],
             y = tmp[0],
             froms,

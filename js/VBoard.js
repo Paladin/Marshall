@@ -280,7 +280,7 @@ VBoard.prototype = {
     exists:         function (square) {
         "use strict";
         var index;
-        
+
         if (square.length === undefined) {
             index = square;
         } else {
@@ -307,8 +307,8 @@ VBoard.prototype = {
     file:               function (square) {
         "use strict";
         var index = parseInt(square, 10);
-        if(!index) { index = this.algebraic2Index(square); }
-        return String.fromCharCode((index % 10) + "a".charCodeAt(0) - 1)
+        if (!index) { index = this.algebraic2Index(square); }
+        return String.fromCharCode((index % 10) + "a".charCodeAt(0) - 1);
     },
     /**
      * Is the square a possible en passant square?
@@ -319,42 +319,46 @@ VBoard.prototype = {
     possibleEPTarget:   function (square) {
         "use strict";
         var index = parseInt(square, 10);
-        
+
         if (!index) { index = this.algebraic2Index(square); }
-        
-        if ((Math.floor(index / 10) === 3 || 
-                Math.floor(index / 10) === 6) &&
+
+        if ((Math.floor(index / 10) === 3 || Math.floor(index / 10) === 6) &&
                 this.exists(index)) {
             return true;
         }
         return false;
     },
     findFromPawn:   function (destination, from, capture, color) {
-        var possibles = [],
-            index,
-            enemy = color === "white" ? "black" : "white",
+        "use strict";
+        var index,
             direction = color === "white" ? 1 : -1;
 
-        if (from && from.length == 2) { return from; }
+        if (from && from.length === 2) { return from; }
 
         index = this.algebraic2Index(destination);
-        
+
         if (capture) {
-            if (this.file(this.index2Algebraic(index - 9 * direction)) === from){
+            if (this.file(this.index2Algebraic(index - 9 * direction)) ===
+                    from) {
                 from = this.index2Algebraic(index - 9 * direction);
             } else {
                 from = this.index2Algebraic(index - 11 * direction);
             }
         } else {
-            if (this.isOccupied(this.index2Algebraic(this.algebraic2Index(destination) - 10 * direction))) {
-                from = this.index2Algebraic(this.algebraic2Index(destination) - 10 * direction);
+            if (this.isOccupied(this.index2Algebraic(
+                    this.algebraic2Index(destination) - 10 * direction
+                ))) {
+                from = this.index2Algebraic(this.algebraic2Index(destination) -
+                    10 * direction);
             } else {
-                from = this.index2Algebraic(this.algebraic2Index(destination) - 20 * direction);
+                from = this.index2Algebraic(this.algebraic2Index(destination) -
+                    20 * direction);
             }
         }
         return from;
     },
     findFromKnight:     function (destination, from, color) {
+        "use strict";
         var possibles = [],
             index,
             i,
@@ -362,10 +366,9 @@ VBoard.prototype = {
             file = null,
             mySymbol = color === "white" ? "N" : "n",
             myHome,
-            enemy = color === "white" ? "black" : "white",
             moves = [8, 19, 21, 12, -8, -19, -21, -12];
 
-        if (from && from.length == 2) { return from; }
+        if (from && from.length === 2) { return from; }
         if (from) {
             if (from > "Z") {
                 file = from;
@@ -375,7 +378,7 @@ VBoard.prototype = {
         }
         possibles = this.whereIs(mySymbol);
         index = this.algebraic2Index(destination);
-        
+
         for (i = 0; i < 8; i += 1) {
             myHome = this.index2Algebraic(index + moves[i]);
             if (possibles.indexOf(myHome) !== -1) {
@@ -387,6 +390,7 @@ VBoard.prototype = {
         return "";
     },
     findFromBishop:     function (destination, from, color) {
+        "use strict";
         var possibles = [],
             index,
             i,
@@ -394,12 +398,10 @@ VBoard.prototype = {
             rank = null,
             file = null,
             mySymbol = color === "white" ? "B" : "b",
-            myHome,
-            enemy = color === "white" ? "black" : "white",
             myMoves = [9, 11, -9, -11],
             moves = [];
 
-        if (from && from.length == 2) { return from; }
+        if (from && from.length === 2) { return from; }
         if (from) {
             if (from > "Z") {
                 file = from;
@@ -411,7 +413,8 @@ VBoard.prototype = {
         index = this.algebraic2Index(destination);
         for (j = 0; j < 4; j += 1) {
             i = index + myMoves[j];
-            while (this.exists(i) & !this.isOccupied(this.index2Algebraic(i))) {
+            while (this.exists(i) &&
+                    !this.isOccupied(this.index2Algebraic(i))) {
                 moves.push(this.index2Algebraic(i));
                 i += myMoves[j];
             }
@@ -431,6 +434,7 @@ VBoard.prototype = {
         return "";
     },
     findFromRook:     function (destination, from, color) {
+        "use strict";
         var possibles = [],
             index,
             i,
@@ -438,12 +442,10 @@ VBoard.prototype = {
             rank = null,
             file = null,
             mySymbol = color === "white" ? "R" : "r",
-            myHome,
-            enemy = color === "white" ? "black" : "white",
             myMoves = [-1, 1, 10, -10],
             moves = [];
 
-        if (from && from.length == 2) { return from; }
+        if (from && from.length === 2) { return from; }
         if (from) {
             if (from > "Z") {
                 file = from;
@@ -455,7 +457,8 @@ VBoard.prototype = {
         index = this.algebraic2Index(destination);
         for (j = 0; j < 4; j += 1) {
             i = index + myMoves[j];
-            while (this.exists(i) & !this.isOccupied(this.index2Algebraic(i))) {
+            while (this.exists(i) &&
+                    !this.isOccupied(this.index2Algebraic(i))) {
                 moves.push(this.index2Algebraic(i));
                 i += myMoves[j];
             }
@@ -475,6 +478,7 @@ VBoard.prototype = {
         return "";
     },
     findFromQueen:     function (destination, from, color) {
+        "use strict";
         var possibles = [],
             index,
             i,
@@ -482,12 +486,10 @@ VBoard.prototype = {
             rank = null,
             file = null,
             mySymbol = color === "white" ? "Q" : "q",
-            myHome,
-            enemy = color === "white" ? "black" : "white",
             myMoves = [-1, 1, 9, 10, 11, -9, -10, -11],
             moves = [];
 
-        if (from && from.length == 2) { return from; }
+        if (from && from.length === 2) { return from; }
         if (from) {
             if (from > "Z") {
                 file = from;
@@ -499,7 +501,8 @@ VBoard.prototype = {
         index = this.algebraic2Index(destination);
         for (j = 0; j < 8; j += 1) {
             i = index + myMoves[j];
-            while (this.exists(i) & !this.isOccupied(this.index2Algebraic(i))) {
+            while (this.exists(i) &&
+                    !this.isOccupied(this.index2Algebraic(i))) {
                 moves.push(this.index2Algebraic(i));
                 i += myMoves[j];
             }
