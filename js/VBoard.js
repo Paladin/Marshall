@@ -274,6 +274,48 @@ VBoard.prototype = {
         return this.squares[this.algebraic2Index(square)] > "Z" ?
                 "black" : "white";
     },
+    ensureIndex:    function (square) {
+        "use strict";
+        var index;
+
+        if (square.length === undefined) {
+            index = square;
+        } else {
+            index = this.algebraic2Index(square);
+        }
+        return index;
+    },
+    isSameRank:     function (theOrigin, theDestination) {
+        "use strict";
+        var origin = this.ensureIndex(theOrigin),
+            destination = this.ensureIndex(theDestination);
+
+        if (Math.floor(origin / 10) === Math.floor(destination / 10)) {
+            return true;
+        }
+        return false;
+    },
+    isSameFile:     function (theOrigin, theDestination) {
+        "use strict";
+        var origin = this.ensureIndex(theOrigin),
+            destination = this.ensureIndex(theDestination);
+
+        if (origin % 10 === destination % 10) {
+            return true;
+        }
+        return false;
+    },
+    isSameDiagonal:     function (theOrigin, theDestination) {
+        "use strict";
+        var origin = this.ensureIndex(theOrigin),
+            destination = this.ensureIndex(theDestination);
+
+        if ((origin - destination) % 9 === 0 ||
+                (origin - destination) % 11 === 0) {
+            return true;
+        }
+        return false;
+    },
     /**
      * Checks to see if a given square (algebraic or index) is legitimate.
      */
