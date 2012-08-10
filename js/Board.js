@@ -466,9 +466,9 @@ Board.prototype = {
             i;
 
         for (i = 0; i < this.movesOnPane.length; i += 1) {
-        	this.movesOnPane[i].className =
-        	    this.movesOnPane[i].className.replace("current_move", "").
-        	        trim();
+            this.movesOnPane[i].className =
+                this.movesOnPane[i].className.replace("current_move", "").
+                    trim();
         }
 
         if (this.movesOnPane[idx - 1]) {
