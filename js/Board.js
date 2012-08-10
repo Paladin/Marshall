@@ -2,8 +2,8 @@
  * The display board. Interaction with the user starts and ends here
  *
  * @constructor
- * @param {string} The ID of the div to put the board inside
- * @param {object} The configuration options for the board
+ * @param {string}  divId   The ID of the div to put the board inside
+ * @param {object}  options The configuration options for the board
  *
  * @property {array}	file		- Array of the names of the chessboard files
  * @property {object}	pgn			- The game object
