@@ -7,17 +7,15 @@
  *
  * @property {array}	file		- Array of the names of the chessboard files
  * @property {object}	pgn			- The game object
+ * @property {object}	opts		- Configuration options
  * @property {string}	divId		- The ID of the board's display element
  * @property {object}	conv		- The Converter object
  * @property {array}	movesOnPane	- The array of displayed moves
  * @property {boolean}	flipped		- White or Black (true) on top
  * @property {string}	id			- GUID
  * @property {string}	moveInput	- text in moveInput window
- * @property {object}	lastSquare	- 
- * @property {object}	visuals		- 
- * @property {object}	displayBoard- 
- * @property {object}	opts		- 
- * @property {array}	imageNames	- 
+ * @property {object}	visuals		- Object containing the PGN info
+ * @property {object}	displayBoard- Parent element for the board squares
  * @property {array}	pos			- array of table cells in display (a8-h1)
  *
  * @version 0.7.1
@@ -75,7 +73,6 @@ Board.prototype = {
 	file:           ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
 	flipped:        false,
 	moveInput:      null,
-	lastSquare:     null,
 	displayBoard:   null,
 	pgn:            null,
 	pos:            [],
