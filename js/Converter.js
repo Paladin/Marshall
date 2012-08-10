@@ -786,28 +786,25 @@ Converter.prototype = {
         return rtrn;
     },
     /*
-     *		TODO: revisit this function for correctness
+     * Finds location of pawn captured en passant
      */
-    getEnPassante:	function (brd, x1, y1, x2, y2) {
+    getEnPassante:	function (brd, from, to) {
         "use strict";
 
-        var from = brd.vBoard[x1][y1],
-            to = brd.vBoard[x2][y2];
-
         // pawn move
-        if ("pawn" !== from.piece) {
+        if ("pawn" !== brd.whatsOn(from).piece) {
             return null;
         }
         // taking move
-        if ((y1 - y2) === 0) {
+        if (brd.isSameFile(to, from)) {
             return null;
         }
         // destination should be null
-        if (null !== to.piece) {
+        if (brd.whatsOn(to).piece !== "empty") {
             return null;
         }
         // the piece we are looking for
-        return [x1, y2];
+        return to.charAt(0) + from.charAt(1);
     },
     getOppColor:	function (color) {
         "use strict";

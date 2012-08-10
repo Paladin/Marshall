@@ -71,13 +71,13 @@
                 expect(this.vBoard.exists("d3")).toBe(true);
             });
             it("should find the square 56 exists", function () {
-                expect(this.vBoard.exists("56")).toBe(true);
+                expect(this.vBoard.exists(56)).toBe(true);
             });
             it("should find the square h9 doesn't exist", function () {
                 expect(this.vBoard.exists("h9")).toBe(false);
             });
             it("should find the square 98 doesn't exist", function () {
-                expect(this.vBoard.exists("98")).toBe(false);
+                expect(this.vBoard.exists(98)).toBe(false);
             });
             it(" Should be able to clear square a8", function () {
             	expect(this.vBoard.isOccupied("a8")).toBe(true);
@@ -138,6 +138,95 @@
 		    it(" Should return the correct move number", function () {
 		    	expect(this.vBoard.getMoveNumber()).toBe(10);
 		    });
+		});
+		describe(" Answering Questions", function () {
+			beforeEach(function () {
+			});
+            it(" Should find if black king is in check", function() {
+                var vBoard = new VBoard("r1bqkbnr/pppp1Qp1/7p/4p3/2B1P3/8/" +
+                    "PPPP1PPP/RNB1K1NR b KQkq - 0 4");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("black"));
+            });
+            it(" Should find check from rook", function() {
+                var vBoard = new VBoard("r6K/8/8/8/8/8/8/7k w - - 0 13");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("white"));
+            });
+            it(" Should find check from rook (right)", function() {
+                var vBoard = new VBoard("K6r/8/8/8/8/8/8/7k w - - 0 13");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("white"));
+            });
+            it(" Should find check from rook (up)", function() {
+                var vBoard = new VBoard("K6R/8/8/8/8/8/8/7k b - - 0 13");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("black"));
+            });
+            it(" Should find check from rook (down)", function() {
+                var vBoard = new VBoard("K6k/8/8/8/8/8/8/7R b - - 0 13");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("black"));
+            });
+            it(" Should find check from bishop (ul)", function() {
+                var vBoard = new VBoard("B6K/8/8/8/8/8/8/7k b - - 0 13");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("black"));
+            });
+            it(" Should find check from bishop (ur)", function() {
+                var vBoard = new VBoard("k6b/8/8/8/8/8/8/K7 w - - 0 13");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("white"));
+            });
+            it(" Should find check from queen (dl)", function() {
+                var vBoard = new VBoard("k6K/8/8/8/8/8/8/q7 w - - 0 13");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("white"));
+            });
+            it(" Should find check from queen (dr)", function() {
+                var vBoard = new VBoard("K6k/8/8/8/8/8/8/7q w - - 0 13");
+                assertTrue( "Couldn't see the check", vBoard.isCheck("white"));
+            });
+	
+            it(" Should find a knight to move to a square", function() {
+                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                    "2P4R/PP1N2PP/R5K1 w - - 0 13");
+        
+                assertEquals( "Couldn't find knight e7", "e7",
+                    vBoard.findFromKnight("c8", "", "black"));
+                assertEquals( "Couldn't find knight e7 full", "e7",
+                    vBoard.findFromKnight("c8", "e7", "black"));
+                assertEquals( "Couldn't find knight f4", "f4",
+                    vBoard.findFromKnight("h5", "", "black"));
+                assertEquals( "Couldn't find knight f4 full", "f4",
+                    vBoard.findFromKnight("h5", "f4", "black"));
+            });
+            it(" Should find a rook to move to a square", function() {
+                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                    "2P4R/PP1N2PP/R5K1 w - - 0 13");
+        
+                assertEquals( "Couldn't find rook", "a8",
+                    vBoard.findFromRook("b8", "", "black"));
+                assertEquals( "Couldn't find rook", "a8",
+                    vBoard.findFromRook("b8", "a8", "black"));
+            });
+            it(" Should find a queen to move to a square", function() {
+                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                    "2P4R/PP1N2PP/R5K1 w - - 0 13");
+        
+                assertEquals( "Couldn't find queen", "e8",
+                    vBoard.findFromQueen("d7", "", "black"));
+                assertEquals( "Couldn't find queen", "e8",
+                    vBoard.findFromQueen("d7", "e8", "black"));
+            });
+            it(" Should find the Bishop to move to a square", function() {
+                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                    "2P4R/PP1N2PP/R5K1 w - - 0 13");
+        
+                assertEquals( "Couldn't find bishop", "h7",
+                    vBoard.findFromBishop("f5", "", "white"));
+            });
+            it(" Should find the pawn to move to a square", function() {
+                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                    "2P4R/PP1N2PP/R5K1 w - - 0 13");
+        
+                assertEquals( "Couldn't find pawn", "a7",
+                    vBoard.findFromPawn("a5", "", false, "black"));
+                assertEquals( "Couldn't find pawn", "a7",
+                    vBoard.findFromPawn("a6", "", false, "black"));
+            });
 		});
 	});
 }) ();

@@ -1,7 +1,8 @@
 /**
  * VBoard
  *
- * A Virtual Chessboard.
+ * A Virtual Chessboard. Used internally to represent a position, and to
+ * answer questions about it.
  *
  * @constructor
  *
@@ -562,5 +563,24 @@ VBoard.prototype = {
             }
         }
         return "";
+    },
+    /**
+     *  Am I in check?
+     *
+     *  @param  {string}    color   Look for check on this king
+     *
+     *  @return {boolean}   Well, is it in check?
+     */
+    isCheck:        function (color) {
+        var me = this.whereIs(color === "black" ? "k" : "K")[0],
+            enemy = color === "black" ? "white" : "black";
+
+        if (this.findFromPawn(me, "", true, enemy)) { return true; }
+        if (this.findFromKnight(me, "", enemy)) { return true; }
+        if (this.findFromBishop(me, "", enemy)) { return true; }
+        if (this.findFromRook(me, "", enemy)) { return true; }
+        if (this.findFromQueen(me, "", enemy)) { return true; }
+        if (this.findFromKing(me, "", enemy)) { return true; }
+        return false;
     }
 };

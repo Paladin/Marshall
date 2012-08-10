@@ -1,5 +1,5 @@
 /**
- * The board on which the action takes place
+ * The display board. Interaction with the user starts and ends here
  *
  * @constructor
  * @param {string} The ID of the div to put the board inside
@@ -23,7 +23,7 @@
  * @property {array}	pos			- array of table cells in display (a8-h1)
  *
  * @version 0.7.1
- * @author Toomas Ršmer
+ * @author Toomas R&#246;mer
  * @author Arlen P Walker
  * @copyright 2008 Toomas Ršmer
  * @copyright 2012 Arlen P Walker (some portions)

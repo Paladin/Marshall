@@ -1,6 +1,6 @@
 # Marshall
 
-Marshall is a javascript library based on Toomas R&246;mer's jsPgnViewer library (http://www.pgnview.com) which he licensed under the apache 2.0
+Marshall is a javascript library based on Toomas R&#246;mer's jsPgnViewer library (http://www.pgnview.com) which he licensed under the apache 2.0
 license. For the sake of consistency, this is also licensed under th apache license.
 
 ##Why another one?
