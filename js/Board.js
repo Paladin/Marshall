@@ -13,8 +13,6 @@
  * @property {boolean}	flipped		- White or Black (true) on top
  * @property {string}	id			- GUID
  * @property {string}	moveInput	- text in moveInput window
- * @property {string}	lastBold	- 
- * @property {integer}	lastBoldIdx	- 
  * @property {object}	lastSquare	- 
  * @property {object}	visuals		- 
  * @property {object}	displayBoard- 
@@ -74,20 +72,18 @@ var Board = function (divId, options) {
  * Setting up class attributes
  */
 Board.prototype = {
-	file:       ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-	flipped:    false,
-	moveInput:  null,
-	lastBold:   null,
-	lastBoldIdx:    null,
-	lastSquare: null,
+	file:           ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+	flipped:        false,
+	moveInput:      null,
+	lastSquare:     null,
 	displayBoard:   null,
-	pgn:        null,
-	pos:        [],
+	pgn:            null,
+	pos:            [],
 	movesOnPane:    [],
 	divId:          null,
 	visuals:        {},
 	id:             null,
-    isYahoo:    function (pgn) {
+    isYahoo:        function (pgn) {
         "use strict";
 		pgn = pgn.replace(/^\s+|\s+$/g, '');
 		return pgn.charAt(0) === ';';
@@ -337,7 +333,7 @@ Board.prototype = {
         this.conv.setCurMoveNo(ply);
         this.makeMove(true);
         this.updateMoveInfo();
-        this.updateMovePane();
+        this.highlightCurrentMove();
     },
     /**
      *	Jumps the board all the way to the final position of the game
@@ -349,7 +345,7 @@ Board.prototype = {
         this.syncBoard(vBoard);
         this.conv.resetToEnd();
         this.updateMoveInfo();
-        this.updateMovePane();
+        this.highlightCurrentMove();
     },
     /**
      *	Jumps the board all the way to the starting position of the game
@@ -361,7 +357,7 @@ Board.prototype = {
         this.syncBoard(vBoard);
         this.conv.resetToStart();
         this.updateMoveInfo();
-        this.updateMovePane();
+        this.highlightCurrentMove();
     },
     /**
      *	Backs up by one move.
@@ -374,7 +370,7 @@ Board.prototype = {
 
         if (update === undefined || update) {
             this.updateMoveInfo();
-            this.updateMovePane();
+            this.highlightCurrentMove();
         }
         this.drawFEN(this.conv.getPrevPosition());
     },
@@ -456,48 +452,28 @@ Board.prototype = {
         }
         if (update === undefined || update) {
             this.updateMoveInfo();
-            this.updateMovePane();
+            this.highlightCurrentMove();
         }
         this.drawFEN(move.position);
     },
     /**
-     *	This makes the currently shown move Bold. (And yes, it uses the b
-     *  element because the move is neither emphasized nor strong when read,
-     *  it's simply a different indicator, in keeping with the HTML5 spec.
+     *	Highlights the current move in the display 
      *
      */
-    updateMovePane: function () {
+    highlightCurrentMove: function () {
         "use strict";
-        // highlight the move in the move's pane
-        var idx = this.conv.getCurMoveNo();
-        this.deMakeBold(this.lastBold);
-        this.lastBold = null;
-        this.lastBoldIdx = null;
-        if (this.movesOnPane[idx - 1]) {
-            this.makeBold(this.movesOnPane[idx - 1]);
-            this.lastBold = this.movesOnPane[idx - 1];
-            this.lastBoldIdx = idx - 1;
-        }
-    },
-    /**
-     *	This highlights the current move by giving it the "current_move" class
-     *
-     *	el		The current move element
-     */
-    makeBold:   function (el) {
-        "use strict";
-        el.className += " current_move";
-    },
-    /**
-     *	This removes the current_move class
-     *
-     *	el		The no longer current move element
-     */
-    deMakeBold: function (el) {
-        "use strict";
-        if (el === null) { return; }
+        var idx = this.conv.getCurMoveNo(),
+            i;
 
-        el.className = el.className.replace(/\bcurrent_move\b/, "").trim();
+        for (i = 0; i < this.movesOnPane.length; i += 1) {
+        	this.movesOnPane[i].className =
+        	    this.movesOnPane[i].className.replace("current_move", "").
+        	        trim();
+        }
+
+        if (this.movesOnPane[idx - 1]) {
+            this.movesOnPane[idx - 1].className += " current_move";
+        }
     },
     updatePGNInfo:  function () {
         "use strict";
