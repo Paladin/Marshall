@@ -15,7 +15,7 @@
  * @property {string}	id			- GUID
  * @property {string}	moveInput	- text in moveInput window
  * @property {object}	visuals		- Object containing the PGN info
- * @property {object}	displayBoard- Parent element for the board squares
+ * @property {object}	displayBoard - Parent element for the board squares
  * @property {array}	pos			- array of table cells in display (a8-h1)
  *
  * @version 0.7.1
@@ -289,7 +289,6 @@ Board.prototype = {
             i,
             j;
 
-        this.flipped = !this.flipped;
         for (i = 0; i < 8; i += 1) {
             for (j = 0; j < 4; j += 1) {
                 upper = this.pos[i][j];
@@ -337,7 +336,7 @@ Board.prototype = {
      */
     endPosition:    function () {
         "use strict";
-        var vBoard = this.conv.getEndPos(this.flipped);
+        var vBoard = this.conv.getEndPos();
 
         this.syncBoard(vBoard);
         this.conv.resetToEnd();
@@ -349,7 +348,7 @@ Board.prototype = {
      */
     startPosition:  function () {
         "use strict";
-        var vBoard = this.conv.getStartPos(this.flipped);
+        var vBoard = this.conv.getStartPos();
 
         this.syncBoard(vBoard);
         this.conv.resetToStart();

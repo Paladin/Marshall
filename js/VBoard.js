@@ -572,6 +572,7 @@ VBoard.prototype = {
      *  @return {boolean}   Well, is it in check?
      */
     isCheck:        function (color) {
+        "use strict";
         var me = this.whereIs(color === "black" ? "k" : "K")[0],
             enemy = color === "black" ? "white" : "black";
 
