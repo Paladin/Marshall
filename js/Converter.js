@@ -22,8 +22,6 @@
  * @property {integer}	iteIndex		- 
  * @property {boolean}	whiteToMove		- boolean flag
  * @property {integer}	startMoveNum	- starting move number
- * @property {boolean}	flippedI		- 
- * @property {boolean}	flippedV		- 
  * @property {array}	wKing			- Where are the white kings?
  * @property {array}	bKing			- Where are the Black Kings?
  * @property {array}	wQueens			- Where are the white queens?
@@ -62,8 +60,6 @@ Converter.prototype = {
 	iteIndex:			0,
 	whiteToMove:		true,
 	startMoveNum:		1,
-	flippedI:			false,
-	flippedV:			false,
     placePiece:	function (theSquare, thePiece, theColor) {
         "use strict";
         theSquare.piece = thePiece;
