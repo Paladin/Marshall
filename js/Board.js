@@ -85,6 +85,9 @@ Board.prototype = {
 		pgn = pgn.replace(/^\s+|\s+$/g, '');
 		return pgn.charAt(0) === ';';
 	},
+	/**
+	 *  Creates the board and move areas of the page, prepare for replay.
+	 */
 	init:       function () {
         "use strict";
         // the main frame
@@ -160,6 +163,8 @@ Board.prototype = {
     },
     /**
      *	This sets up the default option list
+     *
+     * @return  {object}    All of the options, set to default values
      */
     setDefaultOptions:  function () {
         "use strict";
@@ -223,6 +228,11 @@ Board.prototype = {
         }
         return board;
     },
+    /**
+     * Creates the row of control buttons under the board
+     *
+     * @param   {HTMLElement}   theContainer    Parent of the buttons
+     */
     createButtonBar:    function (theContainer) {
         "use strict";
         var theBoard = this;
@@ -266,6 +276,15 @@ Board.prototype = {
                 return false;
             });
     },
+    /**
+     *  Makes an individual button on the bar
+     *
+     * @param   {HTMLElement}   theContainer    The button container
+     * @param   {string}        btnName         Name (used in class)
+     * @param   {string}        btnTitle        Title and alt text
+     * @param   {boolean}       disabled        Is it disabled?
+     * @param   {function}      handler         The click handler
+     */
     makeButton: function (btnContainer, btnName, btnTitle, disabled, handler) {
         "use strict";
         var button = this.createWithAttribs("a",
@@ -313,8 +332,8 @@ Board.prototype = {
     /**
      *	Rolls the board position to a specific ply (half-move).
      *
-     *	moveNumber		The move number in the game to set the position to
-     *	color			Which ply? 0=white, 1=black
+     *	@param  {integer}   moveNumber      The move number of the game
+     *	@param  {integer}   color			Which ply? 0=white, 1=black
      *
      *	NOTE: the +1 in the ply calculation is because the computer is
      *          0-based while the move list, like all human lists, is 1-based.
@@ -357,6 +376,8 @@ Board.prototype = {
     },
     /**
      *	Backs up by one move.
+     *
+     *  @param  {boolean}   update  Show the results on screen?
      */
     makeBwMove: function (update) {
         "use strict";
@@ -370,10 +391,10 @@ Board.prototype = {
         }
         this.drawFEN(this.conv.getPrevPosition());
     },
-    /*
-        Shows moves pane, depending the 'flag'.
-    */
     toggleMoves:    function (flag) {
+    /**
+     *  Toggles visibility of moves pane.
+     */
         "use strict";
         if (flag === "flip") {
             flag = this.movesDiv.style.visibility === "hidden";
@@ -413,11 +434,7 @@ Board.prototype = {
         }
     },
     /*
-     *	Updates the form input box below the board display
-     *
-     *	TODO: Revise this code into something more browser-friendly.
-     *			A simple classed p element or perhaps a cite
-     *	TODO: Also check the first line. Something smells about that
+     *	Updates the move line below the board display
      */
     updateMoveInfo: function () {
         "use strict";
@@ -437,7 +454,7 @@ Board.prototype = {
      *	This makes the next move in the game, and optionally updates the
      *	display.
      *
-     *	@param  {boolean}   should displays be updated. Default true
+     *	@param  {boolean}   update  Should displays be updated? Default true
      */
     makeMove:   function (update) {
         "use strict";
@@ -471,6 +488,9 @@ Board.prototype = {
             this.movesOnPane[idx - 1].className += " current_move";
         }
     },
+    /**
+     *  Updates the game description
+     */
     updatePGNInfo:  function () {
         "use strict";
         this.visuals.pgn.players.nodeValue = this.gameOpponents();
@@ -567,6 +587,8 @@ Board.prototype = {
     },
     /*
      * This fills in information about the game in the designated container
+     *
+     * @param   {HTMLElement}   container   The container displaying it
      */
     populateProps:  function (container) {
         "use strict";
@@ -589,6 +611,14 @@ Board.prototype = {
 
         this.updatePGNInfo();
     },
+    /**
+     *  Adds a text element to the container
+     *
+     * @param   {HTMLElement}   container   The container for the new element
+     * @param   {string}        element     The name of the element to create
+     * @param   {object}        attributes  Attributes for the created element
+     * @return  {HTMLElement}   The created element
+     */
     addTextElement:  function (container, element, attributes) {
         "use strict";
         var theElement = this.createWithAttribs(element, attributes),
@@ -598,6 +628,13 @@ Board.prototype = {
         container.appendChild(theElement);
         return child;
     },
+    /**
+     *  Creates a new element and assigns the given attributes to it
+     *
+     * @param   {string}        element     Name of the element to be created
+     * @param   {object}        attributes  Attributes for the created element
+     * @return  {HTMLElement}   The created element
+     */
     createWithAttribs:   function (element, attributes) {
         "use strict";
         var theElement = document.createElement(element),
@@ -611,7 +648,11 @@ Board.prototype = {
         return theElement;
     },
     /**
-     * This method will update the img element passed to it with the new piece
+     * This method will update the square passed to it with the new piece
+     *
+     * @param   {HTMLElement}   square  The display square to be updated
+     * @param   {string}        piece   The name of the piece placed on it
+     * @param   {string}        color   The color of the piece
      */
     updateSquare:  function (square, piece, color) {
         "use strict";
@@ -639,6 +680,8 @@ Board.prototype = {
     /**
      * This synchronizes the display board with the virtual board when you jump
      *  to a position without moving to it.
+     *
+     * @param   {object}    result  A VBoard to sync with display
      */
     syncBoard:  function (result) {
         "use strict";
@@ -661,6 +704,9 @@ Board.prototype = {
     /**
      *	This adds a comment, if present to the output stream. The curly braces
      *  are removed for humman readability.
+     *
+     * @param   {string}    theComment  The comment to add
+     * @return  {HTMLElement}   The parent element of the moves
      */
     addComment: function (theComment, moveList) {
         "use strict";
@@ -679,6 +725,9 @@ Board.prototype = {
     },
     /**
      *	Creates a download link for the original pgn data file
+     *
+     * @param   {string}    pgn The PGN text string
+     * @return  {HTMLElement}   The link including PGN text
      */
     addPGNLink: function (pgn) {
         "use strict";
@@ -691,6 +740,8 @@ Board.prototype = {
     },
     /**
      *	Lists opponents
+     *
+     * @return  {string}    The opponents in the game
      */
     gameOpponents:  function () {
         "use strict";
@@ -704,6 +755,9 @@ Board.prototype = {
     },
     /**
      *	Creates move number node
+     *
+     * @param   {integer}   moveNumber  The number of the move
+     * @return  {HTMLElement}   The element of the move number
      */
     addMoveNumber:  function (moveNumber) {
         "use strict";
@@ -717,6 +771,11 @@ Board.prototype = {
     },
     /**
      *	Adds move link text
+     *
+     * @param   {string}        moveText    The text of the move
+     * @param   {string}        moveNumber  The move number
+     * @param   {string}        color       The color making the move
+     * @return  {HTMLElement}   The link to add to the page
      */
     addMoveLink:    function (moveText, moveNumber, color) {
         "use strict";
@@ -767,6 +826,11 @@ Board.prototype = {
 
         return position.slice(1, -1);	// Remove the first and last slash
     },
+    /**
+     *  Handles the click events for the individual moves
+     *
+     * @param   {MouseEvent}    e   The click event
+     */
     clickMove:  function (e) {
         "use strict";
         var moveNumber =
