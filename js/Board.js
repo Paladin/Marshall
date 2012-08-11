@@ -145,7 +145,7 @@ Board.prototype = {
         // end of current move
 
         this.updateMoveInfo(this);
-        this.toggleMoves(this.opts.showMovesPane);	//picks up pane overflow
+        if (!this.opts.showMovesPane) { this.hideMoves(); }
         if (this.opts.skipToMove) {
             try {
                 tmp2 = parseInt(this.opts.skipToMove, 10);
@@ -254,7 +254,7 @@ Board.prototype = {
         });
         this.makeButton(theContainer, "toggle", "altShowMoves", false,
             function () {
-                theBoard.toggleMoves("flip");
+                theBoard.toggleMoves();
                 return false;
             });
         this.makeButton(theContainer, "comments", "altComments", false,
@@ -391,21 +391,32 @@ Board.prototype = {
         }
         this.drawFEN(this.conv.getPrevPosition());
     },
-    toggleMoves:    function (flag) {
     /**
      *  Toggles visibility of moves pane.
      */
+    toggleMoves:    function () {
         "use strict";
-        if (flag === "flip") {
-            flag = this.movesDiv.style.visibility === "hidden";
-        }
-        if (flag) {
-            this.movesDiv.style.display = "block";
-            this.movesDiv.style.visibility = "visible";
+        if (this.movesDiv.style.visibility === "hidden") {
+            this.showMoves();
         } else {
-            this.movesDiv.style.display = "none";
-            this.movesDiv.style.visibility = "hidden";
+            this.hideMoves();
         }
+    },
+    /**
+     *  Hide moves pane
+     */
+    hideMoves:      function () {
+        "use strict";
+        this.movesDiv.style.display = "none";
+        this.movesDiv.style.visibility = "hidden";
+    },
+    /**
+     *  Show the moves pane
+     */
+    showMoves:      function () {
+        "use strict";
+        this.movesDiv.style.display = "block";
+        this.movesDiv.style.visibility = "visible";
     },
     /*
      *	Toggles the display of comments inside the move list on and off

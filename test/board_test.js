@@ -234,12 +234,12 @@ TestCase( "BoardTest",
 		var board = new Board("game1");
 		board.init();
 
-		assertEquals("Should have started out visible", "visible",
+		assertEquals("Should have started out default", "",
 				document.getElementsByClassName("move_list")[0].style.visibility);
-		board.toggleMoves("flip");
+		board.toggleMoves();
 		assertEquals("Should have flipped to hidden", "hidden",
 				document.getElementsByClassName("move_list")[0].style.visibility);
-		board.toggleMoves("flip");
+		board.toggleMoves();
 		assertEquals("Should have returned to visible", "visible",
 				document.getElementsByClassName("move_list")[0].style.visibility);
 	},
