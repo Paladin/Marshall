@@ -7,10 +7,20 @@
  * It gets built and added to until everything is present.
  *
  * @constructor
- * @param   {array}     - An array of properties to initialize
+ * @param   {array} properties  An array of properties to initialize
  *
- * @property {object}	white		- 
- * @property {object}	black		- 
+ * @property {object}   previous    The previous move in the tree
+ * @property {object}   next        The next move in the tree
+ * @property {object}   up          The base move of the variation
+ * @property {object}   down        The start of the next variation
+ * @property {string}   text        The move text
+ * @property {array}    commentary  Comments to the position
+ * @property {integer}  number      The move number
+ * @property {object}   piece       The piece being moved
+ * @property {object}   result      If game ends on this move
+ * @property {string}   color       Color of the move
+ * @property {string}   destination Square moved to
+ * @property {string}   origin      Square moved from
  *
  * @version 0.7.1
  * @author Arlen P Walker
