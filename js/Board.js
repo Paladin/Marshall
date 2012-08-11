@@ -1,5 +1,6 @@
 /**
- * The display board. Interaction with the user starts and ends here
+ * @classdesc   The display board. Interaction with the user starts and
+ *  ends here
  *
  * @constructor
  * @param {string}  divId   The ID of the div to put the board inside

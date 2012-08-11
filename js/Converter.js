@@ -1,4 +1,5 @@
 /**
+ * @classdesc
  * Convert PGN format to an easier format. The problem
  * with PGN is that it is really difficult and ugly to
  * accomplish backward moves. 
