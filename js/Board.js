@@ -553,8 +553,10 @@ Board.prototype = {
     },
     /*
      *	This creates the text and elements in the move list
+     *
+     * @param   {HTMLElement}   container   Holds the list of moves
      */
-    populateMoves:  function (cont) {
+    populateMoves:  function (container) {
         "use strict";
         var tmp2 = this.conv.pgn.moves,
             movesHeader = document.createElement('header'),
@@ -567,8 +569,8 @@ Board.prototype = {
             txt;
 
         if (!this.opts.showMovesPane) {
-            cont.style.visibility = "hidden";
-            cont.style.display = "none";
+            container.style.visibility = "hidden";
+            container.style.display = "none";
         }
 
         h.appendChild(document.createTextNode(this.gameOpponents()));
@@ -576,8 +578,8 @@ Board.prototype = {
         h.appendChild(this.addPGNLink(this.pgn.pgnOrig));
         h.appendChild(document.createTextNode(")"));
         movesHeader.appendChild(h);
-        cont.appendChild(movesHeader);
-        cont.appendChild(moveList);
+        container.appendChild(movesHeader);
+        container.appendChild(moveList);
         this.addComment(this.pgn.gameIntro, moveList);
 
         for (i = 0; i < tmp2.length; i += 1) {
