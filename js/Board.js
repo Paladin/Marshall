@@ -538,8 +538,8 @@ Board.prototype = {
 
         for (i = 0; i < tmp2.length; i += 1) {
             if (tmp2[i].white !== null) {
-                moveList.appendChild(this.addMoveNumber((i +
-                        this.conv.startMoveNum)));
+                moveList.appendChild(this.addMoveNumber(i +
+                        this.conv.startMoveNum));
                 link = this.addMoveLink(tmp2[i].white, i, 0);
                 moveList.appendChild(link);
                 comment = this.conv.pgn.getComment(tmp2[i].white, lastMoveIdx);
@@ -657,18 +657,6 @@ Board.prototype = {
                     this.pos[r][f].color);
             }
         }
-    },
-    /**
-     * This copies the contents of one square to another. It removes any
-     * piece image (or anything else) attached to the destination square,
-     * and attaches the piece image from the source square.
-     */
-    syncSquare: function (from, to) {
-        "use strict";
-        to.piece = from.piece || "empty";
-        to.color = from.color || "black";
-
-        this.updateSquare(to, to.piece, to.color);
     },
     /**
      *	This adds a comment, if present to the output stream. The curly braces
