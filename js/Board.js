@@ -146,6 +146,7 @@ Board.prototype = {
 
         this.updateMoveInfo(this);
         if (!this.opts.showMovesPane) { this.hideMoves(); }
+        if (!this.opts.showComments) { this.hideComments(); }
         if (this.opts.skipToMove) {
             try {
                 tmp2 = parseInt(this.opts.skipToMove, 10);
@@ -259,7 +260,7 @@ Board.prototype = {
             });
         this.makeButton(theContainer, "comments", "altComments", false,
             function () {
-                theBoard.toggleComments("flip");
+                theBoard.toggleComments();
                 return false;
             });
         this.makeButton(theContainer, "down", "altDown", true, function () {
@@ -421,26 +422,38 @@ Board.prototype = {
     /*
      *	Toggles the display of comments inside the move list on and off
      */
-    toggleComments: function (flag) {
+    toggleComments: function () {
         "use strict";
-        var list = this.movesDiv.getElementsByTagName("span"),
-            i;
-
-        if (flag === "flip") {
-            flag = !this.opts.showComments;
-        }
-        if (flag) {
-            this.opts.showComments = true;
+        this.opts.showComments = !this.opts.showComments;
+        if (this.opts.showComments) {
+            this.showComments();
         } else {
-            this.opts.showComments = false;
+            this.hideComments();
         }
+    },
+    /**
+     *  Shows the commentary
+     */
+    showComments:       function () {
+        "use strict";
+        var list = this.movesDiv.getElementsByClassName("commentary"),
+            i;
         if (list) {
             for (i = 0; i < list.length; i += 1) {
-                if (flag) {
-                    list[i].style.display = "inline";
-                } else {
-                    list[i].style.display = "none";
-                }
+                list[i].style.display = "inline";
+            }
+        }
+    },
+    /**
+     *  Hides the commentary
+     */
+    hideComments:       function () {
+        "use strict";
+        var list = this.movesDiv.getElementsByClassName("commentary"),
+            i;
+        if (list) {
+            for (i = 0; i < list.length; i += 1) {
+                list[i].style.display = "none";
             }
         }
     },
