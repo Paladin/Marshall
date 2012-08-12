@@ -371,7 +371,7 @@ VBoard.prototype = {
         }
         return false;
     },
-    findFromPawn:   function (destination, from, capture, color) {
+    findFromPawn:   function (destination, from, color, capture) {
         "use strict";
         var index,
             direction = color === "white" ? 1 : -1;

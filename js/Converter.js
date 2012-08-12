@@ -230,7 +230,7 @@ Converter.prototype = {
                     from = theSource;
                 } else {
                     from = this.vBoard.findFromPawn(theDestination, theSource,
-                        isCapture, color);
+                        color, isCapture);
                 }
                 break;
             default:
