@@ -223,9 +223,9 @@
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 assertEquals( "Couldn't find pawn", "a7",
-                    vBoard.findFromPawn("a5", "", false, "black"));
+                    vBoard.findFromPawn("a5", "", "black", false));
                 assertEquals( "Couldn't find pawn", "a7",
-                    vBoard.findFromPawn("a6", "", false, "black"));
+                    vBoard.findFromPawn("a6", "", "black", false));
             });
 		});
 	});
