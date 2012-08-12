@@ -400,18 +400,13 @@ VBoard.prototype = {
         }
         return from;
     },
-    findFromKnight:     function (destination, from, color) {
+    whichPiece:          function (from, mySymbol, moves) {
         "use strict";
         var possibles = [],
-            index,
             i,
             rank = null,
-            file = null,
-            mySymbol = color === "white" ? "N" : "n",
-            myHome,
-            moves = [8, 19, 21, 12, -8, -19, -21, -12];
+            file = null;
 
-        if (from && from.length === 2) { return from; }
         if (from) {
             if (from > "Z") {
                 file = from;
@@ -420,39 +415,44 @@ VBoard.prototype = {
             }
         }
         possibles = this.whereIs(mySymbol);
-        index = this.algebraic2Index(destination);
-
-        for (i = 0; i < 8; i += 1) {
-            myHome = this.index2Algebraic(index + moves[i]);
-            if (possibles.indexOf(myHome) !== -1) {
-                if (rank === null && file === null) { return myHome; }
-                if (rank && rank === myHome.charAt(1)) { return myHome; }
-                if (file && file === myHome.charAt(0)) {return myHome; }
+        for (i = 0; i < moves.length; i += 1) {
+            if (possibles.indexOf(moves[i]) !== -1) {
+                if (rank === null && file === null) { return moves[i]; }
+                if (rank && rank === moves[i].charAt(1)) { return moves[i]; }
+                if (file && file === moves[i].charAt(0)) {return moves[i]; }
             }
         }
         return "";
     },
-    findFromBishop:     function (destination, from, color) {
+    findFromKnight:     function (destination, from, color) {
         "use strict";
-        var possibles = [],
-            index,
+        var index,
             i,
             j,
-            rank = null,
-            file = null,
+            mySymbol = color === "white" ? "N" : "n",
+            myMoves = [8, 19, 21, 12, -8, -19, -21, -12],
+            moves = [];
+
+        if (from && from.length === 2) { return from; }
+        index = this.algebraic2Index(destination);
+        for (j = 0; j < myMoves.length; j += 1 ) {
+        	i = index + myMoves[j];
+            if (this.exists(i)) {
+                moves.push(this.index2Algebraic(i));
+            }
+        }
+        return this.whichPiece(from, mySymbol, moves);
+    },
+    findFromBishop:     function (destination, from, color) {
+        "use strict";
+        var index,
+            i,
+            j,
             mySymbol = color === "white" ? "B" : "b",
             myMoves = [9, 11, -9, -11],
             moves = [];
 
         if (from && from.length === 2) { return from; }
-        if (from) {
-            if (from > "Z") {
-                file = from;
-            } else {
-                rank = from;
-            }
-        }
-
         index = this.algebraic2Index(destination);
         for (j = 0; j < 4; j += 1) {
             i = index + myMoves[j];
@@ -465,38 +465,18 @@ VBoard.prototype = {
                 moves.push(this.index2Algebraic(i));
             }
         }
-
-        possibles = this.whereIs(mySymbol);
-        for (i = 0; i < moves.length; i += 1) {
-            if (possibles.indexOf(moves[i]) !== -1) {
-                if (rank === null && file === null) { return moves[i]; }
-                if (rank && rank === moves[i].charAt(1)) { return moves[i]; }
-                if (file && file === moves[i].charAt(0)) {return moves[i]; }
-            }
-        }
-        return "";
+        return this.whichPiece(from, mySymbol, moves);
     },
     findFromRook:     function (destination, from, color) {
         "use strict";
-        var possibles = [],
-            index,
+        var index,
             i,
             j,
-            rank = null,
-            file = null,
             mySymbol = color === "white" ? "R" : "r",
             myMoves = [-1, 1, 10, -10],
             moves = [];
 
         if (from && from.length === 2) { return from; }
-        if (from) {
-            if (from > "Z") {
-                file = from;
-            } else {
-                rank = from;
-            }
-        }
-
         index = this.algebraic2Index(destination);
         for (j = 0; j < 4; j += 1) {
             i = index + myMoves[j];
@@ -509,38 +489,18 @@ VBoard.prototype = {
                 moves.push(this.index2Algebraic(i));
             }
         }
-
-        possibles = this.whereIs(mySymbol);
-        for (i = 0; i < moves.length; i += 1) {
-            if (possibles.indexOf(moves[i]) !== -1) {
-                if (rank === null && file === null) { return moves[i]; }
-                if (rank && rank === moves[i].charAt(1)) { return moves[i]; }
-                if (file && file === moves[i].charAt(0)) {return moves[i]; }
-            }
-        }
-        return "";
+        return this.whichPiece(from, mySymbol, moves);
     },
     findFromQueen:     function (destination, from, color) {
         "use strict";
-        var possibles = [],
-            index,
+        var index,
             i,
             j,
-            rank = null,
-            file = null,
             mySymbol = color === "white" ? "Q" : "q",
             myMoves = [-1, 1, 9, 10, 11, -9, -10, -11],
             moves = [];
 
         if (from && from.length === 2) { return from; }
-        if (from) {
-            if (from > "Z") {
-                file = from;
-            } else {
-                rank = from;
-            }
-        }
-
         index = this.algebraic2Index(destination);
         for (j = 0; j < 8; j += 1) {
             i = index + myMoves[j];
@@ -553,16 +513,7 @@ VBoard.prototype = {
                 moves.push(this.index2Algebraic(i));
             }
         }
-
-        possibles = this.whereIs(mySymbol);
-        for (i = 0; i < moves.length; i += 1) {
-            if (possibles.indexOf(moves[i]) !== -1) {
-                if (rank === null && file === null) { return moves[i]; }
-                if (rank && rank === moves[i].charAt(1)) { return moves[i]; }
-                if (file && file === moves[i].charAt(0)) {return moves[i]; }
-            }
-        }
-        return "";
+        return this.whichPiece(from, mySymbol, moves);
     },
     /**
      *  Am I in check?
@@ -576,7 +527,7 @@ VBoard.prototype = {
         var me = this.whereIs(color === "black" ? "k" : "K")[0],
             enemy = color === "black" ? "white" : "black";
 
-        if (this.findFromPawn(me, "", true, enemy)) { return true; }
+        if (this.findFromPawn(me, "", enemy, true)) { return true; }
         if (this.findFromKnight(me, "", enemy)) { return true; }
         if (this.findFromBishop(me, "", enemy)) { return true; }
         if (this.findFromRook(me, "", enemy)) { return true; }
