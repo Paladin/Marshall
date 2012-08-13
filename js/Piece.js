@@ -2,7 +2,19 @@
  *  @classdesc  Piece represents individual chess pieces. It's a factory
  *      class, returning an object tailored for the specific piece requested.
  *
+ * @constructor
  * @param   {string}    piece   Piece symbol
+ *
+ * @property    {string}    symbol  The symbol of the piece
+ * @property    {string}    color   The color of the piece
+ * @property    {array}     myMoves An Array of move calculators
+ *
+ * @version 0.7.1
+ * @author Toomas R&#246;mer
+ * @author Arlen P Walker
+ * @copyright 2008 Toomas Römer
+ * @copyright 2012 Arlen P Walker (some portions)
+ * @license http://www.apache.org/licenses/LICENSE-2.0
  */
 var Piece = function (piece) {
     "use strict";
@@ -40,10 +52,28 @@ Piece.prototype = {
     symbol:     null,
     color:      null,
     /**
+     *  Checks to see if it is legal for the piece to move to the destination
+     *  square. This is an alias of the piece-specific isLegal
+     *
+     * @param   {object}    board       The virtual board the piece is on
+     * @param   {integer}   origin      The index of the square it's on
+     * @param   {integer}   destination The index of the destination square
+     * @param   {boolean}   ignorePins  Ignore pins when checking move
+     * @return  {boolean}   Was the move legal?
+     *
+     * @see     isLegalKnight
+     * @see     isLegalBishop
+     * @see     isLegalKing
+     * @see     isLegalQueen
+     * @see     isLegalRook
+     */
+    isLegal:    null,
+    /**
      *  Checks to see if the piece is pinned
      *
-     * @param   {object}    board   The virtual board the piece is on
-     * @param   {integer}   origin  The index of the square it's on
+     * @param   {object}    board       The virtual board the piece is on
+     * @param   {integer}   origin      The index of the square it's on
+     * @param   {integer}   destination The index it's going to
      */
     isPossible:   function (board, origin, destination) {
         "use strict";

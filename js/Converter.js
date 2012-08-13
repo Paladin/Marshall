@@ -39,7 +39,7 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
-function Converter(pgn) {
+var Converter = function (pgn) {
 	"use strict";
 
 	this.pgn = pgn;
@@ -56,11 +56,14 @@ function Converter(pgn) {
 	this.bBishops = [];
 	this.wRooks = [];
 	this.bRooks = [];
-}
+};
 Converter.prototype = {
 	iteIndex:			0,
 	whiteToMove:		true,
 	startMoveNum:		1,
+	/**
+	 * Convert the identified file
+	 **/
     convert:	function () {
         "use strict";
         var move = null;
