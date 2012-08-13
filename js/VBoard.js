@@ -275,6 +275,12 @@ VBoard.prototype = {
         return this.squares[this.ensureIndex(square)] > "Z" ?
                 "black" : "white";
     },
+    /**
+     *  Ensures the number passed through will be an integer array index.
+     *
+     * @param   {variable}  square  Could be algebraic reference or index
+     * @return  {integer}
+     */
     ensureIndex:    function (square) {
         "use strict";
         var index;
@@ -286,6 +292,13 @@ VBoard.prototype = {
         }
         return index;
     },
+    /**
+     *  Compares the rank of two given squares
+     *
+     * @param   {variable}  theOrigin       One square
+     * @param   {variable}  theDestination  The other square
+     * @return  {boolean}   True if the squares are on the same rank
+     */
     isSameRank:     function (theOrigin, theDestination) {
         "use strict";
         var origin = this.ensureIndex(theOrigin),
@@ -296,6 +309,13 @@ VBoard.prototype = {
         }
         return false;
     },
+    /**
+     *  Compares the file of two given squares
+     *
+     * @param   {variable}  theOrigin       One square
+     * @param   {variable}  theDestination  The other square
+     * @return  {boolean}   True if the squares are on the same file
+     */
     isSameFile:     function (theOrigin, theDestination) {
         "use strict";
         var origin = this.ensureIndex(theOrigin),
@@ -306,6 +326,13 @@ VBoard.prototype = {
         }
         return false;
     },
+    /**
+     *  Checks to see if two squares are on the same diagonal
+     *
+     * @param   {variable}  theOrigin       One square
+     * @param   {variable}  theDestination  The other square
+     * @return  {boolean}   True if the squares are on the same diagonal
+     */
     isSameDiagonal:     function (theOrigin, theDestination) {
         "use strict";
         var origin = this.ensureIndex(theOrigin),
@@ -354,6 +381,9 @@ VBoard.prototype = {
         return String.fromCharCode((index % 10) + "a".charCodeAt(0) - 1);
     },
     /**
+     *  Gets the numeric rank of a square
+     *
+     * @param   {integer}   The index of the square
      * @return  {string}    the number of the rank for the square.
      */
     rank:               function (square) {
@@ -416,6 +446,13 @@ VBoard.prototype = {
         }
         return from;
     },
+    /**
+     *  Disambiguates a piece move when there are more than one possibility
+     *
+     * @param   {string}    from    The "from" text, may be partial square ref
+     * @param   {array}     moves   The possible sources for the moving piece
+     * @return  {string}    the algebraic reference to the source square
+     */
     whichPiece:          function (from, moves) {
         "use strict";
         var i,
@@ -435,6 +472,16 @@ VBoard.prototype = {
         }
         return "";
     },
+    /**
+     *  Finds the piece that is moving to a given square, will use the extra
+     *  characters in the move text to disambiguate.
+     *
+     * @param   {string}    thePiece    A single-letter piece identifier
+     * @param   {string}    destination The algebraic square ref to move to
+     * @param   {string}    from        What's known about the source
+     * @param   {string}    color       The color moving
+     * @return  {string}    The algebraic square reference to move from
+     */
     findFromPiece:     function (thePiece, destination, from, color) {
         "use strict";
         var i,
