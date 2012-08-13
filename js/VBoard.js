@@ -369,12 +369,14 @@ VBoard.prototype = {
         return this.currentMove;
     },
     /**
+     *  Gets the file letter of a square
+     *
+     * @param   {variable}  the address of the square, algebraic or array index
      * @return  {string}    the letter of the file for the square.
      */
     file:               function (square) {
         "use strict";
-        var index = parseInt(square, 10);
-        if (!index) { index = this.algebraic2Index(square); }
+        var index = this.ensureIndex(square);
         return String.fromCharCode((index % 10) + "a".charCodeAt(0) - 1);
     },
     /**
