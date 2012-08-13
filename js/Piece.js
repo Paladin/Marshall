@@ -5,6 +5,7 @@
  * @param   {string}    piece   Piece symbol
  */
 var Piece = function (piece) {
+    "use strict";
     this.symbol = piece;
     this.color = (/[a-z]/).test(piece) ? "black" : "white";
     switch (piece) {
@@ -13,7 +14,7 @@ var Piece = function (piece) {
         break;
     case "N":
     case "n":
-        this.myMoves = [8, 19, 21, 12, -8, -19, -21, -12],
+        this.myMoves = [8, 19, 21, 12, -8, -19, -21, -12];
         this.isLegal = this.isLegalKnight;
         break;
     case "B":
@@ -30,11 +31,11 @@ var Piece = function (piece) {
         break;
     case "K":
     case "k":
-        this.myMoves = [9, 10, 11, -1, 1, -9. -10, -11],
+        this.myMoves = [9, 10, 11, -1, 1, -9, -10, -11];
         this.isLegal = this.isLegalKing;
         break;
     }
-}
+};
 Piece.prototype = {
     symbol:     null,
     color:      null,
@@ -45,6 +46,7 @@ Piece.prototype = {
      * @param   {integer}   origin  The index of the square it's on
      */
     isPossible:   function (board, origin, destination) {
+        "use strict";
         var holding,
             possible;
         holding = board.whatsOn(origin);
@@ -63,8 +65,12 @@ Piece.prototype = {
      * @param   {boolean}   ignorePins  Ignore pins when checking move
      */
     isLegalKnight:  function (board, origin, destination, ignorePins) {
+        "use strict";
         var i;
-        if (!ignorePins && !this.isPossible(board, origin, destination, ignorePins)) { return false; }
+        if (!ignorePins &&
+                !this.isPossible(board, origin, destination, ignorePins)) {
+            return false;
+        }
         for (i = 0; i < this.myMoves.length; i += 1) {
             if ((origin + this.myMoves[i]) === destination) {
                 return true;
@@ -81,6 +87,7 @@ Piece.prototype = {
      * @param   {integer}   destination The index of the destination square
      */
     isLegalKing:    function (board, origin, destination) {
+        "use strict";
         var i;
         for (i = 0; i < this.myMoves.length; i += 1) {
             if ((origin + this.myMoves[i]) === destination) {
@@ -98,9 +105,13 @@ Piece.prototype = {
      * @param   {integer}   destination The index of the destination square
      */
     isLegalBishop:    function (board, origin, destination, ignorePins) {
-        if (!ignorePins && !this.isPossible(board, origin, destination, ignorePins)) { return false; }
+        "use strict";
+        if (!ignorePins &&
+                !this.isPossible(board, origin, destination, ignorePins)) {
+            return false;
+        }
         if (board.isSameDiagonal(origin, destination)) {
-            if(board.isLineClear(origin, destination, this.color)) {
+            if (board.isLineClear(origin, destination, this.color)) {
                 return true;
             }
         }
@@ -115,10 +126,13 @@ Piece.prototype = {
      * @param   {integer}   destination The index of the destination square
      */
     isLegalRook:    function (board, origin, destination, ignorePins) {
-        if (!ignorePins && !this.isPossible(board, origin, destination)) { return false; }
+        "use strict";
+        if (!ignorePins && !this.isPossible(board, origin, destination)) {
+            return false;
+        }
         if (board.isSameRank(origin, destination) ||
                 board.isSameFile(origin, destination)) {
-            if(board.isLineClear(origin, destination, this.color)) {
+            if (board.isLineClear(origin, destination, this.color)) {
                 return true;
             }
         }
@@ -133,7 +147,8 @@ Piece.prototype = {
      * @param   {integer}   destination The index of the destination square
      */
     isLegalQueen:    function (board, origin, destination, ignorePins) {
+        "use strict";
         return this.isLegalBishop(board, origin, destination, ignorePins) ||
             this.isLegalRook(board, origin, destination, ignorePins);
     }
-}
+};

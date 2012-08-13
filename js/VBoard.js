@@ -405,17 +405,18 @@ VBoard.prototype = {
                     if (this.rank(possibles[i]) + direction ===
                             this.rank(destination)) {
                         return possibles[i];
-                    } else if (this.rank(possibles[i]) === bonus &&
+                    }
+                    if (this.rank(possibles[i]) === bonus &&
                             this.rank(possibles[i]) + direction * 2 ===
                             this.rank(destination)) {
-                        return possibles[i]
+                        return possibles[i];
                     }
                 }
             }
         }
         return from;
     },
-    whichPiece:          function (from, mySymbol, moves) {
+    whichPiece:          function (from, moves) {
         "use strict";
         var i,
             rank = null,
@@ -452,7 +453,7 @@ VBoard.prototype = {
             }
         }
         if (possibles.length === 1) { return possibles[0]; }
-        return this.whichPiece(from, mySymbol, possibles);
+        return this.whichPiece(from, possibles);
     },
     /**
      *  Am I in check?
@@ -470,10 +471,9 @@ VBoard.prototype = {
             enemyRooks,
             enemyBishops,
             enemyKnights,
-            enemyKingOn,
             piece,
             i;
-        
+
         if (myColor === "black") {
             me = this.whereIs("k")[0];
             enemyColor = "white";
@@ -496,7 +496,7 @@ VBoard.prototype = {
         piece = new Piece(enemyColor === "white" ? "K" : "k");
         for (i = 0; i < enemyKing.length; i += 1) {
             if (piece.isLegal(this, this.ensureIndex(enemyKing[i]),
-                this.ensureIndex(me), true)) { return true; }
+                    this.ensureIndex(me), true)) { return true; }
         }
         piece = new Piece(enemyColor === "white" ? "N" : "n");
         for (i = 0; i < enemyKnights.length; i += 1) {
@@ -530,14 +530,15 @@ VBoard.prototype = {
      * @param   {string}    color       My color
      */
     isLineClear:        function (source, destination, color) {
+        "use strict";
         var srcIndex = this.ensureIndex(source),
             destIndex = this.ensureIndex(destination);
 
         if (this.isOccupiedBy(destIndex) === color) { return false; }
-        if (this.rank(srcIndex) == this.rank(destIndex)) {
+        if (this.rank(srcIndex) === this.rank(destIndex)) {
             return this.checkLine(source, destination, 1);
         }
-        if (this.file(srcIndex) == this.file(destIndex)) {
+        if (this.file(srcIndex) === this.file(destIndex)) {
             return this.checkLine(source, destination, 10);
         }
         if ((srcIndex - destIndex) % 9 === 0) {
@@ -558,14 +559,15 @@ VBoard.prototype = {
      * @return  {boolean}   Are they all clear?
      */
     checkLine:          function (source, destination, increment) {
+        "use strict";
         var srcIndex = this.ensureIndex(source),
             destIndex = this.ensureIndex(destination),
             square,
             lower = srcIndex < destIndex ? srcIndex : destIndex,
             higher = srcIndex === lower ? destIndex : srcIndex;
 
-        for (square = lower + increment; square < higher;square +=
-                increment ) {
+        for (square = lower + increment; square < higher; square +=
+                increment) {
             if (this.isOccupied(square)) { return false; }
         }
         return true;
