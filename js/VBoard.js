@@ -1,8 +1,11 @@
 /**
- * VBoard
+ * @classdesc   A Virtual Chessboard. Used internally to represent a position,
+ *  and to answer questions about it.
  *
- * A Virtual Chessboard. Used internally to represent a position, and to
- * answer questions about it.
+ * @version 0.7.1
+ * @author Arlen P Walker
+ * @copyright 2012 Arlen P Walker (some portions)
+ * @license http://www.apache.org/licenses/LICENSE-2.0
  *
  * @constructor
  *
@@ -15,11 +18,6 @@
  * @property {string}	epTarget        - Target square for en passant
  * @property {integer}	halfMoveClock   - Plies since capture or pawn move
  * @property {integer}	currentMove     - Current move number
- *
- * @version 0.7.1
- * @author Arlen P Walker
- * @copyright 2012 Arlen P Walker (some portions)
- * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
 var VBoard = function (start) {
     "use strict";
