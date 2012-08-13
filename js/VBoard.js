@@ -346,16 +346,13 @@ VBoard.prototype = {
     },
     /**
      * Checks to see if a given square (algebraic or index) is legitimate.
+     *
+     * @param   {variable}  square  The square
+     * @return  {boolean}   Does the square exist on the chessboard?
      */
     exists:         function (square) {
         "use strict";
-        var index;
-
-        if (square.length === undefined) {
-            index = square;
-        } else {
-            index = this.algebraic2Index(square);
-        }
+        var index = this.ensureIndex(square);
 
         if (index < 11 || index > 88 || index % 10 === 0 || index % 10 === 9) {
             return false;
