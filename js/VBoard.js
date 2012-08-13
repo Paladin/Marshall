@@ -154,7 +154,7 @@ VBoard.prototype = {
         },
             code;
 
-        code = this.squares[this.algebraic2Index(square)] || "e";
+        code = this.squares[this.ensureIndex(square)] || "e";
         return types[code];
     },
     /**
@@ -165,7 +165,7 @@ VBoard.prototype = {
      */
     place:      function (piece, where) {
         "use strict";
-        var square = this.algebraic2Index(where);
+        var square = this.ensureIndex(where);
 
         if (square > 0) { this.squares[square] = piece; }
 
@@ -178,7 +178,7 @@ VBoard.prototype = {
      */
     clear:      function (where) {
         "use strict";
-        var square = this.algebraic2Index(where);
+        var square = this.ensureIndex(where);
 
         this.squares[square] = null;
 
@@ -258,7 +258,7 @@ VBoard.prototype = {
     isOccupied:     function (square) {
         "use strict";
 
-        if (this.squares[this.algebraic2Index(square)]) { return true; }
+        if (this.squares[this.ensureIndex(square)]) { return true; }
 
         return false;
     },
@@ -270,9 +270,9 @@ VBoard.prototype = {
     isOccupiedBy:    function (square) {
         "use strict";
 
-        if (!this.squares[this.algebraic2Index(square)]) { return ""; }
+        if (!this.squares[this.ensureIndex(square)]) { return ""; }
 
-        return this.squares[this.algebraic2Index(square)] > "Z" ?
+        return this.squares[this.ensureIndex(square)] > "Z" ?
                 "black" : "white";
     },
     ensureIndex:    function (square) {

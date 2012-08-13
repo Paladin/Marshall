@@ -92,6 +92,36 @@
             	expect(this.vBoard.possibleEPTarget("e6")).
             	    toBe(true);
             });
+            it(" Should ensure a number is an index", function () {
+            	expect(this.vBoard.ensureIndex(11)).toBe(11);
+            });
+            it(" Should ensure a number is an index", function () {
+            	expect(this.vBoard.ensureIndex("a4")).toBe(41);
+            });
+            it(" Should say a5 and g5 are on the same rank", function () {
+            	expect(this.vBoard.isSameRank("a5", "g5")).toBe(true);
+            });
+            it(" Should say a4 and g5 are not on the same rank", function () {
+            	expect(this.vBoard.isSameRank("a4", "g5")).toBe(false);
+            });
+            it(" Should say a5 and a1 are on the same file", function () {
+            	expect(this.vBoard.isSameFile("a5", "a1")).toBe(true);
+            });
+            it(" Should say a4 and g5 are not on the same file", function () {
+            	expect(this.vBoard.isSameFile("a4", "g5")).toBe(false);
+            });
+            it(" Should say a8 and e4 are on the same diagonal", function () {
+            	expect(this.vBoard.isSameDiagonal("a8", "e4")).toBe(true);
+            });
+            it(" Should say b1 and e4 are on the same diagonal", function () {
+            	expect(this.vBoard.isSameDiagonal("b1", "e4")).toBe(true);
+            });
+            it(" Should say g8 and e4 are not on the same diagonal", function () {
+            	expect(this.vBoard.isSameDiagonal("g8", "e4")).toBe(false);
+            });
+            it(" Should say b6 and e4 are on the same diagonal", function () {
+            	expect(this.vBoard.isSameDiagonal("b6", "e4")).toBe(false);
+            });
 		});
 		describe("Working with FEN", function () {
 		    beforeEach(function () {
