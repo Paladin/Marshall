@@ -513,56 +513,48 @@ VBoard.prototype = {
         var me,
             enemyColor,
             enemyKing,
-            enemyQueens,
-            enemyRooks,
-            enemyBishops,
-            enemyKnights,
-            piece,
-            i;
+            enemyQueen,
+            enemyRook,
+            enemyBishop,
+            enemyKnight;
 
         if (myColor === "black") {
             me = this.whereIs("k")[0];
             enemyColor = "white";
-            enemyKing = this.whereIs("K");
-            enemyKnights = this.whereIs("N");
-            enemyBishops = this.whereIs("B");
-            enemyRooks = this.whereIs("R");
-            enemyQueens = this.whereIs("Q");
         } else {
             me = this.whereIs("K")[0];
             enemyColor = "black";
-            enemyKing = this.whereIs("k");
-            enemyKnights = this.whereIs("n");
-            enemyBishops = this.whereIs("b");
-            enemyRooks = this.whereIs("r");
-            enemyQueens = this.whereIs("q");
         }
+        enemyKing = enemyColor === "white" ? "K" : "k";
+        enemyQueen = enemyColor === "white" ? "Q" : "q";
+        enemyRook = enemyColor === "white" ? "R" : "r";
+        enemyBishop = enemyColor === "white" ? "B" : "b";
+        enemyKnight = enemyColor === "white" ? "N" : "n";
 
         if (this.findFromPawn(me, "", enemyColor, true)) { return true; }
-        piece = new Piece(enemyColor === "white" ? "K" : "k");
-        for (i = 0; i < enemyKing.length; i += 1) {
-            if (piece.isLegal(this, this.ensureIndex(enemyKing[i]),
-                    this.ensureIndex(me), true)) { return true; }
-        }
-        piece = new Piece(enemyColor === "white" ? "N" : "n");
-        for (i = 0; i < enemyKnights.length; i += 1) {
-            if (piece.isLegal(this, this.ensureIndex(enemyKnights[i]),
-                    this.ensureIndex(me), true)) { return true; }
-        }
-        piece = new Piece(enemyColor === "white" ? "B" : "b");
-        for (i = 0; i < enemyBishops.length; i += 1) {
-            if (piece.isLegal(this, this.ensureIndex(enemyBishops[i]),
-                    this.ensureIndex(me), true)) { return true; }
-        }
-        piece = new Piece(enemyColor === "white" ? "R" : "r");
-        for (i = 0; i < enemyRooks.length; i += 1) {
-            if (piece.isLegal(this, this.ensureIndex(enemyRooks[i]),
-                    this.ensureIndex(me), true)) { return true; }
-        }
-        piece = new Piece(enemyColor === "white" ? "Q" : "q");
-        for (i = 0; i < enemyQueens.length; i += 1) {
-            if (piece.isLegal(this, this.ensureIndex(enemyQueens[i]),
-                    this.ensureIndex(me), true)) { return true; }
+        if (this.pieceCheck(enemyKing, me)) { return true; }
+        if (this.pieceCheck(enemyKnight, me)) { return true; }
+        if (this.pieceCheck(enemyBishop, me)) { return true; }
+        if (this.pieceCheck(enemyRook, me)) { return true; }
+        if (this.pieceCheck(enemyQueen, me)) { return true; }
+        return false;
+    },
+    /**
+     *  Checks all of a piece type to see if any are giving check
+     *
+     * @param   {string}    symbol  The symbol of the piece
+     * @param   {string}    myKing  Algebraic square address for the king
+     * @return  {boolean}   True if the king is in check by one of those pieces
+     */
+    pieceCheck:     function (symbol, myKing) {
+        "use strict";
+        var piece = new Piece(symbol),
+            enemies = this.whereIs(symbol),
+            i;
+
+        for (i = 0; i < enemies.length; i += 1) {
+            if (piece.isLegal(this, this.ensureIndex(enemies[i]),
+                    this.ensureIndex(myKing), true)) { return true; }
         }
         return false;
     },
