@@ -205,20 +205,11 @@ Converter.prototype = {
         default:
             switch (thePiece) {
             case "N":
-                from = this.vBoard.findFromKnight(theDestination, theSource,
-                    color);
-                break;
             case "B":
-                from = this.vBoard.findFromBishop(theDestination, theSource,
-                    color);
-                break;
             case "Q":
-                from = this.vBoard.findFromQueen(theDestination, theSource,
-                    color);
-                break;
             case "R":
-                from = this.vBoard.findFromRook(theDestination, theSource,
-                    color);
+                from = this.vBoard.findFromPiece(thePiece, theDestination,
+                    theSource, color);
                 break;
             case "K":
                 from = this.vBoard.whereIs(color === "white" ? "K" : "k")[0];

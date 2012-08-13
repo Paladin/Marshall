@@ -354,6 +354,13 @@ VBoard.prototype = {
         return String.fromCharCode((index % 10) + "a".charCodeAt(0) - 1);
     },
     /**
+     * @return  {string}    the number of the rank for the square.
+     */
+    rank:               function (square) {
+        "use strict";
+        return Math.floor(this.ensureIndex(square) / 10);
+    },
+    /**
      * Is the square a possible en passant square?
      *
      *  @param  {var}       square
@@ -374,36 +381,43 @@ VBoard.prototype = {
     findFromPawn:   function (destination, from, color, capture) {
         "use strict";
         var index,
-            direction = color === "white" ? 1 : -1;
+            direction = color === "white" ? 1 : -1,
+            possibles = [],
+            i,
+            mySymbol = color === "white" ? "P" : "p",
+            left,
+            right,
+            bonus = color === "white" ? 2 : 7;
 
         if (from && from.length === 2) { return from; }
 
-        index = this.algebraic2Index(destination);
+        index = this.ensureIndex(destination);
+        possibles = this.whereIs(mySymbol);
 
         if (capture) {
-            if (this.file(this.index2Algebraic(index - 9 * direction)) ===
-                    from) {
-                from = this.index2Algebraic(index - 9 * direction);
-            } else {
-                from = this.index2Algebraic(index - 11 * direction);
-            }
+            left = this.index2Algebraic(index - (direction * 9));
+            right = this.index2Algebraic(index - (direction * 11));
+            if (possibles.indexOf(left) !== -1) { return left; }
+            if (possibles.indexOf(right) !== -1) { return right; }
         } else {
-            if (this.isOccupied(this.index2Algebraic(
-                    this.algebraic2Index(destination) - 10 * direction
-                ))) {
-                from = this.index2Algebraic(this.algebraic2Index(destination) -
-                    10 * direction);
-            } else {
-                from = this.index2Algebraic(this.algebraic2Index(destination) -
-                    20 * direction);
+            for (i = 0; i < possibles.length; i += 1) {
+                if (this.file(possibles[i]) === this.file(destination)) {
+                    if (this.rank(possibles[i]) + direction ===
+                            this.rank(destination)) {
+                        return possibles[i];
+                    } else if (this.rank(possibles[i]) === bonus &&
+                            this.rank(possibles[i]) + direction * 2 ===
+                            this.rank(destination)) {
+                        return possibles[i]
+                    }
+                }
             }
         }
         return from;
     },
     whichPiece:          function (from, mySymbol, moves) {
         "use strict";
-        var possibles = [],
-            i,
+        var i,
             rank = null,
             file = null;
 
@@ -414,106 +428,31 @@ VBoard.prototype = {
                 rank = from;
             }
         }
-        possibles = this.whereIs(mySymbol);
         for (i = 0; i < moves.length; i += 1) {
-            if (possibles.indexOf(moves[i]) !== -1) {
-                if (rank === null && file === null) { return moves[i]; }
-                if (rank && rank === moves[i].charAt(1)) { return moves[i]; }
-                if (file && file === moves[i].charAt(0)) {return moves[i]; }
-            }
+            if (rank && rank === moves[i].charAt(1)) { return moves[i]; }
+            if (file && file === moves[i].charAt(0)) { return moves[i]; }
         }
         return "";
     },
-    findFromKnight:     function (destination, from, color) {
+    findFromPiece:     function (thePiece, destination, from, color) {
         "use strict";
-        var index,
-            i,
-            j,
-            mySymbol = color === "white" ? "N" : "n",
-            myMoves = [8, 19, 21, 12, -8, -19, -21, -12],
-            moves = [];
+        var i,
+            mySymbol = color ===
+                "white" ? thePiece.toUpperCase() : thePiece.toLowerCase(),
+            possibles = [],
+            possibleFroms = [],
+            piece = new Piece(mySymbol);
 
         if (from && from.length === 2) { return from; }
-        index = this.algebraic2Index(destination);
-        for (j = 0; j < myMoves.length; j += 1 ) {
-        	i = index + myMoves[j];
-            if (this.exists(i)) {
-                moves.push(this.index2Algebraic(i));
+        possibleFroms = this.whereIs(mySymbol);
+        for (i = 0; i < possibleFroms.length; i += 1) {
+            if (piece.isLegal(this, this.ensureIndex(possibleFroms[i]),
+                    this.ensureIndex(destination))) {
+                possibles.push(possibleFroms[i]);
             }
         }
-        return this.whichPiece(from, mySymbol, moves);
-    },
-    findFromBishop:     function (destination, from, color) {
-        "use strict";
-        var index,
-            i,
-            j,
-            mySymbol = color === "white" ? "B" : "b",
-            myMoves = [9, 11, -9, -11],
-            moves = [];
-
-        if (from && from.length === 2) { return from; }
-        index = this.algebraic2Index(destination);
-        for (j = 0; j < 4; j += 1) {
-            i = index + myMoves[j];
-            while (this.exists(i) &&
-                    !this.isOccupied(this.index2Algebraic(i))) {
-                moves.push(this.index2Algebraic(i));
-                i += myMoves[j];
-            }
-            if (this.whatsOn(this.index2Algebraic(i)).symbol === mySymbol) {
-                moves.push(this.index2Algebraic(i));
-            }
-        }
-        return this.whichPiece(from, mySymbol, moves);
-    },
-    findFromRook:     function (destination, from, color) {
-        "use strict";
-        var index,
-            i,
-            j,
-            mySymbol = color === "white" ? "R" : "r",
-            myMoves = [-1, 1, 10, -10],
-            moves = [];
-
-        if (from && from.length === 2) { return from; }
-        index = this.algebraic2Index(destination);
-        for (j = 0; j < 4; j += 1) {
-            i = index + myMoves[j];
-            while (this.exists(i) &&
-                    !this.isOccupied(this.index2Algebraic(i))) {
-                moves.push(this.index2Algebraic(i));
-                i += myMoves[j];
-            }
-            if (this.whatsOn(this.index2Algebraic(i)).symbol === mySymbol) {
-                moves.push(this.index2Algebraic(i));
-            }
-        }
-        return this.whichPiece(from, mySymbol, moves);
-    },
-    findFromQueen:     function (destination, from, color) {
-        "use strict";
-        var index,
-            i,
-            j,
-            mySymbol = color === "white" ? "Q" : "q",
-            myMoves = [-1, 1, 9, 10, 11, -9, -10, -11],
-            moves = [];
-
-        if (from && from.length === 2) { return from; }
-        index = this.algebraic2Index(destination);
-        for (j = 0; j < 8; j += 1) {
-            i = index + myMoves[j];
-            while (this.exists(i) &&
-                    !this.isOccupied(this.index2Algebraic(i))) {
-                moves.push(this.index2Algebraic(i));
-                i += myMoves[j];
-            }
-            if (this.whatsOn(this.index2Algebraic(i)).symbol === mySymbol) {
-                moves.push(this.index2Algebraic(i));
-            }
-        }
-        return this.whichPiece(from, mySymbol, moves);
+        if (possibles.length === 1) { return possibles[0]; }
+        return this.whichPiece(from, mySymbol, possibles);
     },
     /**
      *  Am I in check?
@@ -522,17 +461,113 @@ VBoard.prototype = {
      *
      *  @return {boolean}   Well, is it in check?
      */
-    isCheck:        function (color) {
+    isCheck:        function (myColor) {
         "use strict";
-        var me = this.whereIs(color === "black" ? "k" : "K")[0],
-            enemy = color === "black" ? "white" : "black";
+        var me,
+            enemyColor,
+            enemyKing,
+            enemyQueens,
+            enemyRooks,
+            enemyBishops,
+            enemyKnights,
+            enemyKingOn,
+            piece,
+            i;
+        
+        if (myColor === "black") {
+            me = this.whereIs("k")[0];
+            enemyColor = "white";
+            enemyKing = this.whereIs("K");
+            enemyKnights = this.whereIs("N");
+            enemyBishops = this.whereIs("B");
+            enemyRooks = this.whereIs("R");
+            enemyQueens = this.whereIs("Q");
+        } else {
+            me = this.whereIs("K")[0];
+            enemyColor = "black";
+            enemyKing = this.whereIs("k");
+            enemyKnights = this.whereIs("n");
+            enemyBishops = this.whereIs("b");
+            enemyRooks = this.whereIs("r");
+            enemyQueens = this.whereIs("q");
+        }
 
-        if (this.findFromPawn(me, "", enemy, true)) { return true; }
-        if (this.findFromKnight(me, "", enemy)) { return true; }
-        if (this.findFromBishop(me, "", enemy)) { return true; }
-        if (this.findFromRook(me, "", enemy)) { return true; }
-        if (this.findFromQueen(me, "", enemy)) { return true; }
-        if (this.findFromKing(me, "", enemy)) { return true; }
+        if (this.findFromPawn(me, "", enemyColor, true)) { return true; }
+        piece = new Piece(enemyColor === "white" ? "K" : "k");
+        for (i = 0; i < enemyKing.length; i += 1) {
+            if (piece.isLegal(this, this.ensureIndex(enemyKing[i]),
+                this.ensureIndex(me), true)) { return true; }
+        }
+        piece = new Piece(enemyColor === "white" ? "N" : "n");
+        for (i = 0; i < enemyKnights.length; i += 1) {
+            if (piece.isLegal(this, this.ensureIndex(enemyKnights[i]),
+                    this.ensureIndex(me), true)) { return true; }
+        }
+        piece = new Piece(enemyColor === "white" ? "B" : "b");
+        for (i = 0; i < enemyBishops.length; i += 1) {
+            if (piece.isLegal(this, this.ensureIndex(enemyBishops[i]),
+                    this.ensureIndex(me), true)) { return true; }
+        }
+        piece = new Piece(enemyColor === "white" ? "R" : "r");
+        for (i = 0; i < enemyRooks.length; i += 1) {
+            if (piece.isLegal(this, this.ensureIndex(enemyRooks[i]),
+                    this.ensureIndex(me), true)) { return true; }
+        }
+        piece = new Piece(enemyColor === "white" ? "Q" : "q");
+        for (i = 0; i < enemyQueens.length; i += 1) {
+            if (piece.isLegal(this, this.ensureIndex(enemyQueens[i]),
+                    this.ensureIndex(me), true)) { return true; }
+        }
         return false;
+    },
+    /**
+     *  Is the line clear from source to destination? (a piece of the enemy's
+     *  color may be on the destination square, all intermediate squares must
+     *  be clear.
+     *
+     * @param   {variable}  source      The starting square
+     * @param   {variable}  destination The ending square
+     * @param   {string}    color       My color
+     */
+    isLineClear:        function (source, destination, color) {
+        var srcIndex = this.ensureIndex(source),
+            destIndex = this.ensureIndex(destination);
+
+        if (this.isOccupiedBy(destIndex) === color) { return false; }
+        if (this.rank(srcIndex) == this.rank(destIndex)) {
+            return this.checkLine(source, destination, 1);
+        }
+        if (this.file(srcIndex) == this.file(destIndex)) {
+            return this.checkLine(source, destination, 10);
+        }
+        if ((srcIndex - destIndex) % 9 === 0) {
+            return this.checkLine(source, destination, 9);
+        }
+        if ((srcIndex - destIndex) % 11 === 0) {
+            return this.checkLine(source, destination, 11);
+        }
+        return false;
+    },
+    /**
+     *  Checks to see if a progression of squares is clear
+     *
+     * @param   {variable}  source      The lower square index
+     * @param   {variable}  destination The higher square index
+     * @param   {integer}   increment   The increment to the next square
+     *
+     * @return  {boolean}   Are they all clear?
+     */
+    checkLine:          function (source, destination, increment) {
+        var srcIndex = this.ensureIndex(source),
+            destIndex = this.ensureIndex(destination),
+            square,
+            lower = srcIndex < destIndex ? srcIndex : destIndex,
+            higher = srcIndex === lower ? destIndex : srcIndex;
+
+        for (square = lower + increment; square < higher;square +=
+                increment ) {
+            if (this.isOccupied(square)) { return false; }
+        }
+        return true;
     }
 };

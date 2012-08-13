@@ -215,38 +215,38 @@
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 assertEquals( "Couldn't find knight e7", "e7",
-                    vBoard.findFromKnight("c8", "", "black"));
+                    vBoard.findFromPiece("n", "c8", "", "black"));
                 assertEquals( "Couldn't find knight e7 full", "e7",
-                    vBoard.findFromKnight("c8", "e7", "black"));
+                    vBoard.findFromPiece("N", "c8", "e7", "black"));
                 assertEquals( "Couldn't find knight f4", "f4",
-                    vBoard.findFromKnight("h5", "", "black"));
+                    vBoard.findFromPiece("N", "h5", "", "black"));
                 assertEquals( "Couldn't find knight f4 full", "f4",
-                    vBoard.findFromKnight("h5", "f4", "black"));
+                    vBoard.findFromPiece("N", "h5", "f4", "black"));
             });
             it(" Should find a rook to move to a square", function() {
                 var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 assertEquals( "Couldn't find rook", "a8",
-                    vBoard.findFromRook("b8", "", "black"));
+                    vBoard.findFromPiece("R", "b8", "", "black"));
                 assertEquals( "Couldn't find rook", "a8",
-                    vBoard.findFromRook("b8", "a8", "black"));
+                    vBoard.findFromPiece("R", "b8", "a8", "black"));
             });
             it(" Should find a queen to move to a square", function() {
                 var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 assertEquals( "Couldn't find queen", "e8",
-                    vBoard.findFromQueen("d7", "", "black"));
+                    vBoard.findFromPiece("Q", "d7", "", "black"));
                 assertEquals( "Couldn't find queen", "e8",
-                    vBoard.findFromQueen("d7", "e8", "black"));
+                    vBoard.findFromPiece("Q", "d7", "e8", "black"));
             });
             it(" Should find the Bishop to move to a square", function() {
                 var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 assertEquals( "Couldn't find bishop", "h7",
-                    vBoard.findFromBishop("f5", "", "white"));
+                    vBoard.findFromPiece("B", "f5", "", "white"));
             });
             it(" Should find the pawn to move to a square", function() {
                 var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
@@ -256,6 +256,14 @@
                     vBoard.findFromPawn("a5", "", "black", false));
                 assertEquals( "Couldn't find pawn", "a7",
                     vBoard.findFromPawn("a6", "", "black", false));
+            });
+            it(" Should find the line a1-h8 clear for white", function () {
+            	var vBoard = new VBoard("7k/8/8/8/8/8/8/BK6");
+            	expect(vBoard.isLineClear("a1", "h8", "white")).toBe(true);
+            });
+            it(" Should not find the line a1-h8 clear for black", function () {
+            	var vBoard = new VBoard("7k/8/8/8/8/8/8/qK6");
+            	expect(vBoard.isLineClear("a1", "h8", "white")).toBe(true);
             });
 		});
 	});
