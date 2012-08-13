@@ -148,7 +148,6 @@ Converter.prototype = {
         var to = this.pgn.nextMove(),
             oldTo = to,
             color,
-            toCoords,
             from,
             parsed,
             moveText,
@@ -169,7 +168,6 @@ Converter.prototype = {
         color = to[1];
         to = to[0];
         moveText = to;
-        toCoords = this.getSquare(moveText);
 
         parsed = moveText.match(/O-O-O|O-O|0-0|0-0-0|([NBRQK]?)([a-h]?[1-8]?)(x)?([a-h][1-8])?=?([NBRQ]?)([\+#!\?]*)/);
         theMove = parsed[0];
@@ -273,124 +271,6 @@ Converter.prototype = {
 
         return checked;
     },
-        /*
-         * Converts a SAN (Standard Algebraic Notation) into 
-         * board coordinates. The SAN is in the format of
-         * eg e4, dxe4, R2b7. When SAN contains extra information
-         * "taking move", "en passante", "check", "piece from a
-         * specific file or rank" it is also extracted.
-        */
-    getSquare:	function (coord) {
-        "use strict";
-        var map = {
-                a: 7,
-                b: 6,
-                c: 5,
-                d: 4,
-                e: 3,
-                f: 2,
-                g: 1,
-                h: 0
-            },
-            extra = [-1, -1],
-            taking = -1,
-            tmp,
-            rtrn;
-
-        if (arguments.length !== 1) {
-            throw "Wrong number of arguments";
-        }
-
-        // if only from certain file we can make the move
-
-        // trim the everything from +
-        if (coord.indexOf("+") !== -1) {
-            coord = coord.substring(0, coord.indexOf("+"));
-        }
-        // let's trim the piece prefix
-        if (/^[A-Z]/.test(coord) ||
-                /^[nbrqk]{1,1}[abcdefgh]{1,1}/.test(coord)) {
-            coord = coord.substr(1);
-        }
-
-        // the move is a taking move, we have to look for different
-        // files then with pawns
-        if (/x/.test(coord)) {
-            tmp = coord.split("x");
-            if (tmp[0].length) {
-                if (/[a-z][0-9]/.test(tmp[0])) {
-                    extra[0] = 7 - map[tmp[0].charAt(0)];
-                    extra[1] = 8 - tmp[0].charAt(1);
-                } else if (/[a-z]/.test(tmp[0])) {
-                    extra[0] = 7 - map[tmp[0]];
-                } else if (/[0-9]/.test(tmp[0])) {
-                    extra[1] = 8 - tmp[0];
-                }
-            }
-            coord = tmp[1];
-            taking = 7 - map[tmp[0]];
-        }
-
-        // we have extra information on the from file
-        // eg Rbd7
-        if (/^[a-z]{2,2}/.test(coord)) {
-            extra[0] = 7 - map[coord.substring(0, 1)];
-            coord = coord.substring(1);
-        }
-
-        // we have the row no
-        // eg R8d5
-        if (/^[0-9][a-z][0-9]/.test(coord)) {
-            extra[1] = 8 - coord.substring(0, 1);
-            coord = coord.substring(1);
-        }
-
-        // we have both Ng8e7
-        if (/^([a-z][0-9])[a-z][0-9]/.test(coord)) {
-            tmp = coord.match(/^([a-z][0-9])[a-z][0-9]/);
-            extra[0] = 7 - map[tmp[1].charAt(0)];
-            extra[1] = 8 - tmp[1].charAt(1);
-            coord = coord.replace(/[a-z][0-9]/, "");
-        }
-
-        // we have Yahoo format, e2-e4
-        if (/^([a-z][0-9])-([a-z][0-9])/.test(coord)) {
-            tmp = coord.match(/^([a-z][0-9])-([a-z][0-9])/);
-            extra[0] = 7 - map[tmp[1].charAt(0)];
-            extra[1] = 8 - tmp[1].charAt(1);
-            coord = tmp[2];
-        }
-
-        rtrn = [8 - coord.charAt(1), 7 - map[coord.charAt(0)],
-                                extra, taking];
-
-        return rtrn;
-    },
-    /*
-     * Finds location of pawn captured en passant
-     */
-    getEnPassante:	function (brd, from, to) {
-        "use strict";
-
-        // pawn move
-        if ("pawn" !== brd.whatsOn(from).piece) {
-            return null;
-        }
-        // taking move
-        if (brd.isSameFile(to, from)) {
-            return null;
-        }
-        // destination should be null
-        if (brd.whatsOn(to).piece !== "empty") {
-            return null;
-        }
-        // the piece we are looking for
-        return to.charAt(0) + from.charAt(1);
-    },
-    getOppColor:	function (color) {
-        "use strict";
-        return "white" === color ? "black" : "white";
-    },
     movePiece:	function (from, to, prom) {
         "use strict";
         var hist = to.clone(),
@@ -477,7 +357,7 @@ Converter.prototype = {
     checkFound:	function (board, rank, file, deltaRank,
                                     deltaFile, color, pieces) {
         "use strict";
-        var opponent = this.getOppColor(color),
+        var opponent = this.pgn.alternate(color, "white", "black"),
             theSquare,
             i;
 
