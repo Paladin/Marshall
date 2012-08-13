@@ -249,19 +249,6 @@ Converter.prototype = {
 
         throw ('No move found for the generic move ' + toSAN);
     },
-    leavesOwnKingInCheck:	function (brd, pos, from) {
-        "use strict";
-
-        var holdMe = pos[from[0]][from[1]],
-            checked;
-
-        pos[from[0]][from[1]] = new vSquare();
-
-        checked = this.isKingChecked(brd, from.color, pos);
-        pos[from[0]][from[1]] = holdMe;
-
-        return checked;
-    },
     movePiece:	function (from, to, prom) {
         "use strict";
         var hist = to.clone(),
@@ -298,75 +285,5 @@ Converter.prototype = {
             }
         }
         return [from, to, hist, pPiece];
-    },
-    isKingChecked:	function (brd, col) {
-        "use strict";
-        var x,
-            y;
-
-        if ("black" === col) {
-            x = brd.bKingX;
-            y = brd.bKingY;
-        } else {
-            x = brd.wKingX;
-            y = brd.wKingY;
-        }
-        // diagonals, looking for bishops, queens
-        if (this.checkFound(brd.vBoard, x, y, -1, -1, col,
-                ["bishop", "queen"])) {
-            return true;
-        }
-        if (this.checkFound(brd.vBoard, x, y, 1, 1, col, ["bishop", "queen"])) {
-            return true;
-        }
-        if (this.checkFound(brd.vBoard, x, y, 1, -1, col,
-                ["bishop", "queen"])) {
-            return true;
-        }
-        if (this.checkFound(brd.vBoard, x, y, -1, 1, col,
-                ["bishop", "queen"])) {
-            return true;
-        }
-
-        // horizontals, verticals - looking for rooks and queens
-        if (this.checkFound(brd.vBoard, x, y, 0, 1, col, ["rook", "queen"])) {
-            return true;
-        }
-        if (this.checkFound(brd.vBoard, x, y, 0, -1, col, ["rook", "queen"])) {
-            return true;
-        }
-        if (this.checkFound(brd.vBoard, x, y, 1, 0, col, ["rook", "queen"])) {
-            return true;
-        }
-        if (this.checkFound(brd.vBoard, x, y, -1, 0, col, ["rook", "queen"])) {
-            return true;
-        }
-
-        return false;
-    },
-
-    checkFound:	function (board, rank, file, deltaRank,
-                                    deltaFile, color, pieces) {
-        "use strict";
-        var opponent = this.pgn.alternate(color, "white", "black"),
-            theSquare,
-            i;
-
-        try {
-            for (i = 1; i < 8; i += 1) {
-                theSquare =
-                    board[rank + (i * deltaRank)][file + (i * deltaFile)];
-                if (theSquare.color === color) {
-                    break;
-                }
-                if (theSquare.color === opponent) {
-                    if (pieces.indexOf(theSquare.piece) > -1) {
-                        return true;
-                    }
-                    break;
-                }
-            }
-        } catch (e) {}
-        return false;
     }
 };
