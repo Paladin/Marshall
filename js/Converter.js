@@ -66,11 +66,16 @@ Converter.prototype = {
 	 **/
     convert:	function () {
         "use strict";
-        var move = null;
+        var move = null,
+            thisMove;
         do {
-            move = this.convertMove();
-            if (move) {
-                move.position = this.vBoard.getFEN();
+            thisMove = this.pgn.nextMove();
+            if (thisMove) {
+                move = this.convertMove(
+                    {"text": thisMove[0], "color": thisMove[1]}
+                );
+            } else {
+                move = null;
             }
             this.moves[this.moves.length] = move;
         } while (move);
@@ -146,14 +151,10 @@ Converter.prototype = {
         /*
             Convert a move.
         */
-    convertMove:	function () {
+    convertMove:	function (move) {
         "use strict";
-        var to = this.pgn.nextMove(),
-            oldTo = to,
-            color,
-            from,
+        var from,
             parsed,
-            moveText,
             thePiece,
             theMove,
             theSource,
@@ -164,15 +165,7 @@ Converter.prototype = {
             newPiece,
             myMove = null;
 
-        if (to === null) {
-            return;
-        }
-
-        color = to[1];
-        to = to[0];
-        moveText = to;
-
-        parsed = moveText.match(/O-O-O|O-O|0-0|0-0-0|([NBRQK]?)([a-h]?[1-8]?)(x)?([a-h][1-8])?=?([NBRQ]?)([\+#!\?]*)/);
+        parsed = move.text.match(/O-O-O|O-O|0-0|0-0-0|([NBRQK]?)([a-h]?[1-8]?)(x)?([a-h][1-8])?=?([NBRQ]?)([\+#!\?]*)/);
         theMove = parsed[0];
         thePiece = parsed[1];
         if (parsed[4]) {
@@ -189,21 +182,21 @@ Converter.prototype = {
         switch (theMove) {
         case "O-O":
         case "0-0":
-            this.vBoard.place(color === "black" ? "k" : "K",
-                color === "black" ? "g8" : "g1");
-            this.vBoard.clear(color === "black" ? "e8" : "e1");
+            this.vBoard.place(move.color === "black" ? "k" : "K",
+                move.color === "black" ? "g8" : "g1");
+            this.vBoard.clear(move.color === "black" ? "e8" : "e1");
             thePiece = "R";
-            from = color === "black" ? "h8" : "h1";
-            theDestination = color === "black" ? "f8" : "f1";
+            from = move.color === "black" ? "h8" : "h1";
+            theDestination = move.color === "black" ? "f8" : "f1";
             break;
         case "O-O-O":
         case "0-0-0":
-            this.vBoard.place(color === "black" ? "k" : "K",
-                color === "black" ? "c8" : "c1");
-            this.vBoard.clear(color === "black" ? "e8" : "e1");
+            this.vBoard.place(move.color === "black" ? "k" : "K",
+                move.color === "black" ? "c8" : "c1");
+            this.vBoard.clear(move.color === "black" ? "e8" : "e1");
             thePiece = "R";
-            from = color === "black" ? "a8" : "a1";
-            theDestination = color === "black" ? "d8" : "d1";
+            from = move.color === "black" ? "a8" : "a1";
+            theDestination = move.color === "black" ? "d8" : "d1";
             break;
         default:
             switch (thePiece) {
@@ -212,31 +205,34 @@ Converter.prototype = {
             case "Q":
             case "R":
                 from = this.vBoard.findFromPiece(thePiece, theDestination,
-                    theSource, color);
+                    theSource, move.color);
                 break;
             case "K":
-                from = this.vBoard.whereIs(color === "white" ? "K" : "k")[0];
+                from =
+                    this.vBoard.whereIs(move.color === "white" ? "K" : "k")[0];
                 break;
             case "":
                 if (theSource.length === 2 && theDestination.length === 2) {
                     from = theSource;
                 } else {
                     from = this.vBoard.findFromPawn(theDestination, theSource,
-                        color, isCapture);
+                        move.color, isCapture);
                 }
                 break;
             default:
-                throw ("Can't figure out which piece to move '" + oldTo + "'");
+                throw ("Can't figure out which piece to move '" +
+                    move.text + "'");
             }
         }
-        promotedTo = color === "black" ? promotedTo.toLowerCase() : promotedTo;
+        promotedTo =
+            move.color === "black" ? promotedTo.toLowerCase() : promotedTo;
         newPiece =
             promotedTo === "" ? this.vBoard.whatsOn(from).symbol : promotedTo;
         this.vBoard.place(newPiece, theDestination);
         this.vBoard.clear(from);
 
         myMove = new MyMove();
-        myMove.moveStr = oldTo[0];
+        myMove.moveStr = move.text;
         myMove.position = this.vBoard.getFEN();
 
         return myMove;
