@@ -137,34 +137,34 @@
             it(" Should correctly name White", function () {
                 expect("Walker").toBe(this.pgn.props.White);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name Black", function () {
                 expect("Coons").toBe(this.pgn.props.Black);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name the Event", function () {
                 expect("Waukesha Team").toBe(this.pgn.props.Event);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name the Site", function () {
                 expect("Waukesha").toBe(this.pgn.props.Site);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name the Date", function () {
                 expect("2001.07.11").toBe(this.pgn.props.Date);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name the Round", function () {
                 expect("1").toBe(this.pgn.props.Round);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name the Annotator", function () {
                 expect("Shredder").toBe(this.pgn.props.Annotator);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly identify the result", function () {
                 expect("1-0").toBe(this.pgn.props.Result);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name the setup", function () {
                 expect("1").toBe(this.pgn.props.SetUp);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name the PlyCount", function () {
                 expect("9").toBe(this.pgn.props.PlyCount);
             });
-            it(" Should correctly name White", function () {
+            it(" Should correctly name the SourceDate", function () {
                 expect("2009.06.14").toBe(this.pgn.props.SourceDate);
             });
         });
