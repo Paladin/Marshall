@@ -612,6 +612,94 @@ Board.prototype = {
         }
         this.addComment(this.pgn.postGame, moveList);
     },
+    /**
+     *  Outputs the move tree wrapped properly in HTML
+     *
+     * @param   {HTMLElement}   container   The container that holds the moves
+     */
+    outputMoveTree:     function (container) {
+        var move = this.pgn.moveTree,
+            movesHeader = document.createElement('header'),
+            h,
+            link,
+            lastMoveIdx = 0,
+            comment,
+            moveList = document.createElement("p"),
+            i,
+            txt;
+
+        if (!this.opts.showMovesPane) {
+            container.style.visibility = "hidden";
+            container.style.display = "none";
+        }
+
+        h = this.addTextElement(movesHeader, "h1", {}, this.gameOpponents()).parentElement;
+        h.appendChild(document.createTextNode(" ("));
+        h.appendChild(this.addPGNLink(this.pgn.pgnOrig));
+        h.appendChild(document.createTextNode(")"));
+        container.appendChild(movesHeader);
+        container.appendChild(moveList);
+        this.addComment(this.pgn.gameIntro, moveList);
+
+        this.outputLine(moveList, move, true);
+    },
+    /**
+     *  Outputs a line, wrapped in HTML (recursive)
+     *
+     * @param   {HTMLElement}   container   The element to append the moves to
+     * @param   {Object}        move        The beginning move of the line
+     * @param   {Boolean}       main        Main line (T) or variation (F)?
+     */
+    outputLine:     function (container, move, main) {
+        var variation;
+        while (move !== null) {
+            this.outputMove(container, move);
+            if (move.down !== null) {
+                variation = this.enterVariation(container);
+                this.outputLine(variation, move.down, false);
+                this.exitVariation(variation);
+            }
+            move = move.next;
+        }
+    },
+    /**
+     *  Outputs a move, wrapped in HTML, including move number and comments,
+     *  if appropriate.
+     *
+     * @param   {HTMLElement}   container   The container element for the move
+     * @param   {object}        move        The move
+     */
+    outputMove:            function(container, move) {
+        var link,
+            i = 0;
+        if (move.color === "white") {
+            container.appendChild(this.addMoveNumber(move.number));
+        }
+        link = this.addMoveLink(move.text, move.number, move.color);
+        container.appendChild(link);
+        while (i < move.commentary.length) {
+            this.addComment(move.commentary[i], container);
+            i += 1;
+        }
+    },
+    /**
+     *  Outputs HTML to enter a variation
+     *
+     * @param   {HTMLElement}   container   The element to append the moves to
+     */
+    enterVariation:     function (container) {
+        var variation = this.addTextElement(container, "span",
+                {"class": "variation"}, "(").parentElement;
+        return variation;
+    },
+    /**
+     *  Outputs HTML to exit a variation
+     *
+     * @param   {HTMLElement}   container   The element to append the moves to
+     */
+    exitVariation:      function (container) {
+        container.appendChild(document.createTextNode(")"));
+    },
     /*
      * This fills in information about the game in the designated container
      *
@@ -646,10 +734,10 @@ Board.prototype = {
      * @param   {object}        attributes  Attributes for the created element
      * @return  {HTMLElement}   The created element
      */
-    addTextElement:  function (container, element, attributes) {
+    addTextElement:  function (container, element, attributes, text) {
         "use strict";
         var theElement = this.createWithAttribs(element, attributes),
-            child = document.createTextNode("&nbsp;");
+            child = document.createTextNode(text || "&nbsp;");
 
         theElement.appendChild(child);
         container.appendChild(theElement);
