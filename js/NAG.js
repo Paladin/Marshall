@@ -1,11 +1,11 @@
 var NAG = [
-	{ "meaning": "null annotation", "code": null, "text": false },
-	{ "meaning": "good move (traditional \"!\")", "code": "!", "text": false },
-	{ "meaning": "poor move (traditional \"?\")", "code": "?", "text": false },
-	{ "meaning": "very good move (traditional \"!!\")", "code": "!!", "text": false },
-	{ "meaning": "very poor move (traditional \"??\")", "code": "??", "text": false },
-	{ "meaning": "speculative move (traditional \"!?\")", "code": "!?", "text": false },
-	{ "meaning": "questionable move (traditional \"?!\")", "code": "?!", "text": false },
+	{ "meaning": "null annotation", "code": null, "text": true },
+	{ "meaning": "good move (traditional \"!\")", "code": "!", "text": true },
+	{ "meaning": "poor move (traditional \"?\")", "code": "?", "text": true },
+	{ "meaning": "very good move (traditional \"!!\")", "code": "!!", "text": true },
+	{ "meaning": "very poor move (traditional \"??\")", "code": "??", "text": true },
+	{ "meaning": "speculative move (traditional \"!?\")", "code": "!?", "text": true },
+	{ "meaning": "questionable move (traditional \"?!\")", "code": "?!", "text": true },
 	{ "meaning": "forced move (all others lose quickly)", "code": null, "text": false },
 	{ "meaning": "singular move (no reasonable alternatives)", "code": null, "text": false },
 	{ "meaning": "worst move", "code": null, "text": false },
@@ -138,5 +138,5 @@ var NAG = [
 	{ "meaning": "White has moderate time control pressure", "code": null, "text": false },
 	{ "meaning": "Black has moderate time control pressure", "code": null, "text": false },
 	{ "meaning": "White has severe time control pressure", "code": null, "text": false },
-	{ "meaning": "Black has severe time control pressure", "code": null, "text": false },
+	{ "meaning": "Black has severe time control pressure", "code": null, "text": false }
 ];

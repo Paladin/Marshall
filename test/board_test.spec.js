@@ -153,5 +153,8 @@
 		it(" Should have 8 nodes in the variation display", function () {
 			expect(this.div.children[1].children[8].childNodes.length).toBe(8);
 		});
+		it(" Should have found and applied the NAG", function () {
+			expect(this.div.children[1].children[2].textContent).toBe("Bxg7+!");
+		});
 	});
 })();

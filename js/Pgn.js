@@ -369,6 +369,9 @@ Pgn.prototype = {
                 move.destination = move.text.match(/([a-z][1-8])[!?+#]?$/)[1];
                 this.color = this.alternate(this.color, "white", "black");
 
+            } else if ((/\$/).test(text.charAt(0))) {
+                text = this.parseNAG(text, move);
+
             } else if (/[{]/.test(text.charAt(0))) {
                 text = this.parseCommentary(text, move);
 
@@ -388,6 +391,26 @@ Pgn.prototype = {
                 text = text.slice(1);
             }
         }
+    },
+    /**
+     *  Parses a NAG based on entries from the external NAG array
+     *
+     * @param   {string}    gameText    The text being parsed
+     * @param   {object}    move        The move being parsed into
+     * @return  {string}    The string after parsing out the NAG
+     */
+    parseNAG:       function (gameText, move) {
+        var nagMatch = gameText.match(/^\$([0-9]{1,3})/),
+            nagIndex = nagMatch[1];
+
+        if (NAG[nagIndex]) {
+            if (NAG[nagIndex].text) {
+                move.text += NAG[nagIndex].code;
+            } else {
+                move.commentary.push(NAG[nagIndex].code);
+            }
+        }
+        return gameText.slice(nagMatch[0].length);
     },
     /**
      *  Alternates between two options
