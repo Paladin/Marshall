@@ -71,7 +71,7 @@ Converter.prototype = {
         do {
             thisMove = this.pgn.nextMove();
             if (thisMove) {
-                move = this.convertMove(
+                move = this.convertMove( this.vBoard,
                     {"text": thisMove[0], "color": thisMove[1]}
                 );
             } else {
@@ -151,7 +151,7 @@ Converter.prototype = {
         /*
             Convert a move.
         */
-    convertMove:	function (move) {
+    convertMove:	function (board, move) {
         "use strict";
         var from,
             parsed,
@@ -182,18 +182,18 @@ Converter.prototype = {
         switch (theMove) {
         case "O-O":
         case "0-0":
-            this.vBoard.place(move.color === "black" ? "k" : "K",
+            board.place(move.color === "black" ? "k" : "K",
                 move.color === "black" ? "g8" : "g1");
-            this.vBoard.clear(move.color === "black" ? "e8" : "e1");
+            board.clear(move.color === "black" ? "e8" : "e1");
             thePiece = "R";
             from = move.color === "black" ? "h8" : "h1";
             theDestination = move.color === "black" ? "f8" : "f1";
             break;
         case "O-O-O":
         case "0-0-0":
-            this.vBoard.place(move.color === "black" ? "k" : "K",
+            board.place(move.color === "black" ? "k" : "K",
                 move.color === "black" ? "c8" : "c1");
-            this.vBoard.clear(move.color === "black" ? "e8" : "e1");
+            board.clear(move.color === "black" ? "e8" : "e1");
             thePiece = "R";
             from = move.color === "black" ? "a8" : "a1";
             theDestination = move.color === "black" ? "d8" : "d1";
@@ -204,18 +204,18 @@ Converter.prototype = {
             case "B":
             case "Q":
             case "R":
-                from = this.vBoard.findFromPiece(thePiece, theDestination,
+                from = board.findFromPiece(thePiece, theDestination,
                     theSource, move.color);
                 break;
             case "K":
                 from =
-                    this.vBoard.whereIs(move.color === "white" ? "K" : "k")[0];
+                    board.whereIs(move.color === "white" ? "K" : "k")[0];
                 break;
             case "":
                 if (theSource.length === 2 && theDestination.length === 2) {
                     from = theSource;
                 } else {
-                    from = this.vBoard.findFromPawn(theDestination, theSource,
+                    from = board.findFromPawn(theDestination, theSource,
                         move.color, isCapture);
                 }
                 break;
@@ -227,13 +227,13 @@ Converter.prototype = {
         promotedTo =
             move.color === "black" ? promotedTo.toLowerCase() : promotedTo;
         newPiece =
-            promotedTo === "" ? this.vBoard.whatsOn(from).symbol : promotedTo;
-        this.vBoard.place(newPiece, theDestination);
-        this.vBoard.clear(from);
+            promotedTo === "" ? board.whatsOn(from).symbol : promotedTo;
+        board.place(newPiece, theDestination);
+        board.clear(from);
 
         myMove = new MyMove();
         myMove.moveStr = move.text;
-        myMove.position = this.vBoard.getFEN();
+        myMove.position = board.getFEN();
 
         return myMove;
     },
