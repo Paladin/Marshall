@@ -562,7 +562,6 @@ Board.prototype = {
      *
      * @param   {HTMLElement}   container   The element to append the moves to
      * @param   {Object}        move        The beginning move of the line
-     * @param   {Boolean}       main        Main line (T) or variation (F)?
      */
     outputLine:     function (container, move) {
         "use strict";
@@ -653,6 +652,7 @@ Board.prototype = {
      * @param   {HTMLElement}   container   The container for the new element
      * @param   {string}        element     The name of the element to create
      * @param   {object}        attributes  Attributes for the created element
+     * @param   {string}        text        Optional text to put in element
      * @return  {HTMLElement}   The created element
      */
     addTextElement:  function (container, element, attributes, text) {
@@ -811,6 +811,7 @@ Board.prototype = {
      * @param   {string}        moveText    The text of the move
      * @param   {string}        moveNumber  The move number
      * @param   {string}        color       The color making the move
+     * @param   {string}        fen         Description of position after move
      * @return  {HTMLElement}   The link to add to the page
      */
     addMoveLink:    function (moveText, moveNumber, color, fen) {
@@ -828,6 +829,8 @@ Board.prototype = {
     },
     /**
      *	Returns the current position in Forsythe notation.
+     *
+     * @return  {string}    The FEN position
      */
     getForsytheFromDisplay: function () {
         "use strict";
