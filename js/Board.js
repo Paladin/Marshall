@@ -364,7 +364,6 @@ Board.prototype = {
         var vBoard = this.conv.getEndPos();
 
         this.syncBoard(vBoard);
-        this.conv.resetToEnd();
         this.updateMoveInfo();
         this.highlightCurrentMove();
     },
@@ -376,7 +375,6 @@ Board.prototype = {
         var vBoard = this.conv.getStartPos();
 
         this.syncBoard(vBoard);
-        this.conv.resetToStart();
         this.updateMoveInfo();
         this.highlightCurrentMove();
     },

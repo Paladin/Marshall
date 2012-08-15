@@ -98,59 +98,6 @@ Converter.prototype = {
             move = move.next;
         }
     },
-    /*
-        Result iterator
-    */
-    getCurMove:	function () {
-        "use strict";
-        if (this.moves.length > this.iteIndex) {
-            return this.moves[this.iteIndex];
-        }
-        return null;
-    },
-
-    getCurMoveNo:	function () {
-        "use strict";
-        return this.iteIndex;
-    },
-
-    setCurMoveNo:	function (ply) {
-        "use strict";
-        this.iteIndex = ply;
-    },
-
-    nextMove:	function () {
-        "use strict";
-        if (this.moves.length > this.iteIndex) {
-            this.iteIndex += 1;
-            return this.moves[this.iteIndex - 1];
-        }
-        return null;
-    },
-
-    getPrevPosition:	function () {
-        "use strict";
-        return this.moves[this.iteIndex - 1].position;
-    },
-
-    prevMove:	function () {
-        "use strict";
-        if (this.iteIndex > 0) {
-            this.iteIndex -= 1;
-            return this.moves[this.iteIndex];
-        }
-        return null;
-    },
-
-    resetToEnd:	function () {
-        "use strict";
-        this.iteIndex = this.moves.length;
-    },
-
-    resetToStart:	function () {
-        "use strict";
-        this.iteIndex = 0;
-    },
 
     /*
         EOF Result Iterator
@@ -249,58 +196,6 @@ Converter.prototype = {
         board.place(newPiece, theDestination);
         board.clear(from);
 
-//         myMove = new MyMove();
-//         myMove.moveStr = move.text;
         move.position = board.getFEN();
-// 
-//         return myMove;
-    },
-    /*
-       Find from any move
-    */
-    findFromAny:	function (toSAN, toCoords) {
-        "use strict";
-        if (toCoords[2][0] !== -1 && toCoords[2][1] !== -1) {
-            return [toCoords[2][1], toCoords[2][0]];
-        }
-
-        throw ('No move found for the generic move ' + toSAN);
-    },
-    movePiece:	function (from, to, prom) {
-        "use strict";
-        var hist = to.clone(),
-            tmpPiece = from.piece,
-            pPiece = null;
-
-        to.piece = from.piece;
-        to.color = from.color;
-        to.type = from.type;
-
-        from.piece = null;
-        from.color = null;
-        from.type = null;
-
-        // promoting the piece
-        if (prom.length > 0) {
-            pPiece = tmpPiece;
-
-            switch (prom) {
-            case 'R':
-                to.piece = 'rook';
-                break;
-            case 'B':
-                to.piece = 'bishop';
-                break;
-            case 'N':
-                to.piece = 'knight';
-                break;
-            case 'Q':
-                to.piece = 'queen';
-                break;
-            default:
-                throw ('Unknown promotion');
-            }
-        }
-        return [from, to, hist, pPiece];
     }
 };
