@@ -266,6 +266,12 @@
 				expect(this.vBoard.findFromPiece("N", "d7", "b", "black")).
 				    toBe("b8");
 			});
+			it(" Should find the correct from square (d6)", function () {
+				expect(this.vBoard.whichPiece("d", ["d6", "e7"])).toBe("d6");
+			});
+			it(" Should find the correct from square (f5)", function () {
+				expect(this.vBoard.whichPiece("5", ["f5", "f4"])).toBe("f5");
+			});
 		});
 	});
 }) ();
