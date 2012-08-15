@@ -123,6 +123,9 @@ Piece.prototype = {
     isLegalKing:    function (board, origin, destination) {
         "use strict";
         var i;
+        if (!this.isPossible(board, origin, destination, false)) {
+            return false;
+        }
         for (i = 0; i < this.myMoves.length; i += 1) {
             if ((origin + this.myMoves[i]) === destination) {
                 return true;

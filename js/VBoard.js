@@ -425,8 +425,8 @@ VBoard.prototype = {
         if (capture) {
             left = this.index2Algebraic(index - (direction * 9));
             right = this.index2Algebraic(index - (direction * 11));
-            if (this.file(left) == fromFile) { return left; }
-            if (this.file(right) == fromFile) { return right; }
+            if (this.file(left) === fromFile) { return left; }
+            if (this.file(right) === fromFile) { return right; }
         } else {
             for (i = 0; i < possibles.length; i += 1) {
                 if (this.file(possibles[i]) === this.file(destination)) {
