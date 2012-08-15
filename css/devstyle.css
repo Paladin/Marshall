@@ -182,15 +182,15 @@ header p {font-size: 130%;}
 .game_section { display: block; }
 
 .mainboard {
-	height: 380px;
-	width: 310px;
+	height: 370px;
+	width: 280px;
 	float: left;
 	margin: 0 1em 1em 0;
 	padding-right: 20px;
 	border-right: 3px #999 inset;
 }
 
-.gameboard { height: 270px; width: 270px; margin: 0 auto; }
+.gameboard { height: 240px; width: 240px; margin: 0 auto; }
 
 .dark_square { background-color: #666; }
 
@@ -207,7 +207,7 @@ header p {font-size: 130%;}
 
 .board_controls a {
 	text-decoration: none;
-	width: 31px;
+	width: 27px;
 	height: 27px;
 	display: inline-block;
 	zoom: 1;
