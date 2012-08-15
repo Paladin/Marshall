@@ -66,22 +66,12 @@ Converter.prototype = {
 	 **/
     convert:	function () {
         "use strict";
-        var move = this.pgn.moveTree.next,
-            thisMove;
-//         do {
-//             thisMove = this.pgn.nextMove();
-//             if (thisMove) {
-//                 move = this.convertMove( this.vBoard,
-//                     {"text": thisMove[0], "color": thisMove[1]}
-//                 );
-//             } else {
-//                 move = null;
-//             }
-//             this.moves[this.moves.length] = move;
-//         } while (move);
+        var move = this.pgn.moveTree.next;
+
         this.convertLine(this.vBoard, move);
     },
-    convertLine:        function(board, move) {
+    convertLine:        function (board, move) {
+        "use strict";
         var variation;
         while (move !== null) {
             this.convertMove(board, move);
@@ -127,10 +117,17 @@ Converter.prototype = {
             theDestination,
             promotedTo,
             theNotes,
-            newPiece,
-            myMove = null;
+            newPiece;
 
-        parsed = move.text.match(/O-O-O|O-O|0-0|0-0-0|([NBRQK]?)([a-h]?[1-8]?)(x)?([a-h][1-8])?=?([NBRQ]?)([\+#!\?]*)/);
+        parsed = move.text.match(
+            new RegExp("O-O-O|O-O|0-0|0-0-0|([NBRQK]?)" +   // Piece (castling)
+                "([a-h]?[1-8]?)" +                          // from or to
+                "(x)?" +                                    // Capture made
+                "([a-h][1-8])?" +                           // to if not before
+                "=?([NBRQ]?)" +                             // Promoted to
+                "([+#!?]*)"                                 // Move Annotations
+                )
+        );
         theMove = parsed[0];
         thePiece = parsed[1];
         if (parsed[4]) {
