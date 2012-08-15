@@ -1,7 +1,7 @@
 # Marshall
 
 Marshall is a javascript library based on Toomas R&#246;mer's jsPgnViewer library (http://www.pgnview.com) which he licensed under the apache 2.0
-license. For the sake of consistency, this is also licensed under th apache license.
+license. For the sake of consistency, this is also licensed under the apache license.
 
 ##Why another one?
 
@@ -16,9 +16,12 @@ Simple. The main tree is the development versions, so each class is in its own f
 
 For now, each class/function is in its own file. Deal with it.
 
-##What's coming?
+##Where Are We Now?
 
-A number of things. For the initial revisions, probably not much more than removing the pieces of the original code that are no longer needed, such as the style related javascript (this will be replaced by semantic class names if anything at all, to enable CSS styling of the entire thing). This may make some other refactoring opportunities obvious. Then I'll add some variation handling code. That should take us to release 1.0, and from there we'll just have to see.
+Markup is more semantic and variations work. Or at least the Demo works and the tests work, but the code is still filled with lots of appendix methods and I want full, solid testing in place before I bump the version number.
+
+Along the way I've removed a few features. Some will make it back in by 1.0, some never will. This code should take a PGN with variations and play through it. The up/down buttons in the toolbar meant for dropping in to them still aren't hooked up, but soon. First priority is cleaning up after the push to get variations hooked in. Then I'll reconnect some removed features, and document everything.
+
 
 -----------------------------------------------------
 
