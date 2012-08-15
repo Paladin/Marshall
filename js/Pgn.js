@@ -10,19 +10,12 @@
  * @property {string}	props		    - PGN properties supplied
  * @property {string}	requiredProps   - The required PGN properties
  * @property {string}	requiredLength  - (Currently 7)
- * @property {array}	moves           - Array of moves
- * @property {integer}	currentMove
- * @property {integer}	skip            - White (0) or Black (1) to move
- * @property {string}	gameIntro       - Commentary before game begins
  * @property {string}	pgnOrig         - original PGN string
- * @property {string}	pgn             - PGN being processed
- * @property {string}	pgnRaw          - PGN after being normalized
- * @property {string}	pgnStripped     - PGN with commentary removed
  *
  * @version 0.7.1
  * @author Toomas Ršmer
  * @author Arlen P Walker
- * @copyright 2008 Toomas Ršmer
+ * @copyright 2008 Toomas R&#246;mer
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
@@ -38,308 +31,17 @@ function Pgn(pgn) {
 
 	// properties of the game eg players, ELOs etc
 	this.props = {};
-	this.moves = [];	// the moves, one move contains the black and white move
 
-    pgnParsing = pgn;
-    this.parse(pgnParsing);
-	this.pgnOrig = pgn;
-	pgn = this.normalize(pgn);
-
-	this.pgn = pgn;
-	this.pgnRaw = this.pgn;
-	this.pgnStripped = this.stripComments(this.pgn);
-
-	this.pgn = this.extractTags(this.pgn);
-	this.extractGameIntro();
-	this.extractPostGame();
-	this.pgn = this.stripComments(this.pgn, true);
-
-	themoves = this.pgn.split(" ");
-	ply[1] = null;
-	if (this.isBlackToMove(this.props.FEN)) {
-		plyidx = 1;
-		this.skip = 1;
-	}
-
-	sizeOfTheMoves = this.dropLastMove(themoves) ?
-							themoves.length - 1 : themoves.length;
-	for (i = 0; i < sizeOfTheMoves; i += 1) {
-		if (themoves[i]) {
-			themoves[i] = themoves[i].trim();
-			themoves[i] = this.includeOrigination(themoves[i]);
-			themoves[i] = this.removeMoveNumber(themoves[i]);
-			if (themoves[i].length > 0) {
-				ply[plyidx] = themoves[i];
-				if (plyidx === 1) {	//black's move or last move
-					move = new Move(ply[0], ply[1]);
-					this.moves[this.moves.length] = move;
-					plyidx = 0;
-					ply = [null, null];
-					ply[1] = null;
-				} else {
-					plyidx = 1;
-				}
-			}
-		}
-	}
-
-	if (ply[0] || ply[1]) {
-		move = new Move(ply[0], ply[1]);
-		this.moves[this.moves.length] = move;
-	}
+    this.pgnOrig = pgn;
+    this.parse(pgn);
 }
 Pgn.prototype = {
 	props:          null,
 	requiredProps:	['Result', 'Black', 'White', 'Date',
 								'Round', 'Site', 'Event'],
 	requiredLength:	7,
-	moves:          null,	// the moves,
-	currentMove:    0,	// the current move in the game
-	skip:			0,	// which ply at start? 0=white's, 1=black's
-	gameIntro:		null,
 	pgnOrig:        null,
-	pgn:            null,
-	pgnRaw:         null,
-	pgnStripped:    null,
 	moveTree:       null,
-	toMove:         null,
-    /**
-     *	Checks FEN to see if it is Black to start
-     */
-    isBlackToMove:	function (FEN) {
-        "use strict";
-        return (FEN && / b | B /.test(FEN));
-    },
-    /**
-     *	Tests to see if last move entry should be dropped. It should be
-     *  dropped if not a move, but rather a result/partial game indicator.
-     */
-    dropLastMove:	function (themoves) {
-        "use strict";
-        return !!themoves[themoves.length - 1].
-            match(/1\/2-1\/2|0-1|1-0|\*|\.\.\./);
-    },
-    /**
-     *	Pull any info the move contains about its origin into the move as well
-     */
-    includeOrigination:	function (move) {
-        "use strict";
-        var fromTo,
-            newMove,
-            matches;
-
-        if (this.moveHasOrigination(move)) {
-            fromTo = move.split("-");
-            if (fromTo[0].match(/[0-9]*?\.?([A-Z])/) !== null) {
-                // we can just replace the - with nothing
-                newMove = move.replace("-", "");
-            } else {
-                matches = fromTo[0].match(/[0-9]+\./);
-                if (matches) {
-                    newMove = matches[0] + fromTo[1];
-                } else {
-                    newMove = fromTo[1];
-                }
-            }
-            return newMove;
-        }
-        return move;
-    },
-    /**
-     *	If the move is prefaced by a move number, remove it. If the token
-     *  contains only a move number, with no move, it will be emptied.
-     */
-    removeMoveNumber:	function (move) {
-        "use strict";
-        return move.replace(/^[1-9][0-9]*\.?[ ]*/g, "");
-    },
-    /**
-     *	will return the pgn string without comments or with comments replaced
-     *  by underscores.
-     */
-    stripComments:	function (pgn, replace) {
-        "use strict";
-        var substitute,
-            interim,
-            theMoves,
-            theMovesBegin;
-
-        if (replace) {
-            substitute = "";
-        } else {
-            substitute = function (theString) {
-                var a = [];
-                a.length = parseInt(theString.length, 10) + 1;
-                return a.join("_");
-            };
-        }
-        interim = pgn.replace(/\{(.)*?\}/g, substitute);
-        while (interim.match(/\([^()]*\)/)) {
-            interim = interim.replace(/\([^()]*\)/g, substitute);
-        }
-
-        theMoves = interim.replace(/\[[^\]]*\]/g, '').trim();
-        theMovesBegin = theMoves.replace(/[_ ]*/, "");
-        if (!parseInt(theMovesBegin.charAt(0), 10)) {
-            if (replace) {
-                interim =
-                    interim.substring(0, interim.length - theMoves.length);
-            } else {
-                interim = interim.substring(0,
-                    interim.length - theMoves.length) + substitute(theMoves);
-            }
-        }
-        return interim;
-    },
-    /**
-     *	Does the move have information on its origin as well as destination
-     */
-    moveHasOrigination:	function (move) {
-        "use strict";
-        return move.indexOf("-") !== -1 &&
-                 !/[0|o]-[0|o]/i.test(move) &&
-                 !/[0|o]-[0|o]-[0|o]/i.test(move);
-    },
-    /**
-     *	This will "normalize" the pgn file by removing line breaks, collapsing
-     *  strings of spaces, and replacing the symbols for moves with the
-     *  characters (!, ?, etc.)
-     */
-    normalize:	function (pgn) {
-        "use strict";
-        pgn = pgn.replace(/\n/g, " ");
-
-        // replace dollar signs
-        //"!", "?", "!!", "!?", "?!", and "??"
-        pgn = pgn.replace(/\ \$1[0-9]*/g, "!");
-        pgn = pgn.replace(/\ \$2[0-9]*/g, "?");
-        pgn = pgn.replace(/\ \$3[0-9]*/g, "!!");
-        pgn = pgn.replace(/\ \$4[0-9]*/g, "??");
-        pgn = pgn.replace(/\ \$5[0-9]*/g, "!?");
-        pgn = pgn.replace(/\ \$6[0-9]*/g, "?!");
-        pgn = pgn.replace(/\ \$[0-9]+/g, "");
-
-        // make double spaces to single spaces
-        return pgn.replace(/\s+/g, ' ');
-    },
-    /**
-     *	This function takes a pgn game string and extracts all the tags into
-     *  the class variable props as key/value pairs. it returns the pgn string,
-     *  minus the tags.
-     */
-    extractTags:	function (theText) {
-        "use strict";
-        var text = theText,
-            i;
-
-        while (text.length > 0 && (/[\s\[]/).test(text.charAt(0))) {
-            if (text.charAt(0) === "[") {
-                text = this.parseTag(text);
-            }
-            text = text.slice(1);
-        }
-        for (i = 0; i < this.requiredProps.length; i += 1) {
-            this.props[this.requiredProps[i]] =
-                this.props[this.requiredProps[i]] || "?";
-        }
-        return text.trim();
-    },
-
-    nextMove:	function () {
-        "use strict";
-        var rtrn = null;
-        try {
-            if (this.skip) {
-                this.skip = 0;
-                rtrn = [this.moves[this.currentMove].black, 'black'];
-                this.currentMove += 1;
-            } else {
-                this.skip = 1;
-                rtrn = [this.moves[this.currentMove].white, 'white'];
-            }
-
-            if (rtrn[0] === null || rtrn[0].length === 0) { rtrn = null; }
-            return rtrn;
-        } catch (e) {
-            return null;
-        }
-    },
-
-    getComment:	function (move, idx) {
-        "use strict";
-        var i = this.pgnStripped.indexOf(move, idx),
-            j,
-            c,
-            k,
-            c2;
-
-        if (i === -1) {
-            //throw("getComment error, could not find move '"
-            //				+move+"'"+", with index '"+idx+"'");
-            return [null, idx];
-        }
-
-        for (j = i + move.length; j < this.pgnStripped.length; j += 1) {
-            c = this.pgnStripped.charAt(j);
-            switch (c) {
-            case ' ':
-                break;
-            case '_':	//found comment
-                for (k = j; k < this.pgnStripped.length; k += 1) {
-                    c2 = this.pgnStripped.charAt(k);
-                    switch (c2) {
-                    case '_':	//found comment
-                        break;
-                    default:	//no comment
-                        // we might have many comments separated with spaces
-                        // as we strip all double spaces to single ones we
-                        // can just check for the next char being '_'
-                        if (this.pgnStripped.length > k + 1 &&
-                                this.pgnStripped.charAt(k + 1) === '_') {
-                            continue;
-                        }
-                        return [this.pgnRaw.substring(j, k), k];
-                    }
-                }
-                break;
-            default:	//no comment
-                return [null, idx];
-            }
-        }
-        return [null, idx];
-    },
-    /**
-     *	Extract a comment starting from the beginning of the the pgn string.
-     */
-    extractGameIntro:	function () {
-        "use strict";
-        this.gameIntro = null;
-
-        this.pgn.trim();
-        if (this.pgn.charAt(0) === '{') {
-            this.gameIntro = this.pgn.substring(1, this.pgn.indexOf("}"));
-            this.pgn = this.pgn.slice(this.pgn.indexOf("{"));
-        }
-
-        return;
-    },
-    /**
-     *	Extract a comment starting from the beginning of the the pgn string.
-     */
-    extractPostGame:	function () {
-        "use strict";
-        this.postGame = null;
-
-        this.pgn.trim();
-        if (this.pgn.charAt(this.pgn.length - 1) === '}') {
-            this.postGame = this.pgn.substring(this.pgn.lastIndexOf("{") + 1,
-                    this.pgn.lastIndexOf("}"));
-            this.pgn = this.pgn.slice(0, this.pgn.lastIndexOf("{"));
-        }
-
-        this.pgn = this.pgn.trim();
-        return;
-    },
     /**
      *  Main parsing function for PGN text
      *
@@ -528,11 +230,7 @@ Pgn.prototype = {
 
         commentary = text.substring(1, text.indexOf("}"));
         text = text.slice(commentary.length + 2);
-        if (move.isEmpty()) {
-            this.gameIntro = commentary;
-        } else {
-            move.commentary.push(commentary);
-        }
+        move.commentary.push(commentary);
         return text;
     }
 };

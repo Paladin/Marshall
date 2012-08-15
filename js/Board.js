@@ -534,7 +534,7 @@ Board.prototype = {
      */
     outputMoveTree:     function (container) {
         "use strict";
-        var move = this.pgn.moveTree.next,
+        var move = this.pgn.moveTree,
             movesHeader = document.createElement('header'),
             h,
             moveList = document.createElement("p");
@@ -551,7 +551,6 @@ Board.prototype = {
         h.appendChild(document.createTextNode(")"));
         container.appendChild(movesHeader);
         container.appendChild(moveList);
-        this.addComment(this.pgn.gameIntro, moveList);
 
         this.outputLine(moveList, move);
     },
@@ -585,14 +584,17 @@ Board.prototype = {
         "use strict";
         var link,
             i = 0;
-        if (move.color === "white") {
-            container.appendChild(this.addMoveNumber(move.number));
+
+        if (move.text !== "...") {
+            if (move.color === "white") {
+                container.appendChild(this.addMoveNumber(move.number));
+            }
+            link = this.addMoveLink(move.text, move.number, move.color,
+                move.position);
+            container.appendChild(link);
+            move.link = link;
+            this.movesOnPane.push(link);
         }
-        link = this.addMoveLink(move.text, move.number, move.color,
-            move.position);
-        container.appendChild(link);
-        move.link = link;
-        this.movesOnPane.push(link);
         while (i < move.commentary.length) {
             this.addComment(move.commentary[i], container);
             i += 1;
