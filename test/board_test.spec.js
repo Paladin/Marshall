@@ -111,7 +111,7 @@
 		});
 		
 	});
-	describe("Outputting HTML MoveTree", function () {
+	describe("Board - Outputting HTML MoveTree", function () {
         var aGame = "[Event \"Dayton\"]" + 
                 "[Site \"?\"]" + 
                 "[Date \"1890.02.25\"]" + 
