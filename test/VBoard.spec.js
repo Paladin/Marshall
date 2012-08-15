@@ -256,5 +256,16 @@
             	expect(vBoard.isLineClear("a1", "h8", "white")).toBe(true);
             });
 		});
+		describe("Moving", function () {
+			beforeEach(function () {
+				this.vBoard = new VBoard(
+				    "rnbqkb1r/pp2pppp/2p2n2/3p2B1/3PP3/5N2/PPP2PPP/RN1QKB1R"
+				);
+			});
+			it(" Should move the correct (b8) Knight", function () {
+				expect(this.vBoard.findFromPiece("N", "d7", "b", "black")).
+				    toBe("b8");
+			});
+		});
 	});
 }) ();
