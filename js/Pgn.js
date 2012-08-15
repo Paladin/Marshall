@@ -19,7 +19,7 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
-function Pgn(pgn) {
+var Pgn = function (pgn) {
     "use strict";
 	var themoves,
 	    sizeOfTheMoves,
@@ -34,7 +34,7 @@ function Pgn(pgn) {
 
     this.pgnOrig = pgn;
     this.parse(pgn);
-}
+};
 Pgn.prototype = {
 	props:          null,
 	requiredProps:	['Result', 'Black', 'White', 'Date',
