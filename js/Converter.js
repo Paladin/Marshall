@@ -66,19 +66,37 @@ Converter.prototype = {
 	 **/
     convert:	function () {
         "use strict";
-        var move = null,
+        var move = this.pgn.moveTree.next,
             thisMove;
-        do {
-            thisMove = this.pgn.nextMove();
-            if (thisMove) {
-                move = this.convertMove( this.vBoard,
-                    {"text": thisMove[0], "color": thisMove[1]}
-                );
-            } else {
-                move = null;
+//         do {
+//             thisMove = this.pgn.nextMove();
+//             if (thisMove) {
+//                 move = this.convertMove( this.vBoard,
+//                     {"text": thisMove[0], "color": thisMove[1]}
+//                 );
+//             } else {
+//                 move = null;
+//             }
+//             this.moves[this.moves.length] = move;
+//         } while (move);
+        this.convertLine(this.vBoard, move);
+    },
+    convertLine:        function(board, move) {
+        var variation;
+        while (move !== null) {
+            this.convertMove(board, move);
+            if (move.down !== null) {
+                if (move.previous) {
+                    variation = new VBoard(move.previous.position);
+                } else {
+                    if (move.up) {
+                        variation = new VBoard(move.goTop().previous.position);
+                    }
+                }
+                this.convertLine(variation, move.down);
             }
-            this.moves[this.moves.length] = move;
-        } while (move);
+            move = move.next;
+        }
     },
     /*
         Result iterator
@@ -231,11 +249,11 @@ Converter.prototype = {
         board.place(newPiece, theDestination);
         board.clear(from);
 
-        myMove = new MyMove();
-        myMove.moveStr = move.text;
-        myMove.position = board.getFEN();
-
-        return myMove;
+//         myMove = new MyMove();
+//         myMove.moveStr = move.text;
+        move.position = board.getFEN();
+// 
+//         return myMove;
     },
     /*
        Find from any move

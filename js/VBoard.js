@@ -411,21 +411,22 @@ VBoard.prototype = {
             direction = color === "white" ? 1 : -1,
             possibles = [],
             i,
+            fromFile,
             mySymbol = color === "white" ? "P" : "p",
             left,
             right,
             bonus = color === "white" ? 2 : 7;
 
         if (from && from.length === 2) { return from; }
-
+        fromFile = from.match(/^[a-h]/) ? from.match(/^[a-h]/)[0] : "";
         index = this.ensureIndex(destination);
         possibles = this.whereIs(mySymbol);
 
         if (capture) {
             left = this.index2Algebraic(index - (direction * 9));
             right = this.index2Algebraic(index - (direction * 11));
-            if (possibles.indexOf(left) !== -1) { return left; }
-            if (possibles.indexOf(right) !== -1) { return right; }
+            if (this.file(left) == fromFile) { return left; }
+            if (this.file(right) == fromFile) { return right; }
         } else {
             for (i = 0; i < possibles.length; i += 1) {
                 if (this.file(possibles[i]) === this.file(destination)) {

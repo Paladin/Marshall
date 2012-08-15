@@ -555,23 +555,6 @@ TestCase( "ConverterTest",
 		assertEquals( expectedJSON, JSON.stringify(move) );
 	},
 	
-	"test resetting to end": function() {
-		expected = null;
-		expectedJSON = "null";
-		expectedNumber = 8;
-
-		pgn = new Pgn( this.dummyTags + "{The Scholar's Mate} 1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qf7#" );
-		conv = new Converter(pgn);
-		conv.convert();
-		conv.resetToEnd();
-		move = conv.getCurMove();
-		moveNumber = conv.getCurMoveNo();
-
-		assertEquals( expected, move );
-		assertEquals( expectedJSON, JSON.stringify(move) );
-		assertEquals( expectedNumber, moveNumber );
-	},
-	
 	"test finding any piece to move to a square": function() {
 		h7 = [7,1]; /* Don't like this, smells like an error */
 		f5 = [3,5,[1,7],-1];

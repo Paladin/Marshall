@@ -23,12 +23,12 @@
 			});
 			
 			it("should have produced forsythe notation after first move", function(){
-				expect(this.conv.moves[0].position).
+				expect(this.pgn.moveTree.next.position).
 					toBe("r3qr1k/ppp1nbBB/1b1p4/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1");
 			});
 			
 			it("should have produced forsythe notation of final position", function(){
-				expect(this.conv.moves[this.conv.moves.length-2].position).
+				expect(this.pgn.moveTree.goEnd().position).
 					toBe("r3qr2/ppp1nb1B/1b1p4/4pN2/3PNnkR/2P5/PP4PP/R5K1 w - - 0 1");
 			});
 		});
@@ -50,12 +50,12 @@
 			});
 			
 			it("should have produced forsythe notation after first move", function(){
-				expect(this.conv.moves[0].position).
+				expect(this.pgn.moveTree.next.position).
 					toBe("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
 			});
 			
 			it("should have produced forsythe notation of final position", function(){
-				expect(this.conv.moves[this.conv.moves.length-2].position).
+				expect(this.pgn.moveTree.goEnd().position).
 					toBe("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 0 1");
 			});
 		});

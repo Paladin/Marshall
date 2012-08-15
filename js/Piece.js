@@ -69,7 +69,7 @@ Piece.prototype = {
      */
     isLegal:    null,
     /**
-     *  Checks to see if the piece is pinned
+     *  Checks to see if the king will be in check after the move
      *
      * @param   {object}    board       The virtual board the piece is on
      * @param   {integer}   origin      The index of the square it's on
@@ -77,11 +77,15 @@ Piece.prototype = {
      */
     isPossible:   function (board, origin, destination) {
         "use strict";
-        var holding,
+        var originHold,
+            destHold,
             possible;
-        holding = board.whatsOn(origin);
+        originHold = board.whatsOn(origin);
+        destHold = board.whatsOn(destination);
         board.clear(origin);
-        possible = !board.isCheck(holding.color);
+        board.place(this.symbol, destination);
+        possible = !board.isCheck(originHold.color);
+        board.place(destHold.symbol, destination);
         board.place(this.symbol, origin);
         return possible;
     },

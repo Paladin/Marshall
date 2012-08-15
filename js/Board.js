@@ -18,6 +18,7 @@
  * @property {object}	visuals		- Object containing the PGN info
  * @property {object}	displayBoard - Parent element for the board squares
  * @property {array}	pos			- array of table cells in display (a8-h1)
+ * @property {object}	currentMove - Currently displayed move
  *
  * @version 0.7.1
  * @author Toomas R&#246;mer
@@ -66,6 +67,7 @@ var Board = function (divId, options) {
 	for (i = 0; i < 8; i += 1) {
 		this.pos[i] = [];
 	}
+	this.currentMove = this.pgn.moveTree;
 };
 /**
  * Setting up class attributes
@@ -81,6 +83,7 @@ Board.prototype = {
 	divId:          null,
 	visuals:        {},
 	id:             null,
+	currentMove:    null,
     isYahoo:        function (pgn) {
         "use strict";
 		pgn = pgn.replace(/^\s+|\s+$/g, '');
@@ -106,6 +109,7 @@ Board.prototype = {
                 this.createWithAttribs("td", { "class": "game_info" }),
             board,
             tmp2,
+            i,
             color2;
 
         gameSection.appendChild(topTable);
@@ -135,7 +139,7 @@ Board.prototype = {
             this.flipBoard();
         }
         this.populateProps(propsTd);
-        this.populateMoves(this.movesDiv);
+        this.outputMoveTree(this.movesDiv);
 
         this.createButtonBar(btnTd);
 
@@ -149,18 +153,10 @@ Board.prototype = {
         if (!this.opts.showMovesPane) { this.hideMoves(); }
         if (!this.opts.showComments) { this.hideComments(); }
         if (this.opts.skipToMove) {
-            try {
-                tmp2 = parseInt(this.opts.skipToMove, 10);
-                if (tmp2 > 2) {
-                    color2 = tmp2 % 2 === 0 ? 1 : 0;
-                    tmp2 = Math.round(tmp2 / 2);
-                    this.skipToMove(tmp2 - 1, color2);
-                } else if (tmp2 === 1) {
-                    this.skipToMove(0, 0);
-                } else if (tmp2 === 2) {
-                    this.skipToMove(0, 1);
-                }
-            } catch (e) {}
+            for (i = 0; i < parseInt(this.opts.skipToMove, 10); i += 1) {
+                this.currentMove = this.currentMove.getNextMove();
+            }
+            this.makeMove(this.currentMove);
         }
     },
     /**
@@ -241,10 +237,18 @@ Board.prototype = {
 
         this.makeButton(theContainer, "rwind", "altRewind", false, function () {
             theBoard.startPosition();
+            theBoard.currentMove = theBoard.pgn.moveTree;
             return false;
         });
         this.makeButton(theContainer, "back", "altBack", false, function () {
-            theBoard.makeBwMove();
+                theBoard.makeMove(
+                    theBoard.currentMove.previous ? theBoard.currentMove.previous :
+                    theBoard.currentMove
+                );
+                theBoard.currentMove =
+                    theBoard.currentMove.previous ? theBoard.currentMove.previous :
+                    theBoard.currentMove;
+                return false;
             return false;
         });
         this.makeButton(theContainer, "up", "altUp", true, function () {
@@ -269,12 +273,19 @@ Board.prototype = {
         });
         this.makeButton(theContainer, "forward", "altPlayMove", false,
             function () {
-                theBoard.makeMove();
+                theBoard.makeMove(
+                    theBoard.currentMove.next ? theBoard.currentMove.next :
+                    theBoard.currentMove
+                );
+                theBoard.currentMove =
+                    theBoard.currentMove.next ? theBoard.currentMove.next :
+                    theBoard.currentMove;
                 return false;
             });
         this.makeButton(theContainer, "ffward", "altFastForward", false,
             function () {
-                theBoard.endPosition();
+                theBoard.currentMove = theBoard.pgn.moveTree.goEnd();
+                theBoard.makeMove(theBoard.currentMove);
                 return false;
             });
     },
@@ -343,14 +354,14 @@ Board.prototype = {
      *	TODO: This whole thing appears off by one. give it "41" and it skips
      *          to move 42. Needs to be re-examined after testing is complete.
      */
-    skipToMove: function (moveNumber, color) {
+    skipToMove: function (link) {
         "use strict";
-        var ply = moveNumber * 2 + color;
-
-        this.conv.setCurMoveNo(ply);
-        this.makeMove(true);
-        this.updateMoveInfo();
-        this.highlightCurrentMove();
+        this.currentMove =
+            this.pgn.moveTree.findByLink(this.pgn.moveTree, link);
+        
+        this.drawFEN(this.currentMove.position);
+        this.updateMoveInfo(this.currentMove);
+        this.highlightCurrentMove(this.currentMove);
     },
     /**
      *	Jumps the board all the way to the final position of the game
@@ -461,16 +472,12 @@ Board.prototype = {
     /*
      *	Updates the move line below the board display
      */
-    updateMoveInfo: function () {
+    updateMoveInfo: function (move) {
         "use strict";
-        var idx = this.conv.getCurMoveNo() - 1,
-            move = this.conv.moves[idx],
-            str;
-
-        if (move && move.moveStr) {
-            str = Math.floor((idx === 0 ? 1 : idx) / 2 + 1) +
-                    ". " + move.moveStr;
-            this.moveInput.data = str;
+        if (move && move.number) {
+            this.moveInput.data = move.number + ". ";
+            this.moveInput.data += move.color === "black" ? "... " : "";
+            this.moveInput.data += move.text;
         } else {
             this.moveInput.data = "...";
         }
@@ -481,16 +488,11 @@ Board.prototype = {
      *
      *	@param  {boolean}   update  Should displays be updated? Default true
      */
-    makeMove:   function (update) {
+    makeMove:   function (move, update) {
         "use strict";
-        var move = this.conv.nextMove();
-
-        if (move === null) {
-            return;
-        }
         if (update === undefined || update) {
-            this.updateMoveInfo();
-            this.highlightCurrentMove();
+            this.updateMoveInfo(move);
+            this.highlightCurrentMove(move);
         }
         this.drawFEN(move.position);
     },
@@ -498,10 +500,9 @@ Board.prototype = {
      *	Highlights the current move in the display 
      *
      */
-    highlightCurrentMove: function () {
+    highlightCurrentMove: function (move) {
         "use strict";
-        var idx = this.conv.getCurMoveNo(),
-            i;
+        var i;
 
         for (i = 0; i < this.movesOnPane.length; i += 1) {
             this.movesOnPane[i].className =
@@ -509,8 +510,8 @@ Board.prototype = {
                     trim();
         }
 
-        if (this.movesOnPane[idx - 1]) {
-            this.movesOnPane[idx - 1].className += " current_move";
+        if (move && move.link) {
+            move.link.className += " current_move";
         }
     },
     /**
@@ -618,7 +619,7 @@ Board.prototype = {
      * @param   {HTMLElement}   container   The container that holds the moves
      */
     outputMoveTree:     function (container) {
-        var move = this.pgn.moveTree,
+        var move = this.pgn.moveTree.next,
             movesHeader = document.createElement('header'),
             h,
             link,
@@ -633,7 +634,7 @@ Board.prototype = {
             container.style.display = "none";
         }
 
-        h = this.addTextElement(movesHeader, "h1", {}, this.gameOpponents()).parentElement;
+        h = this.addTextElement(movesHeader, "h1", {}, this.gameOpponents()).parentNode;
         h.appendChild(document.createTextNode(" ("));
         h.appendChild(this.addPGNLink(this.pgn.pgnOrig));
         h.appendChild(document.createTextNode(")"));
@@ -675,8 +676,10 @@ Board.prototype = {
         if (move.color === "white") {
             container.appendChild(this.addMoveNumber(move.number));
         }
-        link = this.addMoveLink(move.text, move.number, move.color);
+        link = this.addMoveLink(move.text, move.number, move.color, move.position);
         container.appendChild(link);
+        move.link = link;
+        this.movesOnPane.push(link);
         while (i < move.commentary.length) {
             this.addComment(move.commentary[i], container);
             i += 1;
@@ -689,7 +692,7 @@ Board.prototype = {
      */
     enterVariation:     function (container) {
         var variation = this.addTextElement(container, "span",
-                {"class": "variation"}, "(").parentElement;
+                {"class": "variation"}, "(").parentNode;
         return variation;
     },
     /**
@@ -892,7 +895,7 @@ Board.prototype = {
      * @param   {string}        color       The color making the move
      * @return  {HTMLElement}   The link to add to the page
      */
-    addMoveLink:    function (moveText, moveNumber, color) {
+    addMoveLink:    function (moveText, moveNumber, color, fen) {
         "use strict";
         var link = this.createWithAttribs("a", {"class": "move"}),
             theBoard = this;
@@ -902,6 +905,7 @@ Board.prototype = {
         link.setAttribute("data-moveNumber", moveNumber);
         link.setAttribute("data-color", color);
         link.setAttribute("data-id", this.id);
+        link.setAttribute("data-fen", fen);
         return link;
     },
     /**
@@ -951,9 +955,10 @@ Board.prototype = {
         var moveNumber =
                 parseInt(e.currentTarget.getAttribute("data-moveNumber"), 10),
             color = parseInt(e.currentTarget.getAttribute("data-color"), 10),
-            myId = parseInt(e.currentTarget.getAttribute("data-id"), 10);
+            myId = parseInt(e.currentTarget.getAttribute("data-id"), 10),
+            fen = e.currentTarget.getAttribute("data-fen");
         e.preventDefault();
-        window[myId].skipToMove(moveNumber, color);
+        window[myId].skipToMove(e.currentTarget);
         return false;
     },
     /**

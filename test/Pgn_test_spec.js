@@ -128,8 +128,7 @@
     	});
         describe("Parsing tags", function () {
             beforeEach(function () {
-                this.pgn = new Pgn(theXPGN);
-                this.pgn.parse(tagsOnly);
+                this.pgn = new Pgn(tagsOnly);
             });
             it(" Should get the tag count correct", function () {
                 expect(11).toBe(Object.keys(this.pgn.props).length);
@@ -170,57 +169,57 @@
         });
         describe(" Parsing Moves", function () {
         	beforeEach(function () {
-        		this.pgn = new Pgn(simpleMoves);
-        		this.pgn.parse(withCommentary);
+        		this.pgn = new Pgn(withCommentary);
         	});
             it(" Should have created some moves", function () {
-                expect(this.pgn.moveTree).toNotBe(null);
+                expect(this.pgn.moveTree.next).toNotBe(null);
             });
             it(" Should have created a move number", function () {
-                expect(this.pgn.moveTree.number).toBeGreaterThan(0);
+                expect(this.pgn.moveTree.next.number).toBeGreaterThan(0);
             });
             it(" Should start with move number 1", function () {
-            	expect(this.pgn.moveTree.number).toBe(1);
+            	expect(this.pgn.moveTree.next.number).toBe(1);
             });
             it(" Should end with white winning", function () {
             	expect(this.pgn.moveTree.goEnd().result).toBe("1-0");
             	expect(this.pgn.moveTree.goEnd().text).toBe("Qf5#");
             });
             it(" Should provide the correct move list", function () {
-            	expect(this.pgn.moveTree.list()).toBe("1. e4 e5 2. f4 f6 3. fxe5 fxe5 4. Qh5+" +
+            	expect(this.pgn.moveTree.next.list()).toBe("1. e4 e5 2. f4 f6 3. fxe5 fxe5 4. Qh5+" +
             	    " Ke7 5. Qe5+ Kf7 6. Bc4+ Kg6 7. Qf5#");
             });
             it(" Should have a game intro comment", function () {
-                expect(this.pgn.gameIntro).toBe("Bad Opening play");
+                expect(this.pgn.moveTree.commentary[0]).
+                    toBe("Bad Opening play");
             });
             it(" Should have a comment on black's second move", function () {
-            	expect(this.pgn.moveTree.next.next.next.commentary.length).
+            	expect(this.pgn.moveTree.next.next.next.next.commentary.length).
             	    toBe(1);
             });
             it(" Should have this comment on Black's second", function () {
-            	expect(this.pgn.moveTree.next.next.next.text).toBe("f6");
-            	expect(this.pgn.moveTree.next.next.next.commentary).
+            	expect(this.pgn.moveTree.next.next.next.next.text).toBe("f6");
+            	expect(this.pgn.moveTree.next.next.next.next.commentary).
             	    toEqual(["This should not be moved this early in the game"]);
             });
             it(" Should have found a variation on Black's second", function () {
-            	expect(this.pgn.moveTree.next.next.next.down.text).toBe("Nf6");
+            	expect(this.pgn.moveTree.next.next.next.next.down.text).toBe("Nf6");
             });
             it(" Should have a second variation", function () {
-            	expect(this.pgn.moveTree.next.next.next.down.down.list()).
+            	expect(this.pgn.moveTree.next.next.next.next.down.down.list()).
             	    toBe("2. ... d5 3. exd5 e4 4. c3");
             });
             it(" Should find a sub variation to the second variation", function () {
-            	expect(this.pgn.moveTree.next.next.next.down.down.next.next.
+            	expect(this.pgn.moveTree.next.next.next.next.down.down.next.next.
             	    down.list()).toBe("3. ... exf5 4. Nf3");
             });
             it(" Should find the right color on the first variation", function () {
-            	expect(this.pgn.moveTree.next.next.next.down.color).toBe("black");
+            	expect(this.pgn.moveTree.next.next.next.next.down.color).toBe("black");
             });
             it(" Should have an initial destination of e4", function () {
-            	expect(this.pgn.moveTree.destination).toBe("e4");
+            	expect(this.pgn.moveTree.next.destination).toBe("e4");
             });
             it(" Should find the subvariation's second move heads for f3", function () {
-            	expect(this.pgn.moveTree.next.next.next.down.down.next.
+            	expect(this.pgn.moveTree.next.next.next.next.down.down.next.
             	    next.down.next.destination).toBe("f3");
             });
         });

@@ -158,25 +158,6 @@ TestCase( "BoardTest",
 		}
 	},
 	
-	"test skipping backwards 2 moves": function() {
-		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.aGame;
-
-		var board = new Board("game1", {"skipToMove": 6}); // Black's third move
-		board.init();
-		
-		marked = document.getElementsByClassName("move_numbers")[2].nextElementSibling.nextElementSibling.className;
-		unmarked = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.className;
-		assertNotEquals("marked and unmarked should not be the same", marked, unmarked );
-
-		board.skipToMove(1,1);		// 2nd 1 means "Black's move"
-		
-		current = document.getElementsByClassName("move_numbers")[1].nextElementSibling.nextElementSibling.className;
-		assertEquals("Previous move should now be marked", marked, current );
-	},
-	
 	"test moving to final position and back": function() {
 		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
 
@@ -199,30 +180,6 @@ TestCase( "BoardTest",
 		assertEquals("There should be a black pawn on f7 at the start", "black_pawn", 
 			document.getElementsByClassName("light_square")[6].title);
 		
-	},
-	
-	"test converting game with e.p. move, then backing over it": function() {
-		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.epGame;
-
-		var board = new Board("game1");
-		board.init();
-		board.skipToMove(3, 0);	// past e.p. move
-
-		assertEquals("There should be a white knight on f3 after skipping", "white_knight", 
-			document.getElementsByClassName("light_square")[22].title);
-
-		board.makeBwMove(false);
-		
-		assertEquals("There should be a black pawn on f3 after moving backwards", "black_pawn", 
-			document.getElementsByClassName("light_square")[22].title);
-			
-		board.makeBwMove(false);
-		
-		assertEquals("There should be nothing on f3 after moving backwards", "empty",
-			document.getElementsByClassName("light_square")[22].title);
 	},
 	
 	"test toggling moves display": function() {
@@ -274,40 +231,5 @@ TestCase( "BoardTest",
 				comments[i].style.visibility == "visible" || 
 				comments[i].style.visibility == "");
 		}
-	},
-
-	"test updating move display": function() {
-		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.aGame;
-
-		var board = new Board("game1", {"skipToMove": 1});
-		board.init();
-		var expected = board.moveInput.data;
-		board.moveInput.value = "PreTest";
-
-		board.updateMoveInfo();
-		assertEquals("Should have correct move display", expected, board.moveInput.data);
-	},
-
-	"test making a move": function() {
-		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.epGame;
-
-		var board = new Board("game1");
-		board.init();
-		board.skipToMove(2, 0);
-		var expected = board.moveInput.data;
-
-		board.makeMove(false);
-		assertEquals("Should not update move display", expected, board.moveInput.data);
-		board.makeMove(true);
-		assertNotEquals("Should update move display", expected, board.moveInput.data);
-		newexpected = board.moveInput.value;
-		board.makeMove();
-		assertNotEquals("Default should update move display", newexpected, board.moveInput.data);
 	}
 });

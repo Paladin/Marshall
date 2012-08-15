@@ -32,6 +32,7 @@ function Pgn(pgn) {
 	    sizeOfTheMoves,
 	    i,
 	    move,
+	    pgnParsing,
 	    ply = [null, null],
 	    plyidx = 0;	//make this 1 if FEN and black to move
 
@@ -39,6 +40,8 @@ function Pgn(pgn) {
 	this.props = {};
 	this.moves = [];	// the moves, one move contains the black and white move
 
+    pgnParsing = pgn;
+    this.parse(pgnParsing);
 	this.pgnOrig = pgn;
 	pgn = this.normalize(pgn);
 
@@ -345,7 +348,7 @@ Pgn.prototype = {
     parse:  function (theText) {
         "use strict";
         var text = theText,
-            move = new MoveTree();
+            move = new MoveTree({"text": "..."});
 
         this.color = "white";
         this.tags = {};
@@ -362,11 +365,14 @@ Pgn.prototype = {
                 if (!move.isEmpty()) { move = move.addNext(); }
                 text = this.parseMoveNumber(text, move);
 
-            } else if (/[a-hKQRBN]/.test(text.charAt(0))) {
+            } else if (/[a-hKQRBNOo]/.test(text.charAt(0))) {
                 if (move.text !== null) { move = move.addNext(); }
                 text = this.parseMoveText(text, move);
                 move.color = this.color;
-                move.destination = move.text.match(/([a-z][1-8])[!?+#]?$/)[1];
+                if (move.text !== "O-O-O" && move.text !== "O-O") {
+                    move.destination =
+                        move.text.match(/([a-z][1-8])[!?+#]*$/)[1];
+                }
                 this.color = this.alternate(this.color, "white", "black");
 
             } else if ((/\$/).test(text.charAt(0))) {
@@ -384,7 +390,7 @@ Pgn.prototype = {
             } else if (/\)/.test(text.charAt(0))) {
                 move = move.goStart();
                 move = move.goTop();
-                this.color = this.alternate(this.color, "white", "black");
+                this.color = this.alternate(move.color, "white", "black");
                 text = text.slice(1);
 
             } else {
@@ -498,6 +504,13 @@ Pgn.prototype = {
         var text = gameText;
 
         move.text = text.match(/(^[a-hxNBRQKO\-+#=0-8!?]+)/)[0];
+        if (move.number < 1) {
+            if (move.previous) {
+                move.number = move.previous.number;
+            } else {
+                if (move.up) { move.number = move.up.number; }
+            }
+        }
         text = text.slice(move.text.length);
         return text;
     },
@@ -514,7 +527,7 @@ Pgn.prototype = {
             commentary;
 
         commentary = text.substring(1, text.indexOf("}"));
-        text = text.slice(commentary.length + 1);
+        text = text.slice(commentary.length + 2);
         if (move.isEmpty()) {
             this.gameIntro = commentary;
         } else {

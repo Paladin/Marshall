@@ -9,18 +9,19 @@
  * @constructor
  * @param   {array} properties  An array of properties to initialize
  *
- * @property {object}   previous    The previous move in the tree
- * @property {object}   next        The next move in the tree
- * @property {object}   up          The base move of the variation
- * @property {object}   down        The start of the next variation
- * @property {string}   text        The move text
- * @property {array}    commentary  Comments to the position
- * @property {integer}  number      The move number
- * @property {object}   piece       The piece being moved
- * @property {object}   result      If game ends on this move
- * @property {string}   color       Color of the move
- * @property {string}   destination Square moved to
- * @property {string}   origin      Square moved from
+ * @property {object}       previous    The previous move in the tree
+ * @property {object}       next        The next move in the tree
+ * @property {object}       up          The base move of the variation
+ * @property {object}       down        The start of the next variation
+ * @property {string}       text        The move text
+ * @property {array}        commentary  Comments to the position
+ * @property {integer}      number      The move number
+ * @property {object}       piece       The piece being moved
+ * @property {object}       result      If game ends on this move
+ * @property {string}       color       Color of the move
+ * @property {string}       destination Square moved to
+ * @property {string}       origin      Square moved from
+ * @property {HTMLElement}  link        Link added to DOM
  *
  * @version 0.7.1
  * @author Arlen P Walker
@@ -131,6 +132,20 @@ MoveTree.prototype = {
         addedTo.down = move;
         move.up = addedTo;
         return move;
+    },
+    findByLink:     function (move, link) {
+        var variation,
+            subsearch;
+        while (move !== null) {
+            if (move.link === link) { return move; }
+            if (move.down !== null) {
+                variation = move.down;
+                subsearch = this.findByLink(variation, link);
+                if (subsearch) { return subsearch; }
+            }
+            move = move.next;
+        }
+        return null;
     },
     toString:       function () {
         "use strict";
