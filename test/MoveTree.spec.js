@@ -27,7 +27,7 @@
         a4w = { number: 4, text: "Nf3", color: "white" },
         a4b = { number: 4, text: "d5", color: "black" },
         b2w = { number: 2, text: "d4", color: "white" },
-        b2b = { number: 2, text: "cxd4", color: "black" },
+        b2b = { number: 2, text: "cxd4", color: "black", link: "Fred" },
         b3w = { number: 3, text: "c3", color: "white" },
         c3w = { number: 3, text: "Qxd4", color: "white" },
         d3b = { number: 3, text: "g6", color: "black" },
@@ -111,6 +111,10 @@
     		expect(this.moveTree.next.next.next.next.next.down.next.next.
     		    down.goTop()).toBe(this.moveTree.next.next.next.next.next.
     		    down.next.next);
+    	});
+    	it(" Should find the right node by link", function () {
+    		expect(this.moveTree.findByLink(this.moveTree, "Fred")).
+    		    toBe(this.moveTree.next.next.down.next);
     	});
     });
 } ());
