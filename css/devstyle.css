@@ -246,8 +246,9 @@ header p {font-size: 130%;}
 
 .current_move_box { text-align: center;}
 
-.current_move { font-weight: bold; background-color: #CCC; padding: 1px 5px !important; }
-.move {font-style: normal; font-weight: bold; color: black !important;}
+.current_move { font-weight: bold; background-color: #CCC; }
+.move {font-style: normal; font-weight: bold; color: black !important; padding: 1px 3px;}
+.variation .move { font-size: 90%; color: #666; padding: 1px 2px; font-style: italic;}
 .move_list {font-style: italic; }
 .game_info { text-align: center; padding: 0.5em 0; }
 .game_info p {
