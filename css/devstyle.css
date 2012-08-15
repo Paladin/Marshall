@@ -182,8 +182,8 @@ header p {font-size: 130%;}
 .game_section { display: block; }
 
 .mainboard {
-	height: 272px;
-	width: 300px;
+	height: 380px;
+	width: 310px;
 	float: left;
 	margin: 0 1em 1em 0;
 	padding-right: 20px;
@@ -249,7 +249,7 @@ header p {font-size: 130%;}
 .current_move { font-weight: bold; background-color: #CCC; }
 .move {font-style: normal; font-weight: bold; color: black !important; padding: 1px 3px;}
 .variation .move { font-size: 90%; color: #666; padding: 1px 2px; font-style: italic;}
-.move_list {font-style: italic; }
+.move_list p {font-style: italic; }
 .game_info { text-align: center; padding: 0.5em 0; }
 .game_info p {
 	font-variant: small-caps;
@@ -316,8 +316,280 @@ td[data-symbol="P"] {
 	background-position: -359px center;
 }
 
+/** USCF Style */
+.uscf .mainboard {
+	height: 388px;
+	width: 320px;
+	float: left;
+	margin: 0 1em 1em 0;
+	padding-right: 20px;
+	border-right: 3px #999 inset;
+}
 
+.uscf .gameboard { height: 278px; width: 278px; border: 3px outdent #a4d7e8; margin: 0 auto; }
 
+.uscf .dark_square { background-color: #a4d7e8; }
+
+.uscf .light_square { background-color: #FFF; }
+
+.uscf .dark_square, .uscf .light_square { height:34px; width:34px; }
+
+.uscf .current_move { font-weight: bold; background-color: #a4d7e8; }
+.uscf .move {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-style: normal;
+	font-weight: bold;
+	color: #0373A4 !important;
+	padding: 1px 3px;
+}
+
+.uscf .variation .move { font-size: 90%; color: #666; padding: 1px 2px; font-style: italic;}
+
+.uscf td[data-symbol="p"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -34px center;
+	background-repeat: none;
+}
+
+.uscf td[data-symbol="n"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -68px center;
+}
+
+.uscf td[data-symbol="b"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -102px center;
+}
+
+.uscf td[data-symbol="r"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -136px center;
+}
+
+.uscf td[data-symbol="q"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -170px center;
+}
+
+.uscf td[data-symbol="k"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -204px center;
+}
+
+.uscf td[data-symbol="K"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -238px center;
+}
+
+.uscf td[data-symbol="Q"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -272px center;
+}
+
+.uscf td[data-symbol="R"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -306px center;
+}
+
+.uscf td[data-symbol="B"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -340px center;
+}
+
+.uscf td[data-symbol="N"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -374px center;
+}
+
+.uscf td[data-symbol="P"] {
+	background-image: url(../img/uscf/USCF34.gif);
+	background-position: -408px center;
+}
+
+.uscf .board_controls
+{
+	height: 33px;
+	text-align: center;
+	vertical-align: top;
+	padding-top: 2px;
+}
+
+.uscf .board_controls a {
+	text-decoration: none;
+	width: 31px;
+	height: 27px;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+	background-image: url(../img/uscf/bar.gif);
+	background-repeat: no-repeat;
+}
+.uscf .board_controls a.rwind {
+	background-position: left center;
+}
+.uscf .board_controls a.back {
+	background-position: -31px center;
+}
+.uscf .board_controls a.up {
+	background-position: -62px center;
+}
+.uscf .board_controls a.flip {
+	background-position: -93px center;
+}
+.uscf .board_controls a.toggle {
+	background-position: -124px center;
+}
+.uscf .board_controls a.comments {
+	background-position: -155px center;
+}
+.uscf .board_controls a.down {
+	background-position: -186px center;
+}
+.uscf .board_controls a.forward {
+	background-position: -217px center;
+}
+.uscf .board_controls a.ffward {
+	background-position: -248px center;
+}
+.uscf .board_controls a.disabled { opacity: 0.4; }
+
+/** USCF Smaller Style */
+.uscfsmall .mainboard {
+	height: 312px;
+	width: 265px;
+	float: left;
+	margin: 0 1em 1em 0;
+	padding-right: 20px;
+	border-right: 3px #999 inset;
+}
+
+.uscfsmall .gameboard { height: 206px; width: 206px; border: 3px outset #a4d7e8; margin: 0 auto; }
+
+.uscfsmall .dark_square { background-color: #a4d7e8; }
+
+.uscfsmall .light_square { background-color: #FFF; }
+
+.uscfsmall .dark_square, .uscfsmall .light_square { height:25px; width:25px; }
+
+.uscfsmall .current_move { font-weight: bold; background-color: #a4d7e8; }
+.uscfsmall .move {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 11px;
+	font-style: normal;
+	font-weight: bold;
+	color: #0373A4 !important;
+	padding: 1px 3px;
+}
+
+.uscfsmall .variation .move { font-size: 90%; color: #666; padding: 1px 2px; font-weight: normal;}
+
+.uscfsmall td[data-symbol="p"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -25px center;
+	background-repeat: none;
+}
+
+.uscfsmall td[data-symbol="n"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -50px center;
+}
+
+.uscfsmall td[data-symbol="b"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -75px center;
+}
+
+.uscfsmall td[data-symbol="r"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -100px center;
+}
+
+.uscfsmall td[data-symbol="q"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -125px center;
+}
+
+.uscfsmall td[data-symbol="k"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -150px center;
+}
+
+.uscfsmall td[data-symbol="K"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -175px center;
+}
+
+.uscfsmall td[data-symbol="Q"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -200px center;
+}
+
+.uscfsmall td[data-symbol="R"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -225px center;
+}
+
+.uscfsmall td[data-symbol="B"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -250px center;
+}
+
+.uscfsmall td[data-symbol="N"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -275px center;
+}
+
+.uscfsmall td[data-symbol="P"] {
+	background-image: url(../img/uscf/USCF25.gif);
+	background-position: -300px center;
+}
+
+.uscfsmall .board_controls
+{
+	height: 33px;
+	text-align: center;
+	vertical-align: top;
+	padding-top: 2px;
+}
+
+.uscfsmall .board_controls a {
+	text-decoration: none;
+	width: 22px;
+	height: 20px;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+	background-image: url(../img/uscf/barsmall.gif);
+	background-repeat: no-repeat;
+}
+.uscfsmall .board_controls a.rwind {
+	background-position: left center;
+}
+.uscfsmall .board_controls a.back {
+	background-position: -22px center;
+}
+.uscfsmall .board_controls a.up {
+	background-position: -45px center;
+}
+.uscfsmall .board_controls a.flip {
+	background-position: -68px center;
+}
+.uscfsmall .board_controls a.toggle {
+	background-position: -91px center;
+}
+.uscfsmall .board_controls a.comments {
+	background-position: -113px center;
+}
+.uscfsmall .board_controls a.down {
+	background-position: -136px center;
+}
+.uscfsmall .board_controls a.forward {
+	background-position: -158px center;
+}
+.uscfsmall .board_controls a.ffward {
+	background-position: -182px center;
+}
+.uscfsmall .board_controls a.disabled { opacity: 0.4; }
 
 /**
  * Non-semantic helper classes: please define your styles before this section.
