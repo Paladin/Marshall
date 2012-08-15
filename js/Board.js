@@ -381,23 +381,6 @@ Board.prototype = {
         this.highlightCurrentMove();
     },
     /**
-     *	Backs up by one move.
-     *
-     *  @param  {boolean}   update  Show the results on screen?
-     */
-    makeBwMove: function (update) {
-        "use strict";
-        var move = this.conv.prevMove();
-
-        if (move === null) { return; }
-
-        if (update === undefined || update) {
-            this.updateMoveInfo();
-            this.highlightCurrentMove();
-        }
-        this.drawFEN(this.conv.getPrevPosition());
-    },
-    /**
      *  Toggles visibility of moves pane.
      */
     toggleMoves:    function () {
@@ -545,66 +528,6 @@ Board.prototype = {
                     this.pos[r][f].color);
             }
         }
-    },
-    /*
-     *	This creates the text and elements in the move list
-     *
-     * @param   {HTMLElement}   container   Holds the list of moves
-     */
-    populateMoves:  function (container) {
-        "use strict";
-        var tmp2 = this.conv.pgn.moves,
-            movesHeader = document.createElement('header'),
-            h = document.createElement("h1"),
-            link,
-            lastMoveIdx = 0,
-            comment,
-            moveList = document.createElement("p"),
-            i,
-            txt;
-
-        if (!this.opts.showMovesPane) {
-            container.style.visibility = "hidden";
-            container.style.display = "none";
-        }
-
-        h.appendChild(document.createTextNode(this.gameOpponents()));
-        h.appendChild(document.createTextNode(" ("));
-        h.appendChild(this.addPGNLink(this.pgn.pgnOrig));
-        h.appendChild(document.createTextNode(")"));
-        movesHeader.appendChild(h);
-        container.appendChild(movesHeader);
-        container.appendChild(moveList);
-        this.addComment(this.pgn.gameIntro, moveList);
-
-        for (i = 0; i < tmp2.length; i += 1) {
-            if (tmp2[i].white !== null) {
-                moveList.appendChild(this.addMoveNumber(i +
-                        this.conv.startMoveNum));
-                link = this.addMoveLink(tmp2[i].white, i, 0);
-                moveList.appendChild(link);
-                comment = this.conv.pgn.getComment(tmp2[i].white, lastMoveIdx);
-                this.addComment(comment[0], moveList);
-                this.movesOnPane[this.movesOnPane.length] = link;
-            }
-
-            if (tmp2[i].black !== null) {
-                moveList.appendChild(document.createTextNode(" "));
-                link = this.addMoveLink(tmp2[i].black, i, 1);
-                moveList.appendChild(link);
-                comment = this.conv.pgn.getComment(tmp2[i].black, lastMoveIdx);
-                this.addComment(comment[0], moveList);
-                this.movesOnPane[this.movesOnPane.length] = link;
-            }
-        }
-        if (this.conv.pgn.props.Result !== undefined) {
-            txt = document.createTextNode("  " + this.conv.pgn.props.Result);
-            tmp2 = this.createWithAttribs("span", { "class": "result" });
-            tmp2.appendChild(txt);
-            moveList.appendChild(tmp2);
-            this.movesOnPane[this.movesOnPane.length] = tmp2;
-        }
-        this.addComment(this.pgn.postGame, moveList);
     },
     /**
      *  Outputs the move tree wrapped properly in HTML
