@@ -108,9 +108,7 @@ Board.prototype = {
             propsTd =
                 this.createWithAttribs("td", { "class": "game_info" }),
             board,
-            tmp2,
-            i,
-            color2;
+            i;
 
         gameSection.appendChild(topTable);
         topTable.appendChild(topTableTb);
@@ -241,14 +239,11 @@ Board.prototype = {
             return false;
         });
         this.makeButton(theContainer, "back", "altBack", false, function () {
-                theBoard.makeMove(
-                    theBoard.currentMove.previous ? theBoard.currentMove.previous :
-                    theBoard.currentMove
-                );
-                theBoard.currentMove =
-                    theBoard.currentMove.previous ? theBoard.currentMove.previous :
-                    theBoard.currentMove;
-                return false;
+            theBoard.makeMove(
+                theBoard.currentMove.previous || theBoard.currentMove
+            );
+            theBoard.currentMove =
+                theBoard.currentMove.previous || theBoard.currentMove;
             return false;
         });
         this.makeButton(theContainer, "up", "altUp", true, function () {
@@ -274,12 +269,10 @@ Board.prototype = {
         this.makeButton(theContainer, "forward", "altPlayMove", false,
             function () {
                 theBoard.makeMove(
-                    theBoard.currentMove.next ? theBoard.currentMove.next :
-                    theBoard.currentMove
+                    theBoard.currentMove.next || theBoard.currentMove
                 );
                 theBoard.currentMove =
-                    theBoard.currentMove.next ? theBoard.currentMove.next :
-                    theBoard.currentMove;
+                    theBoard.currentMove.next || theBoard.currentMove;
                 return false;
             });
         this.makeButton(theContainer, "ffward", "altFastForward", false,
@@ -358,7 +351,7 @@ Board.prototype = {
         "use strict";
         this.currentMove =
             this.pgn.moveTree.findByLink(this.pgn.moveTree, link);
-        
+
         this.drawFEN(this.currentMove.position);
         this.updateMoveInfo(this.currentMove);
         this.highlightCurrentMove(this.currentMove);
@@ -619,22 +612,19 @@ Board.prototype = {
      * @param   {HTMLElement}   container   The container that holds the moves
      */
     outputMoveTree:     function (container) {
+        "use strict";
         var move = this.pgn.moveTree.next,
             movesHeader = document.createElement('header'),
             h,
-            link,
-            lastMoveIdx = 0,
-            comment,
-            moveList = document.createElement("p"),
-            i,
-            txt;
+            moveList = document.createElement("p");
 
         if (!this.opts.showMovesPane) {
             container.style.visibility = "hidden";
             container.style.display = "none";
         }
 
-        h = this.addTextElement(movesHeader, "h1", {}, this.gameOpponents()).parentNode;
+        h = this.addTextElement(movesHeader, "h1", {},
+            this.gameOpponents()).parentNode;
         h.appendChild(document.createTextNode(" ("));
         h.appendChild(this.addPGNLink(this.pgn.pgnOrig));
         h.appendChild(document.createTextNode(")"));
@@ -642,7 +632,7 @@ Board.prototype = {
         container.appendChild(moveList);
         this.addComment(this.pgn.gameIntro, moveList);
 
-        this.outputLine(moveList, move, true);
+        this.outputLine(moveList, move);
     },
     /**
      *  Outputs a line, wrapped in HTML (recursive)
@@ -651,13 +641,14 @@ Board.prototype = {
      * @param   {Object}        move        The beginning move of the line
      * @param   {Boolean}       main        Main line (T) or variation (F)?
      */
-    outputLine:     function (container, move, main) {
+    outputLine:     function (container, move) {
+        "use strict";
         var variation;
         while (move !== null) {
             this.outputMove(container, move);
             if (move.down !== null) {
                 variation = this.enterVariation(container);
-                this.outputLine(variation, move.down, false);
+                this.outputLine(variation, move.down);
                 this.exitVariation(variation);
             }
             move = move.next;
@@ -670,13 +661,15 @@ Board.prototype = {
      * @param   {HTMLElement}   container   The container element for the move
      * @param   {object}        move        The move
      */
-    outputMove:            function(container, move) {
+    outputMove:            function (container, move) {
+        "use strict";
         var link,
             i = 0;
         if (move.color === "white") {
             container.appendChild(this.addMoveNumber(move.number));
         }
-        link = this.addMoveLink(move.text, move.number, move.color, move.position);
+        link = this.addMoveLink(move.text, move.number, move.color,
+            move.position);
         container.appendChild(link);
         move.link = link;
         this.movesOnPane.push(link);
@@ -691,6 +684,7 @@ Board.prototype = {
      * @param   {HTMLElement}   container   The element to append the moves to
      */
     enterVariation:     function (container) {
+        "use strict";
         var variation = this.addTextElement(container, "span",
                 {"class": "variation"}, "(").parentNode;
         return variation;
@@ -701,6 +695,7 @@ Board.prototype = {
      * @param   {HTMLElement}   container   The element to append the moves to
      */
     exitVariation:      function (container) {
+        "use strict";
         container.appendChild(document.createTextNode(")"));
     },
     /*
@@ -952,11 +947,8 @@ Board.prototype = {
      */
     clickMove:  function (e) {
         "use strict";
-        var moveNumber =
-                parseInt(e.currentTarget.getAttribute("data-moveNumber"), 10),
-            color = parseInt(e.currentTarget.getAttribute("data-color"), 10),
-            myId = parseInt(e.currentTarget.getAttribute("data-id"), 10),
-            fen = e.currentTarget.getAttribute("data-fen");
+        var myId = parseInt(e.currentTarget.getAttribute("data-id"), 10);
+
         e.preventDefault();
         window[myId].skipToMove(e.currentTarget);
         return false;
