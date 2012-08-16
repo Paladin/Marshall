@@ -45,32 +45,6 @@ TestCase( "BoardTest",
         }
 	},
 	
-	"test creation of a Board": function() {
-	/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-		var gameboard = document.getElementById("game1_board");
-        while(gameboard.firstChild) {
-            gameboard.removeChild(gameboard.firstChild);
-        }
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.aGame;
-		
-        var game = new Game("game1");
-        var board = game.board;
-
-		results = document.getElementsByClassName("game_section");
-		assertEquals("Should find one game section", 1, results.length );
-		
-		lightSquares = document.getElementsByClassName("light_square");
-		assertEquals("Should find one game section", 32, lightSquares.length );
-
-		darkSquares = document.getElementsByClassName("dark_square");
-		assertEquals("Should find one game section", 32, darkSquares.length );
-		
-		assertEquals("Should get the right square", "a8",
-			document.getElementsByClassName("light_square")[0].getAttribute('data-squarename'));
-	},
-	
 	"test creation of a Board, skipping to move 1": function() {
 	/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
 
@@ -136,58 +110,7 @@ TestCase( "BoardTest",
 		assertEquals("Should get the right square", "h1",
 			document.getElementsByClassName("light_square")[0].getAttribute('data-squarename'));
 	},
-	
-	"test flipping the board": function() {
-	/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
 
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.aGame;
-
-        var game = new Game("game1");
-        var board = game.board;
-		lightSquares = document.getElementsByClassName("light_square");
-
-		var newNames = Array();
-		var newSquares = Array();
-		for(i=0; i<32; i++){
-			newNames[31-i] = lightSquares[i].getAttribute('data-squarename');
-			newSquares[31-i] = lightSquares[i].firstChild;
-		}
-
-		board.flipBoard(board);
-
-		for(i=0; i<32; i++){
-			assertEquals("Square "+i+" name is incorrect -- ", newNames[i],
-				lightSquares[i].getAttribute('data-squarename'));
-			assertEquals("Square "+i+" content is incorrect -- ", newSquares[i],
-				lightSquares[i].firstChild);
-		}
-	},
-	
-	"test moving to final position and back": function() {
-		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.aGame;
-
-        var game = new Game("game1");
-        var board = game.board;
-
-		assertEquals("There should be a black pawn on f7 after init", "black_pawn", 
-			document.getElementsByClassName("light_square")[6].title);
-
-		board.endPosition(board);
-		
-		assertEquals("There should be a white_queen on f7 at the start", "white_queen",
-			document.getElementsByClassName("light_square")[6].title);
-			
-		board.startPosition(board);
-		
-		assertEquals("There should be a black pawn on f7 at the start", "black_pawn", 
-			document.getElementsByClassName("light_square")[6].title);
-		
-	},
-	
 	"test toggling moves display": function() {
 		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
 

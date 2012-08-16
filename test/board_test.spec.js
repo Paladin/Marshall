@@ -108,7 +108,28 @@
                 boardDiv.removeChild(boardDiv.firstChild);
             }
         });
-		
+        it(" Should find only one game section", function () {
+        	var result = document.getElementsByClassName("game_section");
+        	expect(result.length).toBe(1);
+        	expect(result[0].tagName).toBe("SECTION");
+        });
+        it(" Should find 32 light squares", function () {
+        	expect(document.getElementsByClassName("light_square").
+        	    length).toBe(32);
+        });
+        it(" Should find a8 as the first light square", function () {
+        	expect(document.getElementsByClassName("light_square")[0].
+        	    getAttribute("data-squarename")).toBe("a8");
+        });
+        it(" Should find h1 as 1st light square if board flipped", function () {
+        	this.board.flipBoard();
+        	expect(document.getElementsByClassName("light_square")[0].
+        	    getAttribute("data-squarename")).toBe("h1");
+        });
+        it(" Should find 32 dark squares", function () {
+        	expect(document.getElementsByClassName("dark_square").
+        	    length).toBe(32);
+        });
 		it("should draw the correct position on screen", function(){
 		    var forsythe =
 		            "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR",
@@ -127,7 +148,20 @@
 			expect(this.board.getForsytheFromDisplay()).
 					toBe("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR");
 		});
-		
+        it(" Should flip the board successfully", function () {
+            var lightSquares = document.getElementsByClassName("light_square"),
+                newNames = Array(),
+                i;
+
+            for(i=0; i<32; i++){
+                newNames[31-i] = lightSquares[i].getAttribute("data-squarename");
+            }
+        	this.board.flipBoard();
+            for(i=0; i<32; i++){
+                expect(lightSquares[i].getAttribute("data-squarename")).
+                    toBe(newNames[i]);
+            }
+        });		
 	});
 	describe("Board - Outputting HTML MoveTree", function () {
         var aGame = "[Event \"Dayton\"]" + 
