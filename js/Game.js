@@ -25,7 +25,8 @@ var Game = function (sourceDiv, options) {
         givenOptions = options || {};
 
     this.sourceDiv = document.getElementById(sourceDiv);
-	this.pgn = new Pgn(this.sourceDiv.firstChild.nodeValue);
+	this.pgn = new Pgn(this.sourceDiv.getAttribute("data-pgn") ||
+	    this.sourceDiv.firstChild.nodeValue);
 	this.vBoard = new VBoard(this.pgn.props.FEN);
 	this.initialBoard = new VBoard(this.pgn.props.FEN);
 	this.convert();
@@ -38,7 +39,9 @@ var Game = function (sourceDiv, options) {
 	    }
 	}
 
-    this.board = new Board(this, this.pgn, sourceDiv, this.opts);
+    this.board = new Board(this, this.pgn,
+        sourceDiv + (this.sourceDiv.hasAttribute("data-pgn") ? "" : "_board"),
+        this.opts);
     this.board.init();
 };
 Game.prototype = {

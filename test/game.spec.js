@@ -20,9 +20,16 @@
             /*:DOC += <div><div id="game1"></div><div id="game1_board"></div><div id="testmoves"></div></div> */
 		
     			var movediv = document.getElementById("game1");
+
     			movediv.innerHTML = goodPGN;
 				this.game = new Game("game1");
 			});
+			afterEach(function () {
+                var boardDiv = document.getElementById("game1_board");
+                while (boardDiv.firstChild) {
+                    boardDiv.removeChild(boardDiv.firstChild);
+                }
+            });
 			
 			it("should have produced forsythe notation after first move", function(){
 				expect(this.game.pgn.moveTree.next.position).
@@ -35,7 +42,7 @@
 			});
 		});
 	});
-	
+
     describe("Parsing a game", function() {
         var aGame = "[Event	\"Golden Knights\"]" +
                 "[Site	\"correspondence\"]\n" +
@@ -53,10 +60,64 @@
         /*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
     
             var movediv = document.getElementById("game1");
-            movediv.innerHTML = aGame;
+			movediv.innerHTML = aGame;
             this.game = new Game("game1");
         });
+        afterEach(function () {
+            var boardDiv = document.getElementById("game1_board");
+            while (boardDiv.firstChild) {
+                boardDiv.removeChild(boardDiv.firstChild);
+            }
+        });
         
+        it("should have produced forsythe notation after first move", function(){
+            expect(this.game.pgn.moveTree.next.position).
+                toBe("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
+        });
+        
+        it("should have produced forsythe notation of final position", function(){
+            expect(this.game.pgn.moveTree.goEnd().position).
+                toBe("2kr2r1/p1p3qp/2p5/3p4/3P4/4QP2/PP4PP/R1B1K2R w KQkq - 0 1");
+        });
+        it("should have produced forsythe notation of variation", function(){
+            expect(this.game.pgn.moveTree.goEnd().previous.down.position).
+                toBe("2kr2r1/p1p1q1Pp/2p5/3p4/3P4/4Q3/PP3PPP/R1B2RK1 w KQkq - 0 1");
+        });
+        it("should have produced last move of game", function(){
+            expect(this.game.pgn.moveTree.goEnd().text).
+                toBe("Qxg7!");
+        });
+    });
+
+    describe("Parsing a game from alternative PGN source", function() {
+        var aGame = "[Event	\"Golden Knights\"]" +
+                "[Site	\"correspondence\"]\n" +
+                "[Date	\"1993.?.?\"]\n" +
+                "[Round	\"15\"]\n" +
+                "[White	\"Abramson\"]\n" +
+                "[Black	\"Good\"]\n" +
+                "[Result	\"1-0\"]\n" +
+                "1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.c3 Nf6 5.e5 Ne4 6.Qe2 f5 " +
+                "7.exf6 d5 8.Nbd2 d3 9.Qe3 Bc5 10.fxg7 Rg8 11.Nd4 Bxd4 " +
+                "12.cxd4 Bf5 13.Bxd3 Qe7 14.Bb5 O-O-O 15.Bxc6 bxc6 " +
+                "16.Nxe4 Bxe4 17. f3 $6 (17. O-O $5 Qxg7) (17. Qh3+) Qxg7 $1 *";
+
+        beforeEach(function(){
+        /*:DOC += <div><div id="game1_board"></div></div> */
+    
+            var movediv = document.getElementById("game1_board");
+            while (movediv.firstChild) {
+                movediv.removeChild(movediv.firstChild);
+            }
+            movediv.setAttribute("data-pgn", aGame);
+            this.game = new Game("game1");
+        });
+        afterEach(function () {
+            var boardDiv = document.getElementById("game1_board");
+            while (boardDiv.firstChild) {
+                boardDiv.removeChild(boardDiv.firstChild);
+            }
+        });
         it("should have produced forsythe notation after first move", function(){
             expect(this.game.pgn.moveTree.next.position).
                 toBe("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");

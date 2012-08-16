@@ -69,7 +69,7 @@ Board.prototype = {
 	init:       function () {
         "use strict";
         // the main frame
-        var boardFrame = document.getElementById(this.divId + "_board"),
+        var boardFrame = document.getElementById(this.divId),
             gameSection =
                 this.createWithAttribs("section", { "class": "game_section" }),
             topTable =
