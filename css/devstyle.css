@@ -254,6 +254,7 @@ header p {font-size: 130%;}
 .game_info p {
 	font-variant: small-caps;
 }
+.gameboard td { background-repeat: no-repeat; }
 
 td[data-symbol="p"] {
 	background-image: url(../img/default/default.gif);
