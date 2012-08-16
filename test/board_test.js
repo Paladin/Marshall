@@ -121,7 +121,7 @@ TestCase( "BoardTest",
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-        var game = new Game("game1", {"skipToMove": 3, "flipped" : true});
+        var game = new Game("game1", {"skipToMove": "3", "flipped" : true});
         var board = game.board;
 
 		results = document.getElementsByClassName("game_section");

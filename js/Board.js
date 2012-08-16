@@ -120,9 +120,8 @@ Board.prototype = {
         if (!this.opts.showMovesPane) { this.hideMoves(); }
         if (!this.opts.showComments) { this.hideComments(); }
         if (this.opts.skipToMove) {
-            for (i = 0; i < parseInt(this.opts.skipToMove, 10); i += 1) {
-                this.currentMove = this.currentMove.getNextMove();
-            }
+            this.currentMove = this.skipTo(this.opts.skipToMove);
+            this.displayStart = new VBoard(this.currentMove.position);
             this.makeMove(this.currentMove);
         }
     },
@@ -178,16 +177,11 @@ Board.prototype = {
         var theBoard = this;
 
         this.makeButton(theContainer, "rwind", "altRewind", false, function () {
-            theBoard.startPosition();
-            theBoard.currentMove = theBoard.pgn.moveTree;
+            theBoard.startPosition.apply(theBoard);
             return false;
         });
         this.makeButton(theContainer, "back", "altBack", false, function () {
-            theBoard.makeMove(
-                theBoard.currentMove.previous || theBoard.currentMove
-            );
-            theBoard.currentMove =
-                theBoard.currentMove.previous || theBoard.currentMove;
+            theBoard.makeMove.apply(theBoard, [theBoard.currentMove.previous]);
             return false;
         });
         this.makeButton(theContainer, "up", "altUp", true, function () {
@@ -212,17 +206,12 @@ Board.prototype = {
         });
         this.makeButton(theContainer, "forward", "altPlayMove", false,
             function () {
-                theBoard.makeMove(
-                    theBoard.currentMove.next || theBoard.currentMove
-                );
-                theBoard.currentMove =
-                    theBoard.currentMove.next || theBoard.currentMove;
+                theBoard.makeMove.apply(theBoard, [theBoard.currentMove.next]);
                 return false;
             });
         this.makeButton(theContainer, "ffward", "altFastForward", false,
             function () {
-                theBoard.currentMove = theBoard.pgn.moveTree.goEnd();
-                theBoard.makeMove(theBoard.currentMove);
+                theBoard.endPosition.apply(theBoard);
                 return false;
             });
     },
@@ -280,18 +269,33 @@ Board.prototype = {
         }
     },
     /**
-     *	Rolls the board position to a specific ply (half-move).
+     *  The move (e.g., "5b") to start the display with. If no letter is given
+     *  it is assumed we will start before White's move of that number.
      *
-     *	@param  {integer}   moveNumber      The move number of the game
-     *	@param  {integer}   color			Which ply? 0=white, 1=black
-     *
-     *	NOTE: the +1 in the ply calculation is because the computer is
-     *          0-based while the move list, like all human lists, is 1-based.
-     *
-     *	TODO: This whole thing appears off by one. give it "41" and it skips
-     *          to move 42. Needs to be re-examined after testing is complete.
+     * @param   {string}    moveID  The move to skip ahead to.
+     * @return  {Object}    The move to skip to.
      */
-    skipToMove: function (link) {
+    skipTo:     function (moveID) {
+        "use strict";
+        var skipCode = moveID.match(/([0-9]+)([bw]?)/),
+            move = this.pgn.moveTree;
+
+        if (skipCode) {
+            while (move.next && move.number !== parseInt(skipCode[1], 10)) {
+                move = move.next;
+            }
+            if (move.prev && skipCode[2] !== "b") {
+                move = move.prev;
+            }
+        }
+        return move;
+    },
+    /**
+     *	Displays the linked board position.
+     *
+     *	@param  {HTMLElement}   link    The link with the position to display
+     */
+    displayMove: function (link) {
         "use strict";
         this.currentMove =
             this.pgn.moveTree.findByLink(this.pgn.moveTree, link);
@@ -305,11 +309,8 @@ Board.prototype = {
      */
     endPosition:    function () {
         "use strict";
-        var vBoard = this.conv.getEndPos();
-
-        this.syncBoard(vBoard);
-        this.updateMoveInfo();
-        this.highlightCurrentMove();
+        this.currentMove = this.pgn.moveTree.goEnd();
+        this.makeMove(this.currentMove);
     },
     /**
      *	Jumps the board all the way to the starting position of the game
@@ -319,8 +320,9 @@ Board.prototype = {
         var vBoard = this.conv.getStartPos();
 
         this.syncBoard(vBoard);
-        this.updateMoveInfo();
-        this.highlightCurrentMove();
+        this.currentMove = this.pgn.moveTree;
+        this.updateMoveInfo(this.currentMove);
+        this.highlightCurrentMove(this.currentMove);
     },
     /**
      *  Toggles visibility of moves pane.
@@ -408,11 +410,12 @@ Board.prototype = {
      */
     makeMove:   function (move, update) {
         "use strict";
+        this.currentMove = move || this.currentMove;
         if (update === undefined || update) {
-            this.updateMoveInfo(move);
-            this.highlightCurrentMove(move);
+            this.updateMoveInfo(this.currentMove);
+            this.highlightCurrentMove(this.currentMove);
         }
-        this.drawFEN(move.position);
+        this.drawFEN(this.currentMove.position);
     },
     /**
      *	Highlights the current move in the display 
@@ -820,7 +823,7 @@ Board.prototype = {
         var myId = parseInt(e.currentTarget.getAttribute("data-id"), 10);
 
         e.preventDefault();
-        window[myId].skipToMove(e.currentTarget);
+        window[myId].displayMove(e.currentTarget);
         return false;
     },
     /**

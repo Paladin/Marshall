@@ -158,4 +158,56 @@
 			expect(this.div.children[1].children[2].textContent).toBe("Bxg7+!");
 		});
 	});
+	describe("Making moves", function () {
+        var aGame = "[Event \"Dayton\"]" + 
+                "[Site \"?\"]" + 
+                "[Date \"1890.02.25\"]" + 
+                "[Round \"?\"]" + 
+                "[White \"Blumenschein, E..\"]" + 
+                "[Black \"Smith, W.H..\"]" + 
+                "[Result \"*\"]" + 
+                "[Annotator \"Reeh,Oliver\"]" + 
+                "[SetUp \"1\"]" + 
+                "[FEN \"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 1\"]" + 
+                "[PlyCount \"9\"]" + 
+                "[SourceDate \"2009.06.14\"]" + 
+                "{In this position White has a beautiful focred mate in five, so answer C) is " + 
+                "correct:} 1. Bxg7+ $1 Kxg7 2. Qh6+ $3 {The point - Black's king is dragged " + 
+                "into a discovered double-check.} Kxh6 (2... Kh8 3. Bg6+ Kg8 4. Qh7#) 3. Nf5+ " + 
+                "Kg5 4. Ne4+ Kg4 5. Rh4# {or 5.Ne3++. This brilliancy was published far more " + 
+                "than 100 years ago - in May 1890 on page 155 of International Chess Magazine. " + 
+                "(Source: \"A Chess Omnibus\", Edward Winter, Russel Enterprises, Inc., 2003)} *";
+		beforeEach(function () {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div><div id="testmoves"></div></div> */
+		
+			var movediv = document.getElementById("game1");
+			movediv.innerHTML = aGame;
+	
+            var game = new Game("game1");
+            this.board = game.board;
+		});
+		it(" Should make the second move for white in main line", function () {
+    		window[this.board.id].displayMove(
+    		    this.board.pgn.moveTree.next.next.next.link
+    		    );
+			expect(this.board.moveInput.data).toBe("2. Qh6+!!");
+		});
+		it(" Should make the fourth move for black in main line", function () {
+    		window[this.board.id].displayMove(this.board.pgn.moveTree.next.
+    		    next.next.next.next.next.next.next.link);
+			expect(this.board.moveInput.data).toBe("4. ... Kg4");
+		});
+		it(" Should rewind the position back to the start", function () {
+    		window[this.board.id].displayMove(this.board.pgn.moveTree.next.
+    		    next.next.next.next.next.next.next.link);
+    		this.board.startPosition();
+			expect(this.board.moveInput.data).toBe("...");
+		});
+		it(" Should fast forward the position to end of main", function () {
+    		window[this.board.id].displayMove(this.board.pgn.moveTree.next.
+    		    next.next.next.next.next.next.next.link);
+    		this.board.endPosition();
+			expect(this.board.moveInput.data).toBe("5. Rh4#");
+		});
+	});
 })();
