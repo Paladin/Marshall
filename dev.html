@@ -234,26 +234,21 @@ Be8 42.b5 axb5 43.cxb5 1-0
 
 
   <!-- scripts concatenated and minified via ant build script-->
+    <script src="js/Game.js"></script>
     <script src="js/Board.js"></script>
     <script src="js/VBoard.js"></script>
-    <script src="js/Converter.js"></script>
     <script src="js/MoveTree.js"></script>
     <script src="js/NAG.js"></script>
     <script src="js/Piece.js"></script>
     <script src="js/Pgn.js"></script>
-    <script src="js/Yahoo.js"></script>
 		
   <!-- end scripts-->
 	<script>
-  		var board = new Array();
-			board[0] = new Board("blum_pos");
-			board[0].init();
- 			board[1] = new Board("walkerlopez");
- 			board[1].init();
- 			board[2] = new Board("pehnecMartz");
- 			board[2].init();
- 			board[3] = new Board("walker_coons");
- 			board[3].init();
+  		var games = new Array();
+			games[0] = new Game("blum_pos");
+ 			games[1] = new Game("walkerlopez");
+ 			games[2] = new Game("pehnecMartz");
+ 			games[3] = new Game("walker_coons");
 	</script>
 
   </body>

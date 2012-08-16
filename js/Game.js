@@ -1,20 +1,9 @@
 /**
- * @classdesc
- * Convert PGN format to an easier format. The problem
- * with PGN is that it is really difficult and ugly to
- * accomplish backward moves. 
- * 
- * Let's say we have a move "e4" and we need to go one 
- * move back. The only info is that we have placed a pawn
- * to e4. We also have to remember from where did we place
- * the pawn. To make it easier and to have less calculations
- * the PGN is converted into a format where the from square
- * with contents is explicit and to square also. There are
- * other problems also regarding backward moving and remembering
- * which piece was taken.
+ * @classdesc   This is the controller for the game. It sets up the board,
+ * pulls in the data, and starts everything off.
  *
  * @constructor
- * @param {obj} pgn The pgn data
+ * @param   {object} pgn The pgn data
  *
  * @property {object}	pgn				- The pgn data object
  * @property {array}	vBoard			- Virtual Board
@@ -29,17 +18,59 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
-var Converter = function (pgn) {
+var Game = function (sourceDiv, options) {
 	"use strict";
+	var property,
+		i,
+        givenOptions = options || {};
 
-	this.pgn = pgn;
+    this.sourceDiv = document.getElementById(sourceDiv);
+	this.pgn = new Pgn(this.sourceDiv.firstChild.nodeValue);
 	this.vBoard = new VBoard(this.pgn.props.FEN);
 	this.initialBoard = new VBoard(this.pgn.props.FEN);
-	this.startMoveNum = this.vBoard.getMoveNumber();
+	this.convert();
+
+	this.opts = this.setDefaultOptions();
+	for (property in givenOptions) {
+	    if (givenOptions.hasOwnProperty(property) &&
+	            this.opts.hasOwnProperty(property)) {
+	        this.opts[property] = givenOptions[property];
+	    }
+	}
+
+    this.board = new Board(this, this.pgn, sourceDiv, this.opts);
+    this.board.init();
 };
-Converter.prototype = {
+Game.prototype = {
+    sourceDiv:          null,
+    pgn:                null,
 	whiteToMove:		true,
 	startMoveNum:		1,
+    /**
+     *	This sets up the default option list
+     *
+     * @return  {object}    All of the options, set to default values
+     */
+    setDefaultOptions:  function () {
+        "use strict";
+        var options = {
+                flipped:		false,
+                showMovesPane:	true,
+                showComments:	true,
+                altRewind:		"Rewind to the beginning",
+                altBack:		"One move back",
+                altFlip:		"Flip the board",
+                altShowMoves:	"Show moves pane",
+                altComments:	"Show comments",
+                altPlayMove:	"Play one move",
+                altFastForward:	"Fast-forward to the end",
+                altUp:			"Go up one variation",
+                altDown:		"Go down into variation",
+                downloadURL:	"http://www.chesspastebin.com/asPgn.php?PGN=",
+                skipToMove:		null
+            };
+        return options;
+    },
 	/**
 	 * Convert the identified file
 	 **/

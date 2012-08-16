@@ -27,43 +27,24 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-var Board = function (divId, options) {
+var Board = function (game, pgn, divId, options) {
 	"use strict";
 	var optionNames,
 		i,
         givenOptions = options || {};
 
-	if (this.isYahoo(document.getElementById(divId).firstChild.nodeValue)) {
-		this.pgn = new Yahoo(document.getElementById(divId).
-		        firstChild.nodeValue);
-	} else {
-		this.pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
-	}
-	//Instance attributes
-	this.divId = divId;
-	this.visuals = { "pgn": {} };
-    this.pos = [];
     this.id = (new Date()).getTime();
-	this.movesOnPane = [];
-
-	this.conv = new Converter(this.pgn);
-	this.conv.convert();
-
 	window[this.id] = this;
 
-	this.opts = this.setDefaultOptions();
-	optionNames = Object.keys(this.opts);
+	this.conv = game;
+	this.pgn = pgn;
+	this.divId = divId;
+	this.opts = options;
 
-	// if keys in options define new values then
-	// set the this.opts for that key with the 
-	// custom value
-	for (i = 0; i < optionNames.length; i += 1) {
-		if (givenOptions[optionNames[i]] !== undefined) {
-			this.opts[optionNames[i]] = givenOptions[optionNames[i]];
-		}
-	}
+	this.visuals = { "pgn": {} };
+    this.pos = [];
+	this.movesOnPane = [];
 
-	// end of static
 	for (i = 0; i < 8; i += 1) {
 		this.pos[i] = [];
 	}
@@ -156,31 +137,6 @@ Board.prototype = {
             }
             this.makeMove(this.currentMove);
         }
-    },
-    /**
-     *	This sets up the default option list
-     *
-     * @return  {object}    All of the options, set to default values
-     */
-    setDefaultOptions:  function () {
-        "use strict";
-        var options = {
-                flipped:		false,
-                showMovesPane:	true,
-                showComments:	true,
-                altRewind:		"Rewind to the beginning",
-                altBack:		"One move back",
-                altFlip:		"Flip the board",
-                altShowMoves:	"Show moves pane",
-                altComments:	"Show comments",
-                altPlayMove:	"Play one move",
-                altFastForward:	"Fast-forward to the end",
-                altUp:			"Go up one variation",
-                altDown:		"Go down into variation",
-                downloadURL:	"http://www.chesspastebin.com/asPgn.php?PGN=",
-                skipToMove:		null
-            };
-        return options;
     },
     /**
      * Creates the board in HTML. Puts together a table of the squares, labels

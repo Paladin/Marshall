@@ -35,22 +35,28 @@ TestCase( "BoardTest",
 				"1. d4 e5 2. e3 e4 3. f4 exf3 4. Nf3 Nc6 5.Bc4 d5 6. 0-0 *",
 
 	setup: function () {
+	    this.game = {};
+	    this.pgn = {};
 	},
-	teardown: function() {},
+	teardown: function() {
+		var gameboard = document.getElementById("game1_board");
+        while(gameboard.firstChild) {
+            gameboard.removeChild(gameboard.firstChild);
+        }
+	},
 	
 	"test creation of a Board": function() {
 	/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-
-		var movediv = document.getElementById("game1");
-		movediv.innerHTML = this.aGame;
-		
 		var gameboard = document.getElementById("game1_board");
         while(gameboard.firstChild) {
             gameboard.removeChild(gameboard.firstChild);
         }
 
-		var board = new Board("game1");
-		board.init();
+		var movediv = document.getElementById("game1");
+		movediv.innerHTML = this.aGame;
+		
+        var game = new Game("game1");
+        var board = game.board;
 
 		results = document.getElementsByClassName("game_section");
 		assertEquals("Should find one game section", 1, results.length );
@@ -71,8 +77,8 @@ TestCase( "BoardTest",
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-		var board = new Board("game1", {"skipToMove": 1});
-		board.init();
+        var game = new Game("game1");
+        var board = game.board;
 
 		results = document.getElementsByClassName("game_section");
 		assertEquals("Should find one game section", 1, results.length );
@@ -93,8 +99,8 @@ TestCase( "BoardTest",
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-		var board = new Board("game1", {"skipToMove": 2});
-		board.init();
+        var game = new Game("game1");
+        var board = game.board;
 
 		results = document.getElementsByClassName("game_section");
 		assertEquals("Should find one game section", 1, results.length );
@@ -115,8 +121,8 @@ TestCase( "BoardTest",
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-		var board = new Board("game1", {"skipToMove": 3, "flipped" : true});
-		board.init();
+        var game = new Game("game1", {"skipToMove": 3, "flipped" : true});
+        var board = game.board;
 
 		results = document.getElementsByClassName("game_section");
 		assertEquals("Should find one game section", 1, results.length );
@@ -137,8 +143,8 @@ TestCase( "BoardTest",
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-		var board = new Board("game1");
-		board.init();
+        var game = new Game("game1");
+        var board = game.board;
 		lightSquares = document.getElementsByClassName("light_square");
 
 		var newNames = Array();
@@ -164,8 +170,8 @@ TestCase( "BoardTest",
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-		var board = new Board("game1");
-		board.init();
+        var game = new Game("game1");
+        var board = game.board;
 
 		assertEquals("There should be a black pawn on f7 after init", "black_pawn", 
 			document.getElementsByClassName("light_square")[6].title);
@@ -188,8 +194,8 @@ TestCase( "BoardTest",
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-		var board = new Board("game1");
-		board.init();
+        var game = new Game("game1");
+        var board = game.board;
 
 		assertEquals("Should have started out default", "",
 				document.getElementsByClassName("move_list")[0].style.visibility);
@@ -207,8 +213,8 @@ TestCase( "BoardTest",
 		var movediv = document.getElementById("game1");
 		movediv.innerHTML = this.aGame;
 
-		var board = new Board("game1");
-		board.init();
+        var game = new Game("game1");
+        var board = game.board;
 		
 		var divId = document.getElementById("game1_board");
 		

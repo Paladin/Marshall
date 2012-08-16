@@ -20,9 +20,9 @@
 		
 			var movediv = document.getElementById("game1");
 			movediv.innerHTML = goodPGN;
-	
-			this.board = new Board("game1");
-			this.board.init();
+
+            var game = new Game("game1");
+            this.board = game.board;
 		});
 		
 		it("should produce forsythe notation of final position", function(){
@@ -54,8 +54,8 @@
 			var movediv = document.getElementById("game1");
 			movediv.innerHTML = aGame;
 	
-			this.board = new Board("game1");
-			this.board.init();
+            var game = new Game("game1");
+            this.board = game.board;
 		});
 		
 		it("should produce forsythe notation of final position", function(){
@@ -87,8 +87,8 @@
 			var movediv = document.getElementById("game1");
 			movediv.innerHTML = aGame;
 	
-			this.board = new Board("game1");
-			this.board.init();
+            var game = new Game("game1");
+            this.board = game.board;
 		});
 		
 		it("should draw the correct position on screen", function(){
@@ -136,7 +136,8 @@
 			var movediv = document.getElementById("game1");
 			movediv.innerHTML = aGame;
 	
-			this.board = new Board("game1");
+            var game = new Game("game1");
+            this.board = game.board;
 			this.board.pgn.parse(this.board.pgn.pgnOrig);
 			this.div = document.getElementById("testmoves");
 		});
