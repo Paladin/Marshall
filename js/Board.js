@@ -29,9 +29,7 @@
 **/
 var Board = function (game, pgn, divId, options) {
 	"use strict";
-	var optionNames,
-		i,
-        givenOptions = options || {};
+	var i;
 
     this.id = (new Date()).getTime();
 	window[this.id] = this;
@@ -65,11 +63,6 @@ Board.prototype = {
 	visuals:        {},
 	id:             null,
 	currentMove:    null,
-    isYahoo:        function (pgn) {
-        "use strict";
-		pgn = pgn.replace(/^\s+|\s+$/g, '');
-		return pgn.charAt(0) === ';';
-	},
 	/**
 	 *  Creates the board and move areas of the page, prepare for replay.
 	 */
@@ -88,8 +81,7 @@ Board.prototype = {
             btnTd = this.createWithAttribs("td", { "class": "board_controls" }),
             propsTd =
                 this.createWithAttribs("td", { "class": "game_info" }),
-            board,
-            i;
+            board;
 
         gameSection.appendChild(topTable);
         topTable.appendChild(topTableTb);
@@ -121,12 +113,8 @@ Board.prototype = {
         this.outputMoveTree(this.movesDiv);
 
         this.createButtonBar(btnTd);
-
-        // current move
-        // it is initialized in updateMoveInfo
         this.moveInput = this.addTextElement(btnTdNext, "p",
             { "class": "current_move_box" });
-        // end of current move
 
         this.updateMoveInfo(this);
         if (!this.opts.showMovesPane) { this.hideMoves(); }
