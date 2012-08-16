@@ -50,7 +50,8 @@ Pgn.prototype = {
     parse:  function (theText) {
         "use strict";
         var text = theText,
-            move = new MoveTree({"text": "..."});
+            move = new MoveTree({"text": "..."}),
+            levels = 0;
 
         this.color = "white";
         this.tags = {};
@@ -85,13 +86,22 @@ Pgn.prototype = {
 
             } else if (/\(/.test(text.charAt(0))) {
                 this.color = move.color;
-                move = move.goBottom();
+                levels = 1;
+                while (move.down !== null) {
+                    move = move.down;
+                    levels += 1;
+                }
                 move = move.addVariation();
+                move.levelsToParent = levels;
                 text = text.slice(1);
 
             } else if (/\)/.test(text.charAt(0))) {
                 move = move.goStart();
-                move = move.goTop();
+                levels = move.levelsToParent;
+                while (levels > 0) {
+                    move = move.up || move;
+                    levels -= 1;
+                }
                 this.color = this.alternate(move.color, "white", "black");
                 text = text.slice(1);
 
