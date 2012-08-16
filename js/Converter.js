@@ -19,18 +19,8 @@
  * @property {object}	pgn				- The pgn data object
  * @property {array}	vBoard			- Virtual Board
  * @property {array}	initialBoard	- Staring board
- * @property {array}	moves			- array of moves
- * @property {integer}	iteIndex		- 
  * @property {boolean}	whiteToMove		- boolean flag
  * @property {integer}	startMoveNum	- starting move number
- * @property {array}	wKing			- Where are the white kings?
- * @property {array}	bKing			- Where are the Black Kings?
- * @property {array}	wQueens			- Where are the white queens?
- * @property {array}	bQueens			- Where are the Black queens?
- * @property {array}	wBishops		- Where are the white Bishops?
- * @property {array}	bBisohps		- Where are the Black bishops?
- * @property {array}	wRooks			- Where are the white rooks?
- * @property {array}	bRooks			- Where are the Black rooks?
  *
  * @version 0.7.1
  * @author Toomas Ršmer
@@ -46,19 +36,8 @@ var Converter = function (pgn) {
 	this.vBoard = new VBoard(this.pgn.props.FEN);
 	this.initialBoard = new VBoard(this.pgn.props.FEN);
 	this.startMoveNum = this.vBoard.getMoveNumber();
-	this.moves = [];
-
-	this.wKing = [];
-	this.bKing = [];
-	this.wQueens = [];
-	this.bQueens = [];
-	this.wBishops = [];
-	this.bBishops = [];
-	this.wRooks = [];
-	this.bRooks = [];
 };
 Converter.prototype = {
-	iteIndex:			0,
 	whiteToMove:		true,
 	startMoveNum:		1,
 	/**
