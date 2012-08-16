@@ -327,7 +327,7 @@ td[data-symbol="P"] {
 	border-right: 3px #999 inset;
 }
 
-.uscf .gameboard { height: 278px; width: 278px; border: 3px outdent #a4d7e8; margin: 0 auto; }
+.uscf .gameboard { height: 278px; width: 278px; border: 3px outset #a4d7e8; margin: 0 auto; }
 
 .uscf .dark_square { background-color: #a4d7e8; }
 
