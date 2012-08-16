@@ -329,10 +329,11 @@ Board.prototype = {
      */
     toggleMoves:    function () {
         "use strict";
-        if (this.movesDiv.style.visibility === "hidden") {
-            this.showMoves();
-        } else {
+        if (this.movesDiv.style.display === "block" ||
+                this.movesDiv.style.display === "") {
             this.hideMoves();
+        } else {
+            this.showMoves();
         }
     },
     /**
@@ -341,7 +342,6 @@ Board.prototype = {
     hideMoves:      function () {
         "use strict";
         this.movesDiv.style.display = "none";
-        this.movesDiv.style.visibility = "hidden";
     },
     /**
      *  Show the moves pane
@@ -349,7 +349,6 @@ Board.prototype = {
     showMoves:      function () {
         "use strict";
         this.movesDiv.style.display = "block";
-        this.movesDiv.style.visibility = "visible";
     },
     /*
      *	Toggles the display of comments inside the move list on and off

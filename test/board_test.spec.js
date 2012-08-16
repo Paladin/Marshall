@@ -24,6 +24,12 @@
             var game = new Game("game1");
             this.board = game.board;
 		});
+        afterEach(function () {
+            var boardDiv = document.getElementById("game1_board");
+            while (boardDiv.firstChild) {
+                boardDiv.removeChild(boardDiv.firstChild);
+            }
+        });
 		
 		it("should produce forsythe notation of final position", function(){
 			this.board.endPosition();
@@ -57,6 +63,12 @@
             var game = new Game("game1");
             this.board = game.board;
 		});
+        afterEach(function () {
+            var boardDiv = document.getElementById("game1_board");
+            while (boardDiv.firstChild) {
+                boardDiv.removeChild(boardDiv.firstChild);
+            }
+        });
 		
 		it("should produce forsythe notation of final position", function(){
 			this.board.endPosition();
@@ -90,6 +102,12 @@
             var game = new Game("game1");
             this.board = game.board;
 		});
+        afterEach(function () {
+            var boardDiv = document.getElementById("game1_board");
+            while (boardDiv.firstChild) {
+                boardDiv.removeChild(boardDiv.firstChild);
+            }
+        });
 		
 		it("should draw the correct position on screen", function(){
 		    var forsythe =
@@ -141,6 +159,12 @@
 			this.board.pgn.parse(this.board.pgn.pgnOrig);
 			this.div = document.getElementById("testmoves");
 		});
+        afterEach(function () {
+            var boardDiv = document.getElementById("game1_board");
+            while (boardDiv.firstChild) {
+                boardDiv.removeChild(boardDiv.firstChild);
+            }
+        });
 		it(" Should create tags section", function () {
 		    this.board.outputMoveTree(this.div);
 			expect(this.div.firstChild.tagName).toBe("HEADER");
@@ -186,6 +210,12 @@
             var game = new Game("game1");
             this.board = game.board;
 		});
+        afterEach(function () {
+            var boardDiv = document.getElementById("game1_board");
+            while (boardDiv.firstChild) {
+                boardDiv.removeChild(boardDiv.firstChild);
+            }
+        });
 		it(" Should make the second move for white in main line", function () {
     		window[this.board.id].displayMove(
     		    this.board.pgn.moveTree.next.next.next.link

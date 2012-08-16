@@ -198,13 +198,13 @@ TestCase( "BoardTest",
         var board = game.board;
 
 		assertEquals("Should have started out default", "",
-				document.getElementsByClassName("move_list")[0].style.visibility);
+				document.getElementsByClassName("move_list")[0].style.display);
 		board.toggleMoves();
-		assertEquals("Should have flipped to hidden", "hidden",
-				document.getElementsByClassName("move_list")[0].style.visibility);
+		assertEquals("Should have flipped to hidden", "none",
+				document.getElementsByClassName("move_list")[0].style.display);
 		board.toggleMoves();
-		assertEquals("Should have returned to visible", "visible",
-				document.getElementsByClassName("move_list")[0].style.visibility);
+		assertEquals("Should have returned to visible", "block",
+				document.getElementsByClassName("move_list")[0].style.display);
 	},
 	
 	"test toggling comments display": function() {
@@ -222,20 +222,18 @@ TestCase( "BoardTest",
 		var comments_length = comments.length;
 		for(var i=0; i<comments_length; i++) {
 			assertTrue("Should have started out visible", 
-				comments[i].style.visibility == "visible" || 
-				comments[i].style.visibility == "");
+				comments[i].style.display == "inline" || 
+				comments[i].style.display == "");
 		}
-		board.toggleComments("flip");
+		board.toggleComments();
 		for(var i=0; i<comments_length; i++) {
 			assertTrue("Should have flipped to hidden",
-				comments[i].style.visibility == "hidden" || 
-				comments[i].style.visibility == "");
+				comments[i].style.display == "none");
 		}
-		board.toggleComments("flip");
+		board.toggleComments();
 		for(var i=0; i<comments_length; i++) {
 			assertTrue("Should have returned to visible",
-				comments[i].style.visibility == "visible" || 
-				comments[i].style.visibility == "");
+				comments[i].style.display == "inline");
 		}
 	}
 });
