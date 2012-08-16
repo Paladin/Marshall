@@ -46,6 +46,7 @@ Game.prototype = {
     pgn:                null,
 	whiteToMove:		true,
 	startMoveNum:		1,
+	displayStart:       null,
     /**
      *	This sets up the default option list
      *
@@ -106,11 +107,6 @@ Game.prototype = {
     getStartPos:	function () {
         "use strict";
         return this.initialBoard;
-    },
-
-    getEndPos:	function () {
-        "use strict";
-        return this.vBoard;
     },
 
         /*
