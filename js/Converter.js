@@ -126,7 +126,6 @@ Converter.prototype = {
                 "([a-h][1-8])?" +                           // to if not before
                 "=?([NBRQ]?)" +                             // Promoted to
                 "([+#!?]*)"                                 // Move Annotations
-//                "\s?(\$?([0-9]{1,3}))?"                     // NAG
                 )
         );
         theMove = parsed[0];
