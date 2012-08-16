@@ -18,41 +18,23 @@ For now, each class/function is in its own file. Deal with it.
 
 ##Where Are We Now?
 
-Markup is more semantic and variations work. Or at least the Demo works and the tests work, but the code is still filled with lots of appendix methods and I want full, solid testing in place before I bump the version number.
+Variations solid. Control bar buttons for them not hooked up yet. Added an alternate source for PGN data.
 
-Along the way I've removed a few features. Some will make it back in by 1.0, some never will. This code should take a PGN with variations and play through it. The up/down buttons in the toolbar meant for dropping in to them still aren't hooked up, but soon. First priority is cleaning up after the push to get variations hooked in. Then I'll reconnect some removed features, and document everything.
+##How do I use it?
 
+In a nutshell:
 
------------------------------------------------------
+1. Download the archive and unzip it. For now the code is still in 7 separate javascript files, so deal with it. OK? I promise I'll make it one compressed js file when v1.0 goes beta. (Real Soon Now!)
+2. The dev.html file is a development demo. Have a look in that for clues about how to make CSS styles work for your site. The /img directory holds the images used by the demo. Right now only the default and the uscf directories are fit to use. If you change where it's located, remember to change your CSS to point to it. The /css directory contains the demo CSS file.
+3. If you're building your page by hand, the easiest method is to create a `<div>` on your page with an ID to identify it. Inside that `<div>` you place the PGN text of the game. Where you want the game player to show, create another `<div>` with an ID of the first one plus "\_board":
+`<div id="mypgndata">PGN Data here.....</div>`
+`<div id="mypgndata_board"></div>`
+The player board is empty, Marshall will build it there.
+4. At the bottom of the page put this script:
+`<script>var game = new Game("mypgndata");</script>`
 
-Following contents come from original readme:
+And away it goes!
 
-You have downloaded the archive and you want to use it for your own
-webpage or maybe even write a plugin for blog software?
-
-* Extract the archive.
-* Include the jsPgnViewer.js in your webpage.
-* Make the img folder from the archive available somewhere in your project.
-* To initialize the board:
-    * Make a hidden div with an id
-    
-            <div style="visibility:hidden;display:none" id="id_of_the_pgn_div"></div>
-    * Paste a PGN into the div
-    * Make another div where ever you want the board to appear.
-    * The div's id has to have the suffix \_board. In the current example it should be "id\_of\_the\_pgn\_div\_board".
-    * Somewhere in the &lt;script> tags add
-    
-	        var board = new Board("id_of_the_pgn_div")
-            board.init()
-* If you want to reference the images from another directory you can use the
-	imagePrefix attribute of the Board object.
-
-        board.imagePrefix = "someDirectory/" 
-* If you don't want the movesPane to show up
-
-        board.showMovesPane=true 
-* Easier way to set options
-
-        var board = new Board("id_of_the_pgn_div",{'showMovesPane':true, 'imagePrefix':'someDirectory/'}) 
+Check the wiki for more detailed docs as I write them (or fill them in yourself)
 
 Have fun!
