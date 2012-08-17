@@ -81,7 +81,10 @@ Board.prototype = {
             btnTd = this.createWithAttribs("td", { "class": "board_controls" }),
             propsTd =
                 this.createWithAttribs("td", { "class": "game_info" }),
-            board;
+            board,
+            gameHeader = this.outputGameHeader();
+
+        gameSection.appendChild(gameHeader);
 
         gameSection.appendChild(topTable);
         topTable.appendChild(topTableTb);
@@ -474,6 +477,24 @@ Board.prototype = {
         }
     },
     /**
+     *  Outputs the game header HTML Element
+     *
+     * @return  {HTMLElement}   Fully set up game header as <header>
+     */
+    outputGameHeader:   function () {
+        var header = this.createWithAttribs("header", {"class": "clearfix"}),
+            title,
+            code = this.createWithAttribs("p", {"class": "PGNlink"});
+
+        title = this.addTextElement(header, "h1", {},
+            this.gameOpponents()).parentNode;
+        code.appendChild(document.createTextNode(" ("));
+        code.appendChild(this.addPGNLink(this.pgn.pgnOrig));
+        code.appendChild(document.createTextNode(")"));
+        header.appendChild(code);
+        return header;
+    },
+    /**
      *  Outputs the move tree wrapped properly in HTML
      *
      * @param   {HTMLElement}   container   The container that holds the moves
@@ -481,8 +502,6 @@ Board.prototype = {
     outputMoveTree:     function (container) {
         "use strict";
         var move = this.pgn.moveTree,
-            movesHeader = document.createElement('header'),
-            h,
             moveList = document.createElement("p");
 
         if (!this.opts.showMovesPane) {
@@ -490,12 +509,6 @@ Board.prototype = {
             container.style.display = "none";
         }
 
-        h = this.addTextElement(movesHeader, "h1", {},
-            this.gameOpponents()).parentNode;
-        h.appendChild(document.createTextNode(" ("));
-        h.appendChild(this.addPGNLink(this.pgn.pgnOrig));
-        h.appendChild(document.createTextNode(")"));
-        container.appendChild(movesHeader);
         container.appendChild(moveList);
 
         this.outputLine(moveList, move);

@@ -236,28 +236,28 @@
             this.board = game.board;
 			this.board.pgn.parse(this.board.pgn.pgnOrig);
 			this.div = document.getElementById("testmoves");
+		    this.board.outputMoveTree(this.div);
 		});
         afterEach(function () {
             var boardDiv = document.getElementById("game1_board");
             while (boardDiv.firstChild) {
                 boardDiv.removeChild(boardDiv.firstChild);
             }
+            while (this.div.firstChild) {
+                this.div.removeChild(this.div.firstChild);
+            }
         });
-		it(" Should create tags section", function () {
-		    this.board.outputMoveTree(this.div);
-			expect(this.div.firstChild.tagName).toBe("HEADER");
-		});
 		it(" Should have 18 nodes in the move display", function () {
-			expect(this.div.children[1].children.length).toBe(18);
+			expect(this.div.children[0].children.length).toBe(18);
 		});
 		it(" Should have 6 children in the variation display", function () {
-			expect(this.div.children[1].children[8].children.length).toBe(6);
+			expect(this.div.children[0].children[8].children.length).toBe(6);
 		});
 		it(" Should have 8 nodes in the variation display", function () {
-			expect(this.div.children[1].children[8].childNodes.length).toBe(8);
+			expect(this.div.children[0].children[8].childNodes.length).toBe(8);
 		});
 		it(" Should have found and applied the NAG", function () {
-			expect(this.div.children[1].children[2].textContent).toBe("Bxg7+!");
+			expect(this.div.children[0].children[2].textContent).toBe("Bxg7+!");
 		});
 	});
 	describe("Making moves", function () {
