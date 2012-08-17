@@ -140,6 +140,7 @@ input:invalid, textarea:invalid { border-radius: 1px; -moz-box-shadow: 0px 0px 5
 body, select, input, textarea {
   /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
   color: #444;
+  background-color: #efe;
   /* Set your base font here, to apply evenly */
   /* font-family: Georgia, serif;  */
 }
@@ -160,7 +161,11 @@ a:link { -webkit-tap-highlight-color: #FF5E99; } /* j.mp/webkit-tap-highlight-co
  *
  * Author: Arlen P. Walker
  */
- 
+
+.scroller .move_list p { overflow-y: scroll; height: 29em; line-height: 1.3; }
+.scroller .dark_square { background-color: #898; }
+.scroller .light_square { background-color: #DDC; }
+
 header
 {
 	margin: 2em 0 2em 20%;
@@ -176,6 +181,7 @@ header p {font-size: 130%;}
 	margin: 1em;
 	padding: 1em;
 	border: 5px gray double;
+	background-color: #ffe;
 }
 .pgn_source { display: none; }
 
@@ -247,9 +253,15 @@ header p {font-size: 130%;}
 .current_move_box { text-align: center;}
 
 .current_move { font-weight: bold; background-color: #CCC; }
-.move {font-style: normal; font-weight: bold; color: black !important; padding: 1px 3px;}
-.variation .move { font-size: 90%; color: #666; padding: 1px 2px; font-style: italic;}
+.move {font-style: normal; font-weight: bold; padding: 1px 3px;}
+a.move { color: black; }
+.variation { font-size: 95%; color: green;}
+.variation a.move {color: green; }
+.variation .move { padding: 1px 2px; font-style: normal; }
 .move_list p {font-style: italic; }
+.game_section header { margin: 0 1em 0.5em 0em; }
+.game_section header h1 { float: right; }
+p.PGNlink { float: left; font-size: 90%; padding-top: 1em; }
 .game_info { text-align: center; padding: 0.5em 0; }
 .game_info p {
 	font-variant: small-caps;
