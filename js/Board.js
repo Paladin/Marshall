@@ -284,8 +284,8 @@ Board.prototype = {
             while (move.next && move.number !== parseInt(skipCode[1], 10)) {
                 move = move.next;
             }
-            if (move.prev && skipCode[2] !== "b") {
-                move = move.prev;
+            if (move.previous && skipCode[2] !== "b") {
+                move = move.previous;
             }
         }
         return move;

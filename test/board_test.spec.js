@@ -161,7 +161,51 @@
                 expect(lightSquares[i].getAttribute("data-squarename")).
                     toBe(newNames[i]);
             }
-        });		
+        });
+        it(" Should toggle the Comments", function () {
+            var comments = document.getElementsByClassName("commentary"),
+                comments_length = comments.length,
+                i;
+            for(i = 0; i < comments_length; i += 1) {
+                expect(comments[i].style.display).toBe("");
+            }
+            this.board.toggleComments();
+            for(var i=0; i<comments_length; i++) {
+                expect(comments[i].style.display).toBe("none");
+            }
+            this.board.toggleComments();
+            for(var i=0; i<comments_length; i++) {
+                expect(comments[i].style.display).toBe("inline");
+            }
+        });
+        it(" Should toggle the move display", function () {
+            var moves = document.getElementsByClassName("move_list"),
+                moves_length = moves.length
+                i;
+            for(i = 0; i < moves_length; i += 1) {
+                expect(moves[i].style.display).toBe("");
+            }
+            this.board.toggleMoves();
+            for(var i=0; i<moves_length; i++) {
+                expect(moves[i].style.display).toBe("none");
+            }
+            this.board.toggleMoves();
+            for(var i=0; i<moves_length; i++) {
+                expect(moves[i].style.display).toBe("block");
+            }
+        });
+        it(" Should create a game, flip the board, and start before move 3", function () {
+            var boardDiv = document.getElementById("game1_board"),
+                myGame,
+                myBoard;
+            boardDiv.removeChild(boardDiv.firstChild);
+        	myGame = new Game("game1", {"skipToMove": "3w", "flipped" : true}),
+            myBoard = myGame.board;
+            expect(myBoard.currentMove.number).toBe(2);
+            expect(myBoard.currentMove.color).toBe("black");
+        	expect(document.getElementsByClassName("light_square")[0].
+        	    getAttribute("data-squarename")).toBe("h1");
+        });
 	});
 	describe("Board - Outputting HTML MoveTree", function () {
         var aGame = "[Event \"Dayton\"]" + 
