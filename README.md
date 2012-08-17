@@ -18,7 +18,7 @@ For now, each class/function is in its own file. Deal with it.
 
 ##Where Are We Now?
 
-Variations solid. Control bar buttons for them not hooked up yet. Added an alternate source for PGN data.
+Version 1.0 Beta 
 
 ##How do I use it?
 
