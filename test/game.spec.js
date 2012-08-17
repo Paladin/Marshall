@@ -64,9 +64,13 @@
             this.game = new Game("game1");
         });
         afterEach(function () {
-            var boardDiv = document.getElementById("game1_board");
+            var boardDiv = document.getElementById("game1_board"),
+                movediv = document.getElementById("game1");
             while (boardDiv.firstChild) {
                 boardDiv.removeChild(boardDiv.firstChild);
+            }
+            while (movediv.firstChild) {
+                movediv.removeChild(movediv.firstChild);
             }
         });
         
@@ -104,18 +108,15 @@
 
         beforeEach(function(){
         /*:DOC += <div><div id="game1_board"></div></div> */
+            var movediv = document.getElementById("game1_board");
     
+            movediv.setAttribute("data-pgn", aGame);
+            this.game = new Game("game1_board");
+        });
+        afterEach(function () {
             var movediv = document.getElementById("game1_board");
             while (movediv.firstChild) {
                 movediv.removeChild(movediv.firstChild);
-            }
-            movediv.setAttribute("data-pgn", aGame);
-            this.game = new Game("game1");
-        });
-        afterEach(function () {
-            var boardDiv = document.getElementById("game1_board");
-            while (boardDiv.firstChild) {
-                boardDiv.removeChild(boardDiv.firstChild);
             }
         });
         it("should have produced forsythe notation after first move", function(){
