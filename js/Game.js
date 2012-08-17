@@ -21,7 +21,6 @@
 var Game = function (sourceDiv, options) {
 	"use strict";
 	var property,
-		i,
         givenOptions = options || {};
 
     this.sourceDiv = document.getElementById(sourceDiv);

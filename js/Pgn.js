@@ -21,17 +21,7 @@
  **/
 var Pgn = function (pgn) {
     "use strict";
-	var themoves,
-	    sizeOfTheMoves,
-	    i,
-	    move,
-	    pgnParsing,
-	    ply = [null, null],
-	    plyidx = 0;	//make this 1 if FEN and black to move
-
-	// properties of the game eg players, ELOs etc
 	this.props = {};
-
     this.pgnOrig = pgn;
     this.parse(pgn);
 };
@@ -118,6 +108,7 @@ Pgn.prototype = {
      * @return  {string}    The string after parsing out the NAG
      */
     parseNAG:       function (gameText, move) {
+        "use strict";
         var nagMatch = gameText.match(/^\$([0-9]{1,3})/),
             nagIndex = nagMatch[1];
 

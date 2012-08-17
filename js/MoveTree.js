@@ -137,6 +137,7 @@ MoveTree.prototype = {
         return move;
     },
     findByLink:     function (move, link) {
+        "use strict";
         var variation,
             subsearch;
         while (move !== null) {
