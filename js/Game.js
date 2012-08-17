@@ -81,6 +81,7 @@ Game.prototype = {
         "use strict";
         var move = this.pgn.moveTree.next;
 
+        this.pgn.moveTree.position = this.vBoard.getFEN();
         this.convertLine(this.vBoard, move);
     },
     convertLine:        function (board, move) {
