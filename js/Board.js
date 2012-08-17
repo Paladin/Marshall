@@ -39,14 +39,13 @@ var Board = function (game, pgn, divId, options) {
 	this.divId = divId;
 	this.opts = options;
 
-	this.visuals = { "pgn": {} };
+	this.visuals = { "pgn": {}, "button": {} };
     this.pos = [];
 	this.movesOnPane = [];
 
 	for (i = 0; i < 8; i += 1) {
 		this.pos[i] = [];
 	}
-	this.currentMove = this.pgn.moveTree;
 };
 /**
  * Setting up class attributes
@@ -119,11 +118,12 @@ Board.prototype = {
         this.moveInput = this.addTextElement(btnTdNext, "p",
             { "class": "current_move_box" });
 
+	    this.setCurrentMove(this.pgn.moveTree);
         this.updateMoveInfo(this);
         if (!this.opts.showMovesPane) { this.hideMoves(); }
         if (!this.opts.showComments) { this.hideComments(); }
         if (this.opts.skipToMove) {
-            this.currentMove = this.skipTo(this.opts.skipToMove);
+            this.setCurrentMove(this.skipTo(this.opts.skipToMove));
             this.displayStart = new VBoard(this.currentMove.position);
             this.makeMove(this.currentMove);
         }
@@ -179,42 +179,56 @@ Board.prototype = {
         "use strict";
         var theBoard = this;
 
-        this.makeButton(theContainer, "rwind", "altRewind", false, function () {
-            theBoard.startPosition.apply(theBoard);
-            return false;
-        });
-        this.makeButton(theContainer, "back", "altBack", false, function () {
-            theBoard.makeMove.apply(theBoard, [theBoard.currentMove.previous]);
-            return false;
-        });
-        this.makeButton(theContainer, "up", "altUp", true, function () {
-            return false;
-        });
-        this.makeButton(theContainer, "flip", "altFlip", false, function () {
-            theBoard.flipBoard();
-            return false;
-        });
-        this.makeButton(theContainer, "toggle", "altShowMoves", false,
-            function () {
+        this.visuals.button.rewind = this.makeButton(theContainer, "rwind",
+            "altRewind", false, function () {
+                theBoard.makeMove.apply(theBoard,
+                    [theBoard.currentMove.goStart.apply(
+                        theBoard.currentMove
+                    )]);
+                return false;
+            });
+        this.visuals.button.back = this.makeButton(theContainer, "back",
+            "altBack", false, function () {
+                theBoard.makeMove.apply(theBoard,
+                    [theBoard.currentMove.previous]);
+                return false;
+            });
+        this.visuals.button.up = this.makeButton(theContainer, "up",
+            "altUp", true, function () {
+                theBoard.makeMove.apply(theBoard,
+                    [theBoard.currentMove.up || theBoard.currentMove]);
+                return false;
+            });
+        this.visuals.button.flip = this.makeButton(theContainer, "flip",
+            "altFlip", false, function () {
+                theBoard.flipBoard();
+                return false;
+            });
+        this.visuals.button.toggleMoves = this.makeButton(theContainer,
+            "toggle", "altShowMoves", false, function () {
                 theBoard.toggleMoves();
                 return false;
             });
-        this.makeButton(theContainer, "comments", "altComments", false,
-            function () {
+        this.visuals.button.toggleComments = this.makeButton(theContainer,
+            "comments", "altComments", false, function () {
                 theBoard.toggleComments();
                 return false;
             });
-        this.makeButton(theContainer, "down", "altDown", true, function () {
-            return false;
-        });
-        this.makeButton(theContainer, "forward", "altPlayMove", false,
-            function () {
+        this.visuals.button.down = this.makeButton(theContainer, "down",
+            "altDown", true, function () {
+                theBoard.makeMove.apply(theBoard,
+                    [theBoard.currentMove.down || theBoard.currentMove]);
+                return false;
+            });
+        this.visuals.button.forward = this.makeButton(theContainer, "forward",
+            "altPlayMove", false, function () {
                 theBoard.makeMove.apply(theBoard, [theBoard.currentMove.next]);
                 return false;
             });
-        this.makeButton(theContainer, "ffward", "altFastForward", false,
-            function () {
-                theBoard.endPosition.apply(theBoard);
+        this.visuals.button.fastforward = this.makeButton(theContainer,
+            "ffward", "altFastForward", false, function () {
+                theBoard.makeMove.apply(theBoard,
+                    [theBoard.currentMove.goEnd.apply(theBoard.currentMove)]);
                 return false;
             });
     },
@@ -226,6 +240,7 @@ Board.prototype = {
      * @param   {string}        btnTitle        Title and alt text
      * @param   {boolean}       disabled        Is it disabled?
      * @param   {function}      handler         The click handler
+     * @return  {HTMLElement}   The button created
      */
     makeButton: function (btnContainer, btnName, btnTitle, disabled, handler) {
         "use strict";
@@ -238,6 +253,7 @@ Board.prototype = {
         button.innerHTML = "&nbsp;";
         button.onclick = handler;
         btnContainer.appendChild(button);
+        return button;
     },
     /**
      *	Flips the board to display it from the other side's POV.
@@ -294,14 +310,46 @@ Board.prototype = {
         return move;
     },
     /**
+     *  Sets the currentMove (obviously) but also performs various housekeeping
+     *  tasks related to that.
+     *
+     * @param   {object}    move
+     */
+    setCurrentMove:     function (move) {
+        "use strict";
+        this.currentMove = move;
+        this.setButtonState(this.visuals.button.rewind, move.previous);
+        this.setButtonState(this.visuals.button.back, move.previous);
+        this.setButtonState(this.visuals.button.down, move.down);
+        this.setButtonState(this.visuals.button.up, move.up);
+        this.setButtonState(this.visuals.button.forward, move.next);
+        this.setButtonState(this.visuals.button.fastforward, move.next);
+    },
+    /**
+     *  Toggles the enabled/disabled appearance of a button based on
+     *  availability of the option.
+     *
+     * @param   {HTMLElement}   button
+     * @param   {object}        option  Null is unavailable
+     */
+    setButtonState :    function (button, option) {
+        "use strict";
+        if (option !== null) {
+            button.className = button.className.replace("disabled").trim();
+        } else if (!button.className.match("disabled")) {
+            button.className += " disabled";
+        }
+    },
+    /**
      *	Displays the linked board position.
      *
      *	@param  {HTMLElement}   link    The link with the position to display
      */
     displayMove: function (link) {
         "use strict";
-        this.currentMove =
-            this.pgn.moveTree.findByLink(this.pgn.moveTree, link);
+        this.setCurrentMove(
+            this.pgn.moveTree.findByLink(this.pgn.moveTree, link)
+        );
 
         this.drawFEN(this.currentMove.position);
         this.updateMoveInfo(this.currentMove);
@@ -312,7 +360,7 @@ Board.prototype = {
      */
     endPosition:    function () {
         "use strict";
-        this.currentMove = this.pgn.moveTree.goEnd();
+        this.setCurrentMove(this.pgn.moveTree.goEnd());
         this.makeMove(this.currentMove);
     },
     /**
@@ -323,7 +371,7 @@ Board.prototype = {
         var vBoard = this.conv.getStartPos();
 
         this.syncBoard(vBoard);
-        this.currentMove = this.pgn.moveTree;
+        this.setCurrentMove(this.pgn.moveTree);
         this.updateMoveInfo(this.currentMove);
         this.highlightCurrentMove(this.currentMove);
     },
@@ -412,7 +460,7 @@ Board.prototype = {
      */
     makeMove:   function (move, update) {
         "use strict";
-        this.currentMove = move || this.currentMove;
+        this.setCurrentMove(move || this.currentMove);
         if (update === undefined || update) {
             this.updateMoveInfo(this.currentMove);
             this.highlightCurrentMove(this.currentMove);
@@ -482,6 +530,7 @@ Board.prototype = {
      * @return  {HTMLElement}   Fully set up game header as <header>
      */
     outputGameHeader:   function () {
+        "use strict";
         var header = this.createWithAttribs("header", {"class": "clearfix"}),
             title,
             code = this.createWithAttribs("p", {"class": "PGNlink"});

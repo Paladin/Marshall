@@ -294,11 +294,71 @@
                 boardDiv.removeChild(boardDiv.firstChild);
             }
         });
+        it(" Should have only the back and variation buttons disabled", function () {
+        	expect(this.board.visuals.button.rewind.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.back.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.down.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.up.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.forward.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.fastforward.className).
+        	    toNotMatch(/\bdisabled\b/);
+        });
+        it(" Should have only the up variation button disabled", function () {
+    		window[this.board.id].displayMove(
+    		    this.board.pgn.moveTree.next.next.next.next.link
+    		    );
+        	expect(this.board.visuals.button.rewind.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.back.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.down.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.up.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.forward.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.fastforward.className).
+        	    toNotMatch(/\bdisabled\b/);
+        });
+        it(" Should have the back and down variation buttons disabled", function () {
+    		window[this.board.id].displayMove(
+    		    this.board.pgn.moveTree.next.next.next.next.down.link
+    		    );
+        	expect(this.board.visuals.button.rewind.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.back.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.down.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.up.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.forward.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.fastforward.className).
+        	    toNotMatch(/\bdisabled\b/);
+        });
 		it(" Should make the second move for white in main line", function () {
     		window[this.board.id].displayMove(
     		    this.board.pgn.moveTree.next.next.next.link
     		    );
 			expect(this.board.moveInput.data).toBe("2. Qh6+!!");
+        	expect(this.board.visuals.button.rewind.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.back.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.down.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.up.className).
+        	    toMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.forward.className).
+        	    toNotMatch(/\bdisabled\b/);
+        	expect(this.board.visuals.button.fastforward.className).
+        	    toNotMatch(/\bdisabled\b/);
 		});
 		it(" Should make the fourth move for black in main line", function () {
     		window[this.board.id].displayMove(this.board.pgn.moveTree.next.
