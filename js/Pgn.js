@@ -64,7 +64,7 @@ Pgn.prototype = {
                 move.color = this.color;
                 if (move.text !== "O-O-O" && move.text !== "O-O") {
                     move.destination =
-                        move.text.match(/([a-z][1-8])[!?+#]*$/)[1];
+                        move.text.match(/([a-z][1-8])[!?+#=]*[QRBN]?$/)[1];
                 }
                 this.color = this.alternate(this.color, "white", "black");
 
