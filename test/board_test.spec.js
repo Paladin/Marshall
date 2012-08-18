@@ -96,11 +96,6 @@
                 boardDiv.removeChild(boardDiv.firstChild);
             }
         });
-        it(" Should find only one game section", function () {
-        	var result = document.getElementsByClassName("game_section");
-        	expect(result.length).toBe(1);
-        	expect(result[0].tagName).toBe("SECTION");
-        });
         it(" Should find 32 light squares", function () {
         	expect(document.getElementsByClassName("light_square").
         	    length).toBe(32);

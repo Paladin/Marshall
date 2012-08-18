@@ -182,10 +182,9 @@ header p {font-size: 130%;}
 	padding: 1em;
 	border: 5px gray double;
 	background-color: #ffe;
+	display: block;
 }
 .pgn_source { display: none; }
-
-.game_section { display: block; }
 
 .mainboard {
 	height: 370px;
@@ -259,11 +258,11 @@ a.move { color: black; }
 .variation a.move {color: green; }
 .variation .move { padding: 1px 2px; font-style: normal; }
 .move_list p {font-style: italic; }
-.game_section header { margin: 0 1em 0.5em 0em; }
-.game_section header h1 { float: right; }
+.game_display header { margin: 0 1em 0.5em 0em; }
+.game_display header h1 { float: right; }
 p.PGNlink { float: left; font-size: 90%; padding-top: 1em; }
 .game_info { text-align: center; padding: 0.5em 0; }
-.game_info p {
+.game_info p, .players {
 	font-variant: small-caps;
 }
 .gameboard td { background-repeat: no-repeat; }

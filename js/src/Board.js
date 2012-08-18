@@ -64,44 +64,29 @@ Board.prototype = {
 	init:       function () {
         "use strict";
         // the main frame
-        var boardFrame = document.getElementById(this.divId),
-            gameSection =
-                this.createWithAttribs("section", { "class": "game_section" }),
+        var gameSection = document.getElementById(this.divId),
             topTable =
-                this.createWithAttribs("table", { "class": "mainboard" }),
-            topTableTb = document.createElement("tbody"),
-            boardTd = document.createElement("td"),
-            btnTdNext =
-                this.createWithAttribs("td", { "class": "current_move_cell" }),
-            btnTd = this.createWithAttribs("td", { "class": "board_controls" }),
+                this.createWithAttribs("section", { "class": "mainboard" }),
+            btnTd = this.createWithAttribs("p", { "class": "board_controls" }),
             propsTd =
-                this.createWithAttribs("td", { "class": "game_info" }),
+                this.createWithAttribs("section", { "class": "game_info" }),
             board,
             gameHeader = this.outputGameHeader();
 
         gameSection.appendChild(gameHeader);
 
         gameSection.appendChild(topTable);
-        topTable.appendChild(topTableTb);
 
         // movesTable
         this.movesDiv = this.createWithAttribs("div", { "class": "move_list" });
-        this.movesDiv.id = this.divId + "_board_moves";
+        this.movesDiv.id = this.divId + "_moves";
         gameSection.appendChild(this.movesDiv);
-
-        topTableTb.appendChild(document.createElement("tr")).
-                appendChild(boardTd);
-        topTableTb.appendChild(document.createElement("tr")).
-                appendChild(btnTd);
-        topTableTb.appendChild(document.createElement("tr")).
-                appendChild(btnTdNext);
-        topTableTb.appendChild(document.createElement("tr")).
-                appendChild(propsTd);
 
         board = this.drawBoard();
 
-        boardFrame.appendChild(gameSection);
-        boardTd.appendChild(board);
+        topTable.appendChild(board);
+        topTable.appendChild(btnTd);
+        topTable.appendChild(propsTd);
 
         this.populatePieces();
         if (this.opts.flipped) {
@@ -148,6 +133,8 @@ Board.prototype = {
             td,
             flip;
 
+        this.visuals.pgn.players = this.addTextElement(board,
+            "caption", { "class": "players" });
         this.displayBoard = document.createElement("tbody");
         board.appendChild(this.displayBoard);
 
@@ -478,10 +465,6 @@ Board.prototype = {
         "use strict";
         this.visuals.pgn.players.nodeValue = this.gameOpponents();
 
-        this.visuals.pgn.elos.nodeValue = this.conv.pgn.props.WhiteElo || " ";
-        this.visuals.pgn.elos.nodeValue += " - ";
-        this.visuals.pgn.elos.nodeValue += this.conv.pgn.props.BlackElo || " ";
-
         this.visuals.pgn.event.nodeValue = this.pgn.props.Event || " ";
         this.visuals.pgn.event.nodeValue += ", ";
         this.visuals.pgn.event.nodeValue += this.pgn.props.Date || " ";
@@ -621,14 +604,6 @@ Board.prototype = {
      */
     populateProps:  function (container) {
         "use strict";
-
-        // white - black;
-        this.visuals.pgn.players = this.addTextElement(container, "p",
-                { "class": "players" });
-
-        // ELO
-        this.visuals.pgn.elos = this.addTextElement(container, "p",
-                { "class": "elo" });
 
         // Date 
         this.visuals.pgn.event = this.addTextElement(container, "p",
@@ -776,12 +751,17 @@ Board.prototype = {
     gameOpponents:  function () {
         "use strict";
         var white,
-            black;
+            whiteElo,
+            black,
+            blackElo;
 
         white = this.pgn.props.White || 'Unknown';
+        whiteElo = this.pgn.props.WhiteElo || null;
         black = this.pgn.props.Black || 'Unknown';
+        blackElo = this.pgn.props.BlackElo || null;
 
-        return white + ' - ' + black;
+        return white + (whiteElo ? " (" + whiteElo + ") - " : " - ") +
+            black + (blackElo ? " (" + blackElo + ")" : "");
     },
     /**
      *	Creates move number node
