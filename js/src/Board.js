@@ -9,8 +9,8 @@
  * @property {object}	pgn			- The game object
  * @property {object}	opts		- Configuration options
  * @property {string}	divId		- The ID of the board's display element
- * @property {object}	conv		- The Converter object
  * @property {array}	movesOnPane	- The array of displayed moves
+ * @property {object}	game		- The Game object (parent)
  * @property {boolean}	flipped		- White or Black (true) on top
  * @property {string}	id			- GUID
  * @property {object}	visuals		- Object containing on-screen elements
@@ -32,7 +32,7 @@ var Board = function (game, pgn, divId, options) {
     this.id = (new Date()).getTime();
 	window[this.id] = this;
 
-	this.conv = game;
+	this.game = game;
 	this.pgn = pgn;
 	this.divId = divId;
 	this.opts = options;
@@ -360,18 +360,6 @@ Board.prototype = {
         "use strict";
         this.setCurrentMove(this.pgn.moveTree.goEnd());
         this.makeMove(this.currentMove);
-    },
-    /**
-     *	Jumps the board all the way to the starting position of the game
-     */
-    startPosition:  function () {
-        "use strict";
-        var vBoard = this.conv.getStartPos();
-
-        this.syncBoard(vBoard);
-        this.setCurrentMove(this.pgn.moveTree);
-        this.updateMoveInfo(this.currentMove);
-        this.highlightCurrentMove(this.currentMove);
     },
     /**
      *  Toggles visibility of moves pane.
