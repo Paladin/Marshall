@@ -682,30 +682,6 @@ Board.prototype = {
         return;
     },
     /**
-     * This synchronizes the display board with the virtual board when you jump
-     *  to a position without moving to it.
-     *
-     * @param   {object}    result  A VBoard to sync with display
-     */
-    syncBoard:  function (result) {
-        "use strict";
-        var r,
-            f,
-            square,
-            p;
-
-        for (r = 0; r < 8; r += 1) {
-            for (f = 0; f < 8; f += 1) {
-                square = this.visuals.squares[r][f].getAttribute("data-squarename");
-                p = result.whatsOn(square);
-                this.visuals.squares[r][f].piece = p.piece || "empty";
-                this.visuals.squares[r][f].color = p.color || "";
-                this.updateSquare(this.visuals.squares[r][f], this.visuals.squares[r][f].piece,
-                    this.visuals.squares[r][f].color);
-            }
-        }
-    },
-    /**
      *	This adds a comment, if present to the output stream. The curly braces
      *  are removed for humman readability.
      *
