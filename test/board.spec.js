@@ -21,13 +21,74 @@
         });
         it(" Should create a game, flip the board, and start before move 3", function () {
             var myGame,
-                myBoard;
-        	myGame = new Game("game1", {"skipToMove": "3w", "flipped" : true}),
+                myBoard,
+                i,
+                squares,
+                light_squares = ["h1", "f1", "d1", "b1", "g2", "e2", "c2",
+                    "a2", "h3", "f3", "d3", "b3", "g4", "e4", "c4", "a4",
+                    "h5", "f5", "d5", "b5", "g6", "e6", "c6", "a6", "h7",
+                    "f7", "d7", "b7", "g8", "e8", "c8", "a8"];
+        	myGame = new Game("game1", {"skipToMove": "3w", "flipped" : true});
             myBoard = myGame.board;
             expect(myBoard.currentMove.number).toBe(2);
             expect(myBoard.currentMove.color).toBe("black");
-        	expect(document.getElementsByClassName("light_square")[0].
-        	    getAttribute("data-squarename")).toBe("h1");
+            squares = myBoard.movesDiv.getElementsByClassName("light_square");
+            for (i = 0; 1 < squares.length; i += 1) {
+                expect(squares[i].getAttribute("data-squarename")).toBe(light_squares[i]);
+            }
+        });
+        it(" Should not show the moves pane", function () {
+            var myGame = new Game("game1", {"showMovesPane": false}),
+                myBoard = myGame.board;
+                expect(myBoard.movesDiv.style.display).toBe("none");
+        });
+        it(" Should not show the comments", function () {
+            var myGame = new Game("game1", {"showComments": false}),
+                myBoard = myGame.board,
+                i,
+                commentary;
+                commentary = document.getElementsByClassName("commentary");
+                for (i = 0;i < commentary.length; i += 1) {
+                    expect(commentary[i].style.display).toBe("none");
+                }
+        });
+        it(" Should show the correct download URL", function () {
+            myGame = new Game("game1", {"downloadURL": "fred.com"}),
+                myBoard = myGame.board;
+                expect(myBoard.opts.downloadURL).toBe("fred.com");
+        });
+        it(" Should show the correct control button titles", function () {
+            var list = {
+                "altRewind":		"Test 1",
+                "altBack":		    "Test 2",
+                "altFlip":		    "Test 3",
+                "altShowMoves":	    "Test 4",
+                "altComments":	    "Test 5",
+                "altPlayMove":	    "Test 6",
+                "altFastForward":	"Test 7",
+                "altUp":			"Test 8",
+                "altDown":		    "Test 9"
+                },
+                myGame = new Game("game1",list),
+                myBoard = myGame.board;
+            expect(myBoard.visuals.button.rewind.alt).toBe(list.altRewind);
+            expect(myBoard.visuals.button.rewind.title).toBe(list.altRewind);
+            expect(myBoard.visuals.button.back.alt).toBe(list.altBack);
+            expect(myBoard.visuals.button.back.title).toBe(list.altBack);
+            expect(myBoard.visuals.button.up.alt).toBe(list.altUp);
+            expect(myBoard.visuals.button.up.title).toBe(list.altUp);
+            expect(myBoard.visuals.button.flip.alt).toBe(list.altFlip);
+            expect(myBoard.visuals.button.flip.title).toBe(list.altFlip);
+            expect(myBoard.visuals.button.toggleMoves.alt).toBe(list.altShowMoves);
+            expect(myBoard.visuals.button.toggleMoves.title).toBe(list.altShowMoves);
+            expect(myBoard.visuals.button.toggleComments.alt).toBe(list.altComments);
+            expect(myBoard.visuals.button.toggleComments.title).toBe(list.altComments);
+            expect(myBoard.visuals.button.down.alt).toBe(list.altDown);
+            expect(myBoard.visuals.button.down.title).toBe(list.altDown);
+            expect(myBoard.visuals.button.forward.alt).toBe(list.altPlayMove);
+            expect(myBoard.visuals.button.forward.title).toBe(list.altPlayMove);
+            expect(myBoard.visuals.button.fastforward.alt).toBe(list.altFastForward);
+            expect(myBoard.visuals.button.fastforward.title).toBe(list.altFastForward);
         });
 	});
 	describe("Working with Forsythe and display boards", function() {
@@ -62,11 +123,6 @@
         it(" Should find a8 as the first light square", function () {
         	expect(document.getElementsByClassName("light_square")[0].
         	    getAttribute("data-squarename")).toBe("a8");
-        });
-        it(" Should find h1 as 1st light square if board flipped", function () {
-        	this.board.flipBoard();
-        	expect(document.getElementsByClassName("light_square")[0].
-        	    getAttribute("data-squarename")).toBe("h1");
         });
         it(" Should find 32 dark squares", function () {
         	expect(document.getElementsByClassName("dark_square").
