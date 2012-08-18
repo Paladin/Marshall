@@ -769,7 +769,10 @@ Board.prototype = {
             theBoard = this;
         link.appendChild(document.createTextNode(moveText));
         link.href = '#';
-        link.onclick = theBoard.clickMove;
+        link.onclick = function (e) { theBoard.displayMove.
+            call(theBoard, e.currentTarget);
+            return false;
+            }
         link.setAttribute("data-moveNumber", moveNumber);
         link.setAttribute("data-color", color);
         link.setAttribute("data-id", this.id);
@@ -814,19 +817,6 @@ Board.prototype = {
         }
 
         return position.slice(1, -1);	// Remove the first and last slash
-    },
-    /**
-     *  Handles the click events for the individual moves
-     *
-     * @param   {MouseEvent}    e   The click event
-     */
-    clickMove:  function (e) {
-        "use strict";
-        var myId = parseInt(e.currentTarget.getAttribute("data-id"), 10);
-
-        e.preventDefault();
-        window[myId].displayMove(e.currentTarget);
-        return false;
     },
     /**
      * Given a FEN, create it on the output position.
