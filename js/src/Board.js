@@ -6,7 +6,6 @@
  * @param {string}  divId   The ID of the div to put the board inside
  * @param {object}  options The configuration options for the board
  *
- * @property {array}	file		- Array of the names of the chessboard files
  * @property {object}	pgn			- The game object
  * @property {object}	opts		- Configuration options
  * @property {string}	divId		- The ID of the board's display element
@@ -49,7 +48,6 @@ var Board = function (game, pgn, divId, options) {
  * Setting up class attributes
  */
 Board.prototype = {
-	file:           ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
 	flipped:        false,
 	moveInput:      null,
 	displayBoard:   null,
@@ -134,13 +132,15 @@ Board.prototype = {
      *  the pos array (class attribute) in the order they were created: with
      *  [0,0] being a8, [0,1] being b8, etc.
      *
+     * @param   {string}    title   The title (default is opponents)
      * @return  {HTMLTableElement}  The game board display.
      */
-    drawBoard:  function () {
+    drawBoard:  function (title) {
         "use strict";
         var board = this.createWithAttribs("table", { "class": "gameboard" }),
             whiteC = 'light_square',
             blackC = 'dark_square',
+            file = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
             i,
             j,
             attributes,
@@ -158,7 +158,7 @@ Board.prototype = {
                 attributes = {};
                 attributes["class"] = !flip ? (j % 2) ? blackC : whiteC :
                         (j % 2) ? whiteC : blackC;
-                attributes["data-squarename"] = this.file[j] + (8 - i);
+                attributes["data-squarename"] = file[j] + (8 - i);
                 td = this.createWithAttribs("td", attributes);
 
                 this.visuals.squares[i][j] = td;
