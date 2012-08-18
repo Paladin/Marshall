@@ -14,8 +14,7 @@
  * @property {array}	movesOnPane	- The array of displayed moves
  * @property {boolean}	flipped		- White or Black (true) on top
  * @property {string}	id			- GUID
- * @property {string}	moveInput	- text in moveInput window
- * @property {object}	visuals		- Object containing the PGN info
+ * @property {object}	visuals		- Object containing on-screen elements
  * @property {object}	displayBoard - Parent element for the board squares
  * @property {array}	pos			- array of table cells in display (a8-h1)
  * @property {object}	currentMove - Currently displayed move
@@ -39,12 +38,11 @@ var Board = function (game, pgn, divId, options) {
 	this.divId = divId;
 	this.opts = options;
 
-	this.visuals = { "pgn": {}, "button": {} };
-    this.pos = [];
-	this.movesOnPane = [];
+	this.visuals = { "pgn": {}, "button": {}, "squares": [],
+	    "currentMove": null, "moves": [] };
 
 	for (i = 0; i < 8; i += 1) {
-		this.pos[i] = [];
+		this.visuals.squares[i] = [];
 	}
 };
 /**
@@ -115,7 +113,7 @@ Board.prototype = {
         this.outputMoveTree(this.movesDiv);
 
         this.createButtonBar(btnTd);
-        this.moveInput = this.addTextElement(btnTdNext, "p",
+        this.visuals.currentMove = this.addTextElement(topTable, "p",
             { "class": "current_move_box" });
 
 	    this.setCurrentMove(this.pgn.moveTree);
@@ -163,7 +161,7 @@ Board.prototype = {
                 attributes["data-squarename"] = this.file[j] + (8 - i);
                 td = this.createWithAttribs("td", attributes);
 
-                this.pos[i][j] = td;
+                this.visuals.squares[i][j] = td;
                 tr.appendChild(td);
             }
             this.displayBoard.appendChild(tr);
@@ -268,8 +266,8 @@ Board.prototype = {
 
         for (i = 0; i < 8; i += 1) {
             for (j = 0; j < 4; j += 1) {
-                upper = this.pos[i][j];
-                lower = this.pos[7 - i][7 - j];
+                upper = this.visuals.squares[i][j];
+                lower = this.visuals.squares[7 - i][7 - j];
 
                 hold.squarename = upper.getAttribute('data-squarename');
                 hold.symbol = upper.getAttribute('data-symbol');
@@ -445,11 +443,11 @@ Board.prototype = {
     updateMoveInfo: function (move) {
         "use strict";
         if (move && move.number) {
-            this.moveInput.data = move.number + ". ";
-            this.moveInput.data += move.color === "black" ? "... " : "";
-            this.moveInput.data += move.text;
+            this.visuals.currentMove.data = move.number + ". ";
+            this.visuals.currentMove.data += move.color === "black" ? "... " : "";
+            this.visuals.currentMove.data += move.text;
         } else {
-            this.moveInput.data = "...";
+            this.visuals.currentMove.data = "...";
         }
     },
     /**
@@ -475,9 +473,9 @@ Board.prototype = {
         "use strict";
         var i;
 
-        for (i = 0; i < this.movesOnPane.length; i += 1) {
-            this.movesOnPane[i].className =
-                this.movesOnPane[i].className.replace("current_move", "").
+        for (i = 0; i < this.visuals.moves.length; i += 1) {
+            this.visuals.moves[i].className =
+                this.visuals.moves[i].className.replace("current_move", "").
                     trim();
         }
 
@@ -515,12 +513,12 @@ Board.prototype = {
 
         for (r = 0; r < 8; r += 1) {
             for (f = 0; f < 8; f += 1) {
-                square = this.pos[r][f].getAttribute("data-squarename");
-                p = this.conv.initialBoard.whatsOn(square);
-                this.pos[r][f].piece = p.piece || "empty";
-                this.pos[r][f].color = p.color || "black";
-                this.updateSquare(this.pos[r][f], this.pos[r][f].piece,
-                    this.pos[r][f].color);
+                square = this.visuals.squares[r][f].getAttribute("data-squarename");
+                p = this.game.getStartPos().whatsOn(square);
+                this.visuals.squares[r][f].piece = p.piece || "empty";
+                this.visuals.squares[r][f].color = p.color || "black";
+                this.updateSquare(this.visuals.squares[r][f], this.visuals.squares[r][f].piece,
+                    this.visuals.squares[r][f].color);
             }
         }
     },
@@ -601,7 +599,7 @@ Board.prototype = {
                 move.position);
             container.appendChild(link);
             move.link = link;
-            this.movesOnPane.push(link);
+            this.visuals.moves.push(link);
         }
         while (i < move.commentary.length) {
             this.addComment(move.commentary[i], container);
@@ -736,12 +734,12 @@ Board.prototype = {
 
         for (r = 0; r < 8; r += 1) {
             for (f = 0; f < 8; f += 1) {
-                square = this.pos[r][f].getAttribute("data-squarename");
+                square = this.visuals.squares[r][f].getAttribute("data-squarename");
                 p = result.whatsOn(square);
-                this.pos[r][f].piece = p.piece || "empty";
-                this.pos[r][f].color = p.color || "";
-                this.updateSquare(this.pos[r][f], this.pos[r][f].piece,
-                    this.pos[r][f].color);
+                this.visuals.squares[r][f].piece = p.piece || "empty";
+                this.visuals.squares[r][f].color = p.color || "";
+                this.updateSquare(this.visuals.squares[r][f], this.visuals.squares[r][f].piece,
+                    this.visuals.squares[r][f].color);
             }
         }
     },
@@ -902,9 +900,9 @@ Board.prototype = {
 
         for (rank = 0; rank < 8; rank += 1) {
             for (file = 0; file < 8; file += 1) {
-                square = this.pos[rank][file].getAttribute("data-squarename");
+                square = this.visuals.squares[rank][file].getAttribute("data-squarename");
                 thePiece = vBoard.whatsOn(square);
-                this.updateSquare(this.pos[rank][file], thePiece.piece,
+                this.updateSquare(this.visuals.squares[rank][file], thePiece.piece,
                     thePiece.color);
             }
         }

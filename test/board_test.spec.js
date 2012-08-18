@@ -346,7 +346,7 @@
     		window[this.board.id].displayMove(
     		    this.board.pgn.moveTree.next.next.next.link
     		    );
-			expect(this.board.moveInput.data).toBe("2. Qh6+!!");
+			expect(this.board.visuals.currentMove.data).toBe("2. Qh6+!!");
         	expect(this.board.visuals.button.rewind.className).
         	    toNotMatch(/\bdisabled\b/);
         	expect(this.board.visuals.button.back.className).
@@ -363,19 +363,19 @@
 		it(" Should make the fourth move for black in main line", function () {
     		window[this.board.id].displayMove(this.board.pgn.moveTree.next.
     		    next.next.next.next.next.next.next.link);
-			expect(this.board.moveInput.data).toBe("4. ... Kg4");
+			expect(this.board.visuals.currentMove.data).toBe("4. ... Kg4");
 		});
 		it(" Should rewind the position back to the start", function () {
     		window[this.board.id].displayMove(this.board.pgn.moveTree.next.
     		    next.next.next.next.next.next.next.link);
-    		this.board.startPosition();
-			expect(this.board.moveInput.data).toBe("...");
+    		this.board.makeMove(this.board.currentMove.goStart());
+			expect(this.board.visuals.currentMove.data).toBe("...");
 		});
 		it(" Should fast forward the position to end of main", function () {
     		window[this.board.id].displayMove(this.board.pgn.moveTree.next.
     		    next.next.next.next.next.next.next.link);
     		this.board.endPosition();
-			expect(this.board.moveInput.data).toBe("5. Rh4#");
+			expect(this.board.visuals.currentMove.data).toBe("5. Rh4#");
 		});
 	});
 })();
