@@ -482,11 +482,11 @@ Board.prototype = {
         this.visuals.pgn.elos.nodeValue += " - ";
         this.visuals.pgn.elos.nodeValue += this.conv.pgn.props.BlackElo || " ";
 
-        this.visuals.pgn.event.nodeValue = this.conv.pgn.props.Event || " ";
+        this.visuals.pgn.event.nodeValue = this.pgn.props.Event || " ";
         this.visuals.pgn.event.nodeValue += ", ";
-        this.visuals.pgn.event.nodeValue += this.conv.pgn.props.Date || " ";
+        this.visuals.pgn.event.nodeValue += this.pgn.props.Date || " ";
         this.visuals.pgn.timecontrol.nodeValue =
-                this.conv.pgn.props.TimeControl || " ";
+                this.pgn.props.TimeControl || " ";
     },
     /*
      * Draw the board with all the pieces in the initial
@@ -778,8 +778,8 @@ Board.prototype = {
         var white,
             black;
 
-        white = this.conv.pgn.props.White || 'Unknown';
-        black = this.conv.pgn.props.Black || 'Unknown';
+        white = this.pgn.props.White || 'Unknown';
+        black = this.pgn.props.Black || 'Unknown';
 
         return white + ' - ' + black;
     },
