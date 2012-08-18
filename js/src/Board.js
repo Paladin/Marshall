@@ -6,10 +6,9 @@
  * @param {string}  divId   The ID of the div to put the board inside
  * @param {object}  options The configuration options for the board
  *
- * @property {object}	pgn			- The game object
+ * @property {object}	pgn			- The game score object
  * @property {object}	opts		- Configuration options
  * @property {string}	divId		- The ID of the board's display element
- * @property {array}	movesOnPane	- The array of displayed moves
  * @property {object}	game		- The Game object (parent)
  * @property {boolean}	flipped		- White or Black (true) on top
  * @property {string}	id			- GUID
