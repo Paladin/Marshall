@@ -69,18 +69,6 @@
                 boardDiv.removeChild(boardDiv.firstChild);
             }
         });
-		
-		it("should produce forsythe notation of final position", function(){
-			this.board.endPosition();
-			expect(this.board.getForsytheFromDisplay()).
-					toBe("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR");
-		});
-		
-		it("should produce forsythe notation of starting position", function(){
-			this.board.startPosition();
-			expect(this.board.getForsytheFromDisplay()).
-					toBe("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-		});
 	});
 	
 	describe("Working with Forsythe and display boards", function() {
