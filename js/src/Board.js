@@ -119,7 +119,7 @@ Board.prototype = {
      * @param   {string}    title   The title (default is opponents)
      * @return  {HTMLTableElement}  The game board display.
      */
-    drawBoard:  function (title) {
+    drawBoard:  function () {
         "use strict";
         var board = this.createWithAttribs("table", { "class": "gameboard" }),
             whiteC = 'light_square',
@@ -340,14 +340,6 @@ Board.prototype = {
         this.highlightCurrentMove(this.currentMove);
     },
     /**
-     *	Jumps the board all the way to the final position of the game
-     */
-    endPosition:    function () {
-        "use strict";
-        this.setCurrentMove(this.pgn.moveTree.goEnd());
-        this.makeMove(this.currentMove);
-    },
-    /**
      *  Toggles visibility of moves pane.
      */
     toggleMoves:    function () {
@@ -418,7 +410,8 @@ Board.prototype = {
         "use strict";
         if (move && move.number) {
             this.visuals.currentMove.data = move.number + ". ";
-            this.visuals.currentMove.data += move.color === "black" ? "... " : "";
+            this.visuals.currentMove.data +=
+                move.color === "black" ? "... " : "";
             this.visuals.currentMove.data += move.text;
         } else {
             this.visuals.currentMove.data = "...";
@@ -483,11 +476,13 @@ Board.prototype = {
 
         for (r = 0; r < 8; r += 1) {
             for (f = 0; f < 8; f += 1) {
-                square = this.visuals.squares[r][f].getAttribute("data-squarename");
+                square = this.visuals.squares[r][f].
+                    getAttribute("data-squarename");
                 p = this.game.getStartPos().whatsOn(square);
                 this.visuals.squares[r][f].piece = p.piece || "empty";
                 this.visuals.squares[r][f].color = p.color || "black";
-                this.updateSquare(this.visuals.squares[r][f], this.visuals.squares[r][f].piece,
+                this.updateSquare(this.visuals.squares[r][f],
+                    this.visuals.squares[r][f].piece,
                     this.visuals.squares[r][f].color);
             }
         }
@@ -772,7 +767,7 @@ Board.prototype = {
         link.onclick = function (e) { theBoard.displayMove.
             call(theBoard, e.currentTarget);
             return false;
-            }
+            };
         link.setAttribute("data-moveNumber", moveNumber);
         link.setAttribute("data-color", color);
         link.setAttribute("data-id", this.id);
@@ -833,10 +828,11 @@ Board.prototype = {
 
         for (rank = 0; rank < 8; rank += 1) {
             for (file = 0; file < 8; file += 1) {
-                square = this.visuals.squares[rank][file].getAttribute("data-squarename");
+                square = this.visuals.squares[rank][file].
+                    getAttribute("data-squarename");
                 thePiece = vBoard.whatsOn(square);
-                this.updateSquare(this.visuals.squares[rank][file], thePiece.piece,
-                    thePiece.color);
+                this.updateSquare(this.visuals.squares[rank][file],
+                    thePiece.piece, thePiece.color);
             }
         }
     }

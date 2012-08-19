@@ -358,10 +358,9 @@
 			expect(this.board.visuals.currentMove.data).toBe("...");
 		});
 		it(" Should fast forward the position to end of main", function () {
-    		window[this.board.id].displayMove(this.board.pgn.moveTree.next.
-    		    next.next.next.next.next.next.next.link);
-    		this.board.endPosition();
-			expect(this.board.visuals.currentMove.data).toBe("5. Rh4#");
+    		window[this.board.id].displayMove(this.board.pgn.moveTree.link);
+            this.board.makeMove(this.board.currentMove.goEnd());
+            expect(this.board.visuals.currentMove.data).toBe("5. Rh4#");
 		});
 	});
 })();
