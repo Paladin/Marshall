@@ -28,7 +28,7 @@
                     "a2", "h3", "f3", "d3", "b3", "g4", "e4", "c4", "a4",
                     "h5", "f5", "d5", "b5", "g6", "e6", "c6", "a6", "h7",
                     "f7", "d7", "b7", "g8", "e8", "c8", "a8"];
-        	myGame = new Game("game1", {"skipToMove": "3w", "flipped" : true});
+        	myGame = new MarshallPGN.Game("game1", {"skipToMove": "3w", "flipped" : true});
             myBoard = myGame.board;
             expect(myBoard.currentMove.number).toBe(2);
             expect(myBoard.currentMove.color).toBe("black");
@@ -38,12 +38,12 @@
             }
         });
         it(" Should not show the moves pane", function () {
-            var myGame = new Game("game1", {"showMovesPane": false}),
+            var myGame = new MarshallPGN.Game("game1", {"showMovesPane": false}),
                 myBoard = myGame.board;
                 expect(myBoard.movesDiv.style.display).toBe("none");
         });
         it(" Should not show the comments", function () {
-            var myGame = new Game("game1", {"showComments": false}),
+            var myGame = new MarshallPGN.Game("game1", {"showComments": false}),
                 myBoard = myGame.board,
                 i,
                 commentary;
@@ -53,7 +53,7 @@
                 }
         });
         it(" Should show the correct download URL", function () {
-            myGame = new Game("game1", {"downloadURL": "fred.com"}),
+            myGame = new MarshallPGN.Game("game1", {"downloadURL": "fred.com"}),
                 myBoard = myGame.board;
                 expect(myBoard.opts.downloadURL).toBe("fred.com");
         });
@@ -69,7 +69,7 @@
                 "altUp":			"Test 8",
                 "altDown":		    "Test 9"
                 },
-                myGame = new Game("game1",list),
+                myGame = new MarshallPGN.Game("game1",list),
                 myBoard = myGame.board;
             expect(myBoard.visuals.button.rewind.alt).toBe(list.altRewind);
             expect(myBoard.visuals.button.rewind.title).toBe(list.altRewind);
@@ -107,7 +107,7 @@
 			var movediv = document.getElementById("game1");
 			movediv.innerHTML = aGame;
 	
-            var game = new Game("game1");
+            var game = new MarshallPGN.Game("game1");
             this.board = game.board;
 		});
         afterEach(function () {
@@ -218,7 +218,7 @@
 			var movediv = document.getElementById("game1");
 			movediv.innerHTML = aGame;
 	
-            var game = new Game("game1");
+            var game = new MarshallPGN.Game("game1");
             this.board = game.board;
 			this.board.pgn.parse(this.board.pgn.pgnOrig);
 			this.div = document.getElementById("testmoves");
@@ -271,7 +271,7 @@
 			var movediv = document.getElementById("game1");
 			movediv.innerHTML = aGame;
 	
-            var game = new Game("game1");
+            var game = new MarshallPGN.Game("game1");
             this.board = game.board;
 		});
         afterEach(function () {

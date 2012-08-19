@@ -18,16 +18,17 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
-var Game = function (sourceDiv, options) {
+var MarshallPGN = MarshallPGN || {};
+MarshallPGN.Game = function (sourceDiv, options) {
 	"use strict";
 	var property,
         givenOptions = options || {};
 
     this.sourceDiv = document.getElementById(sourceDiv);
-	this.pgn = new Pgn(this.sourceDiv.getAttribute("data-pgn") ||
+	this.pgn = new MarshallPGN.Pgn(this.sourceDiv.getAttribute("data-pgn") ||
 	    this.sourceDiv.firstChild.nodeValue);
-	this.vBoard = new VBoard(this.pgn.props.FEN);
-	this.initialBoard = new VBoard(this.pgn.props.FEN);
+	this.vBoard = new MarshallPGN.VBoard(this.pgn.props.FEN);
+	this.initialBoard = new MarshallPGN.VBoard(this.pgn.props.FEN);
 	this.convert();
 
 	this.opts = this.setDefaultOptions();
@@ -38,12 +39,12 @@ var Game = function (sourceDiv, options) {
 	    }
 	}
 
-    this.board = new Board(this, this.pgn,
+    this.board = new MarshallPGN.Board(this, this.pgn,
         sourceDiv + (this.sourceDiv.hasAttribute("data-pgn") ? "" : "_board"),
         this.opts);
     this.board.init();
 };
-Game.prototype = {
+MarshallPGN.Game.prototype = {
     sourceDiv:          null,
     pgn:                null,
 	whiteToMove:		true,
@@ -91,10 +92,10 @@ Game.prototype = {
             this.convertMove(board, move);
             if (move.down !== null) {
                 if (move.previous) {
-                    variation = new VBoard(move.previous.position);
+                    variation = new MarshallPGN.VBoard(move.previous.position);
                 } else {
                     if (move.up) {
-                        variation = new VBoard(move.goTop().previous.position);
+                        variation = new MarshallPGN.VBoard(move.goTop().previous.position);
                     }
                 }
                 this.convertLine(variation, move.down);

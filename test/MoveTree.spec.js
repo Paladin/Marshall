@@ -4,7 +4,7 @@
  
     describe("Move Tree", function () {
     	beforeEach(function () {
-    		this.moveTree = new MoveTree(initial);
+    		this.moveTree = new MarshallPGN.MoveTree(initial);
     	});
     	it("should not be the last in the tree", function () {
     		expect(this.moveTree.isEnd()).toBe(false);
@@ -13,7 +13,7 @@
     		expect(this.moveTree.isEmpty()).toBe(false);
     	});
     	it("should be empty when created", function () {
-    	    var emptyMove = new MoveTree();
+    	    var emptyMove = new MarshallPGN.MoveTree();
     		expect(emptyMove.isEmpty()).toBe(true);
     	});
     });
@@ -41,7 +41,7 @@
         f3w = { number: 5, text: "d4", color: "white" };
 
     	beforeEach(function () {
-    	    this.moveTree = new MoveTree(a1w);
+    	    this.moveTree = new MarshallPGN.MoveTree(a1w);
     	    this.moveTree.addNext(a1b);
     	    this.moveTree.next.addNext(a2w);
     	    this.moveTree.next.next.addNext(a2b);

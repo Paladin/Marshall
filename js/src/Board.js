@@ -24,7 +24,8 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-var Board = function (game, pgn, divId, options) {
+var MarshallPGN = MarshallPGN || {};
+MarshallPGN.Board = function (game, pgn, divId, options) {
 	"use strict";
 	var i;
 
@@ -46,7 +47,7 @@ var Board = function (game, pgn, divId, options) {
 /**
  * Setting up class attributes
  */
-Board.prototype = {
+MarshallPGN.Board.prototype = {
 	flipped:        false,
 	moveInput:      null,
 	displayBoard:   null,
@@ -104,7 +105,7 @@ Board.prototype = {
         if (!this.opts.showComments) { this.hideComments(); }
         if (this.opts.skipToMove) {
             this.setCurrentMove(this.skipTo(this.opts.skipToMove));
-            this.displayStart = new VBoard(this.currentMove.position);
+            this.displayStart = new MarshallPGN.VBoard(this.currentMove.position);
             this.makeMove(this.currentMove);
         }
     },
@@ -820,7 +821,7 @@ Board.prototype = {
      */
     drawFEN:    function (theFEN) {
         "use strict";
-        var vBoard = new VBoard(theFEN),
+        var vBoard = new MarshallPGN.VBoard(theFEN),
             rank = 0,
             file = 0,
             square,

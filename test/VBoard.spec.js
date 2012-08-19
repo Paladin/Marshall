@@ -17,7 +17,7 @@
 
 		describe("Working with squares", function () {
 			beforeEach(function () {
-			    this.vBoard = new VBoard();
+			    this.vBoard = new MarshallPGN.VBoard();
 			});
 
 			it('should be able to translate standard algebraic f2', function () {
@@ -127,7 +127,7 @@
 		    beforeEach(function () {
 		        var start = 
 		"r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/2P4R/PP1N2PP/R5K1 w - - 0 10";
-		        this.vBoard = new VBoard(start);
+		        this.vBoard = new MarshallPGN.VBoard(start);
 		    });
 		    it("should have the pieces all set up properly", function () {
 		        expect(this.vBoard.whatsOn("a8")).toEqual(blackRook);
@@ -173,45 +173,45 @@
 			beforeEach(function () {
 			});
             it(" Should find if black king is in check", function() {
-                var vBoard = new VBoard("r1bqkbnr/pppp1Qp1/7p/4p3/2B1P3/8/" +
+                var vBoard = new MarshallPGN.VBoard("r1bqkbnr/pppp1Qp1/7p/4p3/2B1P3/8/" +
                     "PPPP1PPP/RNB1K1NR b KQkq - 0 4");
                 expect(vBoard.isCheck("black")).toBe(true);
             });
             it(" Should find check from rook", function() {
-                var vBoard = new VBoard("r6K/8/8/8/8/8/8/7k w - - 0 13");
+                var vBoard = new MarshallPGN.VBoard("r6K/8/8/8/8/8/8/7k w - - 0 13");
                 expect(vBoard.isCheck("white")).toBe(true);
             });
             it(" Should find check from rook (right)", function() {
-                var vBoard = new VBoard("K6r/8/8/8/8/8/8/7k w - - 0 13");
+                var vBoard = new MarshallPGN.VBoard("K6r/8/8/8/8/8/8/7k w - - 0 13");
                 expect(vBoard.isCheck("white")).toBe(true);
             });
             it(" Should find check from rook (up)", function() {
-                var vBoard = new VBoard("K6R/8/8/8/8/8/8/7k b - - 0 13");
+                var vBoard = new MarshallPGN.VBoard("K6R/8/8/8/8/8/8/7k b - - 0 13");
                 expect(vBoard.isCheck("black")).toBe(true);
             });
             it(" Should find check from rook (down)", function() {
-                var vBoard = new VBoard("K6k/8/8/8/8/8/8/7R b - - 0 13");
+                var vBoard = new MarshallPGN.VBoard("K6k/8/8/8/8/8/8/7R b - - 0 13");
                 expect(vBoard.isCheck("black")).toBe(true);
             });
             it(" Should find check from bishop (ul)", function() {
-                var vBoard = new VBoard("B6K/8/8/8/8/8/8/7k b - - 0 13");
+                var vBoard = new MarshallPGN.VBoard("B6K/8/8/8/8/8/8/7k b - - 0 13");
                 expect(vBoard.isCheck("black")).toBe(true);
             });
             it(" Should find check from bishop (ur)", function() {
-                var vBoard = new VBoard("k6b/8/8/8/8/8/8/K7 w - - 0 13");
+                var vBoard = new MarshallPGN.VBoard("k6b/8/8/8/8/8/8/K7 w - - 0 13");
                 expect(vBoard.isCheck("white")).toBe(true);
             });
             it(" Should find check from queen (dl)", function() {
-                var vBoard = new VBoard("k6K/8/8/8/8/8/8/q7 w - - 0 13");
+                var vBoard = new MarshallPGN.VBoard("k6K/8/8/8/8/8/8/q7 w - - 0 13");
                 expect(vBoard.isCheck("white")).toBe(true);
             });
             it(" Should find check from queen (dr)", function() {
-                var vBoard = new VBoard("K6k/8/8/8/8/8/8/7q w - - 0 13");
+                var vBoard = new MarshallPGN.VBoard("K6k/8/8/8/8/8/8/7q w - - 0 13");
                 expect(vBoard.isCheck("white")).toBe(true);
             });
 	
             it(" Should find a knight to move to a square", function() {
-                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                var vBoard = new MarshallPGN.VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 expect(vBoard.findFromPiece("n", "c8", "", "black")).toBe("e7");
@@ -220,45 +220,45 @@
                 expect(vBoard.findFromPiece("n", "h5", "f4", "black")).toBe("f4");
             });
             it(" Should find a rook to move to a square", function() {
-                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                var vBoard = new MarshallPGN.VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 expect(vBoard.findFromPiece("R", "b8", "", "black")).toBe("a8");
                 expect(vBoard.findFromPiece("R", "b8", "a8", "black")).toBe("a8");
             });
             it(" Should find a queen to move to a square", function() {
-                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                var vBoard = new MarshallPGN.VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 expect(vBoard.findFromPiece("Q", "d7", "", "black")).toBe("e8");
                 expect(vBoard.findFromPiece("Q", "d7", "e8", "black")).toBe("e8");
             });
             it(" Should find the Bishop to move to a square", function() {
-                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                var vBoard = new MarshallPGN.VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 expect(vBoard.findFromPiece("B", "f5", "", "white")).toBe("h7");
                 expect(vBoard.findFromPiece("B", "f5", "h7", "white")).toBe("h7");
             });
             it(" Should find the pawn to move to a square", function() {
-                var vBoard = new VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
+                var vBoard = new MarshallPGN.VBoard("r3qr1k/ppp1nbpB/1b1p3B/4p2Q/3P1n1N/" +
                     "2P4R/PP1N2PP/R5K1 w - - 0 13");
         
                 expect(vBoard.findFromPawn("a5", "", "black", false)).toBe("a7");
                 expect(vBoard.findFromPawn("a6", "", "black", false)).toBe("a7");
             });
             it(" Should find the line a1-h8 clear for white", function () {
-            	var vBoard = new VBoard("7k/8/8/8/8/8/8/BK6");
+            	var vBoard = new MarshallPGN.VBoard("7k/8/8/8/8/8/8/BK6");
             	expect(vBoard.isLineClear("a1", "h8", "white")).toBe(true);
             });
             it(" Should not find the line a1-h8 clear for black", function () {
-            	var vBoard = new VBoard("7k/8/8/8/8/8/8/qK6");
+            	var vBoard = new MarshallPGN.VBoard("7k/8/8/8/8/8/8/qK6");
             	expect(vBoard.isLineClear("a1", "h8", "white")).toBe(true);
             });
 		});
 		describe("Moving", function () {
 			beforeEach(function () {
-				this.vBoard = new VBoard(
+				this.vBoard = new MarshallPGN.VBoard(
 				    "rnbqkb1r/pp2pppp/2p2n2/3p2B1/3PP3/5N2/PPP2PPP/RN1QKB1R"
 				);
 			});

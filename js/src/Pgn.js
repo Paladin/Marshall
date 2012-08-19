@@ -19,13 +19,14 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
-var Pgn = function (pgn) {
+var MarshallPGN = MarshallPGN || {};
+MarshallPGN.Pgn = function (pgn) {
     "use strict";
 	this.props = {};
     this.pgnOrig = pgn;
     this.parse(pgn);
 };
-Pgn.prototype = {
+MarshallPGN.Pgn.prototype = {
 	props:          null,
 	requiredProps:	['Result', 'Black', 'White', 'Date',
 								'Round', 'Site', 'Event'],
@@ -40,7 +41,7 @@ Pgn.prototype = {
     parse:  function (theText) {
         "use strict";
         var text = theText,
-            move = new MoveTree({"text": "..."}),
+            move = new MarshallPGN.MoveTree({"text": "..."}),
             levels = 0;
 
         this.color = "white";
@@ -112,11 +113,11 @@ Pgn.prototype = {
         var nagMatch = gameText.match(/^\$([0-9]{1,3})/),
             nagIndex = nagMatch[1];
 
-        if (NAG[nagIndex]) {
-            if (NAG[nagIndex].text) {
-                move.text += NAG[nagIndex].code;
+        if (MarshallPGN.NAG[nagIndex]) {
+            if (MarshallPGN.NAG[nagIndex].text) {
+                move.text += MarshallPGN.NAG[nagIndex].code;
             } else {
-                move.commentary.push(NAG[nagIndex].code);
+                move.commentary.push(MarshallPGN.NAG[nagIndex].code);
             }
         }
         return gameText.slice(nagMatch[0].length);

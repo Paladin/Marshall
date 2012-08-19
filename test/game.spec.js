@@ -22,7 +22,7 @@
     			var movediv = document.getElementById("game1");
 
     			movediv.innerHTML = goodPGN;
-				this.game = new Game("game1");
+				this.game = new MarshallPGN.Game("game1");
 			});
 			afterEach(function () {
                 var boardDiv = document.getElementById("game1_board");
@@ -61,7 +61,7 @@
     
             var movediv = document.getElementById("game1");
 			movediv.innerHTML = aGame;
-            this.game = new Game("game1");
+            this.game = new MarshallPGN.Game("game1");
         });
         afterEach(function () {
             var boardDiv = document.getElementById("game1_board"),
@@ -111,7 +111,7 @@
             var movediv = document.getElementById("game1_board");
     
             movediv.setAttribute("data-pgn", aGame);
-            this.game = new Game("game1_board");
+            this.game = new MarshallPGN.Game("game1_board");
         });
         afterEach(function () {
             var movediv = document.getElementById("game1_board");

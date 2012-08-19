@@ -29,7 +29,8 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-var MoveTree = function (properties) {
+var MarshallPGN = MarshallPGN || {};
+MarshallPGN.MoveTree = function (properties) {
     "use strict";
     var property;
 
@@ -40,7 +41,7 @@ var MoveTree = function (properties) {
     }
     this.commentary = [];
 };
-MoveTree.prototype = {
+MarshallPGN.MoveTree.prototype = {
     previous:       null,
     next:           null,
     up:             null,
@@ -123,14 +124,14 @@ MoveTree.prototype = {
     },
     addNext:        function (properties) {
         "use strict";
-        var move = new MoveTree(properties);
+        var move = new MarshallPGN.MoveTree(properties);
         this.next = move;
         move.previous = this;
         return move;
     },
     addVariation:        function (properties) {
         "use strict";
-        var move = new MoveTree(properties),
+        var move = new MarshallPGN.MoveTree(properties),
             addedTo = this.goBottom();
         addedTo.down = move;
         move.up = addedTo;

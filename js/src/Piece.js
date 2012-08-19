@@ -16,7 +16,8 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
-var Piece = function (piece) {
+var MarshallPGN = MarshallPGN || {};
+MarshallPGN.Piece = function (piece) {
     "use strict";
     this.symbol = piece;
     this.color = (/[a-z]/).test(piece) ? "black" : "white";
@@ -48,7 +49,7 @@ var Piece = function (piece) {
         break;
     }
 };
-Piece.prototype = {
+MarshallPGN.Piece.prototype = {
     symbol:     null,
     color:      null,
     /**

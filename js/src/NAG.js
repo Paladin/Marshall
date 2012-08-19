@@ -1,4 +1,5 @@
-var NAG = [
+var MarshallPGN = MarshallPGN || {};
+MarshallPGN.NAG = [
 	{ "meaning": "null annotation", "code": null, "text": true },
 	{ "meaning": "good move (traditional \"!\")", "code": "!", "text": true },
 	{ "meaning": "poor move (traditional \"?\")", "code": "?", "text": true },

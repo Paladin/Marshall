@@ -19,12 +19,12 @@
  * @property {integer}	halfMoveClock   - Plies since capture or pawn move
  * @property {integer}	currentMove     - Current move number
  **/
-var VBoard = function (start) {
+var MarshallPGN = MarshallPGN || {};
+MarshallPGN.VBoard = function (start) {
     "use strict";
     this.set(start);
 };
-
-VBoard.prototype = {
+MarshallPGN.VBoard.prototype = {
     squares:            new Array(100), //one square border simplifies the math
     whiteToMove:        true,
     whiteCasltes00:     true,
@@ -487,7 +487,7 @@ VBoard.prototype = {
                 "white" ? thePiece.toUpperCase() : thePiece.toLowerCase(),
             possibles = [],
             possibleFroms = [],
-            piece = new Piece(mySymbol);
+            piece = new MarshallPGN.Piece(mySymbol);
 
         if (from && from.length === 2) { return from; }
         possibleFroms = this.whereIs(mySymbol);
@@ -547,7 +547,7 @@ VBoard.prototype = {
      */
     pieceCheck:     function (symbol, myKing) {
         "use strict";
-        var piece = new Piece(symbol),
+        var piece = new MarshallPGN.Piece(symbol),
             enemies = this.whereIs(symbol),
             i;
 

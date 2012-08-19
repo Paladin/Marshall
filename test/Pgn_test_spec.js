@@ -128,7 +128,7 @@
     	});
         describe("Parsing tags", function () {
             beforeEach(function () {
-                this.pgn = new Pgn(tagsOnly);
+                this.pgn = new MarshallPGN.Pgn(tagsOnly);
             });
             it(" Should get the tag count correct", function () {
                 expect(11).toBe(Object.keys(this.pgn.props).length);
@@ -169,7 +169,7 @@
         });
         describe(" Parsing Moves", function () {
         	beforeEach(function () {
-        		this.pgn = new Pgn(withCommentary);
+        		this.pgn = new MarshallPGN.Pgn(withCommentary);
         	});
             it(" Should have created some moves", function () {
                 expect(this.pgn.moveTree.next).toNotBe(null);
