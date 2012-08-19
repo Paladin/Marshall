@@ -24,7 +24,7 @@ Here's the basics:
 `<div id="mypgndata_board"></div>`
 The board div is empty, Marshall will build the player there.
 4. For every game on your page, you'll need to create an instance of it:
-`<script>var game = new Game("mypgndata");</script>` You'll notice the demo has four games, and uses an array (game[0] to game[4]) for the players.
+`<script>var game = new MarshallPGN.Game("mypgndata");</script>` You'll notice the demo has four games, and uses an array (game[0] to game[4]) for the players.
 
 And away it goes!
 
