@@ -1,36 +1,38 @@
 <!doctype html>
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html lang="en">
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Marshall Demo</title>
-  <link rel="stylesheet" href="css/devstyle.css">
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+  <title>Marshall Demos</title>
+  <link rel="stylesheet" href="css/demo.css">
   </head>
 
   <body>
-  <div id="container">
     <header>
-		<h1>Marshall Demo</h1>
+		<h1>Marshall Demos</h1>
 		<p>A CSS- and HTML5-friendly PGN replay system</p>
     </header>
     <div id="main" role="main">
-		<section id="walkerlopez_board" class="game_display clearfix scroller"></section>
-		<p> &nbsp;</p>
-		<div id="pehnecMartz_board" class="game_display uscfsmall clearfix"></div>
-		<p> &nbsp;</p>
-		<div id="walker_coons_board" class="game_display clearfix"></div>
-		<p> &nbsp;</p>
-		<div id="blum_pos_board" class="game_display uscf clearfix"></div>
+    	<div class="scroller">
+			<h1>Scroller</h1>
+			<section id="walkerlopez_board" class="game_display clearfix scroller"></section>
+		</div>
+		<div class="bluesmall">
+			<h1>Blue Small</h1>
+			<div id="pehnecMartz_board" class="game_display bluesmall clearfix"></div>
+		</div>
+		<div class="blue">
+			<p>Blue</p>
+			<div id="blum_pos_board" class="game_display blue clearfix"></div>
+		</div>
+		<div class="basic">
+			<h1>Basic</h1>
+			<div id="walker_coons_board" class="game_display clearfix basic"></div>
+		</div>
     </div>
     <footer>
 
     </footer>
-  </div> <!--! end of #container -->
   <div class="pgn_source" id="blum_pos">
 [Event "Dayton"]
 [Site "?"]
@@ -62,8 +64,8 @@ than 100 years ago - in May 1890 on page 155 of International Chess Magazine.
 [Black "Coons"]
 [Result "1-0"]
 
-1. e4 c6 2. d4 d5 3. exd5 cxd5 4. Bd3 Nc6 5. c3 Qc7 6. Ne2 { +0.58 6. Nf3 Bg4
-7. O-O e6 8. Re1 Be7 9. h3 Bf5 10. Bxf5 exf5 } Bg4 { -0.30 6... Bd7 7. O-O Nf6
+1. e4 c6 2. d4 d5 3. exd5 cxd5 4. Bd3 Nc6 5. c3 Qc7 6. Ne2 { +0.58 } (6. Nf3 Bg4
+7. O-O e6 8. Re1 Be7 9. h3 Bf5 10. Bxf5 exf5) } Bg4 { -0.30 6... Bd7 7. O-O Nf6
 8. Bf4 e5 9. dxe5 Nxe5 10. b3 } 7. Bf4 { +0.38 7. f3 Bd7 8. Bf4 e5 9. dxe5 Nxe5
 10. Ba6 Bc6 11. Nd4 } Bxe2 { +0.16 7... Qxf4 8. Nxf4 Bxd1 9. Kxd1 e6 10. b4 Bd6
 11. Nh5 g6 12. b5 Nce7 13. Ng7 Kf8 } 8. Bxc7 { -0.09 8. Qd2 Qxf4 9. Qxf4 Bxd3
@@ -245,9 +247,9 @@ Be8 42.b5 axb5 43.cxb5 1-0
   <!-- end scripts-->
 	<script>
   		var games = new Array();
-			games[0] = new MarshallPGN.Game("blum_pos");
- 			games[1] = new MarshallPGN.Game("walkerlopez");
- 			games[2] = new MarshallPGN.Game("pehnecMartz");
+ 			games[0] = new MarshallPGN.Game("blum_pos");
+  			games[1] = new MarshallPGN.Game("walkerlopez");
+  			games[2] = new MarshallPGN.Game("pehnecMartz");
  			games[3] = new MarshallPGN.Game("walker_coons");
 	</script>
 
