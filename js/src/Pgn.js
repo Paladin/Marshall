@@ -1,3 +1,4 @@
+var MarshallPGN = MarshallPGN || {};
 /**
  * PGN
  *
@@ -19,7 +20,6 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
-var MarshallPGN = MarshallPGN || {};
 MarshallPGN.Pgn = function (pgn) {
     "use strict";
 	this.props = {};

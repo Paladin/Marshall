@@ -1,3 +1,4 @@
+var MarshallPGN = MarshallPGN || {};
 /**
  * @classdesc   The display board. Interaction with the user starts and
  *  ends here
@@ -24,7 +25,6 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-var MarshallPGN = MarshallPGN || {};
 MarshallPGN.Board = function (game, pgn, divId, options) {
 	"use strict";
 	var i;
@@ -105,7 +105,8 @@ MarshallPGN.Board.prototype = {
         if (!this.opts.showComments) { this.hideComments(); }
         if (this.opts.skipToMove) {
             this.setCurrentMove(this.skipTo(this.opts.skipToMove));
-            this.displayStart = new MarshallPGN.VBoard(this.currentMove.position);
+            this.displayStart =
+                new MarshallPGN.VBoard(this.currentMove.position);
             this.makeMove(this.currentMove);
         }
     },

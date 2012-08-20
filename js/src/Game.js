@@ -1,3 +1,4 @@
+var MarshallPGN = MarshallPGN || {};
 /**
  * @classdesc   This is the controller for the game. It sets up the board,
  * pulls in the data, and starts everything off.
@@ -18,7 +19,6 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  **/
-var MarshallPGN = MarshallPGN || {};
 MarshallPGN.Game = function (sourceDiv, options) {
 	"use strict";
 	var property,
@@ -95,7 +95,8 @@ MarshallPGN.Game.prototype = {
                     variation = new MarshallPGN.VBoard(move.previous.position);
                 } else {
                     if (move.up) {
-                        variation = new MarshallPGN.VBoard(move.goTop().previous.position);
+                        variation = new MarshallPGN.VBoard(move.goTop().
+                            previous.position);
                     }
                 }
                 this.convertLine(variation, move.down);

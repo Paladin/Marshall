@@ -53,9 +53,9 @@
                 }
         });
         it(" Should show the correct download URL", function () {
-            myGame = new MarshallPGN.Game("game1", {"downloadURL": "fred.com"}),
+            var myGame = new MarshallPGN.Game("game1", {"downloadURL": "fred.com"}),
                 myBoard = myGame.board;
-                expect(myBoard.opts.downloadURL).toBe("fred.com");
+            expect(myBoard.opts.downloadURL).toBe("fred.com");
         });
         it(" Should show the correct control button titles", function () {
             var list = {

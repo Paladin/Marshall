@@ -1,3 +1,4 @@
+var MarshallPGN = MarshallPGN || {};
 /**
  *  @classdesc  Piece represents individual chess pieces. It's a factory
  *      class, returning an object tailored for the specific piece requested.
@@ -16,7 +17,6 @@
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
-var MarshallPGN = MarshallPGN || {};
 MarshallPGN.Piece = function (piece) {
     "use strict";
     this.symbol = piece;

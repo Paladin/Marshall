@@ -1,3 +1,4 @@
+var MarshallPGN = MarshallPGN || {};
 /**
  * @classdesc   A Virtual Chessboard. Used internally to represent a position,
  *  and to answer questions about it.
@@ -19,7 +20,6 @@
  * @property {integer}	halfMoveClock   - Plies since capture or pawn move
  * @property {integer}	currentMove     - Current move number
  **/
-var MarshallPGN = MarshallPGN || {};
 MarshallPGN.VBoard = function (start) {
     "use strict";
     this.set(start);
