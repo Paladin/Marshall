@@ -3,7 +3,7 @@ var MarshallPGN = MarshallPGN || {};
  * @classdesc   A Virtual Chessboard. Used internally to represent a position,
  *  and to answer questions about it.
  *
- * @version 0.7.1
+ * @version 1.0.0
  * @author Arlen P Walker
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0

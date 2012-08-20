@@ -13,7 +13,7 @@ var MarshallPGN = MarshallPGN || {};
  * @property {string}	requiredLength  - (Currently 7)
  * @property {string}	pgnOrig         - original PGN string
  *
- * @version 0.7.1
+ * @version 1.0.0
  * @author Toomas Ršmer
  * @author Arlen P Walker
  * @copyright 2008 Toomas R&#246;mer

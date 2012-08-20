@@ -18,7 +18,7 @@ var MarshallPGN = MarshallPGN || {};
  * @property {array}	pos			- array of table cells in display (a8-h1)
  * @property {object}	currentMove - Currently displayed move
  *
- * @version 0.7.1
+ * @version 1.0.0
  * @author Toomas R&#246;mer
  * @author Arlen P Walker
  * @copyright 2008 Toomas Ršmer

@@ -10,7 +10,7 @@ var MarshallPGN = MarshallPGN || {};
  * @property    {string}    color   The color of the piece
  * @property    {array}     myMoves An Array of move calculators
  *
- * @version 0.7.1
+ * @version 1.0.0
  * @author Toomas R&#246;mer
  * @author Arlen P Walker
  * @copyright 2008 Toomas Römer

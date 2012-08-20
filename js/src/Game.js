@@ -12,7 +12,7 @@ var MarshallPGN = MarshallPGN || {};
  * @property {boolean}	whiteToMove		- boolean flag
  * @property {integer}	startMoveNum	- starting move number
  *
- * @version 0.7.1
+ * @version 1.0.0
  * @author Toomas Ršmer
  * @author Arlen P Walker
  * @copyright 2008 Toomas Ršmer

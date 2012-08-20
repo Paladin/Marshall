@@ -25,7 +25,7 @@ var MarshallPGN = MarshallPGN || {};
  * @property {HTMLElement}  link            Link added to DOM
  * @property {integer}      levelsToParent  Levels beneath parent variation
  *
- * @version 0.7.1
+ * @version 1.0.0
  * @author Arlen P Walker
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
