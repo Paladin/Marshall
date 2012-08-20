@@ -101,6 +101,7 @@ MarshallPGN.Board.prototype = {
 
 	    this.setCurrentMove(this.pgn.moveTree);
         this.updateMoveInfo(this);
+        if (!this.opts.showGameInfo) { propsTd.style.display = "none"; }
         if (!this.opts.showMovesPane) { this.hideMoves(); }
         if (!this.opts.showComments) { this.hideComments(); }
         if (this.opts.skipToMove) {

@@ -106,6 +106,11 @@
                 myBoard = myGame.board;
             expect(myBoard.visuals.pgn.players.nodeValue).toBe("This is a Test");
         });
+        it(" Should not display game info", function () {
+            var myGame = new MarshallPGN.Game("game1", {"showGameInfo": false}),
+                myBoard = myGame.board;
+            expect(myBoard.visuals.pgn.event.parentNode.parentNode.style.display).toBe("none");
+        });
 	});
 	describe("Working with Forsythe and display boards", function() {
 		var aGame = "[Event	\"Dayton\"]" +
