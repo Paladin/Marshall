@@ -86,6 +86,8 @@ MarshallPGN.Board.prototype = {
 
         topTable.appendChild(board);
         topTable.appendChild(btnTd);
+        this.visuals.currentMove = this.addTextElement(topTable, "p",
+            { "class": "current_move_box" });
         topTable.appendChild(propsTd);
 
         this.populatePieces();
@@ -96,8 +98,6 @@ MarshallPGN.Board.prototype = {
         this.outputMoveTree(this.movesDiv);
 
         this.createButtonBar(btnTd);
-        this.visuals.currentMove = this.addTextElement(topTable, "p",
-            { "class": "current_move_box" });
 
 	    this.setCurrentMove(this.pgn.moveTree);
         this.updateMoveInfo(this);
