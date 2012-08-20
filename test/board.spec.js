@@ -96,6 +96,16 @@
             expect(document.getElementById(myBoard.divId).firstChild.
                 firstChild.firstChild.nodeValue).toBe("This is a Test");
         });
+        it(" Should not display Diagram title", function () {
+            var myGame = new MarshallPGN.Game("game1", {"showDiagramTitle": false}),
+                myBoard = myGame.board;
+            expect(myBoard.visuals.pgn.players.nodeValue).toBeFalsy();
+        });
+        it(" Should display the optional Diagram title", function () {
+            var myGame = new MarshallPGN.Game("game1", {"diagramTitle": "This is a Test"}),
+                myBoard = myGame.board;
+            expect(myBoard.visuals.pgn.players.nodeValue).toBe("This is a Test");
+        });
 	});
 	describe("Working with Forsythe and display boards", function() {
 		var aGame = "[Event	\"Dayton\"]" +

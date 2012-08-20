@@ -457,7 +457,10 @@ MarshallPGN.Board.prototype = {
      */
     updatePGNInfo:  function () {
         "use strict";
-        this.visuals.pgn.players.nodeValue = this.gameOpponents();
+        var title = this.opts.showDiagramTitle ?
+            (this.opts.diagramTitle || this.gameOpponents()) : null;
+
+        this.visuals.pgn.players.nodeValue = title;
 
         this.visuals.pgn.event.nodeValue = this.pgn.props.Event || " ";
         this.visuals.pgn.event.nodeValue += ", ";

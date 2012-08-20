@@ -62,6 +62,8 @@ MarshallPGN.Game.prototype = {
                 showMovesPane:	true,
                 showComments:	true,
                 gameTitle:      null,
+                diagramTitle:   null,
+                showDiagramTitle:   true,
                 altRewind:		"Rewind to the beginning",
                 altBack:		"One move back",
                 altFlip:		"Flip the board",
