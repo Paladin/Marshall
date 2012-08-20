@@ -3,31 +3,35 @@
 Marshall is a javascript library based on Toomas R&#246;mer's jsPgnViewer library (http://www.pgnview.com) which he licensed under the apache 2.0
 license. For the sake of consistency, this is also licensed under the apache license.
 
-##Why another one?
-
-Basically, because I wanted a different approach to the output. I wanted semantically proper markup, and I wanted to control the appearance of everything with css, rather than inline styles written (and controlled) by javascript. I recognize this is a different goal from the original, basically when the library reaches a release stage, the only thing that will remain of the original code is the pgn engine and maybe some of the structure. It was too much to ask that the original author accept changes that would quite possibly break the WP plugin he also offered, so a fork was the kindest option for all.
-
-I'm creating a pgn viewer that has good solid HTML markup and leaves the styling to you, so you can fit it into the design of the site you're using it on without having to fight it every step of the way. That's also why this version doesn't rely on the presence of any other javascript libraries. I'm evaluating the idea of making special versions of Marshall that will depend upon various libraries; let me know which ones you want to see, if any.
-
-##Where Are We Now?
-
-Version 1.0 Beta. Soon we'll hit release. I'll tag the milestones in the repo as they happen, but I'll try to keep the master branch stable at all times. When I have to do some major work, that will be in a feature branch. Feel free to browse any of the branches, but the current master branch is the one I'm most interested in bug reports on and suggestions for. This started because I was scratching an itch of my own, but I've almost finished that. Maybe I can scratch some of yours, as well.
-
 ##How do I use it?
 
-Here's the basics:
+To get started, either download and unzip, or clone, the repo. There are probably more files here than you'll want for your specific project. At the minimum, you'll want one of the two "Marshall" files in the js directory (Marshall.pack62.js is the packed version, Marshall.js is the uncompressed source). The files in the /js/src directory are simply the Marshall.js file broken out into separate files for each object. They're only of use if you plan on doing some development, so if you're just going to use Marshall, you can safely toss the entire /src directory.
 
-1. Download and unzip, or clone the repo. You'll want one of the two "Marshall" files in the js directory: Marshall.pack62.js is the packed version (hey, I'm a cheesehead, you expected me *not* to use a program called "packer?") and Marshall.js is the uncompressed version. The files in the src directory aren't useful unless you want to do some development on this as well.
-2. The dev.html file is a development demo. Have a look in that for clues about how to make CSS styles work for your site, there will be more details in the wiki (if not now, then soon). The /img directory holds the images used by the demo. take your pick or make some of your own. If you change where it's located, remember to change your CSS to point to it. The /css directory contains the demo CSS file.
-3. If you're building your page by hand, the easiest method is to create a `<div>` on your page with an ID to identify it. Inside that `<div>` you place the PGN text of the game. Where you want the game player to show, create another `<div>` with an ID of the first one plus "\_board":
-`<div id="mypgndata">PGN Data here.....</div>`
+The file in the /css directory is a sample css file (the demo html file uses it). you can look there for clues about how to set up your CSS they way you want it. The intent of Marshall is to fit in with whatever design you currently have on your site, which means you're going to have to do some of the work yourself. I've included enough samples to get you started, and there's more information in the wiki. If there's a look in the demo you like, just copy that section of the CSS into your site's CSS. Hopefully, it won't interact with the rest of your CSS.
+
+The files in the /img directory are used by the css to create the looks you see. You can use any of the images there, or create your own. The images are css sprites, meaning they hold the entire set of pieces in one image, and the css pulls out the right ones to display. Look at any one of them to see how you can build your own. You will only need one set of the images for your site, and just two image files (one for pieces and one for buttons) will be enough to get you going.
+
+In your web page, you'll need two divs (or equivalent elements). One will contain the PGN for the game to be shown. This div is hidden by your css (look at ".pgn_source" in the sample css) but used by the javascript to build the player. Give this div an id that you will use to tell Marshall where to look for it. This div can be placed anywhere on the page you want to place it. I usually place them at the bottom of the page, to keep them out of the way.
+
+The second div will be placed where you want the player to be. Create its id by adding "\_board" to the id of the source. For example:
+
 `<div id="mypgndata_board"></div>`
-The board div is empty, Marshall will build the player there.
-4. For every game on your page, you'll need to create an instance of it:
-`<script>var game = new MarshallPGN.Game("mypgndata");</script>` You'll notice the demo has four games, and uses an array (game[0] to game[4]) for the players.
 
-And away it goes!
+and
 
-Check the wiki for more detailed docs as I write them (or fill them in yourself)
+`<div id="mypgndata">PGN Data here.....</div>`
+
+For every game you will be displaying on your page, you'll need to create an instance of Marshall for it:
+
+
+The demo has four games on the same page, so it uses an array (game[0] to game[4]) to create the players.
+
+There are additional configuration options you can use to customize the player for the game. For example, Marshall shows the game from White's point of view (white is at the bottom of the board). If you'd rather have the game shown from Black's point of view, you could use:
+
+`<script>var game = new MarshallPGN.Game("mypgndata", {"flipped": true"});</script>`
+
+to flip the board so that Black is at the bottom. You can find a full list of configuration options and how to use them in the wiki.
+
+And check the wiki for further details about how to use Marshall on your page.
 
 Have fun!
