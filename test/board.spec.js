@@ -90,6 +90,12 @@
             expect(myBoard.visuals.button.fastforward.alt).toBe(list.altFastForward);
             expect(myBoard.visuals.button.fastforward.title).toBe(list.altFastForward);
         });
+        it(" Should display the optional Game title", function () {
+            var myGame = new MarshallPGN.Game("game1", {"gameTitle": "This is a Test"}),
+                myBoard = myGame.board;
+            expect(document.getElementById(myBoard.divId).firstChild.
+                firstChild.firstChild.nodeValue).toBe("This is a Test");
+        });
 	});
 	describe("Working with Forsythe and display boards", function() {
 		var aGame = "[Event	\"Dayton\"]" +

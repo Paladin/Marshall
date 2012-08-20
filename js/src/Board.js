@@ -501,7 +501,7 @@ MarshallPGN.Board.prototype = {
             code = this.createWithAttribs("p", {"class": "PGNlink"});
 
         title = this.addTextElement(header, "h1", {},
-            this.gameOpponents()).parentNode;
+            this.opts.gameTitle ||this.gameOpponents()).parentNode;
         code.appendChild(document.createTextNode(" ("));
         code.appendChild(this.addPGNLink(this.pgn.pgnOrig));
         code.appendChild(document.createTextNode(")"));
