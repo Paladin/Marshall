@@ -80,7 +80,8 @@ MarshallPGN.Game.prototype = {
         return options;
     },
 	/**
-	 * Convert the identified file
+	 * Adds enough information to the existing move tree so that it can
+	 * be used to walk through a game forwards or back.
 	 **/
     convert:	function () {
         "use strict";
@@ -89,6 +90,13 @@ MarshallPGN.Game.prototype = {
         this.pgn.moveTree.position = this.vBoard.getFEN();
         this.convertLine(this.vBoard, move);
     },
+    /**
+     *  Sets a line up to be replayed. This is called recursively whenever a
+     *  new variation is encountered.
+     *
+     * @param   {Object}    board   The Virtual Board with current position
+     * @param   {Object}    move    The move object that starts the variation
+     */
     convertLine:        function (board, move) {
         "use strict";
         var variation;
@@ -108,19 +116,21 @@ MarshallPGN.Game.prototype = {
             move = move.next;
         }
     },
-
-    /*
-        EOF Result Iterator
-    */
-
+    /**
+     * Gets the starting position for the game or game fragment
+     *
+     * @return  {Object}    The starting Virtual Board
+     */
     getStartPos:	function () {
         "use strict";
         return this.initialBoard;
     },
-
-        /*
-            Convert a move.
-        */
+    /**
+     *  Analyzes and completes the information necessary to recreate a position
+     *
+     * @param   {Object}    board   The Virtual Board with the current position
+     * @param   {Object}    move    The move object from the move tree
+     */
     convertMove:	function (board, move) {
         "use strict";
         var from,
