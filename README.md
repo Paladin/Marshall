@@ -3,6 +3,10 @@
 Marshall is a javascript library based on Toomas R&#246;mer's jsPgnViewer library (http://www.pgnview.com) which he licensed under the apache 2.0
 license. For the sake of consistency, this is also licensed under the apache license.
 
+There are a lot of misinterpretations of the [PGN standard](http://www6.chessclub.com/help/PGN-spec) out there (for example, [this page](http://www.gambitchess.com/semi/pgnutils.htm) insists that semi-colons are not allowed inside comment braces, when the standard clearly says they are) so if you're having problems converting a PGN file for use with Marshall, it may not be a bug, it may be because the person/program that generated the file doesn't really understand PGN. Or it could be a bug.
+
+Let me know about it by filing an issue, anyway. I'm a firm believer in [Postel's Law](http://en.wikipedia.org/wiki/Jon_Postel#Postel.27s_Law) and we may be able to make an adjustment to the parser to allow that particular piece of bad PGN to be parsed anyway, without breaking parsing for "real" PGN files. As evidence of that idea, note Marshall will accept castling with zeros (0-0-0) as well as uppercase o's (O-O-O) even though the standard expressly forbids the zeros. (Marshall also doesn't insist on the tag order specified in the standard, and will fill in required tags that are not in the file, given them the unknown value.) The idea behind Marshall is not to poke holes in your PGN, it's to let you play over a game.
+
 ##How do I use it?
 
 To get started, either download and unzip, or clone, the repo. There are probably more files here than you'll want for your specific project. At the minimum, you'll want one of the two "Marshall" files in the js directory (Marshall.pack62.js is the packed version, Marshall.js is the uncompressed source). The files in the /js/src directory are simply the Marshall.js file broken out into separate files for each object. They're only of use if you plan on doing some development, so if you're just going to use Marshall, you can safely toss the entire /src directory.
