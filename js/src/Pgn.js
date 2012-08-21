@@ -22,15 +22,24 @@ var MarshallPGN = MarshallPGN || {};
  **/
 MarshallPGN.Pgn = function (pgn) {
     "use strict";
+    var i;
 	this.props = {};
+	this.requiredProps = ['Result', 'Black', 'White', 'Date', 'Round', 'Site',
+	    'Event'];
+	this.requiredLength = this.requiredProps.length;
     this.pgnOrig = pgn;
     this.parse(pgn);
+    for (i = 0; i < this.requiredLength; i += 1) {
+        if (this.props[this.requiredProps[i]] === undefined) {
+            this.props[this.requiredProps[i]] =
+                this.emptyProperty(this.requiredProps[i]);
+        }
+    }
 };
 MarshallPGN.Pgn.prototype = {
 	props:          null,
-	requiredProps:	['Result', 'Black', 'White', 'Date',
-								'Round', 'Site', 'Event'],
-	requiredLength:	7,
+	requiredProps:	null,
+	requiredLength:	null,
 	pgnOrig:        null,
 	moveTree:       null,
     /**
@@ -135,6 +144,19 @@ MarshallPGN.Pgn.prototype = {
         return option1;
     },
     /**
+     *  formats an empty property string properly
+     *
+     * @param   {string} property   Property name
+     */
+    emptyProperty:      function (property) {
+        switch (property) {
+        case "Date":
+            return "????.??.??";
+        default:
+            return "?";
+        }
+    },
+    /**
      *  Parses a PGN tag
      *
      * @param   {string}    The text that is being parsed
@@ -178,7 +200,7 @@ MarshallPGN.Pgn.prototype = {
         "use strict";
         var text = gameText;
 
-        return (/^(1-0|0-1|1\/2-1\/2|1 - 0|0 - 1|1\/2 - 1\/2)/).test(text);
+        return (/^(1-0|0-1|1\/2-1\/2|1 - 0|0 - 1|1\/2 - 1\/2|\*)/).test(text);
     },
     /**
      *  Parses a PGN result
@@ -192,7 +214,7 @@ MarshallPGN.Pgn.prototype = {
         var text = gameText;
 
         move.result =
-            text.match(/^(1-0|0-1|1 - 0|0 - 1|1\/2-1\/2|1\/2 - 1\/2)/)[0];
+            text.match(/^(1-0|0-1|1 - 0|0 - 1|1\/2-1\/2|1\/2 - 1\/2|\*)/)[0];
         text = text.slice(move.result.length);
         return text;
     },
