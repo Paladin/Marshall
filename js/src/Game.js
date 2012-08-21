@@ -22,6 +22,7 @@ var MarshallPGN = MarshallPGN || {};
 MarshallPGN.Game = function (sourceDiv, options) {
 	"use strict";
 	var property,
+	    toEmpty,
         givenOptions = options || {};
 
     this.sourceDiv = document.getElementById(sourceDiv);
@@ -36,6 +37,13 @@ MarshallPGN.Game = function (sourceDiv, options) {
 	    if (givenOptions.hasOwnProperty(property) &&
 	            this.opts.hasOwnProperty(property)) {
 	        this.opts[property] = givenOptions[property];
+	    }
+	}
+	if (this.opts.reload) {
+	    toEmpty = document.getElementById(sourceDiv +
+	        (this.sourceDiv.hasAttribute("data-pgn") ? "" : "_board"));
+	    while (toEmpty.firstChild) {
+	        toEmpty.removeChild(toEmpty.firstChild);
 	    }
 	}
 
@@ -65,6 +73,7 @@ MarshallPGN.Game.prototype = {
                 diagramTitle:   null,
                 showDiagramTitle:   true,
                 showGameInfo:   true,
+                reload:         false,
                 altRewind:		"Rewind to the beginning",
                 altBack:		"One move back",
                 altFlip:		"Flip the board",
