@@ -4,12 +4,12 @@ var MarshallPGN = MarshallPGN || {};
  *  ends here
  *
  * @constructor
- * @param {string}  divId   The ID of the div to put the board inside
- * @param {object}  options The configuration options for the board
+ * @param {string}  sourceID    The ID of the div to put the board inside
+ * @param {object}  options     The configuration options for the board
  *
  * @property {object}	pgn			- The game score object
  * @property {object}	opts		- Configuration options
- * @property {string}	divId		- The ID of the board's display element
+ * @property {string}	sourceID		- The ID of the board's display element
  * @property {object}	game		- The Game object (parent)
  * @property {boolean}	flipped		- White or Black (true) on top
  * @property {string}	id			- GUID
@@ -25,7 +25,7 @@ var MarshallPGN = MarshallPGN || {};
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-MarshallPGN.Board = function (game, pgn, divId, options) {
+MarshallPGN.Board = function (game, pgn, sourceID, options) {
 	"use strict";
 	var i;
 
@@ -34,7 +34,7 @@ MarshallPGN.Board = function (game, pgn, divId, options) {
 
 	this.game = game;
 	this.pgn = pgn;
-	this.divId = divId;
+	this.sourceID = sourceID;
 	this.opts = options;
 
 	this.visuals = { "pgn": {}, "button": {}, "squares": [],
@@ -54,7 +54,7 @@ MarshallPGN.Board.prototype = {
 	pgn:            null,
 	pos:            [],
 	movesOnPane:    [],
-	divId:          null,
+	sourceID:          null,
 	visuals:        {},
 	id:             null,
 	currentMove:    null,
@@ -64,44 +64,44 @@ MarshallPGN.Board.prototype = {
 	init:       function () {
         "use strict";
         // the main frame
-        var gameSection = document.getElementById(this.divId),
-            topTable =
+        var gameSection = document.getElementById(this.sourceID),
+            gameSummary =
                 this.createWithAttribs("section", { "class": "mainboard" }),
-            btnTd = this.createWithAttribs("p", { "class": "board_controls" }),
-            propsTd =
+            buttonBar =
+                this.createWithAttribs("p", { "class": "board_controls" }),
+            gameInfo =
                 this.createWithAttribs("section", { "class": "game_info" }),
             board,
             gameHeader = this.outputGameHeader();
 
         gameSection.appendChild(gameHeader);
 
-        gameSection.appendChild(topTable);
+        gameSection.appendChild(gameSummary);
 
-        // movesTable
-        this.movesDiv = this.createWithAttribs("div", { "class": "move_list" });
-        this.movesDiv.id = this.divId + "_moves";
-        gameSection.appendChild(this.movesDiv);
+        this.movesContainer = this.createWithAttribs("div",
+            { "class": "move_list", "id": this.sourceID + "_moves"});
+        gameSection.appendChild(this.movesContainer);
 
         board = this.drawBoard();
 
-        topTable.appendChild(board);
-        topTable.appendChild(btnTd);
-        this.visuals.currentMove = this.addTextElement(topTable, "p",
+        gameSummary.appendChild(board);
+        gameSummary.appendChild(buttonBar);
+        this.visuals.currentMove = this.addTextElement(gameSummary, "p",
             { "class": "current_move_box" });
-        topTable.appendChild(propsTd);
+        gameSummary.appendChild(gameInfo);
 
         this.populatePieces();
         if (this.opts.flipped) {
             this.flipBoard();
         }
-        this.populateProps(propsTd);
-        this.outputMoveTree(this.movesDiv);
+        this.populateProps(gameInfo);
+        this.outputMoveTree(this.movesContainer);
 
-        this.createButtonBar(btnTd);
+        this.createButtonBar(buttonBar);
 
 	    this.setCurrentMove(this.pgn.moveTree);
         this.updateMoveInfo(this);
-        if (!this.opts.showGameInfo) { propsTd.style.display = "none"; }
+        if (!this.opts.showGameInfo) { gameInfo.style.display = "none"; }
         if (!this.opts.showMovesPane) { this.hideMoves(); }
         if (!this.opts.showComments) { this.hideComments(); }
         if (this.opts.skipToMove) {
@@ -347,8 +347,8 @@ MarshallPGN.Board.prototype = {
      */
     toggleMoves:    function () {
         "use strict";
-        if (this.movesDiv.style.display === "block" ||
-                this.movesDiv.style.display === "") {
+        if (this.movesContainer.style.display === "block" ||
+                this.movesContainer.style.display === "") {
             this.hideMoves();
         } else {
             this.showMoves();
@@ -359,14 +359,14 @@ MarshallPGN.Board.prototype = {
      */
     hideMoves:      function () {
         "use strict";
-        this.movesDiv.style.display = "none";
+        this.movesContainer.style.display = "none";
     },
     /**
      *  Show the moves pane
      */
     showMoves:      function () {
         "use strict";
-        this.movesDiv.style.display = "block";
+        this.movesContainer.style.display = "block";
     },
     /*
      *	Toggles the display of comments inside the move list on and off
@@ -385,7 +385,7 @@ MarshallPGN.Board.prototype = {
      */
     showComments:       function () {
         "use strict";
-        var list = this.movesDiv.getElementsByClassName("commentary"),
+        var list = this.movesContainer.getElementsByClassName("commentary"),
             i;
         if (list) {
             for (i = 0; i < list.length; i += 1) {
@@ -398,7 +398,7 @@ MarshallPGN.Board.prototype = {
      */
     hideComments:       function () {
         "use strict";
-        var list = this.movesDiv.getElementsByClassName("commentary"),
+        var list = this.movesContainer.getElementsByClassName("commentary"),
             i;
         if (list) {
             for (i = 0; i < list.length; i += 1) {
@@ -459,7 +459,7 @@ MarshallPGN.Board.prototype = {
     updatePGNInfo:  function () {
         "use strict";
         var title = this.opts.showDiagramTitle ?
-            (this.opts.diagramTitle || this.gameOpponents()) : null;
+                    (this.opts.diagramTitle || this.gameOpponents()) : null;
 
         this.visuals.pgn.players.nodeValue = title;
 
@@ -505,7 +505,7 @@ MarshallPGN.Board.prototype = {
             code = this.createWithAttribs("p", {"class": "PGNlink"});
 
         title = this.addTextElement(header, "h1", {},
-            this.opts.gameTitle ||this.gameOpponents()).parentNode;
+            this.opts.gameTitle || this.gameOpponents()).parentNode;
         code.appendChild(document.createTextNode(" ("));
         code.appendChild(this.addPGNLink(this.pgn.pgnOrig));
         code.appendChild(document.createTextNode(")"));

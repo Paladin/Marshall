@@ -32,7 +32,7 @@
             myBoard = myGame.board;
             expect(myBoard.currentMove.number).toBe(2);
             expect(myBoard.currentMove.color).toBe("black");
-            squares = myBoard.movesDiv.getElementsByClassName("light_square");
+            squares = myBoard.movesContainer.getElementsByClassName("light_square");
             for (i = 0; 1 < squares.length; i += 1) {
                 expect(squares[i].getAttribute("data-squarename")).toBe(light_squares[i]);
             }
@@ -40,7 +40,7 @@
         it(" Should not show the moves pane", function () {
             var myGame = new MarshallPGN.Game("game1", {"showMovesPane": false}),
                 myBoard = myGame.board;
-                expect(myBoard.movesDiv.style.display).toBe("none");
+                expect(myBoard.movesContainer.style.display).toBe("none");
         });
         it(" Should not show the comments", function () {
             var myGame = new MarshallPGN.Game("game1", {"showComments": false}),
@@ -93,7 +93,7 @@
         it(" Should display the optional Game title", function () {
             var myGame = new MarshallPGN.Game("game1", {"gameTitle": "This is a Test"}),
                 myBoard = myGame.board;
-            expect(document.getElementById(myBoard.divId).firstChild.
+            expect(document.getElementById(myBoard.sourceID).firstChild.
                 firstChild.firstChild.nodeValue).toBe("This is a Test");
         });
         it(" Should not display Diagram title", function () {
@@ -382,6 +382,96 @@
     		window[this.board.id].displayMove(this.board.pgn.moveTree.link);
             this.board.makeMove(this.board.currentMove.goEnd());
             expect(this.board.visuals.currentMove.data).toBe("5. Rh4#");
+		});
+	});
+	describe("Testing onclick handlers", function () {
+        var fullGame = "[Event \"None\"]" +
+            "[Site \"Nowhere\"]" +
+            "[Date \"2012.08.20\"]" +
+            "[Round \"1\"]" +
+            "[White \"U. N. Owen\"]" +
+            "[Black \"Anon E. Moose\"]" +
+            "[Result \"*\"]" +
+            "[PlyCount \"22\"]" +
+            "[ECO \"C21\"]" +
+            "{A Goring Gambit line}" +
+            "1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. c3 dxc3 {Black is better advised" +
+            " to treat this like a Two Knight's defense:} (4... Nf6 ( 4... Bc5 " +
+            "5. Bc4 Nf6 6. cxd4 Bb4+ 7. Nc3 Nxe4 8. O-O) 5. e5 Ne4 6. cxd4) 5. Bc4" +
+            " cxb2 6. Bxb2 Bb4+ 7. Nc3 Nf6 8. Qc2 (8. e5 Ne4 (8... Ng5) 9. Qc2)" +
+            " 8... O-O 9. O-O-O a6 10. e5 d5 11. exd6 Bxd6  *";
+		beforeEach(function () {
+		/*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
+		
+			var movediv = document.getElementById("game1");
+			movediv.innerHTML = fullGame;
+	
+            this.game = new MarshallPGN.Game("game1");
+            this.buttons = this.game.board.visuals.button;
+		});
+        afterEach(function () {
+            var boardDiv = document.getElementById("game1_board");
+            while (boardDiv.firstChild) {
+                boardDiv.removeChild(boardDiv.firstChild);
+            }
+        });
+		it(" Should go forward and back", function () {
+			this.buttons.forward.click();
+			expect(this.game.board.visuals.currentMove.nodeValue).toBe("1. e4");
+			this.buttons.back.click();
+			expect(this.game.board.visuals.currentMove.nodeValue).toBe("...");
+		});
+		it(" Should fast forward and rewind", function () {
+			this.buttons.fastforward.click();
+			expect(this.game.board.visuals.currentMove.nodeValue).
+			    toBe("11. ... Bxd6");
+			this.buttons.rewind.click();
+			expect(this.game.board.visuals.currentMove.nodeValue).toBe("...");
+		});
+		it(" Should go to a specific move", function () {
+		    var move4b = this.game.pgn.moveTree.next.next.next.next.next.
+		        next.next.next;
+		    move4b.link.onclick({"currentTarget": move4b.link});
+		    expect(this.game.board.visuals.currentMove.nodeValue).
+		        toBe("4. ... dxc3");
+		});
+		it(" Should go down and up through variations", function () {
+		    var move4b = this.game.pgn.moveTree.next.next.next.next.next.
+		        next.next.next;
+		    move4b.link.onclick({"currentTarget": move4b.link});
+		    this.buttons.down.click();
+		    expect(this.game.board.visuals.currentMove.nodeValue).
+		        toBe("4. ... Nf6");
+		    this.buttons.down.click();
+		    expect(this.game.board.visuals.currentMove.nodeValue).
+		        toBe("4. ... Bc5");
+		    this.buttons.up.click();
+		    expect(this.game.board.visuals.currentMove.nodeValue).
+		        toBe("4. ... Nf6");
+		    this.buttons.up.click();
+		    expect(this.game.board.visuals.currentMove.nodeValue).
+		        toBe("4. ... dxc3");
+		});
+		it(" Should hide move list", function () {
+			this.buttons.toggleMoves.click();
+			expect(this.game.board.movesContainer.style.display).toBe("none");
+		});
+		it(" Should hide commentary", function () {
+		    var i,
+		        comments;
+			this.buttons.toggleComments.click();
+			comments = this.game.board.movesContainer.
+			    getElementsByClassName("commentary");
+			for (i = 0; i < comments.length; i += 1) {
+			    expect(comments[i].style.display).toBe("none");
+			}
+		});
+		it(" Should flip board", function () {
+			expect(this.game.board.visuals.squares[0][0].
+			    getAttribute("data-squarename")).toBe("a8");
+			this.buttons.flip.click();
+			expect(this.game.board.visuals.squares[0][0].
+                getAttribute("data-squarename")).toBe("h1");
 		});
 	});
 })();
