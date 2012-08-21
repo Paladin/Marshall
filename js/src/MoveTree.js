@@ -56,22 +56,47 @@ MarshallPGN.MoveTree.prototype = {
     origin:         null,
     levelsToParent: null,
     link:           null,
+    /**
+     * Gets the next move in the current line. If none, returns itself.
+     *
+     * @return  {Object}    the next move
+     */
     getNextMove:    function () {
         "use strict";
         return this.next || this;
     },
+    /**
+     * Gets the previous move in the current line. If none, returns itself.
+     *
+     * @return  {Object}    the previous move
+     */
     getPreviousMove:    function () {
         "use strict";
         return this.previous || this;
     },
+    /**
+     * Tests for the end of the line
+     *
+     * @return  {boolean}    Are we at the end of the line?
+     */
     isEnd:          function () {
         "use strict";
         return this.next === null;
     },
+    /**
+     * Tests for an empty move (defined as no number, text, or result).
+     *
+     * @return  {boolean}    Is it empty?
+     */
     isEmpty:        function () {
         "use strict";
         return !(this.number || this.text || this.result);
     },
+    /**
+     * Goes to first move of the current line
+     *
+     * @return  {Object}    the first move
+     */
     goStart:         function () {
         "use strict";
         var move = this;
@@ -81,6 +106,11 @@ MarshallPGN.MoveTree.prototype = {
         }
         return move;
     },
+    /**
+     * Goes to the end of the current line
+     *
+     * @return  {Object}    The last move
+     */
     goEnd:         function () {
         "use strict";
         var move = this;
@@ -90,6 +120,11 @@ MarshallPGN.MoveTree.prototype = {
         }
         return move;
     },
+    /**
+     * Goes to the top of the variation stack
+     *
+     * @return  {Object}    the move from the highest variation
+     */
     goTop:          function () {
         "use strict";
         var move = this;
@@ -99,6 +134,11 @@ MarshallPGN.MoveTree.prototype = {
         }
         return move;
     },
+    /**
+     * Goes to the bottom of the variation stack
+     *
+     * @return  {Object}    The move from the lowest variation
+     */
     goBottom:       function () {
         "use strict";
         var move = this;
@@ -108,6 +148,11 @@ MarshallPGN.MoveTree.prototype = {
         }
         return move;
     },
+    /**
+     * A text list of the current line
+     *
+     * @return  {string}    text of the moves in the line
+     */
     list:           function () {
         "use strict";
         var move = this,
@@ -122,6 +167,12 @@ MarshallPGN.MoveTree.prototype = {
         }
         return text;
     },
+    /**
+     * Adds an empty move after the current one. This will destroy an existing
+     * link.
+     *
+     * @return  {Object}    The newly created move
+     */
     addNext:        function (properties) {
         "use strict";
         var move = new MarshallPGN.MoveTree(properties);
@@ -129,6 +180,11 @@ MarshallPGN.MoveTree.prototype = {
         move.previous = this;
         return move;
     },
+    /**
+     * Adds a new variation at the bottom of the variation stack
+     *
+     * @return  {Object}    the newly created move
+     */
     addVariation:        function (properties) {
         "use strict";
         var move = new MarshallPGN.MoveTree(properties),
@@ -137,6 +193,11 @@ MarshallPGN.MoveTree.prototype = {
         move.up = addedTo;
         return move;
     },
+    /**
+     * Finds a move from the link on the page.
+     *
+     * @return  {Object}    Or null if move not found.
+     */
     findByLink:     function (move, link) {
         "use strict";
         var variation,
@@ -152,6 +213,11 @@ MarshallPGN.MoveTree.prototype = {
         }
         return null;
     },
+    /**
+     * Converts the move into a string
+     *
+     * @return  {string}    string description of move
+     */
     toString:       function () {
         "use strict";
         return ((this.color === "white") && this.number ? this.number +
