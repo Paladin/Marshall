@@ -9,7 +9,6 @@ var MarshallPGN = MarshallPGN || {};
  *
  * @property {object}	pgn			- The game score object
  * @property {object}	opts		- Configuration options
- * @property {string}	sourceID		- The ID of the board's display element
  * @property {object}	game		- The Game object (parent)
  * @property {boolean}	flipped		- White or Black (true) on top
  * @property {string}	id			- GUID
@@ -27,7 +26,8 @@ var MarshallPGN = MarshallPGN || {};
 **/
 MarshallPGN.Board = function (game, pgn, sourceID, options) {
 	"use strict";
-	var i;
+	var i,
+        gameSection = document.getElementById(sourceID);
 
     this.id = (new Date()).getTime();
 	window[this.id] = this;
@@ -38,11 +38,33 @@ MarshallPGN.Board = function (game, pgn, sourceID, options) {
 	this.opts = options;
 
 	this.visuals = { "pgn": {}, "button": {}, "squares": [],
-	    "currentMove": null, "moves": [] };
+	    "currentMove": null, "moves": [], "gameInfo": null };
 
 	for (i = 0; i < 8; i += 1) {
 		this.visuals.squares[i] = [];
 	}
+
+    this.movesContainer = this.createWithAttribs("div",
+        { "class": "move_list", "id": this.sourceID + "_moves"});
+    gameSection.appendChild(this.outputGameHeader());
+    gameSection.appendChild(this.createMainboard());
+    gameSection.appendChild(this.movesContainer);
+
+    this.outputMoveTree(this.movesContainer);
+
+    this.setCurrentMove(this.pgn.moveTree);
+    this.updateMoveInfo(this);
+    if (!this.opts.showGameInfo) {
+        this.visuals.gameInfo.style.display = "none";
+    }
+    if (!this.opts.showMovesPane) { this.hideMoves(); }
+    if (!this.opts.showComments) { this.hideComments(); }
+    if (this.opts.skipToMove) {
+        this.setCurrentMove(this.skipTo(this.opts.skipToMove));
+        this.displayStart =
+            new MarshallPGN.VBoard(this.currentMove.position);
+        this.makeMove(this.currentMove);
+    }
 };
 /**
  * Setting up class attributes
@@ -54,70 +76,37 @@ MarshallPGN.Board.prototype = {
 	pgn:            null,
 	pos:            [],
 	movesOnPane:    [],
-	sourceID:          null,
 	visuals:        {},
 	id:             null,
 	currentMove:    null,
-	/**
-	 *  Creates the board and move areas of the page, prepare for replay.
-	 */
-	init:       function () {
+    /**
+     *  Creates the main panel of the player
+     *
+     * @return  {HTMLElement}   The panel's container
+     */
+    createMainboard:    function () {
         "use strict";
-        // the main frame
-        var gameSection = document.getElementById(this.sourceID),
-            gameSummary =
-                this.createWithAttribs("section", { "class": "mainboard" }),
-            buttonBar =
-                this.createWithAttribs("p", { "class": "board_controls" }),
-            gameInfo =
-                this.createWithAttribs("section", { "class": "game_info" }),
-            board,
-            gameHeader = this.outputGameHeader();
+        var gameSummary =
+                this.createWithAttribs("section", { "class": "mainboard" });
 
-        gameSection.appendChild(gameHeader);
+        gameSummary.appendChild(this.drawBoard());
+        this.populatePieces();
+        if (this.opts.flipped) { this.flipBoard(); }
 
-        gameSection.appendChild(gameSummary);
-
-        this.movesContainer = this.createWithAttribs("div",
-            { "class": "move_list", "id": this.sourceID + "_moves"});
-        gameSection.appendChild(this.movesContainer);
-
-        board = this.drawBoard();
-
-        gameSummary.appendChild(board);
-        gameSummary.appendChild(buttonBar);
+        gameSummary.appendChild(this.createButtonBar());
         this.visuals.currentMove = this.addTextElement(gameSummary, "p",
             { "class": "current_move_box" });
-        gameSummary.appendChild(gameInfo);
+        gameSummary.appendChild(this.createGameInfo());
 
-        this.populatePieces();
-        if (this.opts.flipped) {
-            this.flipBoard();
-        }
-        this.populateProps(gameInfo);
-        this.outputMoveTree(this.movesContainer);
-
-        this.createButtonBar(buttonBar);
-
-	    this.setCurrentMove(this.pgn.moveTree);
-        this.updateMoveInfo(this);
-        if (!this.opts.showGameInfo) { gameInfo.style.display = "none"; }
-        if (!this.opts.showMovesPane) { this.hideMoves(); }
-        if (!this.opts.showComments) { this.hideComments(); }
-        if (this.opts.skipToMove) {
-            this.setCurrentMove(this.skipTo(this.opts.skipToMove));
-            this.displayStart =
-                new MarshallPGN.VBoard(this.currentMove.position);
-            this.makeMove(this.currentMove);
-        }
+        return gameSummary;
     },
     /**
      * Creates the board in HTML. Puts together a table of the squares, labels
      * them, and returns it.
      *
      *  SIDE EFFECT: this also stores the table cells created for the board in
-     *  the pos array (class attribute) in the order they were created: with
-     *  [0,0] being a8, [0,1] being b8, etc.
+     *  the this.visuals.squares array (class attribute) in the order they were
+     *  created: with [0,0] being a8, [0,1] being b8, etc.
      *
      * @param   {string}    title   The title (default is opponents)
      * @return  {HTMLTableElement}  The game board display.
@@ -135,7 +124,7 @@ MarshallPGN.Board.prototype = {
             td,
             flip;
 
-        this.visuals.pgn.players = this.addTextElement(board,
+        this.visuals.pgn.boardCaption = this.addTextElement(board,
             "caption", { "class": "players" });
         this.displayBoard = document.createElement("tbody");
         board.appendChild(this.displayBoard);
@@ -160,13 +149,15 @@ MarshallPGN.Board.prototype = {
     /**
      * Creates the row of control buttons under the board
      *
-     * @param   {HTMLElement}   theContainer    Parent of the buttons
+     * @return  {HTMLElement}   Parent of the buttons
      */
-    createButtonBar:    function (theContainer) {
+    createButtonBar:    function () {
         "use strict";
-        var theBoard = this;
+        var buttonBar =
+                this.createWithAttribs("p", { "class": "board_controls" }),
+            theBoard = this;
 
-        this.visuals.button.rewind = this.makeButton(theContainer, "rwind",
+        this.visuals.button.rewind = this.makeButton(buttonBar, "rwind",
             "altRewind", false, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.goStart.apply(
@@ -174,50 +165,51 @@ MarshallPGN.Board.prototype = {
                     )]);
                 return false;
             });
-        this.visuals.button.back = this.makeButton(theContainer, "back",
+        this.visuals.button.back = this.makeButton(buttonBar, "back",
             "altBack", false, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.previous]);
                 return false;
             });
-        this.visuals.button.up = this.makeButton(theContainer, "up",
+        this.visuals.button.up = this.makeButton(buttonBar, "up",
             "altUp", true, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.up || theBoard.currentMove]);
                 return false;
             });
-        this.visuals.button.flip = this.makeButton(theContainer, "flip",
+        this.visuals.button.flip = this.makeButton(buttonBar, "flip",
             "altFlip", false, function () {
                 theBoard.flipBoard();
                 return false;
             });
-        this.visuals.button.toggleMoves = this.makeButton(theContainer,
+        this.visuals.button.toggleMoves = this.makeButton(buttonBar,
             "toggle", "altShowMoves", false, function () {
                 theBoard.toggleMoves();
                 return false;
             });
-        this.visuals.button.toggleComments = this.makeButton(theContainer,
+        this.visuals.button.toggleComments = this.makeButton(buttonBar,
             "comments", "altComments", false, function () {
                 theBoard.toggleComments();
                 return false;
             });
-        this.visuals.button.down = this.makeButton(theContainer, "down",
+        this.visuals.button.down = this.makeButton(buttonBar, "down",
             "altDown", true, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.down || theBoard.currentMove]);
                 return false;
             });
-        this.visuals.button.forward = this.makeButton(theContainer, "forward",
+        this.visuals.button.forward = this.makeButton(buttonBar, "forward",
             "altPlayMove", false, function () {
                 theBoard.makeMove.apply(theBoard, [theBoard.currentMove.next]);
                 return false;
             });
-        this.visuals.button.fastforward = this.makeButton(theContainer,
+        this.visuals.button.fastforward = this.makeButton(buttonBar,
             "ffward", "altFastForward", false, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.goEnd.apply(theBoard.currentMove)]);
                 return false;
             });
+        return buttonBar;
     },
     /**
      *  Makes an individual button on the bar
@@ -453,22 +445,6 @@ MarshallPGN.Board.prototype = {
             move.link.className += " current_move";
         }
     },
-    /**
-     *  Updates the game description
-     */
-    updatePGNInfo:  function () {
-        "use strict";
-        var title = this.opts.showDiagramTitle ?
-                    (this.opts.diagramTitle || this.gameOpponents()) : null;
-
-        this.visuals.pgn.players.nodeValue = title;
-
-        this.visuals.pgn.event.nodeValue = this.pgn.props.Event || " ";
-        this.visuals.pgn.event.nodeValue += ", ";
-        this.visuals.pgn.event.nodeValue += this.pgn.props.Date || " ";
-        this.visuals.pgn.timecontrol.nodeValue =
-                this.pgn.props.TimeControl || " ";
-    },
     /*
      * Draw the board with all the pieces in the initial
      * position
@@ -600,20 +576,27 @@ MarshallPGN.Board.prototype = {
     /*
      * This fills in information about the game in the designated container
      *
-     * @param   {HTMLElement}   container   The container displaying it
+     * @return  {HTMLElement}   The container displaying it
      */
-    populateProps:  function (container) {
+    createGameInfo:  function () {
         "use strict";
+        this.visuals.gameInfo =
+                this.createWithAttribs("section", { "class": "game_info" });
 
-        // Date 
-        this.visuals.pgn.event = this.addTextElement(container, "p",
-                { "class": "game_date" });
+        this.visuals.pgn.event = this.addTextElement(this.visuals.gameInfo,
+                "p", { "class": "game_date" });
+        this.visuals.pgn.event.nodeValue = this.pgn.props.Event || " ";
+        this.visuals.pgn.event.nodeValue += ", ";
+        this.visuals.pgn.event.nodeValue += this.pgn.props.Date || " ";
 
-        // Time control
-        this.visuals.pgn.timecontrol = this.addTextElement(container, "p",
-                { "class": "time_control" });
+        this.visuals.pgn.timecontrol =
+            this.addTextElement(this.visuals.gameInfo, "p",
+                { "class": "time_control" }, this.pgn.props.TimeControl || " ");
 
-        this.updatePGNInfo();
+        this.visuals.pgn.boardCaption.nodeValue = this.opts.showDiagramTitle ?
+                    (this.opts.diagramTitle || this.gameOpponents()) : null;
+
+        return this.visuals.gameInfo;
     },
     /**
      *  Adds a text element to the container

@@ -93,18 +93,18 @@
         it(" Should display the optional Game title", function () {
             var myGame = new MarshallPGN.Game("game1", {"gameTitle": "This is a Test"}),
                 myBoard = myGame.board;
-            expect(document.getElementById(myBoard.sourceID).firstChild.
+            expect(document.getElementById("game1_board").firstChild.
                 firstChild.firstChild.nodeValue).toBe("This is a Test");
         });
         it(" Should not display Diagram title", function () {
             var myGame = new MarshallPGN.Game("game1", {"showDiagramTitle": false}),
                 myBoard = myGame.board;
-            expect(myBoard.visuals.pgn.players.nodeValue).toBeFalsy();
+            expect(myBoard.visuals.pgn.boardCaption.nodeValue).toBeFalsy();
         });
         it(" Should display the optional Diagram title", function () {
             var myGame = new MarshallPGN.Game("game1", {"diagramTitle": "This is a Test"}),
                 myBoard = myGame.board;
-            expect(myBoard.visuals.pgn.players.nodeValue).toBe("This is a Test");
+            expect(myBoard.visuals.pgn.boardCaption.nodeValue).toBe("This is a Test");
         });
         it(" Should not display game info", function () {
             var myGame = new MarshallPGN.Game("game1", {"showGameInfo": false}),

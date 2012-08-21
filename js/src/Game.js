@@ -50,7 +50,6 @@ MarshallPGN.Game = function (sourceDiv, options) {
     this.board = new MarshallPGN.Board(this, this.pgn,
         sourceDiv + (this.sourceDiv.hasAttribute("data-pgn") ? "" : "_board"),
         this.opts);
-    this.board.init();
 };
 MarshallPGN.Game.prototype = {
     sourceDiv:          null,
