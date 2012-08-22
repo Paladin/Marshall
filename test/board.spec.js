@@ -264,51 +264,57 @@
                     boardDiv.removeChild(boardDiv.firstChild);
                 }
             });
+            function click() {
+                var event = document.createEvent("MouseEvents");
+                event.initMouseEvent("click", true, true, window, 1, 0, 0, 0, 0,
+                    false, false, false, false, 0, null);
+                return event;
+            };
             it(" Should go forward and back", function () {
-                this.buttons.forward.click();
+                this.buttons.forward.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).toBe("1. e4");
-                this.buttons.back.click();
+                this.buttons.back.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).toBe("...");
             });
             it(" Should fast forward and rewind", function () {
-                this.buttons.fastforward.click();
+                this.buttons.fastforward.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).
                     toBe("11. ... Bxd6");
-                this.buttons.rewind.click();
+                this.buttons.rewind.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).toBe("...");
             });
             it(" Should go to a specific move", function () {
                 var move4b = this.game.pgn.moveTree.next.next.next.next.next.
                     next.next.next;
-                move4b.link.onclick({"currentTarget": move4b.link});
+                move4b.link.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).
                     toBe("4. ... dxc3");
             });
             it(" Should go down and up through variations", function () {
                 var move4b = this.game.pgn.moveTree.next.next.next.next.next.
                     next.next.next;
-                move4b.link.onclick({"currentTarget": move4b.link});
-                this.buttons.down.click();
+                move4b.link.dispatchEvent(click());
+                this.buttons.down.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).
                     toBe("4. ... Nf6");
-                this.buttons.down.click();
+                this.buttons.down.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).
                     toBe("4. ... Bc5");
-                this.buttons.up.click();
+                this.buttons.up.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).
                     toBe("4. ... Nf6");
-                this.buttons.up.click();
+                this.buttons.up.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).
                     toBe("4. ... dxc3");
             });
             it(" Should hide move list", function () {
-                this.buttons.toggleMoves.click();
+                this.buttons.toggleMoves.dispatchEvent(click());
                 expect(this.game.board.movesContainer.style.display).toBe("none");
             });
             it(" Should hide commentary", function () {
                 var i,
                     comments;
-                this.buttons.toggleComments.click();
+                this.buttons.toggleComments.dispatchEvent(click());
                 comments = this.game.board.movesContainer.
                     getElementsByClassName("commentary");
                 for (i = 0; i < comments.length; i += 1) {
@@ -318,7 +324,7 @@
             it(" Should flip board", function () {
                 expect(this.game.board.visuals.squares[0][0].
                     getAttribute("data-squarename")).toBe("a8");
-                this.buttons.flip.click();
+                this.buttons.flip.dispatchEvent(click());
                 expect(this.game.board.visuals.squares[0][0].
                     getAttribute("data-squarename")).toBe("h1");
             });
