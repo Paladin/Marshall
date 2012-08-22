@@ -143,11 +143,8 @@ MarshallPGN.Board.prototype = {
                 tr.appendChild(td);
 
                 piece = position.whatsOn(attributes["data-squarename"]);
-                this.visuals.squares[r][f].piece = piece.piece || "empty";
-                this.visuals.squares[r][f].color = piece.color || null;
                 this.updateSquare(this.visuals.squares[r][f],
-                    this.visuals.squares[r][f].piece,
-                    this.visuals.squares[r][f].color);
+                    piece.piece || "empty", piece.color || null);
             }
             this.displayBoard.appendChild(tr);
         }
