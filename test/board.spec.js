@@ -327,11 +327,10 @@
             beforeEach(function () {
             /*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
             
-                var movediv = document.getElementById("game1");
-                movediv.innerHTML = puzzle;
+                this.movediv = document.getElementById("game1");
+                this.movediv.innerHTML = puzzle;
         
                 var game = new MarshallPGN.Game("game1");
-                this.board = game.board;
                 this.div = document.getElementById("game1_board_moves");
             });
             afterEach(function () {
@@ -339,6 +338,7 @@
                 while (boardDiv.firstChild) {
                     boardDiv.removeChild(boardDiv.firstChild);
                 }
+                this.movediv.innerHTML = "";
             });
             it(" Should have 18 nodes in the move display", function () {
                 expect(this.div.children[0].children.length).toBe(18);
@@ -355,10 +355,10 @@
         });
         describe("Making moves", function () {
             beforeEach(function () {
-            /*:DOC += <div><div id="game1"></div><div id="game1_board"></div><div id="testmoves"></div></div> */
+            /*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
             
-                var movediv = document.getElementById("game1");
-                movediv.innerHTML = puzzle;
+                this.movediv = document.getElementById("game1");
+                this.movediv.innerHTML = puzzle;
         
                 var game = new MarshallPGN.Game("game1");
                 this.board = game.board;
@@ -368,6 +368,7 @@
                 while (boardDiv.firstChild) {
                     boardDiv.removeChild(boardDiv.firstChild);
                 }
+                this.movediv.innerHTML = "";
             });
             it(" Should have only the back and variation buttons disabled", function () {
                 expect(this.board.visuals.button.rewind.className).
