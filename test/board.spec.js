@@ -325,24 +325,19 @@
         });
         describe("Board - Outputting HTML MoveTree", function () {
             beforeEach(function () {
-            /*:DOC += <div><div id="game1"></div><div id="game1_board"></div><div id="testmoves"></div></div> */
+            /*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
             
                 var movediv = document.getElementById("game1");
                 movediv.innerHTML = puzzle;
         
                 var game = new MarshallPGN.Game("game1");
                 this.board = game.board;
-                this.board.pgn.parse(this.board.pgn.pgnOrig);
-                this.div = document.getElementById("testmoves");
-                this.board.outputMoveTree(this.div);
+                this.div = document.getElementById("game1_board_moves");
             });
             afterEach(function () {
                 var boardDiv = document.getElementById("game1_board");
                 while (boardDiv.firstChild) {
                     boardDiv.removeChild(boardDiv.firstChild);
-                }
-                while (this.div.firstChild) {
-                    this.div.removeChild(this.div.firstChild);
                 }
             });
             it(" Should have 18 nodes in the move display", function () {
