@@ -370,6 +370,13 @@
                 }
                 this.movediv.innerHTML = "";
             });
+            it(" Should make the move properly", function () {
+            	this.board.makeMove(this.board.pgn.moveTree.next);
+            	expect(this.board.visuals.squares[2][7].
+            	    getAttribute("data-symbol")).toBe(" ");
+            	expect(this.board.visuals.squares[1][6].
+            	    getAttribute("data-symbol")).toBe("B");
+            });
             it(" Should have only the back and variation buttons disabled", function () {
                 expect(this.board.visuals.button.rewind.className).
                     toMatch(/\bdisabled\b/);
