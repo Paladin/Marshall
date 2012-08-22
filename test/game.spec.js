@@ -174,6 +174,7 @@
             while (movediv.firstChild) {
                 movediv.removeChild(movediv.firstChild);
             }
+    		this.movediv.innerHTML = "";
         });
     	it(" Should reload a new player over the old", function () {
     		var playerDiv = document.getElementById("game1_board");
