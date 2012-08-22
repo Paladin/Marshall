@@ -234,7 +234,7 @@ MarshallPGN.Board.prototype = {
         button.alt = this.opts[btnTitle];
         button.title = this.opts[btnTitle];
         button.innerHTML = "&nbsp;";
-        button.onclick = handler;
+        this.addClickListener(button, handler);
         btnContainer.appendChild(button);
         return button;
     },
@@ -716,12 +716,12 @@ MarshallPGN.Board.prototype = {
             theBoard = this;
         link.appendChild(document.createTextNode(moveText));
         link.href = '#';
-        link.onclick = function (e) {
+        this.addClickListener(link, function (e) {
             theBoard.makeMove.call(theBoard,
-                theBoard.pgn.moveTree.findByLink.call(theBoard,
+                theBoard.pgn.moveTree.findByLink.call(theBoard.pgn.moveTree,
                     theBoard.pgn.moveTree, e.currentTarget));
             return false;
-            };
+            });
         link.setAttribute("data-moveNumber", moveNumber);
         link.setAttribute("data-color", color);
         link.setAttribute("data-id", this.id);
@@ -749,6 +749,15 @@ MarshallPGN.Board.prototype = {
                 this.updateSquare(this.visuals.squares[rank][file],
                     thePiece.piece, thePiece.color);
             }
+        }
+    },
+    addClickListener: function(element, handler) {
+        if (element.addEventListener) {
+            element.addEventListener("click", handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent("onclick", handler);
+        } else {
+            element["onclick"] = handler;
         }
     }
 };

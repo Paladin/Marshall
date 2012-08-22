@@ -284,11 +284,11 @@
                 expect(this.game.board.visuals.currentMove.nodeValue).toBe("...");
             });
             it(" Should go to a specific move", function () {
-                var move4b = this.game.pgn.moveTree.next.next.next.next.next.
-                    next.next.next;
+                var move4b = this.game.board.pgn.moveTree.next.next.next.next.next.
+                    next.next.next.down;
                 move4b.link.dispatchEvent(click());
                 expect(this.game.board.visuals.currentMove.nodeValue).
-                    toBe("4. ... dxc3");
+                    toBe("4. ... Nf6");
             });
             it(" Should go down and up through variations", function () {
                 var move4b = this.game.pgn.moveTree.next.next.next.next.next.
