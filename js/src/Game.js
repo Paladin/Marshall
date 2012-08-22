@@ -47,7 +47,7 @@ MarshallPGN.Game = function (sourceDiv, options) {
 	    }
 	}
 
-    this.board = new MarshallPGN.Board(this, this.pgn,
+    this.board = new MarshallPGN.Board(this.initialBoard, this.pgn,
         sourceDiv + (this.sourceDiv.hasAttribute("data-pgn") ? "" : "_board"),
         this.opts);
 };
@@ -123,15 +123,6 @@ MarshallPGN.Game.prototype = {
             }
             move = move.next;
         }
-    },
-    /**
-     * Gets the starting position for the game or game fragment
-     *
-     * @return  {Object}    The starting Virtual Board
-     */
-    getStartPos:	function () {
-        "use strict";
-        return this.initialBoard;
     },
     /**
      *  Analyzes and completes the information necessary to recreate a position

@@ -20,11 +20,11 @@ var MarshallPGN = MarshallPGN || {};
  * @version 1.0.0
  * @author Toomas R&#246;mer
  * @author Arlen P Walker
- * @copyright 2008 Toomas Ršmer
+ * @copyright 2008 Toomas R&#246;mer
  * @copyright 2012 Arlen P Walker (some portions)
  * @license http://www.apache.org/licenses/LICENSE-2.0
 **/
-MarshallPGN.Board = function (game, pgn, sourceID, options) {
+MarshallPGN.Board = function (initialPosition, pgn, sourceID, options) {
 	"use strict";
 	var i,
         gameSection = document.getElementById(sourceID);
@@ -32,7 +32,7 @@ MarshallPGN.Board = function (game, pgn, sourceID, options) {
     this.id = (new Date()).getTime();
 	window[this.id] = this;
 
-	this.game = game;
+	this.initialPosition = initialPosition;
 	this.pgn = pgn;
 	this.sourceID = sourceID;
 	this.opts = options;
@@ -89,8 +89,7 @@ MarshallPGN.Board.prototype = {
         var gameSummary =
                 this.createWithAttribs("section", { "class": "mainboard" });
 
-        gameSummary.appendChild(this.drawBoard());
-        this.populatePieces();
+        gameSummary.appendChild(this.drawBoard(this.initialPosition));
         if (this.opts.flipped) { this.flipBoard(); }
 
         gameSummary.appendChild(this.createButtonBar());
@@ -111,17 +110,18 @@ MarshallPGN.Board.prototype = {
      * @param   {string}    title   The title (default is opponents)
      * @return  {HTMLTableElement}  The game board display.
      */
-    drawBoard:  function () {
+    drawBoard:  function (position) {
         "use strict";
         var board = this.createWithAttribs("table", { "class": "gameboard" }),
             whiteC = 'light_square',
             blackC = 'dark_square',
             file = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-            i,
-            j,
+            r,
+            f,
             attributes,
             tr,
             td,
+            piece,
             flip;
 
         this.visuals.pgn.boardCaption = this.addTextElement(board,
@@ -129,18 +129,25 @@ MarshallPGN.Board.prototype = {
         this.displayBoard = document.createElement("tbody");
         board.appendChild(this.displayBoard);
 
-        for (i = 0; i < 8; i += 1) {
+        for (r = 0; r < 8; r += 1) {
             tr = document.createElement("tr");
-            flip = (i % 2) ? 1 : 0;
-            for (j = 0; j < 8; j += 1) {
+            flip = (r % 2) ? 1 : 0;
+            for (f = 0; f < 8; f += 1) {
                 attributes = {};
-                attributes["class"] = !flip ? (j % 2) ? blackC : whiteC :
-                        (j % 2) ? whiteC : blackC;
-                attributes["data-squarename"] = file[j] + (8 - i);
+                attributes["class"] = !flip ? (f % 2) ? blackC : whiteC :
+                        (f % 2) ? whiteC : blackC;
+                attributes["data-squarename"] = file[f] + (8 - r);
                 td = this.createWithAttribs("td", attributes);
 
-                this.visuals.squares[i][j] = td;
+                this.visuals.squares[r][f] = td;
                 tr.appendChild(td);
+
+                piece = position.whatsOn(attributes["data-squarename"]);
+                this.visuals.squares[r][f].piece = piece.piece || "empty";
+                this.visuals.squares[r][f].color = piece.color || null;
+                this.updateSquare(this.visuals.squares[r][f],
+                    this.visuals.squares[r][f].piece,
+                    this.visuals.squares[r][f].color);
             }
             this.displayBoard.appendChild(tr);
         }
@@ -320,21 +327,6 @@ MarshallPGN.Board.prototype = {
         }
     },
     /**
-     *	Displays the linked board position.
-     *
-     *	@param  {HTMLElement}   link    The link with the position to display
-     */
-    displayMove: function (link) {
-        "use strict";
-        this.setCurrentMove(
-            this.pgn.moveTree.findByLink(this.pgn.moveTree, link)
-        );
-
-        this.drawFEN(this.currentMove.position);
-        this.updateMoveInfo(this.currentMove);
-        this.highlightCurrentMove(this.currentMove);
-    },
-    /**
      *  Toggles visibility of moves pane.
      */
     toggleMoves:    function () {
@@ -416,15 +408,13 @@ MarshallPGN.Board.prototype = {
      *	This makes the next move in the game, and optionally updates the
      *	display.
      *
-     *	@param  {boolean}   update  Should displays be updated? Default true
+     *	@param  {object}   move  The move to make on the board
      */
-    makeMove:   function (move, update) {
+    makeMove:   function (move) {
         "use strict";
         this.setCurrentMove(move || this.currentMove);
-        if (update === undefined || update) {
-            this.updateMoveInfo(this.currentMove);
-            this.highlightCurrentMove(this.currentMove);
-        }
+        this.updateMoveInfo(this.currentMove);
+        this.highlightCurrentMove(this.currentMove);
         this.drawFEN(this.currentMove.position);
     },
     /**
@@ -443,30 +433,6 @@ MarshallPGN.Board.prototype = {
 
         if (move && move.link) {
             move.link.className += " current_move";
-        }
-    },
-    /*
-     * Draw the board with all the pieces in the initial
-     * position
-    */
-    populatePieces: function () {
-        "use strict";
-        var r,
-            f,
-            p,
-            square;
-
-        for (r = 0; r < 8; r += 1) {
-            for (f = 0; f < 8; f += 1) {
-                square = this.visuals.squares[r][f].
-                    getAttribute("data-squarename");
-                p = this.game.getStartPos().whatsOn(square);
-                this.visuals.squares[r][f].piece = p.piece || "empty";
-                this.visuals.squares[r][f].color = p.color || "black";
-                this.updateSquare(this.visuals.squares[r][f],
-                    this.visuals.squares[r][f].piece,
-                    this.visuals.squares[r][f].color);
-            }
         }
     },
     /**
@@ -753,8 +719,10 @@ MarshallPGN.Board.prototype = {
             theBoard = this;
         link.appendChild(document.createTextNode(moveText));
         link.href = '#';
-        link.onclick = function (e) { theBoard.displayMove.
-            call(theBoard, e.currentTarget);
+        link.onclick = function (e) {
+            theBoard.makeMove.call(theBoard,
+                theBoard.pgn.moveTree.findByLink.call(theBoard,
+                    theBoard.pgn.moveTree, e.currentTarget));
             return false;
             };
         link.setAttribute("data-moveNumber", moveNumber);
