@@ -323,41 +323,6 @@
                     getAttribute("data-squarename")).toBe("h1");
             });
         });
-        describe("Working with Forsythe and display boards", function() {    
-            beforeEach(function(){
-            /*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
-            
-                var movediv = document.getElementById("game1");
-                movediv.innerHTML = aGame;
-        
-                var game = new MarshallPGN.Game("game1");
-                this.board = game.board;
-            });
-            afterEach(function () {
-                var boardDiv = document.getElementById("game1_board");
-                while (boardDiv.firstChild) {
-                    boardDiv.removeChild(boardDiv.firstChild);
-                }
-            });
-            it("should draw the correct position on screen", function(){
-                var forsythe =
-                        "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR",
-                    flags = " b KQ - 0 4";
-    
-                this.board.drawFEN(forsythe + flags);
-                expect(this.board.getForsytheFromDisplay()).
-                        toBe("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR");
-            });
-            
-            it("should work without requiring the FEN flags", function(){
-                var forsythe =
-                        "r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR";
-    
-                this.board.drawFEN(forsythe);
-                expect(this.board.getForsytheFromDisplay()).
-                        toBe("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR");
-            });
-        });
         describe("Board - Outputting HTML MoveTree", function () {
             beforeEach(function () {
             /*:DOC += <div><div id="game1"></div><div id="game1_board"></div><div id="testmoves"></div></div> */

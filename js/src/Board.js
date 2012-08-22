@@ -732,45 +732,6 @@ MarshallPGN.Board.prototype = {
         return link;
     },
     /**
-     *	Returns the current position in Forsythe notation.
-     *
-     * @return  {string}    The FEN position
-     */
-    getForsytheFromDisplay: function () {
-        "use strict";
-        var position = "/",
-            empty,
-            rank,
-            files,
-            file,
-            piece,
-            ranks = this.displayBoard.childNodes;	// all child nodes are tr's
-
-        function addEmpties() {
-            if (empty > 0) {
-                position = position + empty;
-                empty = 0;
-            }
-        }
-        for (rank = 0; rank < 8; rank += 1) {
-            empty = 0;
-            files = ranks[rank].childNodes;		// all child nodes are td's
-            for (file = 0; file < 8; file += 1) {
-                piece = files[file].getAttribute('data-symbol');
-                if (piece !== " ") {
-                    addEmpties();
-                    position = position + piece;
-                } else {
-                    empty += 1;
-                }
-            }
-            addEmpties();
-            position = position + "/";
-        }
-
-        return position.slice(1, -1);	// Remove the first and last slash
-    },
-    /**
      * Given a FEN, create it on the output position.
      *
      * @param   {string}    The FEN string
