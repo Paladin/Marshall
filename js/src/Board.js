@@ -721,10 +721,10 @@ MarshallPGN.Board.prototype = {
      */
     addMoveLink:    function (moveText, moveNumber, color, fen) {
         "use strict";
-        var link = this.createWithAttribs("a", {"class": "move"}),
+        var link = this.createWithAttribs("button",
+                {"class": "move", "type": "button"}),
             theBoard = this;
         link.appendChild(document.createTextNode(moveText));
-        link.href = '#';
         this.addClickListener(link, function (e) {
             theBoard.makeMove.call(theBoard,
                 theBoard.pgn.moveTree.findByLink.call(theBoard.pgn.moveTree,

@@ -181,12 +181,17 @@ body, select, input, textarea {
 	text-align: center;
 }
 
+.basic .move_list { font-size: 16px; }
+.basic .move {
+	font-size: 16px;
+	font-weight: bold;
+	padding: 1px 3px;
+	border: none;
+	background: transparent;
+}
 .basic .current_move { font-weight: bold; background-color: #CCC; }
-.basic .move { font-weight: bold; padding: 1px 3px;}
-.basic a.move { color: black; }
 .basic .variation { font-size: 95%; }
-.basic .variation a.move {color: #565; }
-.basic .variation .move { padding: 1px 2px; }
+.basic .variation .move {color: #565; padding: 1px 2px; }
 .basic .commentary { font-style: italic; color: #565; }
 
 /**************************************************************************
@@ -362,13 +367,17 @@ body, select, input, textarea {
 	text-align: center;
 }
 
-.scroller .move_list { overflow-y: scroll; height: 22em; line-height: 1.3; }
+.scroller .move_list { font-size: 14px; overflow-y: scroll; height: 25em; line-height: 1.3; }
+.scroller .move {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 1px 3px;
+	border: none;
+	background: transparent;
+}
 .scroller .current_move { font-weight: bold; background-color: #BBC; }
-.scroller .move { font-weight: bold; padding: 1px 3px;}
-.scroller a.move { color: black; }
 .scroller .variation { font-size: 95%; }
-.scroller .variation a.move {color: #665; }
-.scroller .variation .move { padding: 1px 2px; }
+.scroller .variation .move {color: #665; padding: 1px 2px; }
 .scroller .commentary { font-style: italic; color: #665; }
 
 /**************************************************************************
@@ -546,13 +555,15 @@ body, select, input, textarea {
 }
 
 .bluesmall .move_list {font-size: 11px;}
-.bluesmall .current_move { font-weight: bold; background-color: #a4d7e8; }
 .bluesmall .move { 
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-weight: bold;
 	padding: 1px 3px;
+	color: #037384;
+	border: none;
+	background: transparent;
 }
-.bluesmall a.move { color: #037384; }
+.bluesmall .current_move { font-weight: bold; background-color: #a4d7e8; }
 .bluesmall .variation .move { padding: 1px 2px; }
 .bluesmall .commentary { font-style: italic; color: #444; }
 
@@ -730,13 +741,17 @@ body, select, input, textarea {
 	text-align: center;
 }
 
-.blue .current_move { font-weight: bold; background-color: #a4d7e8; }
+.blue .move_list { font-size: 16px; }
 .blue .move { 
+	font-size: 16px;
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-weight: bold;
 	padding: 1px 3px;
+	border: none;
+	background: transparent;
+	color: #037384;
 }
-.blue a.move { color: #037384; }
+.blue .current_move { font-weight: bold; background-color: #a4d7e8; }
 .blue .variation .move { padding: 1px 2px; }
 .blue .commentary { font-style: italic; color: #444; }
 
