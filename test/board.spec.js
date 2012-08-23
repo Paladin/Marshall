@@ -233,7 +233,7 @@
             it(" Should not display Diagram title", function () {
                 var myBoard = new MarshallPGN.Board(new MarshallPGN.VBoard(),
                         pgn, "game1_board", {"showDiagramTitle": false});
-                expect(myBoard.visuals.pgn.boardCaption.nodeValue).toBeFalsy();
+                expect(myBoard.visuals.pgn.boardCaption.nodeValue).toBe("");
             });
             it(" Should display the optional Diagram title", function () {
                 var myBoard = new MarshallPGN.Board(new MarshallPGN.VBoard(),

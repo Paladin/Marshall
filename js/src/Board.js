@@ -566,7 +566,7 @@ MarshallPGN.Board.prototype = {
                 { "class": "time_control" }, this.pgn.props.TimeControl || " ");
 
         this.visuals.pgn.boardCaption.nodeValue = this.opts.showDiagramTitle ?
-                    (this.opts.diagramTitle || this.gameOpponents()) : null;
+                    (this.opts.diagramTitle || this.gameOpponents()) : "";
 
         return this.visuals.gameInfo;
     },
