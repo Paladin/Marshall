@@ -384,51 +384,51 @@
             	    getAttribute("data-symbol")).toBe("B");
             });
             it(" Should have only the back and variation buttons disabled", function () {
-                expect(this.board.visuals.button.rewind.className).
+                expect(this.board.visuals.button.rewind.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.back.className).
+                expect(this.board.visuals.button.back.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.down.className).
+                expect(this.board.visuals.button.down.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.up.className).
+                expect(this.board.visuals.button.up.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.forward.className).
+                expect(this.board.visuals.button.forward.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.fastforward.className).
+                expect(this.board.visuals.button.fastforward.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
             });
             it(" Should have only the up variation button disabled", function () {
                 window[this.board.id].makeMove(
                     this.board.pgn.moveTree.next.next.next.next
                     );
-                expect(this.board.visuals.button.rewind.className).
+                expect(this.board.visuals.button.rewind.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.back.className).
+                expect(this.board.visuals.button.back.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.down.className).
+                expect(this.board.visuals.button.down.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.up.className).
+                expect(this.board.visuals.button.up.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.forward.className).
+                expect(this.board.visuals.button.forward.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.fastforward.className).
+                expect(this.board.visuals.button.fastforward.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
             });
             it(" Should have the back and down variation buttons disabled", function () {
                 window[this.board.id].makeMove(
                     this.board.pgn.moveTree.next.next.next.next.down
                     );
-                expect(this.board.visuals.button.rewind.className).
+                expect(this.board.visuals.button.rewind.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.back.className).
+                expect(this.board.visuals.button.back.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.down.className).
+                expect(this.board.visuals.button.down.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.up.className).
+                expect(this.board.visuals.button.up.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.forward.className).
+                expect(this.board.visuals.button.forward.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.fastforward.className).
+                expect(this.board.visuals.button.fastforward.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
             });
             it(" Should make the second move for white in main line", function () {
@@ -436,17 +436,17 @@
                     this.board.pgn.moveTree.next.next.next
                     );
                 expect(this.board.visuals.currentMove.data).toBe("2. Qh6+!!");
-                expect(this.board.visuals.button.rewind.className).
+                expect(this.board.visuals.button.rewind.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.back.className).
+                expect(this.board.visuals.button.back.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.down.className).
+                expect(this.board.visuals.button.down.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.up.className).
+                expect(this.board.visuals.button.up.getAttribute("disabled")).
                     toMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.forward.className).
+                expect(this.board.visuals.button.forward.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
-                expect(this.board.visuals.button.fastforward.className).
+                expect(this.board.visuals.button.fastforward.getAttribute("disabled")).
                     toNotMatch(/\bdisabled\b/);
             });
             it(" Should make the fourth move for black in main line", function () {

@@ -236,13 +236,13 @@ MarshallPGN.Board.prototype = {
      */
     makeButton: function (btnContainer, btnName, btnTitle, disabled, handler) {
         "use strict";
-        var button = this.createWithAttribs("a",
-            { "class": btnName + (disabled ? ' disabled' : '') });
+        var button = this.createWithAttribs("button",
+            { "class": btnName});
 
-        button.href = "#";
+        if (disabled) { button.setAttribute("disabled", "disabled"); }
+        button.type = "Button";
         button.alt = this.opts[btnTitle];
         button.title = this.opts[btnTitle];
-        button.innerHTML = "&nbsp;";
         this.addClickListener(button, handler);
         btnContainer.appendChild(button);
         return button;
@@ -327,9 +327,9 @@ MarshallPGN.Board.prototype = {
     setButtonState :    function (button, option) {
         "use strict";
         if (option !== null) {
-            button.className = button.className.replace("disabled").trim();
-        } else if (!button.className.match("disabled")) {
-            button.className += " disabled";
+            button.removeAttribute("disabled");
+        } else {
+            button.setAttribute("disabled", "disabled");
         }
     },
     /**
@@ -729,9 +729,9 @@ MarshallPGN.Board.prototype = {
             theBoard.makeMove.call(theBoard,
                 theBoard.pgn.moveTree.findByLink.call(theBoard.pgn.moveTree,
                     theBoard.pgn.moveTree, e.currentTarget));
-                e.preventDefault();
+            e.preventDefault();
             return false;
-            });
+        });
         link.setAttribute("data-moveNumber", moveNumber);
         link.setAttribute("data-color", color);
         link.setAttribute("data-id", this.id);
@@ -761,13 +761,14 @@ MarshallPGN.Board.prototype = {
             }
         }
     },
-    addClickListener: function(element, handler) {
+    addClickListener: function (element, handler) {
+        "use strict";
         if (element.addEventListener) {
             element.addEventListener("click", handler, false);
         } else if (element.attachEvent) {
             element.attachEvent("onclick", handler);
         } else {
-            element["onclick"] = handler;
+            element.onclick = handler;
         }
     }
 };

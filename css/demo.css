@@ -125,7 +125,7 @@ body, select, input, textarea {
 	margin: 0 auto;
 }
 
-.basic .board_controls a {
+.basic .board_controls button {
 	text-decoration: none;
 	width: 27px;
 	height: 30px;
@@ -134,38 +134,39 @@ body, select, input, textarea {
 	*display: inline;
 	background-image: url(../img/buttons/greenbar240.png);
 	background-repeat: no-repeat;
+	border: none;
 }
-.basic .board_controls a.rwind {
+.basic .board_controls button.rwind {
 	background-position: left center;
 }
-.basic .board_controls a.back {
+.basic .board_controls button.back {
 	background-position: -27px center;
 }
-.basic .board_controls a.up {
+.basic .board_controls button.up {
 	background-position: -54px center;
 }
-.basic .board_controls a.flip {
+.basic .board_controls button.flip {
 	background-position: -80px center;
 	width: 26px;
 }
-.basic .board_controls a.toggle {
+.basic .board_controls button.toggle {
 	background-position: -106px center;
 	width: 26px;
 }
-.basic .board_controls a.comments {
+.basic .board_controls button.comments {
 	background-position: -132px center;
 	width: 26px;
 }
-.basic .board_controls a.down {
+.basic .board_controls button.down {
 	background-position: -159px center;
 }
-.basic .board_controls a.forward {
+.basic .board_controls button.forward {
 	background-position: -186px center;
 }
-.basic .board_controls a.ffward {
+.basic .board_controls button.ffward {
 	background-position: -213px center;
 }
-.basic .board_controls a.disabled { opacity: 0.4; }
+.basic .board_controls button[disabled] { opacity: 0.4; }
 
 .basic .current_move_box { text-align: center;}
 .basic .current_move_box {
@@ -305,7 +306,7 @@ body, select, input, textarea {
 	margin: 0 auto;
 }
 
-.scroller .board_controls a {
+.scroller .board_controls button {
 	text-decoration: none;
 	width: 27px;
 	height: 30px;
@@ -314,38 +315,39 @@ body, select, input, textarea {
 	*display: inline;
 	background-image: url(../img/buttons/bar240.png);
 	background-repeat: no-repeat;
+	border: none;
 }
-.scroller .board_controls a.rwind {
+.scroller .board_controls button.rwind {
 	background-position: left center;
 }
-.scroller .board_controls a.back {
+.scroller .board_controls button.back {
 	background-position: -27px center;
 }
-.scroller .board_controls a.up {
+.scroller .board_controls button.up {
 	background-position: -54px center;
 }
-.scroller .board_controls a.flip {
+.scroller .board_controls button.flip {
 	background-position: -80px center;
 	width: 26px;
 }
-.scroller .board_controls a.toggle {
+.scroller .board_controls button.toggle {
 	background-position: -106px center;
 	width: 26px;
 }
-.scroller .board_controls a.comments {
+.scroller .board_controls button.comments {
 	background-position: -132px center;
 	width: 26px;
 }
-.scroller .board_controls a.down {
+.scroller .board_controls button.down {
 	background-position: -159px center;
 }
-.scroller .board_controls a.forward {
+.scroller .board_controls button.forward {
 	background-position: -186px center;
 }
-.scroller .board_controls a.ffward {
+.scroller .board_controls button.ffward {
 	background-position: -213px center;
 }
-.scroller .board_controls a.disabled { opacity: 0.4; }
+.scroller .board_controls button[disabled] { opacity: 0.4; }
 
 .scroller .current_move_box { text-align: center;}
 .scroller .current_move_box {
@@ -488,7 +490,7 @@ body, select, input, textarea {
 	padding: 0 3px;
 }
 
-.bluesmall .board_controls a {
+.bluesmall .board_controls button {
 	text-decoration: none;
 	width: 22px;
 	height: 25px;
@@ -497,37 +499,38 @@ body, select, input, textarea {
 	*display: inline;
 	background-image: url(../img/buttons/bluebarsmall.png);
 	background-repeat: no-repeat;
+	border: none;
 }
-.bluesmall .board_controls a.rwind {
+.bluesmall .board_controls button.rwind {
 	background-position: left center;
 }
-.bluesmall .board_controls a.back {
+.bluesmall .board_controls button.back {
 	background-position: -22px center;
 }
-.bluesmall .board_controls a.up {
+.bluesmall .board_controls button.up {
 	background-position: -44px center;
 }
-.bluesmall .board_controls a.flip {
+.bluesmall .board_controls button.flip {
 	background-position: -66px center;
 }
-.bluesmall .board_controls a.toggle {
+.bluesmall .board_controls button.toggle {
 	background-position: -89px center;
 	width: 23px;
 }
-.bluesmall .board_controls a.comments {
+.bluesmall .board_controls button.comments {
 	background-position: -112px center;
 	width: 23px;
 }
-.bluesmall .board_controls a.down {
+.bluesmall .board_controls button.down {
 	background-position: -134px center;
 }
-.bluesmall .board_controls a.forward {
+.bluesmall .board_controls button.forward {
 	background-position: -156px center;
 }
-.bluesmall .board_controls a.ffward {
+.bluesmall .board_controls button.ffward {
 	background-position: -178px center;
 }
-.bluesmall .board_controls a.disabled { opacity: 0.7; }
+.bluesmall .board_controls button[disabled] { opacity: 0.7; }
 
 .bluesmall .current_move_box { text-align: center;}
 .bluesmall .current_move_box {
@@ -672,7 +675,7 @@ body, select, input, textarea {
 	padding: 0 3px;
 }
 
-.blue .board_controls a {
+.blue .board_controls button {
 	text-decoration: none;
 	width: 30px;
 	height: 34px;
@@ -681,37 +684,38 @@ body, select, input, textarea {
 	*display: inline;
 	background-image: url(../img/buttons/bluebar34.png);
 	background-repeat: no-repeat;
+	border: none;
 }
-.blue .board_controls a.rwind {
+.blue .board_controls button.rwind {
 	background-position: left center;
 }
-.blue .board_controls a.back {
+.blue .board_controls button.back {
 	background-position: -30px center;
 }
-.blue .board_controls a.up {
+.blue .board_controls button.up {
 	background-position: -60px center;
 }
-.blue .board_controls a.flip {
+.blue .board_controls button.flip {
 	background-position: -90px center;
 }
-.blue .board_controls a.toggle {
+.blue .board_controls button.toggle {
 	background-position: -121px center;
 	width: 31px;
 }
-.blue .board_controls a.comments {
+.blue .board_controls button.comments {
 	background-position: -152px center;
 	width: 31px;
 }
-.blue .board_controls a.down {
+.blue .board_controls button.down {
 	background-position: -182px center;
 }
-.blue .board_controls a.forward {
+.blue .board_controls button.forward {
 	background-position: -212px center;
 }
-.blue .board_controls a.ffward {
+.blue .board_controls button.ffward {
 	background-position: -242px center;
 }
-.blue .board_controls a.disabled { opacity: 0.7; }
+.blue .board_controls button[disabled] { opacity: 0.7; }
 
 .blue .current_move_box { text-align: center;}
 .blue .current_move_box {
