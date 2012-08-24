@@ -14,6 +14,8 @@ html { background-color: #EEE; }
 body {
 	margin: 1em 2em;
 	padding: 1em;
+	border: 4px outset #565;
+	border-radius: 20px;
 }
 /**
  * Hide pgn source data
@@ -203,6 +205,10 @@ body {
 /**************************************************************************
  * Styles for scroller
  */
+#scroller {
+	border-top: 2px inset #444;
+	border-bottom: 2px inset #444;
+}
 #scroller .game_display {
 	margin: 1em;
 	padding: 1em;
@@ -212,6 +218,15 @@ body {
 }
 
 #scroller .game_display header { margin: 0 1em 0.5em 0em; }
+#scroller .game_display:before,
+#scroller .game_display:after { content: ""; display: table; }
+#scroller .game_display:after { clear: both; }
+#scroller .game_display { zoom: 1; }
+#scroller .game_display header:before,
+#scroller .game_display header:after { content: ""; display: table; }
+#scroller .game_display header:after { clear: both; }
+#scroller .game_display header { zoom: 1; }
+
 #scroller .game_display h1 {
 	margin: 0;
 	float: right;
@@ -389,31 +404,36 @@ body {
 /**************************************************************************
  * Styles for bluesmall
  */
+#bluesmall {
+	width: 300px;
+	float: right;
+	margin-left: 1em;
+	background-color: #ffe;
+	border: 5px gray double;
+}
+#bluesmall h2, #bluesmall p { padding: 0 1em; }
 #bluesmall .game_display {
+	font-family: Georgia, "Times New Roman", Times, serif;
 	margin: 1em;
 	padding: 1em;
-	border: 5px gray double;
-	background-color: #ffe;
 	display: block;
 }
 
 #bluesmall .game_display header { margin: 0 1em 0.5em 0em; }
 #bluesmall .game_display h1 {
 	margin: 0;
-	float: right;
+	font-size: 1.3rem;
 }
 #bluesmall p.PGNlink {
 	font-size: 90%;
-	padding: 1em 0 0 0;
+	padding: 0.3em 0 0 0;
 	margin: 0;
-	float: left;
 }
 
 #bluesmall .mainboard {
 	height: 340px;
 	width: 200px;
-	float: left;
-	margin: 0 1em 1em 0;
+	margin: 0 auto 1em auto;
 	padding-right: 20px;
 }
 
@@ -560,7 +580,7 @@ body {
 	text-align: center;
 }
 
-#bluesmall .move_list {font-size: 11px;}
+#bluesmall .move_list {font-size: 12px;}
 #bluesmall .move { 
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-weight: bold;
@@ -571,7 +591,7 @@ body {
 }
 #bluesmall .current_move { font-weight: bold; background-color: #a4d7e8; }
 #bluesmall .variation .move { padding: 1px 2px; }
-#bluesmall .commentary { font-style: italic; color: #444; }
+#bluesmall .commentary { color: #444; }
 
 /**************************************************************************
  * Styles for blue
@@ -760,6 +780,14 @@ body {
 #blue .current_move { font-weight: bold; background-color: #a4d7e8; }
 #blue .variation .move { padding: 1px 2px; }
 #blue .commentary { font-style: italic; color: #444; }
+#blue .game_display:before  { content: ""; display: table; }
+#blue .game_display:after { content: ""; display: table; }
+#blue .game_display:after { clear: both; }
+#blue .game_display { zoom: 1; }
+#blue .game_display header:before,
+#blue .game_display header:after { content: ""; display: table; }
+#blue .game_display header:after { clear: both; }
+#blue .game_display header { zoom: 1; }
 
 
 /**
