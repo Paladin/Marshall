@@ -237,10 +237,9 @@ MarshallPGN.Board.prototype = {
     makeButton: function (btnContainer, btnName, btnTitle, disabled, handler) {
         "use strict";
         var button = this.createWithAttribs("button",
-            { "class": btnName});
+            { "class": btnName, "type": "Button"});
 
         if (disabled) { button.setAttribute("disabled", "disabled"); }
-        button.type = "Button";
         button.alt = this.opts[btnTitle];
         button.title = this.opts[btnTitle];
         this.addClickListener(button, handler);
