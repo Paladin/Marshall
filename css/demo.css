@@ -5,9 +5,15 @@
 body, select, input, textarea {
   /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
   color: #444;
-  background-color: #efe;
+  background-color: #EFE;
   /* Set your base font here, to apply evenly */
   /* font-family: Georgia, serif;  */
+}
+
+html { background-color: #EEE; }
+body {
+	margin: 1em 2em;
+	padding: 1em;
 }
 /**
  * Hide pgn source data
@@ -17,21 +23,21 @@ body, select, input, textarea {
 /**************************************************************************
  * Styles for Basic
  */
-.basic .game_display {
+#basic .game_display {
 	margin: 1em;
 	padding: 1em;
 	display: block;
 }
 
-.basic .game_display header { margin: 0 1em 0.5em 0em; }
-.basic h1 {margin: 0}
-.basic p.PGNlink {
+#basic .game_display header { margin: 0 1em 0.5em 0em; }
+#basic h1 {margin: 0}
+#basic p.PGNlink {
 	font-size: 90%;
 	padding: 0;
 	margin: 0;
 }
 
-.basic .mainboard {
+#basic .mainboard {
 	height: 340px;
 	width: 240px;
 	float: left;
@@ -39,84 +45,84 @@ body, select, input, textarea {
 	padding-right: 20px;
 }
 
-.basic .gameboard {
+#basic .gameboard {
 	height: 240px; // Basic piece set is 30x30
 	width: 240px;
 	margin: 0 auto;
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-.basic .dark_square, .basic .light_square {
+#basic .dark_square, #basic .light_square {
 	height:30px;
 	width:30px;
 }
-.basic .dark_square { background-color: #898; }
-.basic .light_square { background-color: #DDC; }
-.basic .gameboard td {
+#basic .dark_square { background-color: #898; }
+#basic .light_square { background-color: #DDC; }
+#basic .gameboard td {
 	padding: 0;
 	background-repeat: no-repeat;
 }
-.basic td[data-symbol="p"] {
+#basic td[data-symbol="p"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -30px center;
 }
 
-.basic td[data-symbol="n"] {
+#basic td[data-symbol="n"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -60px center;
 }
 
-.basic td[data-symbol="b"] {
+#basic td[data-symbol="b"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -90px center;
 }
 
-.basic td[data-symbol="r"] {
+#basic td[data-symbol="r"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -120px center;
 }
 
-.basic td[data-symbol="q"] {
+#basic td[data-symbol="q"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -150px center;
 }
 
-.basic td[data-symbol="k"] {
+#basic td[data-symbol="k"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -180px center;
 }
 
-.basic td[data-symbol="K"] {
+#basic td[data-symbol="K"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -210px center;
 }
 
-.basic td[data-symbol="Q"] {
+#basic td[data-symbol="Q"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -240px center;
 }
 
-.basic td[data-symbol="R"] {
+#basic td[data-symbol="R"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -270px center;
 }
 
-.basic td[data-symbol="B"] {
+#basic td[data-symbol="B"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -300px center;
 }
 
-.basic td[data-symbol="N"] {
+#basic td[data-symbol="N"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -330px center;
 }
 
-.basic td[data-symbol="P"] {
+#basic td[data-symbol="P"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -360px center;
 }
 
-.basic .board_controls
+#basic .board_controls
 {
 	height: 30px;
 	text-align: center;
@@ -125,7 +131,7 @@ body, select, input, textarea {
 	margin: 0 auto;
 }
 
-.basic .board_controls button {
+#basic .board_controls button {
 	text-decoration: none;
 	width: 27px;
 	height: 30px;
@@ -136,68 +142,68 @@ body, select, input, textarea {
 	background-repeat: no-repeat;
 	border: none;
 }
-.basic .board_controls button.rwind {
+#basic .board_controls button.rwind {
 	background-position: left center;
 }
-.basic .board_controls button.back {
+#basic .board_controls button.back {
 	background-position: -27px center;
 }
-.basic .board_controls button.up {
+#basic .board_controls button.up {
 	background-position: -54px center;
 }
-.basic .board_controls button.flip {
+#basic .board_controls button.flip {
 	background-position: -80px center;
 	width: 26px;
 }
-.basic .board_controls button.toggle {
+#basic .board_controls button.toggle {
 	background-position: -106px center;
 	width: 26px;
 }
-.basic .board_controls button.comments {
+#basic .board_controls button.comments {
 	background-position: -132px center;
 	width: 26px;
 }
-.basic .board_controls button.down {
+#basic .board_controls button.down {
 	background-position: -159px center;
 }
-.basic .board_controls button.forward {
+#basic .board_controls button.forward {
 	background-position: -186px center;
 }
-.basic .board_controls button.ffward {
+#basic .board_controls button.ffward {
 	background-position: -213px center;
 }
-.basic .board_controls button[disabled] { opacity: 0.4; }
+#basic .board_controls button[disabled] { opacity: 0.4; }
 
-.basic .current_move_box { text-align: center;}
-.basic .current_move_box {
+#basic .current_move_box { text-align: center;}
+#basic .current_move_box {
 	margin: 0;
 	padding: 0;
 }
 
-.basic .game_info {display: block;}
-.basic .game_info p {
+#basic .game_info {display: block;}
+#basic .game_info p {
 	padding: 0;
 	margin: 0;
 	text-align: center;
 }
 
-.basic .move_list { font-size: 16px; }
-.basic .move {
+#basic .move_list { font-size: 16px; }
+#basic .move {
 	font-size: 16px;
 	font-weight: bold;
 	padding: 1px 3px;
 	border: none;
 	background: transparent;
 }
-.basic .current_move { font-weight: bold; background-color: #CCC; }
-.basic .variation { font-size: 95%; }
-.basic .variation .move {color: #565; padding: 1px 2px; }
-.basic .commentary { font-style: italic; color: #565; }
+#basic .current_move { font-weight: bold; background-color: #CCC; }
+#basic .variation { font-size: 95%; }
+#basic .variation .move {color: #565; padding: 1px 2px; }
+#basic .commentary { font-style: italic; color: #565; }
 
 /**************************************************************************
  * Styles for scroller
  */
-.scroller .game_display {
+#scroller .game_display {
 	margin: 1em;
 	padding: 1em;
 	border: 5px gray double;
@@ -205,19 +211,19 @@ body, select, input, textarea {
 	display: block;
 }
 
-.scroller .game_display header { margin: 0 1em 0.5em 0em; }
-.scroller .game_display h1 {
+#scroller .game_display header { margin: 0 1em 0.5em 0em; }
+#scroller .game_display h1 {
 	margin: 0;
 	float: right;
 }
-.scroller p.PGNlink {
+#scroller p.PGNlink {
 	font-size: 90%;
 	padding: 1em 0 0 0;
 	margin: 0;
 	float: left;
 }
 
-.scroller .mainboard {
+#scroller .mainboard {
 	height: 340px;
 	width: 240px;
 	float: left;
@@ -225,84 +231,84 @@ body, select, input, textarea {
 	padding-right: 20px;
 }
 
-.scroller .gameboard {
+#scroller .gameboard {
 	height: 240px; 			/* Basic piece set is 30x30 */
 	width: 240px;
 	margin: 0 auto;
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-.scroller .dark_square, .scroller .light_square {
+#scroller .dark_square, #scroller .light_square {
 	height:30px;
 	width:30px;
 }
-.scroller .dark_square { background-color: #666; }
-.scroller .light_square { background-color: #CCC; }
-.scroller .gameboard td {
+#scroller .dark_square { background-color: #666; }
+#scroller .light_square { background-color: #CCC; }
+#scroller .gameboard td {
 	padding: 0;
 	background-repeat: no-repeat;
 }
-.scroller td[data-symbol="p"] {
+#scroller td[data-symbol="p"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -30px center;
 }
 
-.scroller td[data-symbol="n"] {
+#scroller td[data-symbol="n"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -60px center;
 }
 
-.scroller td[data-symbol="b"] {
+#scroller td[data-symbol="b"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -90px center;
 }
 
-.scroller td[data-symbol="r"] {
+#scroller td[data-symbol="r"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -120px center;
 }
 
-.scroller td[data-symbol="q"] {
+#scroller td[data-symbol="q"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -150px center;
 }
 
-.scroller td[data-symbol="k"] {
+#scroller td[data-symbol="k"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -180px center;
 }
 
-.scroller td[data-symbol="K"] {
+#scroller td[data-symbol="K"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -210px center;
 }
 
-.scroller td[data-symbol="Q"] {
+#scroller td[data-symbol="Q"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -240px center;
 }
 
-.scroller td[data-symbol="R"] {
+#scroller td[data-symbol="R"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -270px center;
 }
 
-.scroller td[data-symbol="B"] {
+#scroller td[data-symbol="B"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -300px center;
 }
 
-.scroller td[data-symbol="N"] {
+#scroller td[data-symbol="N"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -330px center;
 }
 
-.scroller td[data-symbol="P"] {
+#scroller td[data-symbol="P"] {
 	background-image: url(../img/pieces/default.gif);
 	background-position: -360px center;
 }
 
-.scroller .board_controls
+#scroller .board_controls
 {
 	height: 30px;
 	text-align: center;
@@ -311,7 +317,7 @@ body, select, input, textarea {
 	margin: 0 auto;
 }
 
-.scroller .board_controls button {
+#scroller .board_controls button {
 	text-decoration: none;
 	width: 27px;
 	height: 30px;
@@ -322,68 +328,68 @@ body, select, input, textarea {
 	background-repeat: no-repeat;
 	border: none;
 }
-.scroller .board_controls button.rwind {
+#scroller .board_controls button.rwind {
 	background-position: left center;
 }
-.scroller .board_controls button.back {
+#scroller .board_controls button.back {
 	background-position: -27px center;
 }
-.scroller .board_controls button.up {
+#scroller .board_controls button.up {
 	background-position: -54px center;
 }
-.scroller .board_controls button.flip {
+#scroller .board_controls button.flip {
 	background-position: -80px center;
 	width: 26px;
 }
-.scroller .board_controls button.toggle {
+#scroller .board_controls button.toggle {
 	background-position: -106px center;
 	width: 26px;
 }
-.scroller .board_controls button.comments {
+#scroller .board_controls button.comments {
 	background-position: -132px center;
 	width: 26px;
 }
-.scroller .board_controls button.down {
+#scroller .board_controls button.down {
 	background-position: -159px center;
 }
-.scroller .board_controls button.forward {
+#scroller .board_controls button.forward {
 	background-position: -186px center;
 }
-.scroller .board_controls button.ffward {
+#scroller .board_controls button.ffward {
 	background-position: -213px center;
 }
-.scroller .board_controls button[disabled] { opacity: 0.4; }
+#scroller .board_controls button[disabled] { opacity: 0.4; }
 
-.scroller .current_move_box { text-align: center;}
-.scroller .current_move_box {
+#scroller .current_move_box { text-align: center;}
+#scroller .current_move_box {
 	margin: 0;
 	padding: 0;
 }
 
-.scroller .game_info {display: block;}
-.scroller .game_info p {
+#scroller .game_info {display: block;}
+#scroller .game_info p {
 	padding: 0;
 	margin: 0;
 	text-align: center;
 }
 
-.scroller .move_list { font-size: 14px; overflow-y: scroll; height: 25em; line-height: 1.3; }
-.scroller .move {
+#scroller .move_list { font-size: 14px; overflow-y: scroll; height: 25em; line-height: 1.3; }
+#scroller .move {
 	font-size: 14px;
 	font-weight: bold;
 	padding: 1px 3px;
 	border: none;
 	background: transparent;
 }
-.scroller .current_move { font-weight: bold; background-color: #BBC; }
-.scroller .variation { font-size: 95%; }
-.scroller .variation .move {color: #665; padding: 1px 2px; }
-.scroller .commentary { font-style: italic; color: #665; }
+#scroller .current_move { font-weight: bold; background-color: #BBC; }
+#scroller .variation { font-size: 95%; }
+#scroller .variation .move {color: #665; padding: 1px 2px; }
+#scroller .commentary { font-style: italic; color: #665; }
 
 /**************************************************************************
  * Styles for bluesmall
  */
-.bluesmall .game_display {
+#bluesmall .game_display {
 	margin: 1em;
 	padding: 1em;
 	border: 5px gray double;
@@ -391,19 +397,19 @@ body, select, input, textarea {
 	display: block;
 }
 
-.bluesmall .game_display header { margin: 0 1em 0.5em 0em; }
-.bluesmall .game_display h1 {
+#bluesmall .game_display header { margin: 0 1em 0.5em 0em; }
+#bluesmall .game_display h1 {
 	margin: 0;
 	float: right;
 }
-.bluesmall p.PGNlink {
+#bluesmall p.PGNlink {
 	font-size: 90%;
 	padding: 1em 0 0 0;
 	margin: 0;
 	float: left;
 }
 
-.bluesmall .mainboard {
+#bluesmall .mainboard {
 	height: 340px;
 	width: 200px;
 	float: left;
@@ -411,7 +417,7 @@ body, select, input, textarea {
 	padding-right: 20px;
 }
 
-.bluesmall .gameboard {
+#bluesmall .gameboard {
 	height: 206px; 			/* small piece set is 25x25 */
 	width: 206px;
 	margin: 0 auto;
@@ -419,77 +425,77 @@ body, select, input, textarea {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-.bluesmall .dark_square, .bluesmall .light_square {
+#bluesmall .dark_square, #bluesmall .light_square {
 	height:25px;
 	width:25px;
 }
-.bluesmall .dark_square { background-color: #a4d7e8; }
-.bluesmall .light_square { background-color: #FFF; }
-.bluesmall .gameboard td {
+#bluesmall .dark_square { background-color: #a4d7e8; }
+#bluesmall .light_square { background-color: #FFF; }
+#bluesmall .gameboard td {
 	padding: 0;
 	background-repeat: no-repeat;
 }
-.bluesmall td[data-symbol="p"] {
+#bluesmall td[data-symbol="p"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -25px center;
 }
 
-.bluesmall td[data-symbol="n"] {
+#bluesmall td[data-symbol="n"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -50px center;
 }
 
-.bluesmall td[data-symbol="b"] {
+#bluesmall td[data-symbol="b"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -75px center;
 }
 
-.bluesmall td[data-symbol="r"] {
+#bluesmall td[data-symbol="r"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -100px center;
 }
 
-.bluesmall td[data-symbol="q"] {
+#bluesmall td[data-symbol="q"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -125px center;
 }
 
-.bluesmall td[data-symbol="k"] {
+#bluesmall td[data-symbol="k"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -150px center;
 }
 
-.bluesmall td[data-symbol="K"] {
+#bluesmall td[data-symbol="K"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -175px center;
 }
 
-.bluesmall td[data-symbol="Q"] {
+#bluesmall td[data-symbol="Q"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -200px center;
 }
 
-.bluesmall td[data-symbol="R"] {
+#bluesmall td[data-symbol="R"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -225px center;
 }
 
-.bluesmall td[data-symbol="B"] {
+#bluesmall td[data-symbol="B"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -250px center;
 }
 
-.bluesmall td[data-symbol="N"] {
+#bluesmall td[data-symbol="N"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -275px center;
 }
 
-.bluesmall td[data-symbol="P"] {
+#bluesmall td[data-symbol="P"] {
 	background-image: url(../img/pieces/blue25.gif);
 	background-position: -300px center;
 }
 
-.bluesmall .board_controls
+#bluesmall .board_controls
 {
 	height: 25px;
 	text-align: center;
@@ -499,7 +505,7 @@ body, select, input, textarea {
 	padding: 0 3px;
 }
 
-.bluesmall .board_controls button {
+#bluesmall .board_controls button {
 	text-decoration: none;
 	width: 22px;
 	height: 25px;
@@ -510,52 +516,52 @@ body, select, input, textarea {
 	background-repeat: no-repeat;
 	border: none;
 }
-.bluesmall .board_controls button.rwind {
+#bluesmall .board_controls button.rwind {
 	background-position: left center;
 }
-.bluesmall .board_controls button.back {
+#bluesmall .board_controls button.back {
 	background-position: -22px center;
 }
-.bluesmall .board_controls button.up {
+#bluesmall .board_controls button.up {
 	background-position: -44px center;
 }
-.bluesmall .board_controls button.flip {
+#bluesmall .board_controls button.flip {
 	background-position: -66px center;
 }
-.bluesmall .board_controls button.toggle {
+#bluesmall .board_controls button.toggle {
 	background-position: -89px center;
 	width: 23px;
 }
-.bluesmall .board_controls button.comments {
+#bluesmall .board_controls button.comments {
 	background-position: -112px center;
 	width: 23px;
 }
-.bluesmall .board_controls button.down {
+#bluesmall .board_controls button.down {
 	background-position: -134px center;
 }
-.bluesmall .board_controls button.forward {
+#bluesmall .board_controls button.forward {
 	background-position: -156px center;
 }
-.bluesmall .board_controls button.ffward {
+#bluesmall .board_controls button.ffward {
 	background-position: -178px center;
 }
-.bluesmall .board_controls button[disabled] { opacity: 0.7; }
+#bluesmall .board_controls button[disabled] { opacity: 0.7; }
 
-.bluesmall .current_move_box { text-align: center;}
-.bluesmall .current_move_box {
+#bluesmall .current_move_box { text-align: center;}
+#bluesmall .current_move_box {
 	margin: 0;
 	padding: 0;
 }
 
-.bluesmall .game_info {display: block;}
-.bluesmall .game_info p {
+#bluesmall .game_info {display: block;}
+#bluesmall .game_info p {
 	padding: 0;
 	margin: 0;
 	text-align: center;
 }
 
-.bluesmall .move_list {font-size: 11px;}
-.bluesmall .move { 
+#bluesmall .move_list {font-size: 11px;}
+#bluesmall .move { 
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-weight: bold;
 	padding: 1px 3px;
@@ -563,14 +569,14 @@ body, select, input, textarea {
 	border: none;
 	background: transparent;
 }
-.bluesmall .current_move { font-weight: bold; background-color: #a4d7e8; }
-.bluesmall .variation .move { padding: 1px 2px; }
-.bluesmall .commentary { font-style: italic; color: #444; }
+#bluesmall .current_move { font-weight: bold; background-color: #a4d7e8; }
+#bluesmall .variation .move { padding: 1px 2px; }
+#bluesmall .commentary { font-style: italic; color: #444; }
 
 /**************************************************************************
  * Styles for blue
  */
-.blue .game_display {
+#blue .game_display {
 	margin: 1em;
 	padding: 1em;
 	border: 5px gray double;
@@ -578,19 +584,19 @@ body, select, input, textarea {
 	display: block;
 }
 
-.blue .game_display header { margin: 0 1em 0.5em 0em; }
-.blue .game_display h1 {
+#blue .game_display header { margin: 0 1em 0.5em 0em; }
+#blue .game_display h1 {
 	margin: 0;
 	float: right;
 }
-.blue p.PGNlink {
+#blue p.PGNlink {
 	font-size: 90%;
 	padding: 1em 0 0 0;
 	margin: 0;
 	float: left;
 }
 
-.blue .mainboard {
+#blue .mainboard {
 	height: 340px;
 	width: 278px;
 	float: left;
@@ -598,7 +604,7 @@ body, select, input, textarea {
 	padding-right: 20px;
 }
 
-.blue .gameboard {
+#blue .gameboard {
 	height: 278px; 			/*  piece set is 34x34 */
 	width: 278px;
 	margin: 0 auto;
@@ -606,77 +612,77 @@ body, select, input, textarea {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-.blue .dark_square, .blue .light_square {
+#blue .dark_square, #blue .light_square {
 	height:25px;
 	width:25px;
 }
-.blue .dark_square { background-color: #a4d7e8; }
-.blue .light_square { background-color: #FFF; }
-.blue .gameboard td {
+#blue .dark_square { background-color: #a4d7e8; }
+#blue .light_square { background-color: #FFF; }
+#blue .gameboard td {
 	padding: 0;
 	background-repeat: no-repeat;
 }
-.blue td[data-symbol="p"] {
+#blue td[data-symbol="p"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -34px center;
 }
 
-.blue td[data-symbol="n"] {
+#blue td[data-symbol="n"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -68px center;
 }
 
-.blue td[data-symbol="b"] {
+#blue td[data-symbol="b"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -102px center;
 }
 
-.blue td[data-symbol="r"] {
+#blue td[data-symbol="r"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -136px center;
 }
 
-.blue td[data-symbol="q"] {
+#blue td[data-symbol="q"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -170px center;
 }
 
-.blue td[data-symbol="k"] {
+#blue td[data-symbol="k"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -204px center;
 }
 
-.blue td[data-symbol="K"] {
+#blue td[data-symbol="K"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -238px center;
 }
 
-.blue td[data-symbol="Q"] {
+#blue td[data-symbol="Q"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -272px center;
 }
 
-.blue td[data-symbol="R"] {
+#blue td[data-symbol="R"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -306px center;
 }
 
-.blue td[data-symbol="B"] {
+#blue td[data-symbol="B"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -340px center;
 }
 
-.blue td[data-symbol="N"] {
+#blue td[data-symbol="N"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -374px center;
 }
 
-.blue td[data-symbol="P"] {
+#blue td[data-symbol="P"] {
 	background-image: url(../img/pieces/blue34.gif);
 	background-position: -408px center;
 }
 
-.blue .board_controls
+#blue .board_controls
 {
 	height: 34px;
 	text-align: center;
@@ -686,7 +692,7 @@ body, select, input, textarea {
 	padding: 0 3px;
 }
 
-.blue .board_controls button {
+#blue .board_controls button {
 	text-decoration: none;
 	width: 30px;
 	height: 34px;
@@ -697,52 +703,52 @@ body, select, input, textarea {
 	background-repeat: no-repeat;
 	border: none;
 }
-.blue .board_controls button.rwind {
+#blue .board_controls button.rwind {
 	background-position: left center;
 }
-.blue .board_controls button.back {
+#blue .board_controls button.back {
 	background-position: -30px center;
 }
-.blue .board_controls button.up {
+#blue .board_controls button.up {
 	background-position: -60px center;
 }
-.blue .board_controls button.flip {
+#blue .board_controls button.flip {
 	background-position: -90px center;
 }
-.blue .board_controls button.toggle {
+#blue .board_controls button.toggle {
 	background-position: -121px center;
 	width: 31px;
 }
-.blue .board_controls button.comments {
+#blue .board_controls button.comments {
 	background-position: -152px center;
 	width: 31px;
 }
-.blue .board_controls button.down {
+#blue .board_controls button.down {
 	background-position: -182px center;
 }
-.blue .board_controls button.forward {
+#blue .board_controls button.forward {
 	background-position: -212px center;
 }
-.blue .board_controls button.ffward {
+#blue .board_controls button.ffward {
 	background-position: -242px center;
 }
-.blue .board_controls button[disabled] { opacity: 0.7; }
+#blue .board_controls button[disabled] { opacity: 0.7; }
 
-.blue .current_move_box { text-align: center;}
-.blue .current_move_box {
+#blue .current_move_box { text-align: center;}
+#blue .current_move_box {
 	margin: 0;
 	padding: 0;
 }
 
-.blue .game_info {display: block;}
-.blue .game_info p {
+#blue .game_info {display: block;}
+#blue .game_info p {
 	padding: 0;
 	margin: 0;
 	text-align: center;
 }
 
-.blue .move_list { font-size: 16px; }
-.blue .move { 
+#blue .move_list { font-size: 16px; }
+#blue .move { 
 	font-size: 16px;
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-weight: bold;
@@ -751,9 +757,9 @@ body, select, input, textarea {
 	background: transparent;
 	color: #037384;
 }
-.blue .current_move { font-weight: bold; background-color: #a4d7e8; }
-.blue .variation .move { padding: 1px 2px; }
-.blue .commentary { font-style: italic; color: #444; }
+#blue .current_move { font-weight: bold; background-color: #a4d7e8; }
+#blue .variation .move { padding: 1px 2px; }
+#blue .commentary { font-style: italic; color: #444; }
 
 
 /**
