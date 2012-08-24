@@ -423,12 +423,17 @@ MarshallPGN.Board.prototype = {
         this.drawFEN(this.currentMove.position);
     },
     /**
-     *	Highlights the current move in the display 
+     *	Highlights the current move in the display. Also, if the current move
+     *  is out of the visible scrolling area, it scrolls to it.
      *
+     * @param   {Object}    The move that is current
      */
     highlightCurrentMove: function (move) {
         "use strict";
-        var i;
+        var i,
+            scrollPosition,
+            scrollWindow,
+            boxHeight = move.link ? move.link.scrollHeight : 0;
 
         for (i = 0; i < this.visuals.moves.length; i += 1) {
             this.visuals.moves[i].className =
@@ -438,6 +443,19 @@ MarshallPGN.Board.prototype = {
 
         if (move && move.link) {
             move.link.className += " current_move";
+        }
+        
+        if (move.link) {
+            scrollPosition = move.link.offsetTop -
+                this.movesContainer.offsetTop;
+        } else {
+            scrollPosition = 0;
+        }
+        scrollWindow = this.movesContainer.scrollTop +
+            this.movesContainer.offsetHeight;
+        if ( scrollPosition + boxHeight > scrollWindow ||
+                scrollPosition - boxHeight < this.movesContainer.scrollTop ) {
+            this.movesContainer.scrollTop = scrollPosition;
         }
     },
     /**
