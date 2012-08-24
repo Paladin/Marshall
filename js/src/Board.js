@@ -465,7 +465,7 @@ MarshallPGN.Board.prototype = {
      */
     outputGameHeader:   function () {
         "use strict";
-        var header = this.createWithAttribs("header", {"class": "clearfix"}),
+        var header = this.createWithAttribs("header"),
             title,
             code = this.createWithAttribs("p", {"class": "PGNlink"});
 
