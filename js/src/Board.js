@@ -167,60 +167,42 @@ MarshallPGN.Board.prototype = {
                     [theBoard.currentMove.goStart.apply(
                         theBoard.currentMove
                     )]);
-                e.preventDefault();
-                return false;
             });
         this.visuals.button.back = this.makeButton(buttonBar, "back",
             "altBack", false, function (e) {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.previous]);
-                e.preventDefault();
-                return false;
             });
         this.visuals.button.up = this.makeButton(buttonBar, "up",
             "altUp", true, function (e) {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.up || theBoard.currentMove]);
-                e.preventDefault();
-                return false;
             });
         this.visuals.button.flip = this.makeButton(buttonBar, "flip",
             "altFlip", false, function (e) {
                 theBoard.flipBoard();
-                e.preventDefault();
-                return false;
             });
         this.visuals.button.toggleMoves = this.makeButton(buttonBar,
             "toggle", "altShowMoves", false, function (e) {
                 theBoard.toggleMoves();
-                e.preventDefault();
-                return false;
             });
         this.visuals.button.toggleComments = this.makeButton(buttonBar,
             "comments", "altComments", false, function (e) {
                 theBoard.toggleComments();
-                e.preventDefault();
-                return false;
             });
         this.visuals.button.down = this.makeButton(buttonBar, "down",
             "altDown", true, function (e) {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.down || theBoard.currentMove]);
-                e.preventDefault();
-                return false;
             });
         this.visuals.button.forward = this.makeButton(buttonBar, "forward",
             "altPlayMove", false, function (e) {
                 theBoard.makeMove.apply(theBoard, [theBoard.currentMove.next]);
-                e.preventDefault();
-                return false;
             });
         this.visuals.button.fastforward = this.makeButton(buttonBar,
             "ffward", "altFastForward", false, function (e) {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.goEnd.apply(theBoard.currentMove)]);
-                e.preventDefault();
-                return false;
             });
         return buttonBar;
     },
@@ -745,9 +727,7 @@ MarshallPGN.Board.prototype = {
         this.addClickListener(link, function (e) {
             theBoard.makeMove.call(theBoard,
                 theBoard.pgn.moveTree.findByLink.call(theBoard.pgn.moveTree,
-                    theBoard.pgn.moveTree, e.currentTarget));
-            e.preventDefault();
-            return false;
+                    theBoard.pgn.moveTree, e.currentTarget || e.srcElement));
         });
         link.setAttribute("data-moveNumber", moveNumber);
         link.setAttribute("data-color", color);
