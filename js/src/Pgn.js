@@ -149,6 +149,7 @@ MarshallPGN.Pgn.prototype = {
      * @param   {string} property   Property name
      */
     emptyProperty:      function (property) {
+        "use strict";
         switch (property) {
         case "Date":
             return "????.??.??";

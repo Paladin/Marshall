@@ -162,45 +162,45 @@ MarshallPGN.Board.prototype = {
             theBoard = this;
 
         this.visuals.button.rewind = this.makeButton(buttonBar, "rwind",
-            "altRewind", false, function (e) {
+            "altRewind", false, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.goStart.apply(
                         theBoard.currentMove
                     )]);
             });
         this.visuals.button.back = this.makeButton(buttonBar, "back",
-            "altBack", false, function (e) {
+            "altBack", false, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.previous]);
             });
         this.visuals.button.up = this.makeButton(buttonBar, "up",
-            "altUp", true, function (e) {
+            "altUp", true, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.up || theBoard.currentMove]);
             });
         this.visuals.button.flip = this.makeButton(buttonBar, "flip",
-            "altFlip", false, function (e) {
+            "altFlip", false, function () {
                 theBoard.flipBoard();
             });
         this.visuals.button.toggleMoves = this.makeButton(buttonBar,
-            "toggle", "altShowMoves", false, function (e) {
+            "toggle", "altShowMoves", false, function () {
                 theBoard.toggleMoves();
             });
         this.visuals.button.toggleComments = this.makeButton(buttonBar,
-            "comments", "altComments", false, function (e) {
+            "comments", "altComments", false, function () {
                 theBoard.toggleComments();
             });
         this.visuals.button.down = this.makeButton(buttonBar, "down",
-            "altDown", true, function (e) {
+            "altDown", true, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.down || theBoard.currentMove]);
             });
         this.visuals.button.forward = this.makeButton(buttonBar, "forward",
-            "altPlayMove", false, function (e) {
+            "altPlayMove", false, function () {
                 theBoard.makeMove.apply(theBoard, [theBoard.currentMove.next]);
             });
         this.visuals.button.fastforward = this.makeButton(buttonBar,
-            "ffward", "altFastForward", false, function (e) {
+            "ffward", "altFastForward", false, function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.goEnd.apply(theBoard.currentMove)]);
             });
@@ -393,7 +393,9 @@ MarshallPGN.Board.prototype = {
     },
     /**
      *	This makes the next move in the game, and optionally updates the
-     *	display.
+     *	display. Assigning the board's className to itself forces IE to
+     *  reflow the board, updating the display. Otherwise IE<9 update the
+     *  moves, but not the display until the mouse is moved.
      *
      *	@param  {object}   move  The move to make on the board
      */
@@ -403,6 +405,7 @@ MarshallPGN.Board.prototype = {
         this.updateMoveInfo(this.currentMove);
         this.highlightCurrentMove(this.currentMove);
         this.drawFEN(this.currentMove.position);
+        this.displayBoard.className = this.displayBoard.className;  // IE8
     },
     /**
      *	Highlights the current move in the display. Also, if the current move
@@ -426,7 +429,7 @@ MarshallPGN.Board.prototype = {
         if (move && move.link) {
             move.link.className += " current_move";
         }
-        
+
         if (move.link) {
             scrollPosition = move.link.offsetTop -
                 this.movesContainer.offsetTop;
@@ -435,8 +438,8 @@ MarshallPGN.Board.prototype = {
         }
         scrollWindow = this.movesContainer.scrollTop +
             this.movesContainer.offsetHeight;
-        if ( scrollPosition + boxHeight > scrollWindow ||
-                scrollPosition - boxHeight < this.movesContainer.scrollTop ) {
+        if (scrollPosition + boxHeight > scrollWindow ||
+                scrollPosition - boxHeight < this.movesContainer.scrollTop) {
             this.movesContainer.scrollTop = scrollPosition;
         }
     },
