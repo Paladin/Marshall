@@ -247,6 +247,16 @@
                         pgn, "game1_board", {"showGameInfo": false});
                 expect(myBoard.visuals.pgn.event.parentNode.parentNode.style.display).toBe("none");
             });
+            it(" Should use the fonts", function () {
+                var myBoard = new MarshallPGN.Board(new MarshallPGN.VBoard(),
+                        pgn, "game1_board", {"useFonts": true});
+                expect(myBoard.visuals.squares[0][0].textContent).toBe("r");
+            });
+            it(" Should not use the fonts", function () {
+                var myBoard = new MarshallPGN.Board(new MarshallPGN.VBoard(),
+                        pgn, "game1_board", {"useFonts": false});
+                expect(myBoard.visuals.squares[0][0].textContent).toBe("");
+            });
         });
         describe("Click handlers", function () {
             beforeEach(function () {

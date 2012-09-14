@@ -83,7 +83,8 @@ MarshallPGN.Game.prototype = {
                 altUp:			"Go up one variation",
                 altDown:		"Go down into variation",
                 downloadURL:	"http://www.chesspastebin.com/asPgn.php?PGN=",
-                skipToMove:		null
+                skipToMove:		null,
+                useFonts:       false
             };
         return options;
     },

@@ -162,45 +162,45 @@ MarshallPGN.Board.prototype = {
             theBoard = this;
 
         this.visuals.button.rewind = this.makeButton(buttonBar, "rwind",
-            "altRewind", false, function () {
+            "altRewind", false, "W", function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.goStart.apply(
                         theBoard.currentMove
                     )]);
             });
         this.visuals.button.back = this.makeButton(buttonBar, "back",
-            "altBack", false, function () {
+            "altBack", false, "T", function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.previous]);
             });
         this.visuals.button.up = this.makeButton(buttonBar, "up",
-            "altUp", true, function () {
+            "altUp", true, "U", function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.up || theBoard.currentMove]);
             });
         this.visuals.button.flip = this.makeButton(buttonBar, "flip",
-            "altFlip", false, function () {
+            "altFlip", false, "I", function () {
                 theBoard.flipBoard();
             });
         this.visuals.button.toggleMoves = this.makeButton(buttonBar,
-            "toggle", "altShowMoves", false, function () {
+            "toggle", "altShowMoves", false, "L", function () {
                 theBoard.toggleMoves();
             });
         this.visuals.button.toggleComments = this.makeButton(buttonBar,
-            "comments", "altComments", false, function () {
+            "comments", "altComments", false, "C", function () {
                 theBoard.toggleComments();
             });
         this.visuals.button.down = this.makeButton(buttonBar, "down",
-            "altDown", true, function () {
+            "altDown", true, "D", function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.down || theBoard.currentMove]);
             });
         this.visuals.button.forward = this.makeButton(buttonBar, "forward",
-            "altPlayMove", false, function () {
+            "altPlayMove", false, "M", function () {
                 theBoard.makeMove.apply(theBoard, [theBoard.currentMove.next]);
             });
         this.visuals.button.fastforward = this.makeButton(buttonBar,
-            "ffward", "altFastForward", false, function () {
+            "ffward", "altFastForward", false, "F", function () {
                 theBoard.makeMove.apply(theBoard,
                     [theBoard.currentMove.goEnd.apply(theBoard.currentMove)]);
             });
@@ -216,7 +216,7 @@ MarshallPGN.Board.prototype = {
      * @param   {function}      handler         The click handler
      * @return  {HTMLElement}   The button created
      */
-    makeButton: function (btnContainer, btnName, btnTitle, disabled, handler) {
+    makeButton: function (btnContainer, btnName, btnTitle, disabled, symbol, handler) {
         "use strict";
         var button = this.createWithAttribs("button",
             { "class": btnName, "type": "Button"});
@@ -224,6 +224,7 @@ MarshallPGN.Board.prototype = {
         if (disabled) { button.setAttribute("disabled", "disabled"); }
         button.alt = this.opts[btnTitle];
         button.title = this.opts[btnTitle];
+        if (this.opts.useFonts) { button.innerHTML = symbol; }
         this.addClickListener(button, handler);
         btnContainer.appendChild(button);
         return button;
@@ -253,10 +254,30 @@ MarshallPGN.Board.prototype = {
                 upper.setAttribute('data-symbol',
                         lower.getAttribute('data-symbol'));
                 upper.title = lower.title;
+                this.setPieceForFont(upper);
 
                 lower.setAttribute('data-squarename', hold.squarename);
                 lower.setAttribute('data-symbol', hold.symbol);
                 lower.title = hold.title;
+                this.setPieceForFont(lower);
+            }
+        }
+    },
+    /**
+     *  If the useFont option is set, a character needs to be inserted in the
+     *  square's content in order to have the piece display properly. The
+     *  innerText property holds the text in some versions of IE, good browsers
+     *  want it in textContent.
+     *
+     * @param   {HTMLElement}   square  The square to set the piece text in
+     */
+    setPieceForFont:    function (square) {
+        "use strict";
+        if (this.opts.useFonts) {
+            if (square.textContent) {
+                square.textContent = square.getAttribute("data-symbol");
+            } else {
+                square.innerText = square.getAttribute("data-symbol");
             }
         }
     },
@@ -637,6 +658,7 @@ MarshallPGN.Board.prototype = {
         } else {
             square.setAttribute("data-symbol", thePiece.charAt(0));
         }
+        this.setPieceForFont(square);
         return;
     },
     /**
