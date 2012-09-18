@@ -4,8 +4,10 @@ var MarshallPGN = MarshallPGN || {};
  *  ends here
  *
  * @constructor
- * @param {string}  sourceID    The ID of the div to put the board inside
- * @param {object}  options     The configuration options for the board
+ * @param {VBoard}  initialPosition A VBoard set to the game starting position
+ * @param {object}  pgn             Parsed Pgn object to be replayed
+ * @param {string}  sourceID        The ID of the div to put the board inside
+ * @param {object}  options         The configuration options for the board
  *
  * @property {object}	pgn			- The game score object
  * @property {object}	opts		- Configuration options
