@@ -1,17 +1,19 @@
 (function () {
-	describe("Pieces", function () {
-		beforeEach(function () {
-		});
-		it(" Should create a White Knight", function () {
-		    var piece = new MarshallPGN.Piece("N");
-			expect(piece.color).toBe("white");
-			expect(piece.symbol).toBe("N");
-		});
-		it(" Should create a Black Queen", function () {
-		    var piece = new MarshallPGN.Piece("q");
-			expect(piece.color).toBe("black");
-			expect(piece.symbol).toBe("q");
-		});
+	describe("Piece", function () {
+	    describe("creation", function () {
+            beforeEach(function () {
+            });
+            it(" Should create a White Knight", function () {
+                var piece = new MarshallPGN.Piece("N");
+                expect(piece.color).toBe("white");
+                expect(piece.symbol).toBe("N");
+            });
+            it(" Should create a Black Queen", function () {
+                var piece = new MarshallPGN.Piece("q");
+                expect(piece.color).toBe("black");
+                expect(piece.symbol).toBe("q");
+            });
+	    });
 		describe("Movements", function () {
 			beforeEach(function () {
 			});

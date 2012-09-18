@@ -339,7 +339,7 @@
                     getAttribute("data-squarename")).toBe("h1");
             });
         });
-        describe("Board - Outputting HTML MoveTree", function () {
+        describe("Outputting HTML MoveTree", function () {
             beforeEach(function () {
             /*:DOC += <div><div id="game1"></div><div id="game1_board"></div></div> */
             

@@ -35,7 +35,7 @@
         "( 2... Nf6 ) (2... d5 3. exd5 e4 ( 3...exf5 4.Nf3 ) 4 c3) 3. fxe5" +
         " fxe5 4. Qh5+ Ke7 5. Qe5+ Kf7 6.Bc4+ Kg6 7. Qf5# 1-0";
 
-    describe("Parsing PGN input", function () {
+    describe("PGN", function () {
     	beforeEach(function () {
     	});
         describe("Parsing tags", function () {
@@ -105,7 +105,7 @@
                 expect("2009.06.14").toBe(this.pgn.props.SourceDate);
             });
         });
-        describe(" Parsing Moves", function () {
+        describe("Parsing Moves", function () {
         	beforeEach(function () {
         		this.pgn = new MarshallPGN.Pgn(fullGame);
         	});
